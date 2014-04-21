@@ -16,6 +16,18 @@ module Swissfork
       players - s1
     end
 
+    def numbers
+      players.map(&:number)
+    end
+
+    def s1_numbers
+      s1.map(&:number)
+    end
+
+    def s2_numbers
+      s2.map(&:number)
+    end
+
     def maximum_number_of_pairs
       players.length / 2
     end
