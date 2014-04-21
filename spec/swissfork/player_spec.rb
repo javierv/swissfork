@@ -20,4 +20,13 @@ describe Swissfork::Player do
       end
     end
   end
+
+  describe "#<=>" do
+    let(:player) { Swissfork::Player.new(2) }
+
+    it "uses the number to compare players" do
+      player.should be < Swissfork::Player.new(3)
+      player.should be > Swissfork::Player.new(1)
+    end
+  end
 end
