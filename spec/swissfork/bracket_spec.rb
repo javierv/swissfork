@@ -2,7 +2,7 @@ require "swissfork/bracket"
 
 describe Swissfork::Bracket do
   def create_players(numbers)
-    numbers.map { |number| double(:number => number) }
+    numbers.map { |number| Swissfork::Player.new(number) }
   end
 
   describe "#maximum_number_of_pairs" do
@@ -136,6 +136,47 @@ describe Swissfork::Bracket do
       it "transposes every player" do
         bracket.transpose
         bracket.s2_numbers.should == [11, 10, 9, 8, 7, 6]
+      end
+    end
+  end
+
+  describe "#exchange" do
+    let(:bracket) { Swissfork::Bracket.new([]) }
+    let(:s1_players) { create_players(1..5) }
+    let(:s2_players) { create_players(6..11) }
+
+    before(:each) do
+      bracket.stub(:original_s1).and_return(s1_players)
+      bracket.stub(:original_s2).and_return(s2_players)
+    end
+
+    context "first exchange" do
+      before(:each) { bracket.stub(:exchanges).and_return(0) }
+
+      it "exchanges the closest players" do
+        bracket.exchange
+        bracket.s1_numbers.should == [1, 2, 3, 4, 6]
+        bracket.s2_numbers.should == [5, 7, 8, 9, 10, 11]
+      end
+    end
+
+    context "second exchange" do
+      before(:each) { bracket.stub(:exchanges).and_return(1) }
+
+      it "exchanges the next closest players, choosing the bottom player from S1" do
+        bracket.exchange
+        bracket.s1_numbers.should == [1, 2, 3, 4, 7]
+        bracket.s2_numbers.should == [5, 6, 8, 9, 10, 11]
+      end
+    end
+
+    context "third exchange" do
+      before(:each) { bracket.stub(:exchanges).and_return(2) }
+
+      it "exchanges the next closest players" do
+        bracket.exchange
+        bracket.s1_numbers.should == [1, 2, 3, 5, 6]
+        bracket.s2_numbers.should == [4, 7, 8, 9, 10, 11]
       end
     end
   end
