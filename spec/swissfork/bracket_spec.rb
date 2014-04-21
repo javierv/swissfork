@@ -97,4 +97,28 @@ describe Swissfork::Bracket do
       end
     end
   end
+
+  describe "#transpose" do
+    let(:bracket) { Swissfork::Bracket.new([]) }
+    let(:s2_players) { create_players(6..11) }
+    before(:each) { bracket.stub(:original_s2).and_return(s2_players) }
+
+    context "first transposition" do
+      before(:each) { bracket.stub(:transpositions).and_return(0) }
+
+      it "transposes the lowest player" do
+        bracket.transpose
+        bracket.s2_numbers.should == [6, 7, 8, 9, 11, 10]
+      end
+    end
+
+    context "second transposition" do
+      before(:each) { bracket.stub(:transpositions).and_return(1) }
+
+      it "transposes the lowest player" do
+        bracket.transpose
+        bracket.s2_numbers.should == [6, 7, 8, 10, 9, 11]
+      end
+    end
+  end
 end
