@@ -1,9 +1,13 @@
 require "swissfork/bracket"
 
 describe Swissfork::Bracket do
+  def create_players(numbers)
+    numbers.map { |number| double(:number => number) }
+  end
+
   describe "#maximum_number_of_pairs" do
     context "even number of players" do
-      let(:players) { (1..6).map { double }}
+      let(:players) { create_players(1..6) }
       let(:bracket) { Swissfork::Bracket.new(players) }
 
       it "returns half of the number of players" do
@@ -12,7 +16,7 @@ describe Swissfork::Bracket do
     end
 
     context "odd number of players" do
-      let(:players) { (1..7).map { double }}
+      let(:players) { create_players(1..7) }
       let(:bracket) { Swissfork::Bracket.new(players) }
 
       it "returns half of the number of players rounded downwards" do
@@ -22,7 +26,7 @@ describe Swissfork::Bracket do
   end
 
   describe "#numbers" do
-    let(:players) { (1..6).map { |n| double(:number => n) }}
+    let(:players) { create_players(1..6) }
     let(:bracket) { Swissfork::Bracket.new(players) }
 
     it "returns the numbers for the players in the bracket" do
@@ -33,7 +37,7 @@ describe Swissfork::Bracket do
   describe "#s1_numbers" do
     let(:bracket) do
       Swissfork::Bracket.new([]).tap do |bracket|
-        bracket.stub(:s1).and_return((1..4).map { |n| double(:number => n) })
+        bracket.stub(:s1).and_return(create_players(1..4))
       end
     end
 
@@ -45,7 +49,7 @@ describe Swissfork::Bracket do
   describe "#s2_numbers" do
     let(:bracket) do
       Swissfork::Bracket.new([]).tap do |bracket|
-        bracket.stub(:s2).and_return((5..8).map { |n| double(:number => n) })
+        bracket.stub(:s2).and_return(create_players(5..8))
       end
     end
 
@@ -56,7 +60,7 @@ describe Swissfork::Bracket do
 
   describe "#s1" do
     context "even number of players" do
-      let(:players) { (1..6).map { |n| double(:number => n) }}
+      let(:players) { create_players(1..6) }
       let(:bracket) { Swissfork::Bracket.new(players) }
 
       it "returns the first half of the players" do
@@ -65,7 +69,7 @@ describe Swissfork::Bracket do
     end
 
     context "odd number of players" do
-      let(:players) { (1..7).map { |n| double(:number => n) }}
+      let(:players) { create_players(1..7) }
       let(:bracket) { Swissfork::Bracket.new(players) }
 
       it "returns the first half of the players, rounded downwards" do
@@ -76,7 +80,7 @@ describe Swissfork::Bracket do
 
   describe "#s2" do
     context "even number of players" do
-      let(:players) { (1..6).map { |n| double(:number => n) }}
+      let(:players) { create_players(1..6) }
       let(:bracket) { Swissfork::Bracket.new(players) }
 
       it "returns the second half of the players" do
@@ -85,7 +89,7 @@ describe Swissfork::Bracket do
     end
 
     context "odd number of players" do
-      let(:players) { (1..7).map { |n| double(:number => n) }}
+      let(:players) { create_players(1..7) }
       let(:bracket) { Swissfork::Bracket.new(players) }
 
       it "returns the second half of the players, rounded upwards" do
