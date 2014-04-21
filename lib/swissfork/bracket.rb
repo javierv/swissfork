@@ -17,7 +17,7 @@ module Swissfork
     end
 
     def s2
-      original_s2
+      @s2 ||= original_s2
     end
 
     def numbers
@@ -33,8 +33,8 @@ module Swissfork
     end
 
     def transpose
-      s2[-1 * transpositions - 1], s2[-1 * transpositions - 2] = s2[-1 * transpositions - 2], s2[-1 * transpositions - 1]
-      increase_transpositions
+      self.s2 = original_s2.permutation.to_a[transpositions + 1]
+      self.transpositions = transpositions + 1
     end
 
     def maximum_number_of_pairs
@@ -43,13 +43,11 @@ module Swissfork
     alias_method :p0, :maximum_number_of_pairs # FIDE nomenclature
 
   private
+    attr_writer :s2
+
     def transpositions
       @transpositions ||= 0
     end
     attr_writer :transpositions
-
-    def increase_transpositions
-      self.transpositions = transpositions + 1
-    end
   end
 end

@@ -115,9 +115,27 @@ describe Swissfork::Bracket do
     context "second transposition" do
       before(:each) { bracket.stub(:transpositions).and_return(1) }
 
-      it "transposes the lowest player" do
+      it "transposes the next lowest player" do
         bracket.transpose
         bracket.s2_numbers.should == [6, 7, 8, 10, 9, 11]
+      end
+    end
+
+    context "third transposition" do
+      before(:each) { bracket.stub(:transpositions).and_return(2) }
+
+      it "transposes the next lowest player" do
+        bracket.transpose
+        bracket.s2_numbers.should == [6, 7, 8, 10, 11, 9]
+      end
+    end
+
+    context "last transposition" do
+      before(:each) { bracket.stub(:transpositions).and_return(718) }
+
+      it "transposes every player" do
+        bracket.transpose
+        bracket.s2_numbers.should == [11, 10, 9, 8, 7, 6]
       end
     end
   end
