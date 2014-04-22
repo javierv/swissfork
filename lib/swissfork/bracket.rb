@@ -1,4 +1,5 @@
 require "swissfork/player"
+require "swissfork/players_difference"
 
 module Swissfork
   class Bracket
@@ -17,11 +18,11 @@ module Swissfork
     end
 
     def s1
-      @s1 ||= original_s1
+      @s1 ||= original_s1.dup
     end
 
     def s2
-      @s2 ||= original_s2
+      @s2 ||= original_s2.dup
     end
 
     def numbers
@@ -42,19 +43,8 @@ module Swissfork
     end
 
     def exchange
-      differences = s1.map do |s1_player|
-        s2.map do |s2_player|
-          { :s1_player => s1_player, :s2_player => s2_player, :difference => (s2_player.number - s1_player.number).abs }
-        end
-      end.flatten.sort do |players, other_players|
-        if players[:difference] == other_players[:difference]
-          other_players[:s1_player] <=> players[:s1_player]
-        else
-          players[:difference] <=> other_players[:difference]
-        end
-      end
-
-      s1[s1.index(differences[exchanges][:s1_player])], s2[s2.index(differences[exchanges][:s2_player])] = s2[s2.index(differences[exchanges][:s2_player])], s1[s1.index(differences[exchanges][:s1_player])]
+      differences = s1.product(s2).map { |players| PlayersDifference.new(*players) }.sort
+      s1[s1.index(differences[exchanges].s1_player)], s2[s2.index(differences[exchanges].s2_player)] = s2[s2.index(differences[exchanges].s2_player)], s1[s1.index(differences[exchanges].s1_player)]
 
       s1.sort!
       s2.sort!
