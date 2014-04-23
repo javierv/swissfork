@@ -99,13 +99,11 @@ describe Swissfork::Bracket do
   end
 
   describe "#transpose" do
-    let(:bracket) { Swissfork::Bracket.new([]) }
+    let(:s1_players) { create_players(1..5) }
     let(:s2_players) { create_players(6..11) }
-    before(:each) { bracket.stub(:original_s2).and_return(s2_players) }
+    let(:bracket) { Swissfork::Bracket.new(s1_players + s2_players) }
 
     context "first transposition" do
-      before(:each) { bracket.stub(:transpositions).and_return(0) }
-
       it "transposes the lowest player" do
         bracket.transpose
         bracket.s2_numbers.should == [6, 7, 8, 9, 11, 10]
@@ -113,7 +111,7 @@ describe Swissfork::Bracket do
     end
 
     context "second transposition" do
-      before(:each) { bracket.stub(:transpositions).and_return(1) }
+      before(:each) { bracket.send(:"s2_numbers=", [6, 7, 8, 9, 11, 10]) }
 
       it "transposes the next lowest player" do
         bracket.transpose
@@ -122,7 +120,7 @@ describe Swissfork::Bracket do
     end
 
     context "third transposition" do
-      before(:each) { bracket.stub(:transpositions).and_return(2) }
+      before(:each) { bracket.send(:"s2_numbers=", [6, 7, 8, 10, 9, 11]) }
 
       it "transposes the next lowest player" do
         bracket.transpose
@@ -131,7 +129,7 @@ describe Swissfork::Bracket do
     end
 
     context "last transposition" do
-      before(:each) { bracket.stub(:transpositions).and_return(718) }
+      before(:each) { bracket.send(:"s2_numbers=", [11, 10, 9, 8, 6, 7]) }
 
       it "transposes every player" do
         bracket.transpose

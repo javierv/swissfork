@@ -38,8 +38,7 @@ module Swissfork
     end
 
     def transpose
-      self.s2 = original_s2.permutation.to_a[transpositions + 1]
-      self.transpositions = transpositions + 1
+      self.s2 = transpositions[transpositions.index(s2) + 1]
     end
 
     def exchange
@@ -55,10 +54,10 @@ module Swissfork
     alias_method :p0, :maximum_number_of_pairs # FIDE nomenclature
 
   private
-    attr_writer :s1, :s2, :transpositions
+    attr_writer :s1, :s2
 
     def transpositions
-      @transpositions ||= 0
+      original_s2.permutation.to_a
     end
 
     def exchanges
