@@ -43,8 +43,7 @@ module Swissfork
     end
 
     def exchange
-      differences = s1.product(s2).map { |players| PlayersDifference.new(*players) }.sort
-      s1[s1.index(differences[exchanges].s1_player)], s2[s2.index(differences[exchanges].s2_player)] = s2[s2.index(differences[exchanges].s2_player)], s1[s1.index(differences[exchanges].s1_player)]
+      s1[current_s1_exchange], s2[current_s2_exchange] = s2[current_s2_exchange], s1[current_s1_exchange]
 
       s1.sort!
       s2.sort!
@@ -65,6 +64,20 @@ module Swissfork
 
     def exchanges
       @exchanges ||= 0
+    end
+
+    def differences
+      original_s1.product(original_s2).map do |players|
+        PlayersDifference.new(*players)
+      end.sort
+    end
+
+    def current_s1_exchange
+      s1.index(differences[exchanges].s1_player)
+    end
+
+    def current_s2_exchange
+      s2.index(differences[exchanges].s2_player)
     end
   end
 end
