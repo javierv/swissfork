@@ -161,7 +161,11 @@ describe Swissfork::Bracket do
     end
 
     context "second exchange" do
-      before(:each) { bracket.stub(:exchanges).and_return(1) }
+      before(:each) do
+        bracket.stub(:exchanges).and_return(1)
+        bracket.send(:"s1_numbers=", [1, 2, 3, 4, 6])
+        bracket.send(:"s2_numbers=", [5, 7, 8, 9, 10, 11])
+      end
 
       it "exchanges the next closest players, choosing the bottom player from S1" do
         bracket.exchange
