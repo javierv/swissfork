@@ -43,11 +43,10 @@ module Swissfork
     end
 
     def exchange
-      s1[current_s1_exchange], s2[current_s2_exchange] = s2[current_s2_exchange], s1[current_s1_exchange]
+      self.s1, self.s2 = next_exchange[0], next_exchange[1]
 
       s1.sort!
       s2.sort!
-      self.exchanges = exchanges + 1
     end
 
     def maximum_number_of_pairs
@@ -56,14 +55,19 @@ module Swissfork
     alias_method :p0, :maximum_number_of_pairs # FIDE nomenclature
 
   private
-    attr_writer :s1, :s2, :transpositions, :exchanges
+    attr_writer :s1, :s2, :transpositions
 
     def transpositions
       @transpositions ||= 0
     end
 
     def exchanges
-      @exchanges ||= 0
+      differences.map do |difference|
+        [
+          original_s1.dup.tap { |new_s1| new_s1[new_s1.index(difference.s1_player)] = difference.s2_player },
+          original_s2.dup.tap { |new_s2| new_s2[original_s2.index(difference.s2_player)] = difference.s1_player }
+        ]
+      end
     end
 
     def differences
@@ -72,12 +76,12 @@ module Swissfork
       end.sort
     end
 
-    def current_s1_exchange
-      s1.index(differences[exchanges].s1_player)
-    end
-
-    def current_s2_exchange
-      s2.index(differences[exchanges].s2_player)
+    def next_exchange
+      if s1 == original_s1 && s2 == original_s2
+        exchanges[0]
+      else
+        exchanges[exchanges.index(exchanges.select { |exchange| s1.sort == exchange[0].sort && s2.sort == exchange[1].sort }.first) + 1]
+      end
     end
 
     def s1_numbers=(numbers)

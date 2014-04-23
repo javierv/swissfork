@@ -141,18 +141,11 @@ describe Swissfork::Bracket do
   end
 
   describe "#exchange" do
-    let(:bracket) { Swissfork::Bracket.new([]) }
     let(:s1_players) { create_players(1..5) }
     let(:s2_players) { create_players(6..11) }
-
-    before(:each) do
-      bracket.stub(:original_s1).and_return(s1_players)
-      bracket.stub(:original_s2).and_return(s2_players)
-    end
+    let(:bracket) { Swissfork::Bracket.new(s1_players + s2_players) }
 
     context "first exchange" do
-      before(:each) { bracket.stub(:exchanges).and_return(0) }
-
       it "exchanges the closest players" do
         bracket.exchange
         bracket.s1_numbers.should == [1, 2, 3, 4, 6]
@@ -162,7 +155,6 @@ describe Swissfork::Bracket do
 
     context "second exchange" do
       before(:each) do
-        bracket.stub(:exchanges).and_return(1)
         bracket.send(:"s1_numbers=", [1, 2, 3, 4, 6])
         bracket.send(:"s2_numbers=", [5, 7, 8, 9, 10, 11])
       end
@@ -175,7 +167,10 @@ describe Swissfork::Bracket do
     end
 
     context "third exchange" do
-      before(:each) { bracket.stub(:exchanges).and_return(2) }
+      before(:each) do
+        bracket.send(:"s1_numbers=", [1, 2, 3, 4, 7])
+        bracket.send(:"s2_numbers=", [5, 6, 8, 9, 10, 11])
+      end
 
       it "exchanges the next closest players" do
         bracket.exchange
