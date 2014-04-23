@@ -14,7 +14,7 @@ module Swissfork
     end
 
     def original_s2
-      players - s1
+      players - original_s1
     end
 
     def s1
