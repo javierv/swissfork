@@ -422,6 +422,23 @@ describe Swissfork::Bracket do
         end
       end
     end
+
+    context "heterogeneous groups" do
+      let(:players) { create_players(1..10) }
+      let(:bracket) { Swissfork::Bracket.new(players) }
+      before(:each) do
+        players.each do |player|
+          player.stub(:opponents).and_return([])
+          player.stub(:points).and_return(1)
+        end
+        players[0].stub(:points).and_return(1.5)
+        players[1].stub(:points).and_return(1.5)
+      end
+
+      it "pairs the descended players with the highest non-desceded players" do
+        bracket.pair_numbers.should == [[1, 3], [2, 4], [5, 8], [6, 9], [7, 10]]
+      end
+    end
   end
 
   describe "#unpaired_players" do

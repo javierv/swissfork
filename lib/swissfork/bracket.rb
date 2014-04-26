@@ -87,8 +87,10 @@ module Swissfork
 
     def pairs
       if can_pair?
-        (1..maximum_number_of_pairs).map do |pair_number|
-          [s1[pair_number - 1], s2[pair_number - 1]]
+        if homogeneous?
+          initial_pairs
+        else
+          initial_pairs + Bracket.new(unpaired_after_pairing_descended_players).pairs
         end
       else
         transpose
@@ -177,9 +179,21 @@ module Swissfork
     end
 
     def can_pair?
-      (1..maximum_number_of_pairs).map do |pair_number|
+      (1..number_of_s1_players).map do |pair_number|
         !s1[pair_number - 1].opponents.include?(s2[pair_number - 1])
       end.all?
+    end
+
+    def initial_pairs
+      (1..number_of_s1_players).map do |pair_number|
+        [s1[pair_number - 1], s2[pair_number - 1]]
+      end
+    end
+
+    def unpaired_after_pairing_descended_players
+      players.select do |player|
+        initial_pairs.none? { |pair| pair.include?(player) }
+      end
     end
   end
 end
