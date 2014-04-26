@@ -73,6 +73,12 @@ module Swissfork
       pairs.map { |pair| pair.map(&:number) }
     end
 
+    def unpaired_players
+      players.select do |player|
+        pairs.none? { |pair| pair.include?(player) }
+      end
+    end
+
   private
     attr_writer :s1, :s2
 

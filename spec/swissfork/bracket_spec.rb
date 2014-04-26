@@ -276,4 +276,37 @@ describe Swissfork::Bracket do
       end
     end
   end
+
+  describe "#unpaired_players" do
+    context "even number of players" do
+      let(:players) { create_players(1..10) }
+      let(:bracket) { Swissfork::Bracket.new(players) }
+
+      it "returns an empty array" do
+        bracket.unpaired_players.should == []
+      end
+    end
+
+    context "odd number of players" do
+      let(:players) { create_players(1..11) }
+      let(:bracket) { Swissfork::Bracket.new(players) }
+
+      context "no previous opponents" do
+        it "returns the last player" do
+          bracket.unpaired_players.should == [players[10]]
+        end
+      end
+
+      context "previous opponents affecting the second to last player" do
+        before(:each) do
+          players[4].stub(:opponents).and_return([players[9]])
+          players[9].stub(:opponents).and_return([players[4]])
+        end
+
+        it "returns the second to last player" do
+          bracket.unpaired_players.should == [players[9]]
+        end
+      end
+    end
+  end
 end
