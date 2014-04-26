@@ -211,4 +211,69 @@ describe Swissfork::Bracket do
       end
     end
   end
+
+  describe "#pair_numbers" do
+    context "even number of players" do
+      let(:players) { create_players(1..10) }
+      let(:bracket) { Swissfork::Bracket.new(players) }
+      before(:each) do
+        players.each { |player| player.stub(:opponents).and_return([]) }
+      end
+
+      context "no previous opponents" do
+        it "pairs the players from s1 with the players from s2" do
+          bracket.pair_numbers.should == [[1, 6], [2, 7], [3, 8], [4, 9], [5, 10]]
+        end
+      end
+
+      context "one previous opponent" do
+        before(:each) do
+          players[0].stub(:opponents).and_return([players[5]])
+          players[5].stub(:opponents).and_return([players[0]])
+          players[3].stub(:opponents).and_return([players[8]])
+          players[8].stub(:opponents).and_return([players[3]])
+        end
+
+        it "pairs the players avoiding previous opponents" do
+          bracket.pair_numbers.should == [[1, 7], [2, 6], [3, 8], [4, 10], [5, 9]]
+        end
+      end
+
+      context "one player from S1 has played against everyone in S2" do
+        before(:each) do
+          players[0].stub(:opponents).and_return(players[5..9])
+          players[5..9].each { |player| player.stub(:opponents).and_return([players[0]]) }
+        end
+
+        it "pairs the players with another player from S1" do
+          bracket.pair_numbers.should == [[1, 5], [2, 7], [3, 8], [4, 9], [6, 10]]
+        end
+      end
+    end
+
+    context "odd number of players" do
+      let(:players) { create_players(1..11) }
+      let(:bracket) { Swissfork::Bracket.new(players) }
+      before(:each) do
+        players.each { |player| player.stub(:opponents).and_return([]) }
+      end
+
+      context "no previous opponents" do
+        it "pairs all players except the last one" do
+          bracket.pair_numbers.should == [[1, 6], [2, 7], [3, 8], [4, 9], [5, 10]]
+        end
+      end
+
+      context "previous opponents affecting the second to last player" do
+        before(:each) do
+          players[4].stub(:opponents).and_return([players[9]])
+          players[9].stub(:opponents).and_return([players[4]])
+        end
+
+        it "pairs all players except the second to last one" do
+          bracket.pair_numbers.should == [[1, 6], [2, 7], [3, 8], [4, 9], [5, 11]]
+        end
+      end
+    end
+  end
 end

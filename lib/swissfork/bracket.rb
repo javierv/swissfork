@@ -57,8 +57,30 @@ module Swissfork
     end
     alias_method :p0, :maximum_number_of_pairs # FIDE nomenclature
 
+    def pairs
+      if can_pair?
+        (1..maximum_number_of_pairs).map do |pair_number|
+          [s1[pair_number - 1], s2[pair_number - 1]]
+        end
+      else
+        transpose
+        pairs
+      end
+    end
+
+    # Helper method which makes tests more readable.
+    def pair_numbers
+      pairs.map { |pair| pair.map(&:number) }
+    end
+
   private
     attr_writer :s1, :s2
+
+    def can_pair?
+      (1..maximum_number_of_pairs).map do |pair_number|
+        !s1[pair_number - 1].opponents.include?(s2[pair_number - 1])
+      end.all?
+    end
 
     def transpositions
       s2.sort.permutation.to_a
