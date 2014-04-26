@@ -85,8 +85,14 @@ module Swissfork
       if s1.sort == original_s1.sort && s2.sort == original_s2.sort
         exchanges[0]
       else
-        exchanges[exchanges.index(exchanges.select { |exchange| s1.sort == exchange.s1.sort && s2.sort == exchange.s2.sort }.first) + 1]
+        exchanges[exchanges.index(current_exchange) + 1]
       end
+    end
+
+    def current_exchange
+      exchanges.select do |exchange|
+        s1.sort == exchange.s1.sort && s2.sort == exchange.s2.sort
+      end.first
     end
 
     def s1_numbers=(numbers)
