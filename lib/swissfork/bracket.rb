@@ -71,8 +71,15 @@ module Swissfork
     end
 
     def exchanged_bracket(player1, player2)
+      Bracket.new(exchanged_players(player1, player2))
+    end
+
+    def exchanged_players(player1, player2)
       index1, index2 = players.index(player1), players.index(player2)
-      Bracket.new(players.dup.tap { |new_players| new_players[index1], new_players[index2] = player2, player1 })
+
+      players.dup.tap do |new_players|
+        new_players[index1], new_players[index2] = player2, player1
+      end
     end
 
     def differences
