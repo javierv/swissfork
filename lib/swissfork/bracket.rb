@@ -9,6 +9,10 @@ module Swissfork
       @players = players
     end
 
+    def numbers
+      players.map(&:number)
+    end
+
     def original_s1
       players[0..maximum_number_of_pairs-1]
     end
@@ -23,10 +27,6 @@ module Swissfork
 
     def s2
       @s2 ||= original_s2.dup
-    end
-
-    def numbers
-      players.map(&:number)
     end
 
     def s1_numbers
