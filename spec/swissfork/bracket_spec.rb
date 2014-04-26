@@ -198,5 +198,17 @@ describe Swissfork::Bracket do
         bracket.s2_numbers.should == [4, 7, 8, 9, 10, 11]
       end
     end
+
+    context "exchanges limit reached" do
+      before(:each) do
+        bracket.send(:"s1_numbers=", [2, 3, 4, 5, 11])
+        bracket.send(:"s2_numbers=", [1, 6, 7, 8, 9, 10])
+      end
+
+      pending "it aborts the pairing" do
+        bracket.exchange
+        # TODO: raise exception? Return false?
+      end
+    end
   end
 end
