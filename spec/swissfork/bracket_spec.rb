@@ -37,6 +37,16 @@ describe Swissfork::Bracket do
         bracket.homogeneous?.should be false
       end
     end
+
+    context "at least half of the players have different number of points" do
+      before(:each) do
+        players[0..2].each { |player| player.stub(:points).and_return(1.5) }
+      end
+
+      it "returns true" do
+        bracket.homogeneous?.should be true
+      end
+    end
   end
 
   describe "#heterogeneous?" do
@@ -60,6 +70,16 @@ describe Swissfork::Bracket do
 
       it "returns true" do
         bracket.heterogeneous?.should be true
+      end
+    end
+
+    context "at least half of the players have different number of points" do
+      before(:each) do
+        players[0..2].each { |player| player.stub(:points).and_return(1.5) }
+      end
+
+      it "returns false" do
+        bracket.heterogeneous?.should be false
       end
     end
   end

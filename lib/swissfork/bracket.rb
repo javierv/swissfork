@@ -14,7 +14,7 @@ module Swissfork
     end
 
     def homogeneous?
-      players.map(&:points).uniq.one?
+      players.map(&:points).uniq.one? || number_of_descended_players >= players.length / 2
     end
 
     def heterogeneous?
