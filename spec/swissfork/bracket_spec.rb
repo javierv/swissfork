@@ -84,6 +84,52 @@ describe Swissfork::Bracket do
     end
   end
 
+  describe "#points" do
+    let(:players) { create_players(1..6) }
+    let(:bracket) { Swissfork::Bracket.new(players) }
+
+    before(:each) do
+      players.each { |player| player.stub(:points).and_return(1) }
+    end
+
+    context "homogeneous bracket" do
+      it "returns the number of points from all players" do
+        bracket.points.should == 1
+      end
+    end
+
+    context "heterogeneous bracket" do
+      before(:each) { players.last.stub(:points).and_return(0.5) }
+
+      it "returns the points from the player with the lowest amount of points" do
+        bracket.points.should == 0.5
+      end
+    end
+  end
+
+  describe "#number_of_descended_players" do
+    let(:players) { create_players(1..6) }
+    let(:bracket) { Swissfork::Bracket.new(players) }
+
+    before(:each) do
+      players.each { |player| player.stub(:points).and_return(1) }
+    end
+
+    context "homogeneous bracket" do
+      it "returns zero" do
+        bracket.number_of_descended_players.should == 0
+      end
+    end
+
+    context "heterogeneous bracket" do
+      before(:each) { players.first.stub(:points).and_return(1.5) }
+
+      it "returns the number of descended players" do
+        bracket.number_of_descended_players.should == 1
+      end
+    end
+  end
+
   describe "#s1_numbers" do
     let(:bracket) do
       Swissfork::Bracket.new([]).tap do |bracket|

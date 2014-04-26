@@ -21,10 +21,19 @@ module Swissfork
       !homogeneous?
     end
 
+    def points
+      players.map(&:points).min
+    end
+
     def maximum_number_of_pairs
       players.length / 2
     end
     alias_method :p0, :maximum_number_of_pairs # FIDE nomenclature
+
+    def number_of_descended_players
+      players.select { |player| player.points > points }.length
+    end
+    alias_method :m0, :number_of_descended_players # FIDE nomenclature
 
     def s1
       @s1 ||= original_s1.dup
