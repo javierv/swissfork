@@ -61,7 +61,7 @@ module Swissfork
     attr_writer :s1, :s2
 
     def transpositions
-      original_s2.permutation.to_a
+      s2.sort.permutation.to_a
     end
 
     def exchanges

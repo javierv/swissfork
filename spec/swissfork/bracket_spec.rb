@@ -146,6 +146,18 @@ describe Swissfork::Bracket do
         bracket.s2_numbers.should == [5, 7, 8, 9, 10, 11]
       end
     end
+
+    context "an exchange has already taken place" do
+      before(:each) do
+        bracket.send(:"s1_numbers=", [1, 2, 3, 4, 6])
+        bracket.send(:"s2_numbers=", [5, 7, 8, 9, 10, 11])
+      end
+
+      it "transposes the lowest players in s2" do
+        bracket.transpose
+        bracket.s2_numbers.should == [5, 7, 8, 9, 11, 10]
+      end
+    end
   end
 
   describe "#exchange" do
