@@ -136,6 +136,16 @@ describe Swissfork::Bracket do
         bracket.s2_numbers.should == [11, 10, 9, 8, 7, 6]
       end
     end
+
+    context "transposition limit reached" do
+      before(:each) { bracket.send(:"s2_numbers=", [11, 10, 9, 8, 7, 6]) }
+
+      it "exchanges players" do
+        bracket.transpose
+        bracket.s1_numbers.should == [1, 2, 3, 4, 6]
+        bracket.s2_numbers.should == [5, 7, 8, 9, 10, 11]
+      end
+    end
   end
 
   describe "#exchange" do

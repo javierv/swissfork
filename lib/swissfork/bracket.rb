@@ -38,7 +38,11 @@ module Swissfork
     end
 
     def transpose
-      self.s2 = transpositions[transpositions.index(s2) + 1]
+      if transpositions.index(s2) == transpositions.length - 1
+        exchange
+      else
+        self.s2 = transpositions[transpositions.index(s2) + 1]
+      end
     end
 
     def exchange
@@ -78,7 +82,7 @@ module Swissfork
     end
 
     def next_exchange
-      if s1 == original_s1 && s2 == original_s2
+      if s1.sort == original_s1.sort && s2.sort == original_s2.sort
         exchanges[0]
       else
         exchanges[exchanges.index(exchanges.select { |exchange| s1.sort == exchange.s1.sort && s2.sort == exchange.s2.sort }.first) + 1]
