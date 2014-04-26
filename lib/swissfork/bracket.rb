@@ -13,6 +13,14 @@ module Swissfork
       players.map(&:number)
     end
 
+    def homogeneous?
+      players.map(&:points).uniq.one?
+    end
+
+    def heterogeneous?
+      !homogeneous?
+    end
+
     def s1
       @s1 ||= original_s1.dup
     end

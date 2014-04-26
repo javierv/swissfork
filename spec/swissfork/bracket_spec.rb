@@ -34,6 +34,56 @@ describe Swissfork::Bracket do
     end
   end
 
+  describe "#homogeneous?" do
+    let(:players) { create_players(1..6) }
+    let(:bracket) { Swissfork::Bracket.new(players) }
+
+    before(:each) do
+      players.each { |player| player.stub(:points).and_return(1) }
+    end
+
+    context "players with the same points" do
+      it "returns true" do
+        bracket.homogeneous?.should be true
+      end
+    end
+
+    context "players with different number of points" do
+      before(:each) do
+        players.first.stub(:points).and_return(1.5)
+      end
+
+      it "returns false" do
+        bracket.homogeneous?.should be false
+      end
+    end
+  end
+
+  describe "#heterogeneous?" do
+    let(:players) { create_players(1..6) }
+    let(:bracket) { Swissfork::Bracket.new(players) }
+
+    before(:each) do
+      players.each { |player| player.stub(:points).and_return(1) }
+    end
+
+    context "players with the same points" do
+      it "returns false" do
+        bracket.heterogeneous?.should be false
+      end
+    end
+
+    context "players with different number of points" do
+      before(:each) do
+        players.first.stub(:points).and_return(1.5)
+      end
+
+      it "returns true" do
+        bracket.heterogeneous?.should be true
+      end
+    end
+  end
+
   describe "#s1_numbers" do
     let(:bracket) do
       Swissfork::Bracket.new([]).tap do |bracket|
