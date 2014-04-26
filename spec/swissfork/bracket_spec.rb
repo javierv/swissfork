@@ -355,6 +355,7 @@ describe Swissfork::Bracket do
       pending "it aborts the pairing" do
         bracket.exchange
         # TODO: raise exception? Return false?
+        # Or should we start exchanging more than one player?
       end
     end
   end
