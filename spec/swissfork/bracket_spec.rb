@@ -5,26 +5,6 @@ describe Swissfork::Bracket do
     numbers.map { |number| Swissfork::Player.new(number) }
   end
 
-  describe "#maximum_number_of_pairs" do
-    context "even number of players" do
-      let(:players) { create_players(1..6) }
-      let(:bracket) { Swissfork::Bracket.new(players) }
-
-      it "returns half of the number of players" do
-        bracket.maximum_number_of_pairs.should == 3
-      end
-    end
-
-    context "odd number of players" do
-      let(:players) { create_players(1..7) }
-      let(:bracket) { Swissfork::Bracket.new(players) }
-
-      it "returns half of the number of players rounded downwards" do
-        bracket.maximum_number_of_pairs.should == 3
-      end
-    end
-  end
-
   describe "#numbers" do
     let(:players) { create_players(1..6) }
     let(:bracket) { Swissfork::Bracket.new(players) }
@@ -80,6 +60,26 @@ describe Swissfork::Bracket do
 
       it "returns true" do
         bracket.heterogeneous?.should be true
+      end
+    end
+  end
+
+  describe "#maximum_number_of_pairs" do
+    context "even number of players" do
+      let(:players) { create_players(1..6) }
+      let(:bracket) { Swissfork::Bracket.new(players) }
+
+      it "returns half of the number of players" do
+        bracket.maximum_number_of_pairs.should == 3
+      end
+    end
+
+    context "odd number of players" do
+      let(:players) { create_players(1..7) }
+      let(:bracket) { Swissfork::Bracket.new(players) }
+
+      it "returns half of the number of players rounded downwards" do
+        bracket.maximum_number_of_pairs.should == 3
       end
     end
   end

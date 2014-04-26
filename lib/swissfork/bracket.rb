@@ -21,6 +21,11 @@ module Swissfork
       !homogeneous?
     end
 
+    def maximum_number_of_pairs
+      players.length / 2
+    end
+    alias_method :p0, :maximum_number_of_pairs # FIDE nomenclature
+
     def s1
       @s1 ||= original_s1.dup
     end
@@ -51,11 +56,6 @@ module Swissfork
       s1.sort!
       s2.sort!
     end
-
-    def maximum_number_of_pairs
-      players.length / 2
-    end
-    alias_method :p0, :maximum_number_of_pairs # FIDE nomenclature
 
     def pairs
       if can_pair?
