@@ -16,5 +16,10 @@ module Swissfork
     def <=>(other_player)
       number <=> other_player.number
     end
+
+    # FIXME: Currently a stub for tests.
+    def points
+      0
+    end
   end
 end

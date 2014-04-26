@@ -178,9 +178,24 @@ describe Swissfork::Bracket do
     context "even number of players" do
       let(:players) { create_players(1..6) }
       let(:bracket) { Swissfork::Bracket.new(players) }
+      before(:each) do
+        players.each { |player| player.stub(:points).and_return(1) }
+      end
 
-      it "returns the first half of the players" do
-        bracket.s1_numbers.should == [1, 2, 3]
+      context "homogeneous bracket" do
+        it "returns the first half of the players" do
+          bracket.s1_numbers.should == [1, 2, 3]
+        end
+      end
+
+      context "heterogeneous bracket" do
+        before(:each) do
+          players[0..1].each { |player| player.stub(:points).and_return(1.5) }
+        end
+
+        it "returns the descended players" do
+          bracket.s1_numbers.should == [1, 2]
+        end
       end
     end
 
@@ -199,8 +214,24 @@ describe Swissfork::Bracket do
       let(:players) { create_players(1..6) }
       let(:bracket) { Swissfork::Bracket.new(players) }
 
-      it "returns the second half of the players" do
-        bracket.s2_numbers.should == [4, 5, 6]
+      before(:each) do
+        players.each { |player| player.stub(:points).and_return(1) }
+      end
+
+      context "homogeneous bracket" do
+        it "returns the second half of the players" do
+          bracket.s2_numbers.should == [4, 5, 6]
+        end
+      end
+
+      context "heterogeneous bracket" do
+        before(:each) do
+          players[0..1].each { |player| player.stub(:points).and_return(1.5) }
+        end
+
+        it "returns all players but the descended ones" do
+          bracket.s2_numbers.should == [3, 4, 5, 6]
+        end
       end
     end
 

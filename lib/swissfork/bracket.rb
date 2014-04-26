@@ -35,6 +35,25 @@ module Swissfork
     end
     alias_method :m0, :number_of_descended_players # FIDE nomenclature
 
+    def possible_number_of_pairs
+      maximum_number_of_pairs
+    end
+    alias_method :p1, :possible_number_of_pairs # FIDE nomenclature
+
+    def pairable_descended_players
+      number_of_descended_players
+    end
+    alias_method :m1, :pairable_descended_players # FIDE nomenclature
+
+    def number_of_s1_players
+      if homogeneous?
+        possible_number_of_pairs
+      else
+        pairable_descended_players
+      end
+    end
+    alias_method :p, :number_of_s1_players # FIDE nomenclature
+
     def s1
       @s1 ||= original_s1.dup
     end
@@ -108,7 +127,7 @@ module Swissfork
     end
 
     def original_s1
-      players[0..maximum_number_of_pairs-1]
+      players[0..number_of_s1_players-1]
     end
 
     def original_s2
