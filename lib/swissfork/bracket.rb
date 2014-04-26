@@ -42,7 +42,7 @@ module Swissfork
     end
 
     def exchange
-      self.s1, self.s2 = next_exchange[0], next_exchange[1]
+      self.s1, self.s2 = next_exchange.s1, next_exchange.s2
 
       s1.sort!
       s2.sort!
@@ -61,12 +61,14 @@ module Swissfork
     end
 
     def exchanges
-      differences.map do |difference|
-        [
-          original_s1.dup.tap { |new_s1| new_s1[new_s1.index(difference.s1_player)] = difference.s2_player },
-          original_s2.dup.tap { |new_s2| new_s2[original_s2.index(difference.s2_player)] = difference.s1_player }
-        ]
+      @exchanges ||= differences.map do |difference|
+        exchanged_bracket(difference.s1_player, difference.s2_player)
       end
+    end
+
+    def exchanged_bracket(player1, player2)
+      index1, index2 = players.index(player1), players.index(player2)
+      Bracket.new(players.dup.tap { |new_players| new_players[index1], new_players[index2] = player2, player1 })
     end
 
     def differences
@@ -79,7 +81,7 @@ module Swissfork
       if s1 == original_s1 && s2 == original_s2
         exchanges[0]
       else
-        exchanges[exchanges.index(exchanges.select { |exchange| s1.sort == exchange[0].sort && s2.sort == exchange[1].sort }.first) + 1]
+        exchanges[exchanges.index(exchanges.select { |exchange| s1.sort == exchange.s1.sort && s2.sort == exchange.s2.sort }.first) + 1]
       end
     end
 
