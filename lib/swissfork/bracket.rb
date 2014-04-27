@@ -182,14 +182,14 @@ module Swissfork
     end
 
     def can_pair_regular?
-      (1..number_of_required_pairs).map do |pair_number|
-        !s1[pair_number - 1].opponents.include?(s2[pair_number - 1])
-      end.all?
+      s1.map.with_index do |player, index|
+        player.opponents.include?(s2[index])
+      end.none?
     end
 
     def regular_pairs
-      (1..number_of_required_pairs).map do |pair_number|
-        [s1[pair_number - 1], s2[pair_number - 1]]
+      s1.map.with_index do |player, index|
+        [player, s2[index]]
       end
     end
 
