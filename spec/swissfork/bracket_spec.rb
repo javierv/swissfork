@@ -436,8 +436,23 @@ describe Swissfork::Bracket do
         players[1].stub(:points).and_return(1.5)
       end
 
-      it "pairs the descended players with the highest non-desceded players" do
-        bracket.pair_numbers.should == [[1, 3], [2, 4], [5, 8], [6, 9], [7, 10]]
+      context "the resulting homogeneous group is possible to pair" do
+        it "pairs the descended players with the highest non-desceded players" do
+          bracket.pair_numbers.should == [[1, 3], [2, 4], [5, 8], [6, 9], [7, 10]]
+        end
+      end
+
+      context "the resulting homogeneous group isn't possible to pair" do
+        before(:each) do
+          players[4].stub(:opponents).and_return(players[5..9])
+          players[5..9].each do |player|
+            player.stub(:opponents).and_return([players[4]])
+          end
+        end
+
+        it "redoes the pairing of the descended players" do
+          bracket.pair_numbers.should == [[1, 3], [2, 5], [4, 8], [6, 9], [7, 10]]
+        end
       end
     end
   end
