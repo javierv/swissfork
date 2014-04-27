@@ -90,16 +90,26 @@ module Swissfork
         if homogeneous?
           regular_pairs
         else
-          begin
-            regular_pairs + Bracket.new(unpaired_players_after(regular_pairs)).pairs
-          rescue BracketImpossibleToPair
-            transpose
-            pairs
-          end
+          heteropairs
         end
       else
         transpose
         pairs
+      end
+    end
+
+    def can_pair?
+      (1..number_of_required_pairs).map do |pair_number|
+        !s1[pair_number - 1].opponents.include?(s2[pair_number - 1])
+      end.all?
+    end
+
+    def heteropairs
+      if Bracket.new(unpaired_players_after(regular_pairs)).can_pair?
+        regular_pairs + Bracket.new(unpaired_players_after(regular_pairs)).pairs
+      else
+        transpose
+        heteropairs
       end
     end
 
@@ -170,8 +180,6 @@ module Swissfork
     def next_exchange
       if s1.sort == original_s1.sort && s2.sort == original_s2.sort
         exchanges[0]
-      elsif current_exchange == exchanges.last
-        raise BracketImpossibleToPair
       else
         exchanges[exchanges.index(current_exchange) + 1]
       end
@@ -181,12 +189,6 @@ module Swissfork
       exchanges.select do |exchange|
         s1.sort == exchange.s1.sort && s2.sort == exchange.s2.sort
       end.first
-    end
-
-    def can_pair?
-      (1..number_of_required_pairs).map do |pair_number|
-        !s1[pair_number - 1].opponents.include?(s2[pair_number - 1])
-      end.all?
     end
 
     def regular_pairs
@@ -199,6 +201,4 @@ module Swissfork
       players.select { |player| !pairs.flatten.include?(player) }
     end
   end
-
-  class BracketImpossibleToPair < StandardError; end
 end
