@@ -292,6 +292,15 @@ describe Swissfork::Bracket do
         bracket.s1_numbers.should == [1, 2, 3, 4, 6]
         bracket.s2_numbers.should == [5, 7, 8, 9, 10, 11]
       end
+
+      context "two transpositions " do
+        it "exchanges players and transposes them" do
+          bracket.transpose
+          bracket.transpose
+          bracket.s1_numbers.should == [1, 2, 3, 4, 6]
+          bracket.s2_numbers.should == [5, 7, 8, 9, 11, 10]
+        end
+      end
     end
 
     context "an exchange has already taken place" do

@@ -139,7 +139,8 @@ module Swissfork
     end
 
     def transpositions
-      s2.sort.permutation.to_a
+      @transpositions ||= {}
+      @transpositions[s2.sort] ||= s2.sort.permutation.to_a
     end
 
     def exchanges
