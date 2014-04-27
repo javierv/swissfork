@@ -71,7 +71,7 @@ module Swissfork
     end
 
     def transpose
-      if transpositions.index(s2) == transpositions.length - 1
+      if s2 == transpositions.last
         exchange
       else
         self.s2 = transpositions[transpositions.index(s2) + 1]
