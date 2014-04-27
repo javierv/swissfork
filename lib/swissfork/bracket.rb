@@ -90,7 +90,7 @@ module Swissfork
         if homogeneous?
           initial_pairs
         else
-          initial_pairs + Bracket.new(unpaired_after_pairing_descended_players).pairs
+          initial_pairs + Bracket.new(unpaired_players_after_pairing_descended_players).pairs
         end
       else
         transpose
@@ -104,9 +104,7 @@ module Swissfork
     end
 
     def unpaired_players
-      players.select do |player|
-        pairs.none? { |pair| pair.include?(player) }
-      end
+      unpaired_players_after(pairs)
     end
 
   private
@@ -190,10 +188,12 @@ module Swissfork
       end
     end
 
-    def unpaired_after_pairing_descended_players
-      players.select do |player|
-        initial_pairs.none? { |pair| pair.include?(player) }
-      end
+    def unpaired_players_after_pairing_descended_players
+      unpaired_players_after(initial_pairs)
+    end
+
+    def unpaired_players_after(pairs)
+      players.select { |player| !pairs.flatten.include?(player) }
     end
   end
 end
