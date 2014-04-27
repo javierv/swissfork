@@ -90,7 +90,7 @@ module Swissfork
         if homogeneous?
           regular_pairs
         else
-          heteropairs
+          regular_pairs + Bracket.new(unpaired_players_after(regular_pairs)).pairs
         end
       else
         transpose
@@ -99,18 +99,7 @@ module Swissfork
     end
 
     def can_pair?
-      (1..number_of_required_pairs).map do |pair_number|
-        !s1[pair_number - 1].opponents.include?(s2[pair_number - 1])
-      end.all?
-    end
-
-    def heteropairs
-      if Bracket.new(unpaired_players_after(regular_pairs)).can_pair?
-        regular_pairs + Bracket.new(unpaired_players_after(regular_pairs)).pairs
-      else
-        transpose
-        heteropairs
-      end
+      can_pair_regular? && (homogeneous? || Bracket.new(unpaired_players_after(regular_pairs)).can_pair?)
     end
 
     # Helper method which makes tests more readable.
@@ -189,6 +178,12 @@ module Swissfork
       exchanges.select do |exchange|
         s1.sort == exchange.s1.sort && s2.sort == exchange.s2.sort
       end.first
+    end
+
+    def can_pair_regular?
+      (1..number_of_required_pairs).map do |pair_number|
+        !s1[pair_number - 1].opponents.include?(s2[pair_number - 1])
+      end.all?
     end
 
     def regular_pairs
