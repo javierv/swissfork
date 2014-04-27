@@ -86,15 +86,14 @@ module Swissfork
     end
 
     def pairs
-      if can_pair?
-        if homogeneous?
-          regular_pairs
-        else
-          regular_pairs + Bracket.new(unpaired_players_after(regular_pairs)).pairs
-        end
-      else
+      while(!can_pair?)
         transpose
-        pairs
+      end
+
+      if homogeneous?
+        regular_pairs
+      else
+        regular_pairs + Bracket.new(unpaired_players_after(regular_pairs)).pairs
       end
     end
 
