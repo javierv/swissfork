@@ -88,9 +88,9 @@ module Swissfork
     def pairs
       if can_pair?
         if homogeneous?
-          initial_pairs
+          regular_pairs
         else
-          initial_pairs + Bracket.new(unpaired_players_after_pairing_descended_players).pairs
+          regular_pairs + Bracket.new(unpaired_players_after(regular_pairs)).pairs
         end
       else
         transpose
@@ -182,14 +182,10 @@ module Swissfork
       end.all?
     end
 
-    def initial_pairs
+    def regular_pairs
       (1..number_of_s1_players).map do |pair_number|
         [s1[pair_number - 1], s2[pair_number - 1]]
       end
-    end
-
-    def unpaired_players_after_pairing_descended_players
-      unpaired_players_after(initial_pairs)
     end
 
     def unpaired_players_after(pairs)
