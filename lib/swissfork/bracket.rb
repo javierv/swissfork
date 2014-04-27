@@ -45,14 +45,14 @@ module Swissfork
     end
     alias_method :m1, :pairable_descended_players # FIDE nomenclature
 
-    def number_of_s1_players
+    def number_of_required_pairs
       if homogeneous?
         possible_number_of_pairs
       else
         pairable_descended_players
       end
     end
-    alias_method :p, :number_of_s1_players # FIDE nomenclature
+    alias_method :p, :number_of_required_pairs # FIDE nomenclature
 
     def s1
       @s1 ||= original_s1.dup
@@ -127,7 +127,7 @@ module Swissfork
     end
 
     def original_s1
-      players[0..number_of_s1_players-1]
+      players[0..number_of_required_pairs-1]
     end
 
     def original_s2
@@ -177,13 +177,13 @@ module Swissfork
     end
 
     def can_pair?
-      (1..number_of_s1_players).map do |pair_number|
+      (1..number_of_required_pairs).map do |pair_number|
         !s1[pair_number - 1].opponents.include?(s2[pair_number - 1])
       end.all?
     end
 
     def regular_pairs
-      (1..number_of_s1_players).map do |pair_number|
+      (1..number_of_required_pairs).map do |pair_number|
         [s1[pair_number - 1], s2[pair_number - 1]]
       end
     end
