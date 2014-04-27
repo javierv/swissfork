@@ -31,7 +31,7 @@ module Swissfork
     alias_method :p0, :maximum_number_of_pairs # FIDE nomenclature
 
     def number_of_descended_players
-      players.select { |player| player.points > points }.length
+      @number_of_descended_players ||= players.select { |player| player.points > points }.length
     end
     alias_method :m0, :number_of_descended_players # FIDE nomenclature
 
