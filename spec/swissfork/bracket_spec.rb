@@ -379,6 +379,22 @@ describe Swissfork::Bracket do
         end
       end
 
+      context "several previous opponents" do
+        before(:each) do
+          players[2].stub(:opponents).and_return([players[9]])
+          players[3].stub(:opponents).and_return(players[8..9])
+          players[4].stub(:opponents).and_return(players[7..9])
+
+          players[9].stub(:opponents).and_return(players[2..4])
+          players[8].stub(:opponents).and_return(players[3..4])
+          players[7].stub(:opponents).and_return([players[4]])
+        end
+
+        it "pairs the players avoiding previous opponents" do
+          bracket.pair_numbers.should == [[1, 6], [2, 10], [3, 9], [4, 8], [5, 7]]
+        end
+      end
+
       context "one player from S1 has played against everyone in S2" do
         before(:each) do
           players[0].stub(:opponents).and_return(players[5..9])

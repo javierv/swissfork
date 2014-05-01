@@ -70,14 +70,6 @@ module Swissfork
       s2.map(&:number)
     end
 
-    def transpose
-      if s2 == transpositions.last
-        exchange
-      else
-        self.s2 = transpositions[transpositions.index(s2) + 1]
-      end
-    end
-
     def exchange
       self.s1, self.s2 = next_exchange.s1, next_exchange.s2
 
@@ -86,19 +78,11 @@ module Swissfork
     end
 
     def pairs
-      while(!can_pair?)
-        transpose
-      end
-
       if homogeneous?
         regular_pairs
       else
         regular_pairs + Bracket.new(unpaired_players_after(regular_pairs)).pairs
       end
-    end
-
-    def can_pair?
-      can_pair_regular? && (homogeneous? || Bracket.new(unpaired_players_after(regular_pairs)).can_pair?)
     end
 
     # Helper method which makes tests more readable.
@@ -180,15 +164,70 @@ module Swissfork
       end.first
     end
 
-    def can_pair_regular?
-      s1.map.with_index do |player, index|
-        player.opponents.include?(s2[index])
-      end.none?
+    def possible_pair?(pair, pairs)
+      pairs.empty? || (!pair[0].opponents.include?(pair[1]) && !pairs.map { |current_pair| current_pair[1] }.include?(pair[1]))
     end
 
     def regular_pairs
-      s1.map.with_index do |player, index|
-        [player, s2[index]]
+      index = 0
+      possible_pairs[index].each do |player1_pair|
+        established_pairs = (1..possible_pairs.length).map { |num| [] }
+
+        if !possible_pair?(player1_pair, established_pairs[index])
+          next
+        else
+          established_pairs[index] << player1_pair
+
+          possible_pairs[index + 1].each do |player2_pair|
+            index = 1
+            established_pairs[index] = established_pairs[index - 1].dup
+
+            if !possible_pair?(player2_pair, established_pairs[index])
+              next
+            else
+              established_pairs[index] << player2_pair
+
+              possible_pairs[index + 1].each do |player3_pair|
+                index = 2
+                established_pairs[index] = established_pairs[index - 1].dup
+
+                if !possible_pair?(player3_pair, established_pairs[index])
+                  next
+                else
+                  established_pairs[index] << player3_pair
+
+                  possible_pairs[index + 1].each do |player4_pair|
+                    index = 3
+                    established_pairs[index] = established_pairs[index - 1].dup
+
+                    if !possible_pair?(player4_pair, established_pairs[index])
+                      next
+                    else
+                      established_pairs[index] << player4_pair
+
+                      possible_pairs[index + 1].each do |player5_pair|
+                        index = 4
+                        established_pairs[index] = established_pairs[index - 1].dup
+
+                        if !possible_pair?(player5_pair, established_pairs[index])
+                          next
+                        else
+                          return established_pairs[index] << player5_pair
+                        end
+                      end
+                    end
+                  end
+                end
+              end
+            end
+          end
+        end
+      end
+    end
+
+    def possible_pairs
+      s1.map do |player|
+        s2.map { |s2_player| [player, s2_player] unless player.opponents.include?(s2_player) }.compact
       end
     end
 
