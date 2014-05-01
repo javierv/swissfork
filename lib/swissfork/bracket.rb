@@ -134,11 +134,6 @@ module Swissfork
       players - original_s1
     end
 
-    def transpositions
-      @transpositions ||= {}
-      @transpositions[s2.sort] ||= s2.sort.permutation.to_a
-    end
-
     def exchanges
       @exchanges ||= differences.map do |difference|
         exchanged_bracket(difference.s1_player, difference.s2_player)
