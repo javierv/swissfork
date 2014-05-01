@@ -78,10 +78,23 @@ module Swissfork
     end
 
     def pairs
+      while(!can_pair?)
+        # TODO: make it work with heterogeneous groups.
+        exchange
+      end
+
       if homogeneous?
         regular_pairs
       else
         regular_pairs + Bracket.new(unpaired_players_after(regular_pairs)).pairs
+      end
+    end
+
+    def can_pair?
+      if homogeneous?
+        regular_pairs
+      else
+        regular_pairs && Bracket.new(unpaired_players_after(regular_pairs)).can_pair?
       end
     end
 
