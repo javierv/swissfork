@@ -245,77 +245,6 @@ describe Swissfork::Bracket do
     end
   end
 
-  describe "#transpose" do
-    let(:s1_players) { create_players(1..5) }
-    let(:s2_players) { create_players(6..11) }
-    let(:bracket) { Swissfork::Bracket.new(s1_players + s2_players) }
-
-    context "first transposition" do
-      it "transposes the lowest player" do
-        bracket.transpose
-        bracket.s2_numbers.should == [6, 7, 8, 9, 11, 10]
-      end
-    end
-
-    context "second transposition" do
-      before(:each) { bracket.send(:"s2_numbers=", [6, 7, 8, 9, 11, 10]) }
-
-      it "transposes the next lowest player" do
-        bracket.transpose
-        bracket.s2_numbers.should == [6, 7, 8, 10, 9, 11]
-      end
-    end
-
-    context "third transposition" do
-      before(:each) { bracket.send(:"s2_numbers=", [6, 7, 8, 10, 9, 11]) }
-
-      it "transposes the next lowest player" do
-        bracket.transpose
-        bracket.s2_numbers.should == [6, 7, 8, 10, 11, 9]
-      end
-    end
-
-    context "last transposition" do
-      before(:each) { bracket.send(:"s2_numbers=", [11, 10, 9, 8, 6, 7]) }
-
-      it "transposes every player" do
-        bracket.transpose
-        bracket.s2_numbers.should == [11, 10, 9, 8, 7, 6]
-      end
-    end
-
-    context "transposition limit reached" do
-      before(:each) { bracket.send(:"s2_numbers=", [11, 10, 9, 8, 7, 6]) }
-
-      it "exchanges players" do
-        bracket.transpose
-        bracket.s1_numbers.should == [1, 2, 3, 4, 6]
-        bracket.s2_numbers.should == [5, 7, 8, 9, 10, 11]
-      end
-
-      context "two transpositions " do
-        it "exchanges players and transposes them" do
-          bracket.transpose
-          bracket.transpose
-          bracket.s1_numbers.should == [1, 2, 3, 4, 6]
-          bracket.s2_numbers.should == [5, 7, 8, 9, 11, 10]
-        end
-      end
-    end
-
-    context "an exchange has already taken place" do
-      before(:each) do
-        bracket.send(:"s1_numbers=", [1, 2, 3, 4, 6])
-        bracket.send(:"s2_numbers=", [5, 7, 8, 9, 10, 11])
-      end
-
-      it "transposes the lowest players in s2" do
-        bracket.transpose
-        bracket.s2_numbers.should == [5, 7, 8, 9, 11, 10]
-      end
-    end
-  end
-
   describe "#exchange" do
     let(:s1_players) { create_players(1..5) }
     let(:s2_players) { create_players(6..11) }
@@ -380,6 +309,60 @@ describe Swissfork::Bracket do
       context "no previous opponents" do
         it "pairs the players from s1 with the players from s2" do
           bracket.pair_numbers.should == [[1, 6], [2, 7], [3, 8], [4, 9], [5, 10]]
+        end
+      end
+
+      context "need to transpose once" do
+        before(:each) do
+          players[4].stub(:opponents).and_return([players[9]])
+          players[9].stub(:opponents).and_return([players[4]])
+        end
+
+        it "pairs the players after transposing" do
+          bracket.pair_numbers.should == [[1, 6], [2, 7], [3, 8], [4, 10], [5, 9]]
+        end
+      end
+
+      context "need to transpose twice" do
+        before(:each) do
+          players[3].stub(:opponents).and_return([players[9], players[8]])
+          players[9].stub(:opponents).and_return([players[3]])
+          players[8].stub(:opponents).and_return([players[3]])
+        end
+
+        it "pairs using the next transposition" do
+          bracket.pair_numbers.should == [[1, 6], [2, 7], [3, 9], [4, 8], [5, 10]]
+        end
+      end
+
+      context "need to transpose three times" do
+        before(:each) do
+          players[3].stub(:opponents).and_return([players[8]])
+          players[4].stub(:opponents).and_return(players[8..9])
+          players[9].stub(:opponents).and_return([players[4]])
+          players[8].stub(:opponents).and_return(players[3..4])
+        end
+
+        it "pairs using the next transposition" do
+          bracket.pair_numbers.should == [[1, 6], [2, 7], [3, 9], [4, 10], [5, 8]]
+        end
+      end
+
+      context "only the last transposition makes pairing possible" do
+        before(:each) do
+          players[4].stub(:opponents).and_return(players[6..9])
+          players[3].stub(:opponents).and_return(players[7..9])
+          players[2].stub(:opponents).and_return(players[8..9])
+          players[1].stub(:opponents).and_return([players[9]])
+
+          players[9].stub(:opponents).and_return(players[1..4])
+          players[8].stub(:opponents).and_return(players[2..4])
+          players[7].stub(:opponents).and_return(players[3..4])
+          players[6].stub(:opponents).and_return([players[4]])
+        end
+
+        it "pairs after transposing every player" do
+          bracket.pair_numbers.should == [[1, 10], [2, 9], [3, 8], [4, 7], [5, 6]]
         end
       end
 
