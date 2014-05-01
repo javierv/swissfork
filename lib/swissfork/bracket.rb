@@ -172,22 +172,14 @@ module Swissfork
       end.first
     end
 
-    def possible_pair?(pair, pairs)
-      pairs.empty? || (!pair[0].opponents.include?(pair[1]) && !pairs.map { |current_pair| current_pair[1] }.include?(pair[1]))
-    end
-
     def player_pairs(possible_pairs, established_pairs)
       return [] if possible_pairs.empty?
 
       possible_pairs.first.each do |pair|
-        if !possible_pair?(pair, established_pairs)
-          next
+        if (established_pairs.empty? || !(pair[0].opponents + established_pairs.map { |current_pair| current_pair[1] }).include?(pair[1])) && player_pairs(possible_pairs - [possible_pairs.first], established_pairs + [pair])
+          return [pair] + player_pairs(possible_pairs - [possible_pairs.first], established_pairs + [pair])
         else
-          if player_pairs(possible_pairs - [possible_pairs.first], established_pairs + [pair])
-            return [pair] + player_pairs(possible_pairs - [possible_pairs.first], established_pairs + [pair])
-          else
-            next
-          end
+          next
         end
       end
 
