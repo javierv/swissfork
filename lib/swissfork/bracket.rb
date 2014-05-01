@@ -168,64 +168,29 @@ module Swissfork
       pairs.empty? || (!pair[0].opponents.include?(pair[1]) && !pairs.map { |current_pair| current_pair[1] }.include?(pair[1]))
     end
 
-    def regular_pairs
-      index = 0
-      possible_pairs[index].each do |player1_pair|
-        established_pairs = (1..possible_pairs.length).map { |num| [] }
+    def player_pairs(possible_pairs, established_pairs)
+      return [] if possible_pairs.empty?
 
-        if !possible_pair?(player1_pair, established_pairs[index])
+      possible_pairs.first.each do |pair|
+        if !possible_pair?(pair, established_pairs)
           next
         else
-          established_pairs[index] << player1_pair
-
-          possible_pairs[index + 1].each do |player2_pair|
-            index = 1
-            established_pairs[index] = established_pairs[index - 1].dup
-
-            if !possible_pair?(player2_pair, established_pairs[index])
-              next
-            else
-              established_pairs[index] << player2_pair
-
-              possible_pairs[index + 1].each do |player3_pair|
-                index = 2
-                established_pairs[index] = established_pairs[index - 1].dup
-
-                if !possible_pair?(player3_pair, established_pairs[index])
-                  next
-                else
-                  established_pairs[index] << player3_pair
-
-                  possible_pairs[index + 1].each do |player4_pair|
-                    index = 3
-                    established_pairs[index] = established_pairs[index - 1].dup
-
-                    if !possible_pair?(player4_pair, established_pairs[index])
-                      next
-                    else
-                      established_pairs[index] << player4_pair
-
-                      possible_pairs[index + 1].each do |player5_pair|
-                        index = 4
-                        established_pairs[index] = established_pairs[index - 1].dup
-
-                        if !possible_pair?(player5_pair, established_pairs[index])
-                          next
-                        else
-                          return established_pairs[index] << player5_pair
-                        end
-                      end
-                    end
-                  end
-                end
-              end
-            end
+          if player_pairs(possible_pairs - [possible_pairs.first], established_pairs + [pair]) && player_pairs(possible_pairs - [possible_pairs.first], established_pairs + [pair]).compact.length == possible_pairs.length - 1
+            return [pair] + player_pairs(possible_pairs - [possible_pairs.first], established_pairs + [pair])
+          else
+            next
           end
         end
       end
+
+      return nil
     end
 
-    def possible_pairs
+    def regular_pairs
+      player_pairs(compatible_pairs, [])
+    end
+
+    def compatible_pairs
       s1.map do |player|
         s2.map { |s2_player| [player, s2_player] unless player.opponents.include?(s2_player) }.compact
       end
