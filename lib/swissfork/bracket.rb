@@ -183,7 +183,7 @@ module Swissfork
         if !possible_pair?(pair, established_pairs)
           next
         else
-          if player_pairs(possible_pairs - [possible_pairs.first], established_pairs + [pair]) && player_pairs(possible_pairs - [possible_pairs.first], established_pairs + [pair]).compact.length == possible_pairs.length - 1
+          if player_pairs(possible_pairs - [possible_pairs.first], established_pairs + [pair])
             return [pair] + player_pairs(possible_pairs - [possible_pairs.first], established_pairs + [pair])
           else
             next
