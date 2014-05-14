@@ -14,7 +14,7 @@ module Swissfork
     end
 
     def homogeneous?
-      players.map(&:points).uniq.one? || number_of_descended_players >= players.length / 2
+      all_players_have_the_same_points? || half_or_more_players_were_descended?
     end
 
     def heterogeneous?
@@ -196,6 +196,14 @@ module Swissfork
 
     def unpaired_players_after(pairs)
       players.select { |player| !pairs.flatten.include?(player) }
+    end
+
+    def all_players_have_the_same_points?
+      players.map(&:points).uniq.one?
+    end
+
+    def half_or_more_players_were_descended?
+      number_of_descended_players >= players.length / 2
     end
   end
 end
