@@ -178,18 +178,16 @@ module Swissfork
           end
         end
 
-        if pairings_completed?
-          if homogeneous?
-            return established_pairs
+        if pairings_completed? && heterogeneous?
+          if leftover_pairs
+            return established_pairs + leftover_pairs
           else
-            if leftover_pairs
-              return established_pairs + leftover_pairs
-            else
-              mark_established_pairs_as_impossible
-            end
+            mark_established_pairs_as_impossible
           end
         end
       end
+
+      established_pairs
     end
 
     def leftover_pairs
