@@ -172,7 +172,7 @@ module Swissfork
       @established_pairs = []
 
       while(!pairings_completed?)
-        possible_pairs.each.with_index do |pairs, index|
+        possible_pairs.each do |pairs|
           pairs.each do |pair|
             if pair.compatible? && !already_paired?(pair.s2_player) && !impossible_pairs.include?(established_pairs + [pair])
               established_pairs << pair
