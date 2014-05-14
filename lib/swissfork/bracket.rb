@@ -81,7 +81,7 @@ module Swissfork
     def pairs
       return [] if players.empty? || players.one?
 
-      while(!player_pairs)
+      while(!bracket_pairs)
         if next_exchange
           exchange
         else
@@ -89,7 +89,7 @@ module Swissfork
         end
       end
 
-      player_pairs
+      bracket_pairs
     end
 
     # Helper method which makes tests more readable.
@@ -168,7 +168,7 @@ module Swissfork
       established_pairs.count == possible_pairs.count
     end
 
-    def player_pairs
+    def bracket_pairs
       while(!pairings_completed?)
         possible_pairs.each.with_index do |pairs, index|
           pairs.each do |pair|
