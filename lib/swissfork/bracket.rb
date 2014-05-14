@@ -167,10 +167,19 @@ module Swissfork
     def player_pairs(possible_pairs, established_pairs)
       return [] if possible_pairs.empty?
       possible_pairs.first.each do |pair|
-        pairs_after_this_one = player_pairs(possible_pairs - [possible_pairs.first], established_pairs + [pair])
 
-        if pair.s1_player.compatible_with?(pair.s2_player) && !already_paired?(pair.s2_player, established_pairs) && pairs_after_this_one && Bracket.new(unpaired_players_after(established_pairs + [pair] + pairs_after_this_one)).pairs
-          return [pair] + pairs_after_this_one + Bracket.new(unpaired_players_after(established_pairs + [pair] + pairs_after_this_one)).pairs
+        if pair.s1_player.compatible_with?(pair.s2_player) && !already_paired?(pair.s2_player, established_pairs)
+          pairs_after_this_one = player_pairs(possible_pairs - [possible_pairs.first], established_pairs + [pair])
+           if pairs_after_this_one
+             leftover_pairs = Bracket.new(unpaired_players_after(established_pairs + [pair] + pairs_after_this_one)).pairs
+             if leftover_pairs
+               return [pair] + pairs_after_this_one + Bracket.new(unpaired_players_after(established_pairs + [pair] + pairs_after_this_one)).pairs
+             else
+               next
+             end
+           else
+             next
+           end
         else
           next
         end
