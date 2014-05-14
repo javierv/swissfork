@@ -79,24 +79,11 @@ module Swissfork
     end
 
     def pairs
-      while(!can_pair?)
-        # TODO: make it work with heterogeneous groups.
+      while(!player_pairs(possible_pairs, []))
         exchange
       end
 
-      if homogeneous?
-        regular_pairs
-      else
-        regular_pairs + Bracket.new(unpaired_players_after(regular_pairs)).pairs
-      end
-    end
-
-    def can_pair?
-      if homogeneous?
-        regular_pairs
-      else
-        regular_pairs && Bracket.new(unpaired_players_after(regular_pairs)).can_pair?
-      end
+      player_pairs(possible_pairs, [])
     end
 
     # Helper method which makes tests more readable.
@@ -173,12 +160,20 @@ module Swissfork
 
     def player_pairs(possible_pairs, established_pairs)
       return [] if possible_pairs.empty?
-
       possible_pairs.first.each do |pair|
-        if pair.s1_player.compatible_with?(pair.s2_player) && !already_paired?(pair.s2_player, established_pairs) && player_pairs(possible_pairs - [possible_pairs.first], established_pairs + [pair])
-          return [pair] + player_pairs(possible_pairs - [possible_pairs.first], established_pairs + [pair])
+        pairs_after_this_one = player_pairs(possible_pairs - [possible_pairs.first], established_pairs + [pair])
+        if homogeneous?
+          if pair.s1_player.compatible_with?(pair.s2_player) && !already_paired?(pair.s2_player, established_pairs) && pairs_after_this_one
+            return [pair] + pairs_after_this_one
+          else
+            next
+          end
         else
-          next
+          if pair.s1_player.compatible_with?(pair.s2_player) && !already_paired?(pair.s2_player, established_pairs) && pairs_after_this_one && Bracket.new(unpaired_players_after(established_pairs + [pair] + pairs_after_this_one)).pairs
+            return [pair] + pairs_after_this_one + Bracket.new(unpaired_players_after(established_pairs + [pair] + pairs_after_this_one)).pairs
+          else
+            next
+          end
         end
       end
 
@@ -189,13 +184,9 @@ module Swissfork
       established_pairs.any? { |pair| pair.include?(player) }
     end
 
-    def regular_pairs
-      player_pairs(compatible_pairs, [])
-    end
-
-    def compatible_pairs
+    def possible_pairs
       s1.map do |player|
-        s2.map { |s2_player| Pair.new(player, s2_player) if player.compatible_with?(s2_player) }.compact
+        s2.map { |s2_player| Pair.new(player, s2_player) }.compact
       end
     end
 
