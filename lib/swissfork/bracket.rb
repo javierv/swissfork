@@ -173,8 +173,7 @@ module Swissfork
             established_pairs << player_pair(pairs)
           else
             return nil if established_pairs.empty?
-            impossible_pairs << established_pairs
-            reset_pairs
+            mark_established_pairs_as_impossible
             break
           end
         end
@@ -186,8 +185,7 @@ module Swissfork
             if leftover_pairs
               return established_pairs + leftover_pairs
             else
-              impossible_pairs << established_pairs
-              reset_pairs
+              mark_established_pairs_as_impossible
             end
           end
         end
@@ -222,6 +220,11 @@ module Swissfork
 
     def impossible_pairs
       @impossible_pairs ||= []
+    end
+
+    def mark_established_pairs_as_impossible
+      impossible_pairs << established_pairs
+      reset_pairs
     end
 
     def already_paired?(player)
