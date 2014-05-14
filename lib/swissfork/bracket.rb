@@ -81,7 +81,7 @@ module Swissfork
     def pairs
       return [] if players.empty? || players.one?
 
-      while(!player_pairs(possible_pairs, []))
+      while(!player_pairs)
         if next_exchange
           exchange
         else
@@ -89,7 +89,7 @@ module Swissfork
         end
       end
 
-      player_pairs(possible_pairs, [])
+      player_pairs
     end
 
     # Helper method which makes tests more readable.
@@ -164,36 +164,60 @@ module Swissfork
       end.first
     end
 
-    def player_pairs(possible_pairs, established_pairs)
-      return [] if possible_pairs.empty?
-      possible_pairs.first.each do |pair|
+    def player_pairs
+      while(established_pairs.count != possible_pairs.count)
+        possible_pairs.each.with_index do |pairs, index|
+          paired = false
+          pairs.each do |pair|
+            if pair.compatible? && !already_paired?(pair.s2_player) && !impossible_pairs.include?(established_pairs + [pair])
+              established_pairs << pair
+              paired = true
+              break
+            else
+              next
+            end
+          end
 
-        if pair.compatible? && !already_paired?(pair.s2_player, established_pairs)
-          pairs_after_this_one = player_pairs(possible_pairs - [possible_pairs.first], established_pairs + [pair])
-           if pairs_after_this_one
-             leftover_pairs = Bracket.new(unpaired_players_after(established_pairs + [pair] + pairs_after_this_one)).pairs
-             if leftover_pairs
-               return [pair] + pairs_after_this_one + Bracket.new(unpaired_players_after(established_pairs + [pair] + pairs_after_this_one)).pairs
-             else
-               next
-             end
-           else
-             next
-           end
-        else
-          next
+          if established_pairs.empty?
+            @possible_pairs = nil
+            return nil
+          end
+
+          if !paired
+            impossible_pairs << established_pairs
+            @established_pairs = []
+            break
+          end
+        end
+
+        if established_pairs.count == possible_pairs.count
+          if Bracket.new(unpaired_players_after(established_pairs)).pairs
+            @impossible_pairs = []
+            final_pairs = established_pairs
+            @established_pairs = []
+            return final_pairs + Bracket.new(unpaired_players_after(final_pairs)).pairs
+          else
+            impossible_pairs << established_pairs
+            @established_pairs = []
+          end
         end
       end
-
-      nil
     end
 
-    def already_paired?(player, established_pairs)
+    def established_pairs
+      @established_pairs ||= []
+    end
+
+    def impossible_pairs
+      @impossible_pairs ||= []
+    end
+
+    def already_paired?(player)
       established_pairs.any? { |pair| pair.include?(player) }
     end
 
     def possible_pairs
-      s1.map do |player|
+      @possible_pairs ||= s1.map do |player|
         s2.map { |s2_player| Pair.new(player, s2_player) }.compact
       end
     end
