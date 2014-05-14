@@ -180,14 +180,22 @@ module Swissfork
         end
 
         if pairings_completed?
-          if Bracket.new(unpaired_players_after(established_pairs)).pairs
-            return established_pairs + Bracket.new(unpaired_players_after(established_pairs)).pairs
+          if homogeneous?
+            return established_pairs
           else
-            impossible_pairs << established_pairs
-            reset_pairs
+            if leftover_pairs
+              return established_pairs + leftover_pairs
+            else
+              impossible_pairs << established_pairs
+              reset_pairs
+            end
           end
         end
       end
+    end
+
+    def leftover_pairs
+      Bracket.new(unpaired_players_after(established_pairs)).pairs
     end
 
     def player_pair(pairs)
