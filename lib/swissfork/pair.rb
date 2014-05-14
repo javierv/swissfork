@@ -14,5 +14,9 @@ module Swissfork
     def include?(player)
       player == s1_player || player == s2_player
     end
+
+    def compatible?
+      s1_player.compatible_with?(s2_player)
+    end
   end
 end

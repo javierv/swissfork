@@ -168,7 +168,7 @@ module Swissfork
       return [] if possible_pairs.empty?
       possible_pairs.first.each do |pair|
 
-        if pair.s1_player.compatible_with?(pair.s2_player) && !already_paired?(pair.s2_player, established_pairs)
+        if pair.compatible? && !already_paired?(pair.s2_player, established_pairs)
           pairs_after_this_one = player_pairs(possible_pairs - [possible_pairs.first], established_pairs + [pair])
            if pairs_after_this_one
              leftover_pairs = Bracket.new(unpaired_players_after(established_pairs + [pair] + pairs_after_this_one)).pairs
