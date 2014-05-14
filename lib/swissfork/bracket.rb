@@ -181,7 +181,7 @@ module Swissfork
         end
       end
 
-      return nil
+      nil
     end
 
     def regular_pairs
