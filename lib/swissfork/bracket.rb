@@ -71,7 +71,7 @@ module Swissfork
     end
 
     def exchange
-      self.s1, self.s2 = next_exchange.s1, next_exchange.s2
+      @s1, @s2 = next_exchange.s1, next_exchange.s2
 
       s1.sort!
       s2.sort!
@@ -108,14 +108,12 @@ module Swissfork
     end
 
   private
-    attr_writer :s1, :s2
-
     def s1_numbers=(numbers)
-      self.s1 = players_with(numbers)
+      @s1 = players_with(numbers)
     end
 
     def s2_numbers=(numbers)
-      self.s2 = players_with(numbers)
+      @s2 = players_with(numbers)
     end
 
     def players_with(numbers)
