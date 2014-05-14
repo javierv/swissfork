@@ -175,8 +175,6 @@ module Swissfork
             if pair.compatible? && !already_paired?(pair.s2_player) && !impossible_pairs.include?(established_pairs + [pair])
               established_pairs << pair
               break
-            else
-              next
             end
           end
 
