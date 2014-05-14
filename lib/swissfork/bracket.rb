@@ -171,11 +171,8 @@ module Swissfork
         possible_pairs.each do |pairs|
           if player_pair(pairs)
             established_pairs << player_pair(pairs)
-          end
-
-          return nil if established_pairs.empty?
-
-          if !already_paired?(pairs.first.s1_player)
+          else
+            return nil if established_pairs.empty?
             impossible_pairs << established_pairs
             reset_pairs
             break
