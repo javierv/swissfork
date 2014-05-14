@@ -29,4 +29,19 @@ describe Swissfork::Player do
       player.should be > Swissfork::Player.new(1)
     end
   end
+
+  describe "#compatible_with" do
+    let(:player) { Swissfork::Player.new(2) }
+    before(:each) do
+      player.stub(:opponents).and_return([Swissfork::Player.new(3)])
+    end
+
+    it "isn't compatible with a previous opponents" do
+      player.compatible_with?(player.opponents.first).should be false
+    end
+
+    it "is compatible with players not in its opponents list" do
+      player.compatible_with?(Swissfork::Player.new(1)).should be true
+    end
+  end
 end

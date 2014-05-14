@@ -17,6 +17,10 @@ module Swissfork
       number <=> other_player.number
     end
 
+    def compatible_with?(player)
+      !opponents.include?(player)
+    end
+
     # FIXME: Currently a stub for tests.
     def points
       0

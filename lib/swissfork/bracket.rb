@@ -174,7 +174,7 @@ module Swissfork
       return [] if possible_pairs.empty?
 
       possible_pairs.first.each do |pair|
-        if (established_pairs.empty? || !(pair[0].opponents + established_pairs.map { |current_pair| current_pair[1] }).include?(pair[1])) && player_pairs(possible_pairs - [possible_pairs.first], established_pairs + [pair])
+        if (established_pairs.empty? || (pair[0].compatible_with?(pair[1]) && !established_pairs.map { |current_pair| current_pair[1] }.include?(pair[1]))) && player_pairs(possible_pairs - [possible_pairs.first], established_pairs + [pair])
           return [pair] + player_pairs(possible_pairs - [possible_pairs.first], established_pairs + [pair])
         else
           next
@@ -190,7 +190,7 @@ module Swissfork
 
     def compatible_pairs
       s1.map do |player|
-        s2.map { |s2_player| [player, s2_player] unless player.opponents.include?(s2_player) }.compact
+        s2.map { |s2_player| [player, s2_player] if player.compatible_with?(s2_player) }.compact
       end
     end
 
