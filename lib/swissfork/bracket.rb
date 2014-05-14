@@ -169,11 +169,8 @@ module Swissfork
 
       while(!pairings_completed?)
         possible_pairs.each do |pairs|
-          pairs.each do |pair|
-            if pair.compatible? && !already_paired?(pair.s2_player) && !impossible_pairs.include?(established_pairs + [pair])
-              established_pairs << pair
-              break
-            end
+          if player_pair(pairs)
+            established_pairs << player_pair(pairs)
           end
 
           return nil if established_pairs.empty?
@@ -195,6 +192,16 @@ module Swissfork
           end
         end
       end
+    end
+
+    def player_pair(pairs)
+      pairs.each do |pair|
+        if pair.compatible? && !already_paired?(pair.s2_player) && !impossible_pairs.include?(established_pairs + [pair])
+          return pair
+        end
+      end
+
+      nil
     end
 
     def pairings_completed?
