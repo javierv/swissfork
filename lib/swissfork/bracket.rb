@@ -165,7 +165,7 @@ module Swissfork
     end
 
     def bracket_pairs
-      @established_pairs = []
+      reset_pairs
 
       while(!pairings_completed?)
         possible_pairs.each do |pairs|
@@ -177,7 +177,7 @@ module Swissfork
 
           if !already_paired?(pairs.first.s1_player)
             impossible_pairs << established_pairs
-            @established_pairs = []
+            reset_pairs
             break
           end
         end
@@ -187,7 +187,7 @@ module Swissfork
             return established_pairs + Bracket.new(unpaired_players_after(established_pairs)).pairs
           else
             impossible_pairs << established_pairs
-            @established_pairs = []
+            reset_pairs
           end
         end
       end
@@ -209,6 +209,10 @@ module Swissfork
 
     def established_pairs
       @established_pairs ||= []
+    end
+
+    def reset_pairs
+      @established_pairs = []
     end
 
     def impossible_pairs
