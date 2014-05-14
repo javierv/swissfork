@@ -174,7 +174,7 @@ module Swissfork
       return [] if possible_pairs.empty?
 
       possible_pairs.first.each do |pair|
-        if (established_pairs.empty? || (pair[0].compatible_with?(pair[1]) && !established_pairs.map { |current_pair| current_pair[1] }.include?(pair[1]))) && player_pairs(possible_pairs - [possible_pairs.first], established_pairs + [pair])
+        if pair[0].compatible_with?(pair[1]) && !already_paired?(pair[1], established_pairs) && player_pairs(possible_pairs - [possible_pairs.first], established_pairs + [pair])
           return [pair] + player_pairs(possible_pairs - [possible_pairs.first], established_pairs + [pair])
         else
           next
@@ -182,6 +182,10 @@ module Swissfork
       end
 
       nil
+    end
+
+    def already_paired?(player, established_pairs)
+      established_pairs.map { |current_pair| current_pair[1] }.include?(player)
     end
 
     def regular_pairs
