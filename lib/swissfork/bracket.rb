@@ -180,10 +180,7 @@ module Swissfork
             end
           end
 
-          if established_pairs.empty?
-            @possible_pairs = nil
-            return nil
-          end
+          return nil if established_pairs.empty?
 
           if !already_paired?(pairs.first.s1_player)
             impossible_pairs << established_pairs
@@ -219,7 +216,7 @@ module Swissfork
     end
 
     def possible_pairs
-      @possible_pairs ||= s1.map do |player|
+      s1.map do |player|
         s2.map { |s2_player| Pair.new(player, s2_player) }.compact
       end
     end
