@@ -184,7 +184,6 @@ module Swissfork
 
         if pairings_completed?
           if Bracket.new(unpaired_players_after(established_pairs)).pairs
-            @impossible_pairs = []
             return established_pairs + Bracket.new(unpaired_players_after(established_pairs)).pairs
           else
             impossible_pairs << established_pairs
