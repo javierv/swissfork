@@ -1,5 +1,6 @@
 require "swissfork/player"
 require "swissfork/players_difference"
+require "swissfork/pair"
 
 module Swissfork
   class Bracket
@@ -100,7 +101,7 @@ module Swissfork
 
     # Helper method which makes tests more readable.
     def pair_numbers
-      pairs.map { |pair| pair.map(&:number) }
+      pairs.map { |pair| pair.numbers }
     end
 
     def unpaired_players
@@ -174,7 +175,7 @@ module Swissfork
       return [] if possible_pairs.empty?
 
       possible_pairs.first.each do |pair|
-        if pair[0].compatible_with?(pair[1]) && !already_paired?(pair[1], established_pairs) && player_pairs(possible_pairs - [possible_pairs.first], established_pairs + [pair])
+        if pair.s1_player.compatible_with?(pair.s2_player) && !already_paired?(pair.s2_player, established_pairs) && player_pairs(possible_pairs - [possible_pairs.first], established_pairs + [pair])
           return [pair] + player_pairs(possible_pairs - [possible_pairs.first], established_pairs + [pair])
         else
           next
@@ -185,7 +186,7 @@ module Swissfork
     end
 
     def already_paired?(player, established_pairs)
-      established_pairs.map { |current_pair| current_pair[1] }.include?(player)
+      established_pairs.any? { |pair| pair.include?(player) }
     end
 
     def regular_pairs
@@ -194,12 +195,12 @@ module Swissfork
 
     def compatible_pairs
       s1.map do |player|
-        s2.map { |s2_player| [player, s2_player] if player.compatible_with?(s2_player) }.compact
+        s2.map { |s2_player| Pair.new(player, s2_player) if player.compatible_with?(s2_player) }.compact
       end
     end
 
     def unpaired_players_after(pairs)
-      players.select { |player| !pairs.flatten.include?(player) }
+      players.select { |player| pairs.none? { |pair| pair.include?(player) }}
     end
 
     def all_players_have_the_same_points?
