@@ -168,9 +168,9 @@ module Swissfork
       reset_pairs
 
       while(!pairings_completed?)
-        possible_pairs.each do |pairs|
-          if player_pair(pairs)
-            established_pairs << player_pair(pairs)
+        s1.each do |player|
+          if pair_for(player)
+            established_pairs << pair_for(player)
           else
             return nil if established_pairs.empty?
             mark_established_pairs_as_impossible
@@ -194,8 +194,8 @@ module Swissfork
       Bracket.new(unpaired_players_after(established_pairs)).pairs
     end
 
-    def player_pair(pairs)
-      pairs.each do |pair|
+    def pair_for(s1_player)
+      s2.map { |s2_player| Pair.new(s1_player, s2_player) }.each do |pair|
         if pair.compatible? && !already_paired?(pair.s2_player) && !impossible_pairs.include?(established_pairs + [pair])
           return pair
         end
@@ -205,7 +205,7 @@ module Swissfork
     end
 
     def pairings_completed?
-      established_pairs.count == possible_pairs.count
+      established_pairs.count == s1.count
     end
 
     def established_pairs
@@ -227,12 +227,6 @@ module Swissfork
 
     def already_paired?(player)
       established_pairs.any? { |pair| pair.include?(player) }
-    end
-
-    def possible_pairs
-      s1.map do |player|
-        s2.map { |s2_player| Pair.new(player, s2_player) }.compact
-      end
     end
 
     def unpaired_players_after(pairs)
