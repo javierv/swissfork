@@ -164,10 +164,6 @@ module Swissfork
       end.first
     end
 
-    def pairings_completed?
-      established_pairs.count == possible_pairs.count
-    end
-
     def bracket_pairs
       @established_pairs = []
 
@@ -199,6 +195,10 @@ module Swissfork
           end
         end
       end
+    end
+
+    def pairings_completed?
+      established_pairs.count == possible_pairs.count
     end
 
     def established_pairs
