@@ -3,8 +3,8 @@ require "swissfork/players_difference"
 describe Swissfork::PlayersDifference do
   describe "#difference" do
     context "first player has a smaller number" do
-      let(:s1_player) { double(:number => 1) }
-      let(:s2_player) { double(:number => 3) }
+      let(:s1_player) { double(number: 1) }
+      let(:s2_player) { double(number: 3) }
       let(:difference) { Swissfork::PlayersDifference.new(s1_player, s2_player) }
 
       it "returns the difference between the numbers" do
@@ -13,8 +13,8 @@ describe Swissfork::PlayersDifference do
     end
 
     context "first player has a bigger number" do
-      let(:s1_player) { double(:number => 7) }
-      let(:s2_player) { double(:number => 3) }
+      let(:s1_player) { double(number: 7) }
+      let(:s2_player) { double(number: 3) }
       let(:difference) { Swissfork::PlayersDifference.new(s1_player, s2_player) }
 
       it "returns the difference between the numbers" do
