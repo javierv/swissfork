@@ -1,4 +1,3 @@
-require "swissfork/player"
 require "swissfork/players_difference"
 require "swissfork/pair"
 

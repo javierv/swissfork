@@ -1,4 +1,5 @@
 require "swissfork/bracket"
+require "swissfork/player"
 
 describe Swissfork::Bracket do
   def create_players(numbers)
