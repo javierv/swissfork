@@ -72,10 +72,7 @@ module Swissfork
     end
 
     def exchange
-      @s1, @s2 = next_exchange.s1, next_exchange.s2
-
-      s1.sort!
-      s2.sort!
+      @s1, @s2 = next_exchange.s1.sort, next_exchange.s2.sort
     end
 
     def pairs
