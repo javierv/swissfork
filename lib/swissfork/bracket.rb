@@ -195,13 +195,9 @@ module Swissfork
     end
 
     def pair_for(s1_player)
-      s2.map { |s2_player| Pair.new(s1_player, s2_player) }.each do |pair|
-        if pair.compatible? && !already_paired?(pair.s2_player) && !impossible_pairs.include?(established_pairs + [pair])
-          return pair
-        end
-      end
-
-      nil
+      s2.map { |s2_player| Pair.new(s1_player, s2_player) }.select do |pair|
+        pair.compatible? && !already_paired?(pair.s2_player) && !impossible_pairs.include?(established_pairs + [pair])
+      end.first
     end
 
     def pairings_completed?
