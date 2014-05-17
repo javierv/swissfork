@@ -13,16 +13,22 @@ module Swissfork
       players.map(&:number)
     end
 
+    def points
+      players.map(&:points).min
+    end
+
+    # We don't include Comparable because it would override
+    # the == method, and that would break the next_exchange method.
+    def <=>(bracket)
+      bracket.points <=> points
+    end
+
     def homogeneous?
       all_players_have_the_same_points? || half_or_more_players_were_descended?
     end
 
     def heterogeneous?
       !homogeneous?
-    end
-
-    def points
-      players.map(&:points).min
     end
 
     def maximum_number_of_pairs

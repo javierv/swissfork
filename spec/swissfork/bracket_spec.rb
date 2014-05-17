@@ -498,4 +498,21 @@ describe Swissfork::Bracket do
       end
     end
   end
+
+  describe "<=>" do
+    def bracket_with_points(points)
+      Swissfork::Bracket.new([]).tap do |bracket|
+        bracket.stub(:points).and_return(points)
+      end
+    end
+
+    let(:higher_bracket) { bracket_with_points(3) }
+    let(:medium_bracket) { bracket_with_points(2) }
+    let(:lower_bracket) { bracket_with_points(1) }
+
+    it "sorts brackets based on points in descending order" do
+      [medium_bracket, lower_bracket, higher_bracket].sort.should ==
+        [higher_bracket, medium_bracket, lower_bracket]
+    end
+  end
 end
