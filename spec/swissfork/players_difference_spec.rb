@@ -25,9 +25,9 @@ describe Swissfork::PlayersDifference do
 
   describe "#<=>" do
     context "different differences between players" do
-      let(:s1_player) { Swissfork::Player.new(1) }
-      let(:smaller_s2_player) { Swissfork::Player.new(3) }
-      let(:bigger_s2_player) { Swissfork::Player.new(4) }
+      let(:s1_player) { double(number: 1) }
+      let(:smaller_s2_player) { double(number: 3) }
+      let(:bigger_s2_player) { double(number: 4) }
 
       it "the one with the smaller difference is smaller" do
         Swissfork::PlayersDifference.new(s1_player, smaller_s2_player).should be <
@@ -36,10 +36,10 @@ describe Swissfork::PlayersDifference do
     end
 
     context "same differences between players" do
-      let(:smaller_s1_player) { Swissfork::Player.new(1) }
-      let(:bigger_s2_player) { Swissfork::Player.new(2) }
-      let(:smaller_s2_player) { Swissfork::Player.new(3) }
-      let(:bigger_s2_player) { Swissfork::Player.new(4) }
+      let(:smaller_s1_player) { double(number: 1) }
+      let(:bigger_s2_player) { double(number: 2) }
+      let(:smaller_s2_player) { double(number: 3) }
+      let(:bigger_s2_player) { double(number: 4) }
 
       it "the one with the bigger s1 player is smaller" do
         Swissfork::PlayersDifference.new(smaller_s2_player, bigger_s2_player).should be < Swissfork::PlayersDifference.new(smaller_s1_player, smaller_s2_player)

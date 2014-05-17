@@ -1,5 +1,3 @@
-require "swissfork/player"
-
 module Swissfork
   class PlayersDifference
     include Comparable
