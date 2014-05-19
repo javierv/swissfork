@@ -1,13 +1,11 @@
+require "simple_initialize"
+
 module Swissfork
   class Player
     include Comparable
 
+    initialize_with :number
     attr_reader :opponents
-    attr_reader :number
-
-    def initialize(number)
-      @number = number
-    end
 
     def opponents
       @opponents ||= []

@@ -1,13 +1,10 @@
 require "swissfork/players_difference"
 require "swissfork/pair"
+require "simple_initialize"
 
 module Swissfork
   class Bracket
-    attr_reader :players
-
-    def initialize(players)
-      @players = players
-    end
+    initialize_with :players
 
     def numbers
       players.map(&:number)
