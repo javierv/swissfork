@@ -9,6 +9,11 @@ module Swissfork
       @players = players.sort
     end
 
+    def add_player(player)
+      @players = (players << player).sort
+      @s1, @s2 = nil
+    end
+
     def numbers
       players.map(&:number)
     end

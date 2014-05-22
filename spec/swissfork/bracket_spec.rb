@@ -7,6 +7,38 @@ module Swissfork
       numbers.map { |number| Player.new(number) }
     end
 
+    describe "#add_player" do
+      let(:players) { create_players(1..6) }
+      let(:bracket) { Bracket.new(players) }
+
+      context "player is the lowest player" do
+        let(:player) { Player.new(7) }
+
+        it "adds the player to the bracket" do
+          bracket.add_player(player)
+          bracket.players.should == players + [player]
+        end
+      end
+
+      context "player isn't the lowest player" do
+        let(:player) { Player.new(0) }
+
+        before(:each) do
+          bracket.s1 # Access so it's already generated
+          bracket.add_player(player)
+        end
+
+        it "sorts the players after adding the player" do
+          bracket.players.should == [player] + players
+        end
+
+        it "redefines S1 and S2" do
+          bracket.s1.should == [player] + players[0..1]
+          bracket.s2.should == players[2..5]
+        end
+      end
+    end
+
     describe "#numbers" do
       let(:players) { create_players(1..6) }
       let(:bracket) { Bracket.new(players) }
