@@ -199,6 +199,14 @@ module Swissfork
             bracket.s1_numbers.should == [1, 2]
           end
         end
+
+        context "unordered players" do
+          let(:players) { create_players(1..6).shuffle }
+
+          it "orders the players" do
+            bracket.s1_numbers.should == [1, 2, 3]
+          end
+        end
       end
 
       context "odd number of players" do
