@@ -127,7 +127,7 @@ module Swissfork
 
     def exchanges
       @exchanges ||= differences.map do |difference|
-        exchanged_bracket(difference.s1_player, difference.s2_player)
+        ExchangedBracket.new(players, difference)
       end
     end
 
@@ -135,18 +135,6 @@ module Swissfork
       original_s1.product(original_s2).map do |players|
         PlayersDifference.new(*players)
       end.sort
-    end
-
-    def exchanged_bracket(player1, player2)
-      Bracket.new(exchanged_players(player1, player2))
-    end
-
-    def exchanged_players(player1, player2)
-      index1, index2 = players.index(player1), players.index(player2)
-
-      players.dup.tap do |new_players|
-        new_players[index1], new_players[index2] = player2, player1
-      end
     end
 
     def next_exchange

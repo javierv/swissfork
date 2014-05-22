@@ -1,4 +1,4 @@
-require "swissfork/bracket"
+require "swissfork/exchanged_bracket"
 require "swissfork/player"
 
 module Swissfork
