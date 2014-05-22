@@ -23,11 +23,22 @@ module Swissfork
     end
 
     describe "#<=>" do
-      let(:player) { Player.new(2) }
+      context "players with different points" do
+        let(:player) { Player.new(2).tap { |player| player.stub(:points).and_return(1) } }
 
-      it "uses the number to compare players" do
-        player.should be < Player.new(3)
-        player.should be > Player.new(1)
+        it "uses the points in descending order to compare players" do
+          player.should be < Player.new(1)
+          player.should be > Player.new(3).tap { |player| player.stub(:points).and_return(2) }
+        end
+      end
+
+      context "players with the same points" do
+        let(:player) { Player.new(2) }
+
+        it "uses the number to compare players" do
+          player.should be < Player.new(3)
+          player.should be > Player.new(1)
+        end
       end
     end
 

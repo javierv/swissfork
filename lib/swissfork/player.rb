@@ -12,7 +12,11 @@ module Swissfork
     end
 
     def <=>(other_player)
-      number <=> other_player.number
+      if points == other_player.points
+        number <=> other_player.number
+      else
+        other_player.points <=> points
+      end
     end
 
     def compatible_with?(player)
