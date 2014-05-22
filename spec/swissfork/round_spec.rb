@@ -52,7 +52,7 @@ module Swissfork
         let(:players) { create_players(1..7) }
 
         it "returns the same pairs as the bracket" do
-          round.pairs.should == Bracket.new(players).pairs
+          round.pair_numbers.should == Bracket.new(players).pair_numbers
         end
       end
 
@@ -64,7 +64,19 @@ module Swissfork
         end
 
         it "returns the combination of each brackets pairs" do
-          round.pairs.should == Bracket.new(players[0..9]).pairs + Bracket.new(players[10..19]).pairs
+          round.pair_numbers.should == Bracket.new(players[0..9]).pair_numbers + Bracket.new(players[10..19]).pair_numbers
+        end
+      end
+
+      context "many brackets, the first one having descendent players" do
+        let(:players) { create_players(1..10) }
+
+        before(:each) do
+          players[0..4].each { |player| player.stub(:points).and_return(1) }
+        end
+
+        it "pairs the descendent player on the second bracket" do
+          round.pair_numbers.should == [[1, 3], [2, 4], [5, 6], [7, 9], [8, 10]]
         end
       end
     end
