@@ -93,7 +93,7 @@ module Swissfork
 
     # Helper method which makes tests more readable.
     def pair_numbers
-      pairs.map { |pair| pair.numbers }
+      pairs.map(&:numbers)
     end
 
     def unpaired_players
