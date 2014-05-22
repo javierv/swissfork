@@ -8,5 +8,9 @@ module Swissfork
     def brackets
       players.group_by(&:points).values.map { |players| Bracket.new(players) }.sort
     end
+
+    def pairs
+      brackets.map(&:pairs).flatten
+    end
   end
 end
