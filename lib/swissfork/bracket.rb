@@ -3,6 +3,7 @@ require "swissfork/pair"
 
 module Swissfork
   class Bracket
+    include Comparable
     attr_reader :players
 
     def initialize(players)
@@ -30,8 +31,6 @@ module Swissfork
       players.map(&:points).min
     end
 
-    # We don't include Comparable because it would override
-    # the == method, and that would break the next_exchange method.
     def <=>(bracket)
       bracket.points <=> points
     end
@@ -89,22 +88,14 @@ module Swissfork
       s2.map(&:number)
     end
 
-    def exchange
-      @s1, @s2 = next_exchange.s1.sort, next_exchange.s2.sort
-    end
-
     def pairs
       return [] if players.empty? || players.one?
 
-      while(!bracket_pairs)
-        if next_exchange
-          exchange
-        else
-          return nil
-        end
+      if pairs_without_exchange
+        pairs_without_exchange
+      else
+        exchanges.map(&:pairs).compact.first
       end
-
-      bracket_pairs
     end
 
     # Helper method which makes tests more readable.
@@ -112,19 +103,17 @@ module Swissfork
       pairs.map(&:numbers)
     end
 
+    def exchanges
+      differences.map do |difference|
+        ExchangedBracket.new(players, difference)
+      end
+    end
+
     def unpaired_players
       unpaired_players_after(pairs)
     end
 
   private
-    def s1_numbers=(numbers)
-      @s1 = players_with(numbers)
-    end
-
-    def s2_numbers=(numbers)
-      @s2 = players_with(numbers)
-    end
-
     def players_with(numbers)
       numbers.map { |number| player_with(number) }
     end
@@ -141,33 +130,13 @@ module Swissfork
       players - original_s1
     end
 
-    def exchanges
-      @exchanges ||= differences.map do |difference|
-        ExchangedBracket.new(players, difference)
-      end
-    end
-
     def differences
       original_s1.product(original_s2).map do |players|
         PlayersDifference.new(*players)
       end.sort
     end
 
-    def next_exchange
-      if s1.sort == original_s1.sort && s2.sort == original_s2.sort
-        exchanges[0]
-      else
-        exchanges[exchanges.index(current_exchange) + 1]
-      end
-    end
-
-    def current_exchange
-      exchanges.select do |exchange|
-        s1.sort == exchange.s1.sort && s2.sort == exchange.s2.sort
-      end.first
-    end
-
-    def bracket_pairs
+    def pairs_without_exchange
       reset_pairs
 
       while(!pairings_completed?)

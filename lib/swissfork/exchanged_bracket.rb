@@ -5,6 +5,8 @@ module Swissfork
   class ExchangedBracket < Swissfork::Bracket
     def initialize(players, difference)
       @players = exchanged_players(players, difference.s1_player, difference.s2_player)
+      s1.sort!
+      s2.sort!
     end
 
     def exchanged_players(players, player1, player2)
@@ -13,6 +15,10 @@ module Swissfork
       players.dup.tap do |new_players|
         new_players[index1], new_players[index2] = player2, player1
       end
+    end
+
+    def pairs
+      pairs_without_exchange
     end
   end
 end

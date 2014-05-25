@@ -293,47 +293,35 @@ module Swissfork
       let(:bracket) { Bracket.new(s1_players + s2_players) }
 
       context "first exchange" do
+        let(:exchange) { bracket.exchanges[0] }
+
         it "exchanges the closest players" do
-          bracket.exchange
-          bracket.s1_numbers.should == [1, 2, 3, 4, 6]
-          bracket.s2_numbers.should == [5, 7, 8, 9, 10, 11]
+          exchange.s1_numbers.should == [1, 2, 3, 4, 6]
+          exchange.s2_numbers.should == [5, 7, 8, 9, 10, 11]
         end
       end
 
       context "second exchange" do
-        before(:each) do
-          bracket.send(:"s1_numbers=", [1, 2, 3, 4, 6])
-          bracket.send(:"s2_numbers=", [5, 7, 8, 9, 10, 11])
-        end
+        let(:exchange) { bracket.exchanges[1] }
 
         it "exchanges the next closest players, choosing the bottom player from S1" do
-          bracket.exchange
-          bracket.s1_numbers.should == [1, 2, 3, 4, 7]
-          bracket.s2_numbers.should == [5, 6, 8, 9, 10, 11]
+          exchange.s1_numbers.should == [1, 2, 3, 4, 7]
+          exchange.s2_numbers.should == [5, 6, 8, 9, 10, 11]
         end
       end
 
       context "third exchange" do
-        before(:each) do
-          bracket.send(:"s1_numbers=", [1, 2, 3, 4, 7])
-          bracket.send(:"s2_numbers=", [5, 6, 8, 9, 10, 11])
-        end
+        let(:exchange) { bracket.exchanges[2] }
 
         it "exchanges the next closest players" do
-          bracket.exchange
-          bracket.s1_numbers.should == [1, 2, 3, 5, 6]
-          bracket.s2_numbers.should == [4, 7, 8, 9, 10, 11]
+          exchange.s1_numbers.should == [1, 2, 3, 5, 6]
+          exchange.s2_numbers.should == [4, 7, 8, 9, 10, 11]
         end
       end
 
       context "exchanges limit reached" do
-        before(:each) do
-          bracket.send(:"s1_numbers=", [2, 3, 4, 5, 11])
-          bracket.send(:"s2_numbers=", [1, 6, 7, 8, 9, 10])
-        end
-
         pending "it aborts the pairing" do
-          bracket.exchange
+          bracket.exchanges.last
           # TODO: raise exception? Return false?
           # Or should we start exchanging more than one player?
         end
