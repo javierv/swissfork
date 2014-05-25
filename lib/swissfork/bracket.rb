@@ -14,6 +14,14 @@ module Swissfork
       @s1, @s2 = nil
     end
 
+    def add_players(players)
+      players.each { |player| add_player(player) }
+    end
+
+    def move_unpaired_players_to(bracket)
+      bracket.add_players(unpaired_players)
+    end
+
     def numbers
       players.map(&:number)
     end

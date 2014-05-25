@@ -13,14 +13,7 @@ module Swissfork
       pairs = []
       brackets.each.with_index do |bracket, index|
         pairs = pairs + bracket.pairs
-
-        break if index == brackets.count - 1
-
-        if bracket.unpaired_players.any?
-          bracket.unpaired_players.each do |player|
-            brackets[index + 1].add_player(player)
-          end
-        end
+        bracket.move_unpaired_players_to(brackets[index + 1]) unless bracket == brackets.last
       end
 
       pairs
