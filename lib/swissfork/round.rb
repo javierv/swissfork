@@ -10,9 +10,7 @@ module Swissfork
     end
 
     def pairs
-      pairing_complete = false
-
-      while(!pairing_complete)
+      while(!pairings_completed?)
         brackets.each.with_index do |bracket, index|
           if bracket.pairs
             if impossible_pairs.include?(established_pairs + bracket.pairs)
@@ -21,9 +19,7 @@ module Swissfork
             else
               established_pairs.push(*bracket.pairs)
 
-              if bracket == brackets.last
-                pairing_complete = true
-              else
+              unless bracket == brackets.last
                 bracket.move_unpaired_players_to(brackets[index + 1])
               end
             end
@@ -44,6 +40,10 @@ module Swissfork
     end
 
   private
+    def pairings_completed?
+      established_pairs.count == (players.count / 2.0).truncate
+    end
+
     def mark_established_pairs_as_impossible
       impossible_pairs << established_pairs
     end
