@@ -10,17 +10,16 @@ module Swissfork
     end
 
     def pairs
-      pairs = []
       pairing_complete = false
 
       while(!pairing_complete)
         brackets.each.with_index do |bracket, index|
           if bracket.pairs
-            if impossible_pairs.include?(pairs + bracket.pairs)
+            if impossible_pairs.include?(established_pairs + bracket.pairs)
               bracket.mark_established_pairs_as_impossible
               break
             else
-              pairs = pairs + bracket.pairs
+              established_pairs.push(*bracket.pairs)
 
               if bracket == brackets.last
                 pairing_complete = true
@@ -29,15 +28,14 @@ module Swissfork
               end
             end
           else
-            mark_pairs_as_impossible(pairs)
+            mark_established_pairs_as_impossible
             reset_pairs
-            pairs = []
             break
           end
         end
       end
 
-      pairs
+      established_pairs
     end
 
     # Helper method which makes tests more readable.
@@ -46,15 +44,20 @@ module Swissfork
     end
 
   private
-    def mark_pairs_as_impossible(pairs)
-      impossible_pairs << pairs
+    def mark_established_pairs_as_impossible
+      impossible_pairs << established_pairs
     end
 
     def impossible_pairs
       @impossible_pairs ||= []
     end
 
+    def established_pairs
+      @established_pairs ||= []
+    end
+
     def reset_pairs
+      @established_pairs = []
       @brackets = nil
     end
   end
