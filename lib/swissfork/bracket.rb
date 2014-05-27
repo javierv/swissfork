@@ -113,6 +113,11 @@ module Swissfork
       unpaired_players_after(pairs)
     end
 
+    def mark_established_pairs_as_impossible
+      impossible_pairs << established_pairs
+      reset_pairs
+    end
+
   private
     def players_with(numbers)
       numbers.map { |number| player_with(number) }
@@ -186,11 +191,6 @@ module Swissfork
 
     def impossible_pairs
       @impossible_pairs ||= []
-    end
-
-    def mark_established_pairs_as_impossible
-      impossible_pairs << established_pairs
-      reset_pairs
     end
 
     def already_paired?(player)

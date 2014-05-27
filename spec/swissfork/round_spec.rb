@@ -78,6 +78,19 @@ module Swissfork
         it "pairs the descendent player on the second bracket" do
           round.pair_numbers.should == [[1, 3], [2, 4], [5, 6], [7, 9], [8, 10]]
         end
+
+        context "the last player can't descend" do
+          before(:each) do
+            players[4].stub(:opponents).and_return(players[5..9])
+            players[5..9].each do |player|
+              player.stub(:opponents).and_return([players[4]])
+            end
+          end
+
+          it "descends the second to last player" do
+            round.pair_numbers.should == [[1, 3], [2, 5], [4, 6], [7, 9], [8, 10]]
+          end
+        end
       end
     end
   end
