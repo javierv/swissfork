@@ -493,7 +493,32 @@ module Swissfork
           end
         end
       end
+
+      context "heterogeneous groups with odd number of players" do
+        let(:players) { create_players(1..11) }
+        let(:bracket) { Bracket.new(players) }
+
+        before(:each) do
+          players.each do |player|
+            player.stub(:opponents).and_return([])
+            player.stub(:points).and_return(1)
+          end
+          players[0].stub(:points).and_return(1.5)
+          players[1].stub(:points).and_return(1.5)
+        end
+
+        context "one of the descended players can't be paired" do
+          before(:each) do
+            players[0].stub(:opponents).and_return(players[1..10])
+          end
+
+          it "can't pair the bracket" do
+            bracket.pairs.should be nil
+          end
+        end
+      end
     end
+
 
     describe "#unpaired_players" do
       context "even number of players" do
