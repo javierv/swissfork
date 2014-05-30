@@ -3,6 +3,8 @@ require "swissfork/pair"
 
 module Swissfork
   class Bracket
+    require "swissfork/exchanged_bracket"
+
     include Comparable
     attr_reader :players
 

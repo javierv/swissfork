@@ -1,5 +1,5 @@
 require "simple_initialize"
-require "swissfork/exchanged_bracket"
+require "swissfork/bracket"
 
 module Swissfork
   class Round
