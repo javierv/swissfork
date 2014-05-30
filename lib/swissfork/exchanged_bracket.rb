@@ -3,7 +3,7 @@ require "simple_initialize"
 module Swissfork
   # This class isn't supposed to be used by other classes, with the
   # exception of the Bracket class.
-  class ExchangedBracket < Swissfork::Bracket
+  class ExchangedBracket < Bracket
     def initialize(players, difference)
       @players = exchanged_players(players, difference.s1_player, difference.s2_player)
       s1.sort!
