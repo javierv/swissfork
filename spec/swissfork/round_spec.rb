@@ -12,7 +12,7 @@ module Swissfork
         let(:players) { create_players(1..6) }
 
         it "returns only one bracket" do
-          Round.new(players).brackets.should have(1).element
+          Round.new(players).brackets.count.should be 1
         end
       end
 
@@ -29,7 +29,7 @@ module Swissfork
         let(:brackets) { Round.new(players).brackets }
 
         it "returns as many brackets as different points" do
-          brackets.should have(4).elements
+          brackets.count.should be 4
         end
 
         it "sorts the bracket by number of points" do
