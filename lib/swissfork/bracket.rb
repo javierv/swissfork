@@ -177,12 +177,14 @@ module Swissfork
               mark_established_pairs_as_impossible
             end
           else
-            mark_established_pairs_as_impossible unless best_possible_pairs?
+            if best_possible_pairs?
+              return established_pairs
+            else
+              mark_established_pairs_as_impossible
+            end
           end
         end
       end
-
-      established_pairs
     end
 
     def leftover_pairs
