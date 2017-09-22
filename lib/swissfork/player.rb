@@ -19,6 +19,10 @@ module Swissfork
       floats.last == :down
     end
 
+    def has_ascended?
+      floats.last == :up
+    end
+
     def <=>(other_player)
       if points == other_player.points
         number <=> other_player.number

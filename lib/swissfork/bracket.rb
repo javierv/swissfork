@@ -151,6 +151,7 @@ module Swissfork
           if pair_for(player)
             established_pairs << pair_for(player)
           else
+            # TODO: reduce pairing criteria and try again
             return nil if established_pairs.empty?
             mark_established_pairs_as_impossible
             break
@@ -159,7 +160,7 @@ module Swissfork
 
         if pairings_completed?
           if heterogeneous?
-            if leftover_pairs
+            if leftover_pairs && best_possible_pairs?
               return established_pairs + leftover_pairs
             else
               mark_established_pairs_as_impossible
@@ -220,12 +221,28 @@ module Swissfork
     end
 
     def best_possible_pairs?
-      !already_descended_players?
+      !already_descended_players? && !already_ascended_players?
     end
 
     def already_descended_players?
       unpaired_players_after(established_pairs).any? do |player|
         player.has_descended?
+      end
+    end
+
+    def already_ascended_players?
+      ascending_players.any? do |player|
+        player.has_ascended?
+      end
+    end
+
+    def ascending_players
+      heterogeneous_pairs.map(&:s2_player)
+    end
+
+    def heterogeneous_pairs
+      established_pairs.select do |pair|
+        pair.s1_player.points != pair.s2_player.points
       end
     end
   end
