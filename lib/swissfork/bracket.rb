@@ -23,6 +23,17 @@ module Swissfork
 
     def move_unpaired_players_to(bracket)
       bracket.add_players(unpaired_players)
+      players.reject! { |player| unpaired_players.include?(player) }
+    end
+
+    def move_players_to_allow_pairs_for(bracket)
+      number_of_players = bracket.unpaired_players.count
+
+      if(number_of_players > 1)
+        moved_players = players[(-1 * number_of_players)..-1]
+        bracket.add_players(moved_players)
+        players.reject! { |player| moved_players.include?(player) }
+      end
     end
 
     def numbers
@@ -194,6 +205,8 @@ module Swissfork
 
     def reset_pairs
       @established_pairs = []
+      @s1 = nil
+      @s2 = nil
     end
 
     def impossible_pairs
