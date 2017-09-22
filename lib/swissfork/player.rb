@@ -15,13 +15,22 @@ module Swissfork
       @floats ||= []
     end
 
-    def has_descended?
+    def descended_in_the_previous_round?
       floats.last == :down
     end
 
-    def has_ascended?
+    def ascended_in_the_previous_round?
       floats.last == :up
     end
+
+    def descended_two_rounds_ago?
+      floats[-2] == :down
+    end
+
+    def ascended_two_rounds_ago?
+      floats[-2] == :up
+    end
+
 
     def <=>(other_player)
       if points == other_player.points

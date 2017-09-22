@@ -111,6 +111,27 @@ module Swissfork
             round.pair_numbers.should == [[1, 3], [2, 4], [5, 7], [6, 9], [8, 10]]
           end
         end
+
+        context "the last player descended two rounds ago" do
+          before(:each) do
+            players[4].stub(:floats).and_return([nil, nil, :down, nil])
+          end
+
+          it "descends the second to last player" do
+            round.pair_numbers.should == [[1, 3], [2, 5], [4, 6], [7, 9], [8, 10]]
+          end
+        end
+
+        context "the first player ascended two rounds ago" do
+          before(:each) do
+            players[5].stub(:floats).and_return([nil, nil, :up, nil])
+          end
+
+          it "ascends the second player" do
+            round.pair_numbers.should == [[1, 3], [2, 4], [5, 7], [6, 9], [8, 10]]
+          end
+        end
+
       end
     end
   end

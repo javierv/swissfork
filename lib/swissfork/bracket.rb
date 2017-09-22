@@ -221,18 +221,33 @@ module Swissfork
     end
 
     def best_possible_pairs?
-      !already_descended_players? && !already_ascended_players?
+      !same_downfloats_as_previous_round? &&
+        !same_upfloats_as_previous_round? &&
+        !same_downfloats_as_two_rounds_ago? &&
+        !same_upfloats_as_two_rounds_ago?
     end
 
-    def already_descended_players?
+    def same_downfloats_as_previous_round?
       unpaired_players_after(established_pairs).any? do |player|
-        player.has_descended?
+        player.descended_in_the_previous_round?
       end
     end
 
-    def already_ascended_players?
+    def same_upfloats_as_previous_round?
       ascending_players.any? do |player|
-        player.has_ascended?
+        player.ascended_in_the_previous_round?
+      end
+    end
+
+    def same_downfloats_as_two_rounds_ago?
+      unpaired_players_after(established_pairs).any? do |player|
+        player.descended_two_rounds_ago?
+      end
+    end
+
+    def same_upfloats_as_two_rounds_ago?
+      ascending_players.any? do |player|
+        player.ascended_two_rounds_ago?
       end
     end
 
