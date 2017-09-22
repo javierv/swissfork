@@ -96,7 +96,7 @@ module Swissfork
       if pairs_without_exchange
         pairs_without_exchange
       elsif homogeneous?
-        exchanges.map(&:pairs).compact.first
+        exchanges.map(&:pairs).compact.first || []
       end
     end
 

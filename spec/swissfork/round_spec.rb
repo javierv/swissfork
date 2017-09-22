@@ -131,7 +131,21 @@ module Swissfork
             round.pair_numbers.should == [[1, 3], [2, 4], [5, 7], [6, 9], [8, 10]]
           end
         end
+      end
 
+      context "many brackets, the first one being impossible to pair" do
+        let(:players) { create_players(1..10) }
+
+        before(:each) do
+          players[0..1].each { |player| player.stub(:points).and_return(1) }
+          players[2..9].each { |player| player.stub(:points).and_return(0) }
+          players[0].stub(:opponents).and_return([players[1]])
+          players[1].stub(:opponents).and_return([players[0]])
+        end
+
+        it "descends all players to the next bracket" do
+          round.pair_numbers.should == [[1, 3], [2, 4], [5, 8], [6, 9], [7, 10]]
+        end
       end
     end
   end
