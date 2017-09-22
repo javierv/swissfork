@@ -468,7 +468,7 @@ module Swissfork
         end
 
         context "the resulting homogeneous group is possible to pair" do
-          it "pairs the descended players with the highest non-desceded players" do
+          it "pairs the descended players with the highest non-descended players" do
             bracket.pair_numbers.should == [[1, 3], [2, 4], [5, 8], [6, 9], [7, 10]]
           end
         end
