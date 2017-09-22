@@ -162,7 +162,6 @@ module Swissfork
           if pair_for(player)
             established_pairs << pair_for(player)
           else
-            # TODO: reduce pairing criteria and try again
             return nil if established_pairs.empty?
             mark_established_pairs_as_impossible
             break
@@ -236,10 +235,16 @@ module Swissfork
     end
 
     def best_possible_pairs?
-      !same_downfloats_as_previous_round? &&
-        !same_upfloats_as_previous_round? &&
-        !same_downfloats_as_two_rounds_ago? &&
-        !same_upfloats_as_two_rounds_ago?
+      failure_criterias.none? { |condition| send(condition) }
+    end
+
+    def failure_criterias
+      @failure_criterias ||= [
+        :same_downfloats_as_previous_round?,
+        :same_upfloats_as_previous_round?,
+        :same_downfloats_as_two_rounds_ago?,
+        :same_upfloats_as_two_rounds_ago?
+      ]
     end
 
     def same_downfloats_as_previous_round?
