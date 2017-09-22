@@ -157,11 +157,15 @@ module Swissfork
           end
         end
 
-        if pairings_completed? && heterogeneous?
-          if leftover_pairs
-            return established_pairs + leftover_pairs
+        if pairings_completed?
+          if heterogeneous?
+            if leftover_pairs
+              return established_pairs + leftover_pairs
+            else
+              mark_established_pairs_as_impossible
+            end
           else
-            mark_established_pairs_as_impossible
+            mark_established_pairs_as_impossible unless best_possible_pairs?
           end
         end
       end
@@ -213,6 +217,16 @@ module Swissfork
 
     def descended_players
       players.select { |player| player.points > points }
+    end
+
+    def best_possible_pairs?
+      !already_descended_players?
+    end
+
+    def already_descended_players?
+      unpaired_players_after(established_pairs).any? do |player|
+        player.has_descended?
+      end
     end
   end
 end

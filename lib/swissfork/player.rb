@@ -5,10 +5,18 @@ module Swissfork
     include Comparable
 
     initialize_with :number
-    attr_reader :opponents
+    attr_reader :opponents, :floats
 
     def opponents
       @opponents ||= []
+    end
+
+    def floats
+      @floats ||= []
+    end
+
+    def has_descended?
+      floats.last == :down
     end
 
     def <=>(other_player)
