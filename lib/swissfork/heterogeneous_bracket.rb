@@ -9,15 +9,11 @@ module Swissfork
 
       while(!pairings_completed?)
         establish_pairs
+        return nil if established_pairs.empty?
 
-        if pairings_completed?
-          if remainder_pairs.any? && best_possible_pairs?
-            return established_pairs + remainder_pairs
-          else
-            mark_established_pairs_as_impossible
-          end
+        if pairings_completed? && remainder_pairs.any? && best_possible_pairs?
+          return established_pairs + remainder_pairs
         else
-          return nil if established_pairs.empty?
           mark_established_pairs_as_impossible
         end
       end
