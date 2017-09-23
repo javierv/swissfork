@@ -178,8 +178,8 @@ module Swissfork
 
         if pairings_completed?
           if heterogeneous?
-            if leftover_pairs.any? && best_possible_pairs?
-              return established_pairs + leftover_pairs
+            if remainder_pairs.any? && best_possible_pairs?
+              return established_pairs + remainder_pairs
             else
               mark_established_pairs_as_impossible
             end
@@ -194,7 +194,7 @@ module Swissfork
       end
     end
 
-    def leftover_pairs
+    def remainder_pairs
       Bracket.new(unpaired_players_after(established_pairs)).pairs
     end
 
