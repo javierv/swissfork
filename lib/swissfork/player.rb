@@ -31,6 +31,10 @@ module Swissfork
       floats[-2] == :up
     end
 
+    def inspect
+      number.to_s
+    end
+
     def <=>(other_player)
       if points == other_player.points
         number <=> other_player.number
