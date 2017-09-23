@@ -4,6 +4,7 @@ require "swissfork/pair"
 module Swissfork
   class Bracket
     require "swissfork/exchanged_bracket"
+    require "swissfork/heterogeneous_bracket"
 
     include Comparable
     attr_reader :players
@@ -102,19 +103,21 @@ module Swissfork
     end
 
     def pairs
+      if heterogeneous?
+        return HeterogeneousBracket.new(players).pairs
+      end
+
       if pairs_without_exchange
         pairs_without_exchange
-      elsif homogeneous?
-        if exchanges.map(&:pairs).compact.first
-          exchanges.map(&:pairs).compact.first
+      elsif exchanges.map(&:pairs).compact.first
+        exchanges.map(&:pairs).compact.first
+      else
+        if failure_criterias.empty?
+          []
         else
-          if failure_criterias.empty?
-            []
-          else
-            failure_criterias.pop
-            restart_pairs
-            pairs
-          end
+          failure_criterias.pop
+          restart_pairs
+          pairs
         end
       end
     end
@@ -169,18 +172,10 @@ module Swissfork
         establish_pairs
 
         if pairings_completed?
-          if heterogeneous?
-            if remainder_pairs.any? && best_possible_pairs?
-              return established_pairs + remainder_pairs
-            else
-              mark_established_pairs_as_impossible
-            end
+          if best_possible_pairs?
+            return established_pairs
           else
-            if best_possible_pairs?
-              return established_pairs
-            else
-              mark_established_pairs_as_impossible
-            end
+            mark_established_pairs_as_impossible
           end
         else
           return nil if established_pairs.empty?
@@ -195,10 +190,6 @@ module Swissfork
           established_pairs << pair_for(player)
         end
       end
-    end
-
-    def remainder_pairs
-      Bracket.new(unpaired_players_after(established_pairs)).pairs
     end
 
     def pair_for(s1_player)
