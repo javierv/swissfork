@@ -102,8 +102,6 @@ module Swissfork
     end
 
     def pairs
-      return [] if players.empty? || players.one?
-
       if pairs_without_exchange
         pairs_without_exchange
       elsif homogeneous?
