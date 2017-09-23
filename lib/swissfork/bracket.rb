@@ -184,6 +184,8 @@ module Swissfork
       s1.each do |player|
         if pair_for(player)
           established_pairs << pair_for(player)
+        else
+          return nil
         end
       end
     end
