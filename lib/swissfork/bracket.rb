@@ -178,7 +178,7 @@ module Swissfork
 
         if pairings_completed?
           if heterogeneous?
-            if leftover_pairs && best_possible_pairs?
+            if leftover_pairs.any? && best_possible_pairs?
               return established_pairs + leftover_pairs
             else
               mark_established_pairs_as_impossible
