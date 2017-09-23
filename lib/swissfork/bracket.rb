@@ -107,7 +107,17 @@ module Swissfork
       if pairs_without_exchange
         pairs_without_exchange
       elsif homogeneous?
-        exchanges.map(&:pairs).compact.first || []
+        if exchanges.map(&:pairs).compact.first
+          exchanges.map(&:pairs).compact.first
+        else
+          if failure_criterias.empty?
+            []
+          else
+            failure_criterias.pop
+            restart_pairs
+            pairs
+          end
+        end
       end
     end
 
@@ -214,6 +224,11 @@ module Swissfork
       @impossible_pairs ||= []
     end
 
+    def restart_pairs
+      @impossible_pairs = []
+      reset_pairs
+    end
+
     def already_paired?(player)
       established_pairs.any? { |pair| pair.include?(player) }
     end
@@ -240,11 +255,18 @@ module Swissfork
 
     def failure_criterias
       @failure_criterias ||= [
+        :any_players_descending_twice?,
         :same_downfloats_as_previous_round?,
         :same_upfloats_as_previous_round?,
         :same_downfloats_as_two_rounds_ago?,
         :same_upfloats_as_two_rounds_ago?
       ]
+    end
+
+    def any_players_descending_twice?
+      unpaired_players_after(established_pairs).any? do |player|
+        player.points > points
+      end
     end
 
     def same_downfloats_as_previous_round?

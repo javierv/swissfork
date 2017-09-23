@@ -131,6 +131,30 @@ module Swissfork
             round.pair_numbers.should == [[1, 3], [2, 4], [5, 7], [6, 9], [8, 10]]
           end
         end
+
+        context "all players in S2 descended in the previous round" do
+          before(:each) do
+            players[2..4].each { |player| player.stub(:floats).and_return([:down]) }
+          end
+
+          context "homogeneous group" do
+            it "descends the last player from S1" do
+              round.pair_numbers.should == [[1, 4], [3, 5], [2, 6], [7, 9], [8, 10]]
+            end
+          end
+
+          context "heterogeneous group" do
+            before(:each) do
+              players[0..1].each { |player| player.stub(:points).and_return(2) }
+              players[0].stub(:opponents).and_return([players[1]])
+              players[1].stub(:opponents).and_return([players[0]])
+            end
+
+            it "descends the last player from S2" do
+              round.pair_numbers.should == [[1, 3], [2, 4], [5, 6], [7, 9], [8, 10]]
+            end
+          end
+        end
       end
 
       context "many brackets, the first one being impossible to pair" do
