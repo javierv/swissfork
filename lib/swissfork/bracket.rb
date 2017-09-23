@@ -166,15 +166,7 @@ module Swissfork
       reset_pairs
 
       while(!pairings_completed?)
-        s1.each do |player|
-          if pair_for(player)
-            established_pairs << pair_for(player)
-          else
-            return nil if established_pairs.empty?
-            mark_established_pairs_as_impossible
-            break
-          end
-        end
+        establish_pairs
 
         if pairings_completed?
           if heterogeneous?
@@ -190,6 +182,17 @@ module Swissfork
               mark_established_pairs_as_impossible
             end
           end
+        else
+          return nil if established_pairs.empty?
+          mark_established_pairs_as_impossible
+        end
+      end
+    end
+
+    def establish_pairs
+      s1.each do |player|
+        if pair_for(player)
+          established_pairs << pair_for(player)
         end
       end
     end
