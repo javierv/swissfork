@@ -172,8 +172,8 @@ module Swissfork
         establish_pairs
         return nil if established_pairs.empty?
 
-        if pairings_completed? && best_possible_pairs?
-          return established_pairs
+        if definitive_pairs_obtained?
+          return definitive_pairs
         else
           mark_established_pairs_as_impossible
         end
@@ -186,6 +186,14 @@ module Swissfork
           established_pairs << pair_for(player)
         end
       end
+    end
+
+    def definitive_pairs_obtained?
+      pairings_completed? && best_possible_pairs?
+    end
+
+    def definitive_pairs
+      established_pairs
     end
 
     def pair_for(s1_player)
