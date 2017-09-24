@@ -21,13 +21,13 @@ module Swissfork
       players.each { |player| add_player(player) }
     end
 
-    def move_unpaired_players_to(bracket)
-      bracket.add_players(unpaired_players)
-      players.reject! { |player| unpaired_players.include?(player) }
+    def move_leftover_players_to(bracket)
+      bracket.add_players(leftover_players)
+      players.reject! { |player| leftover_players.include?(player) }
     end
 
     def move_players_to_allow_pairs_for(bracket)
-      number_of_players = bracket.unpaired_players.count
+      number_of_players = bracket.leftover_players.count
 
       if(number_of_players > 1)
         moved_players = players[(-1 * number_of_players)..-1]
@@ -140,8 +140,8 @@ module Swissfork
       pairs.map(&:numbers)
     end
 
-    def unpaired_players
-      @unpaired_players ||= unpaired_players_after(pairs)
+    def leftover_players
+      @leftover_players ||= unpaired_players_after(pairs)
     end
 
     def mark_established_pairs_as_impossible

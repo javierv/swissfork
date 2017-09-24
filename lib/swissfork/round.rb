@@ -27,7 +27,7 @@ module Swissfork
               established_pairs.push(*bracket_pairs)
 
               unless bracket == brackets.last
-                bracket.move_unpaired_players_to(brackets[index + 1])
+                bracket.move_leftover_players_to(brackets[index + 1])
               end
             end
           else
