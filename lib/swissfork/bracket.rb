@@ -141,7 +141,7 @@ module Swissfork
     end
 
     def unpaired_players
-      unpaired_players_after(pairs)
+      @unpaired_players ||= unpaired_players_after(pairs)
     end
 
     def mark_established_pairs_as_impossible
