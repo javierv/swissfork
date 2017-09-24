@@ -146,7 +146,7 @@ module Swissfork
 
     def mark_established_pairs_as_impossible
       impossible_pairs << established_pairs
-      reset_pairs
+      clear_established_pairs
     end
 
   private
@@ -165,7 +165,7 @@ module Swissfork
     end
 
     def current_exchange_pairs
-      reset_pairs
+      clear_established_pairs
 
       while(!pairings_completed?)
         establish_pairs
@@ -229,7 +229,7 @@ module Swissfork
       @established_pairs ||= []
     end
 
-    def reset_pairs
+    def clear_established_pairs
       @established_pairs = []
     end
 
@@ -239,7 +239,7 @@ module Swissfork
 
     def restart_pairs
       @impossible_pairs = []
-      reset_pairs
+      clear_established_pairs
     end
 
     def already_paired?(player)
