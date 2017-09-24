@@ -293,29 +293,29 @@ module Swissfork
       let(:bracket) { Bracket.new(s1_players + s2_players) }
 
       context "first exchange" do
-        let(:exchange) { bracket.exchanges[0] }
+        before(:each) { bracket.exchange }
 
         it "exchanges the closest players" do
-          exchange.s1_numbers.should == [1, 2, 3, 4, 6]
-          exchange.s2_numbers.should == [5, 7, 8, 9, 10, 11]
+          bracket.s1_numbers.should == [1, 2, 3, 4, 6]
+          bracket.s2_numbers.should == [5, 7, 8, 9, 10, 11]
         end
       end
 
       context "second exchange" do
-        let(:exchange) { bracket.exchanges[1] }
+        before(:each) { 2.times { bracket.exchange }}
 
         it "exchanges the next closest players, choosing the bottom player from S1" do
-          exchange.s1_numbers.should == [1, 2, 3, 4, 7]
-          exchange.s2_numbers.should == [5, 6, 8, 9, 10, 11]
+          bracket.s1_numbers.should == [1, 2, 3, 4, 7]
+          bracket.s2_numbers.should == [5, 6, 8, 9, 10, 11]
         end
       end
 
       context "third exchange" do
-        let(:exchange) { bracket.exchanges[2] }
+        before(:each) { 3.times { bracket.exchange }}
 
         it "exchanges the next closest players" do
-          exchange.s1_numbers.should == [1, 2, 3, 5, 6]
-          exchange.s2_numbers.should == [4, 7, 8, 9, 10, 11]
+          bracket.s1_numbers.should == [1, 2, 3, 5, 6]
+          bracket.s2_numbers.should == [4, 7, 8, 9, 10, 11]
         end
       end
 

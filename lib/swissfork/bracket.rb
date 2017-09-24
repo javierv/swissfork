@@ -3,7 +3,6 @@ require "swissfork/pair"
 
 module Swissfork
   class Bracket
-    require "swissfork/exchanged_bracket"
     require "swissfork/heterogeneous_bracket"
 
     include Comparable
@@ -87,11 +86,11 @@ module Swissfork
     alias_method :p, :number_of_required_pairs # FIDE nomenclature
 
     def s1
-      @s1 ||= original_s1.dup
+      players[0..number_of_required_pairs-1].sort
     end
 
     def s2
-      @s2 ||= original_s2.dup
+      (players - s1).sort
     end
 
     def s1_numbers
@@ -107,30 +106,34 @@ module Swissfork
         return HeterogeneousBracket.new(players).pairs
       end
 
-      if pairs_without_exchange
-        pairs_without_exchange
-      elsif exchanges.map(&:pairs).compact.first
-        exchanges.map(&:pairs).compact.first
-      else
-        if failure_criterias.empty?
-          []
+      while(!current_exchange_pairs)
+        if exchange_count >= differences.count
+          if failure_criterias.empty?
+            return []
+          else
+            failure_criterias.pop
+            restart_pairs
+            players.sort!
+          end
         else
-          failure_criterias.pop
+          exchange
           restart_pairs
-          pairs
         end
       end
+
+      current_exchange_pairs
+    end
+
+    def exchange
+      players.sort!
+
+      @players = exchanged_players(players, differences[exchange_count].s1_player, differences[exchange_count].s2_player)
+      @exchange_count += 1
     end
 
     # Helper method which makes tests more readable.
     def pair_numbers
       pairs.map(&:numbers)
-    end
-
-    def exchanges
-      differences.map do |difference|
-        ExchangedBracket.new(players, difference)
-      end
     end
 
     def unpaired_players
@@ -151,21 +154,13 @@ module Swissfork
       players.select { |player| player.number == number }.first
     end
 
-    def original_s1
-      players[0..number_of_required_pairs-1]
-    end
-
-    def original_s2
-      players - original_s1
-    end
-
     def differences
-      original_s1.product(original_s2).map do |players|
+      s1.product(s2).map do |players|
         PlayersDifference.new(*players)
       end.sort
     end
 
-    def pairs_without_exchange
+    def current_exchange_pairs
       reset_pairs
 
       while(!pairings_completed?)
@@ -214,14 +209,24 @@ module Swissfork
       established_pairs.count == s1.count
     end
 
+    def exchanged_players(players, player1, player2)
+      index1, index2 = players.index(player1), players.index(player2)
+
+      players.dup.tap do |new_players|
+        new_players[index1], new_players[index2] = player2, player1
+      end
+    end
+
+    def exchange_count
+      @exchange_count ||= 0
+    end
+
     def established_pairs
       @established_pairs ||= []
     end
 
     def reset_pairs
       @established_pairs = []
-      @s1 = nil
-      @s2 = nil
     end
 
     def impossible_pairs

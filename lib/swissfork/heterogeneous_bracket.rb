@@ -5,7 +5,7 @@ module Swissfork
   # exception of the Bracket class.
   class HeterogeneousBracket < Bracket
     def pairs
-      pairs_without_exchange
+      current_exchange_pairs
     end
 
   private
