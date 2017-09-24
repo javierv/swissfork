@@ -18,7 +18,7 @@ module Swissfork
     end
 
     def remainder_pairs
-      Bracket.new(unpaired_players_after(established_pairs)).pairs
+      Bracket.new(still_unpaired_players).pairs
     end
   end
 end

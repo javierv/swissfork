@@ -246,6 +246,10 @@ module Swissfork
       established_pairs.any? { |pair| pair.include?(player) }
     end
 
+    def still_unpaired_players
+      unpaired_players_after(established_pairs)
+    end
+
     def unpaired_players_after(pairs)
       players.select { |player| pairs.none? { |pair| pair.include?(player) }}
     end
@@ -277,13 +281,13 @@ module Swissfork
     end
 
     def any_players_descending_twice?
-      unpaired_players_after(established_pairs).any? do |player|
+      still_unpaired_players.any? do |player|
         player.points > points
       end
     end
 
     def same_downfloats_as_previous_round?
-      unpaired_players_after(established_pairs).any? do |player|
+      still_unpaired_players.any? do |player|
         player.descended_in_the_previous_round?
       end
     end
@@ -295,7 +299,7 @@ module Swissfork
     end
 
     def same_downfloats_as_two_rounds_ago?
-      unpaired_players_after(established_pairs).any? do |player|
+      still_unpaired_players.any? do |player|
         player.descended_two_rounds_ago?
       end
     end
