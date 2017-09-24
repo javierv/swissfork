@@ -103,9 +103,13 @@ module Swissfork
 
     def pairs
       if heterogeneous?
-        return HeterogeneousBracket.new(players).pairs
+        HeterogeneousBracket.new(players).pairs
+      else
+        homogeneous_pairs
       end
+    end
 
+    def homogeneous_pairs
       while(!current_exchange_pairs)
         if exchange_count >= differences.count
           if failure_criterias.empty?
