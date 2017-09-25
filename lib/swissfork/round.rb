@@ -55,7 +55,6 @@ module Swissfork
     end
 
     def impossible_pairs
-
       @impossible_pairs ||= []
     end
 
