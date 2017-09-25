@@ -56,12 +56,12 @@ module Swissfork
     end
 
     def maximum_number_of_pairs
-      players.length / 2
+      players.count / 2
     end
     alias_method :p0, :maximum_number_of_pairs # FIDE nomenclature
 
     def number_of_descended_players
-      @number_of_descended_players ||= descended_players.length
+      @number_of_descended_players ||= descended_players.count
     end
     alias_method :m0, :number_of_descended_players # FIDE nomenclature
 
