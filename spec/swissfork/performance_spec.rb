@@ -21,7 +21,7 @@ module Swissfork
           end
 
           it "is very fast" do
-            Benchmark.realtime{ round.pair_numbers }.should < 0.07
+            Benchmark.realtime{ round.pair_numbers }.should < 0.04
           end
         end
       end
@@ -37,7 +37,7 @@ module Swissfork
           end
 
           it "performs lineally" do
-            Benchmark.realtime{ round.pair_numbers }.should < 0.2
+            Benchmark.realtime{ round.pair_numbers }.should < 0.12
           end
         end
       end
@@ -51,13 +51,13 @@ module Swissfork
             players[12..24].each { |player| player.stub(:floats).and_return([:down]) }
           end
 
-          # TODO: Pending test.
+          # TODO: improve the time this test takes.
           # Right now, it looks like the number of calls to pair_for player doesn't
           # increase linearly, and that probably cause performance to drop once
           # we reach a certain number of players.
-          # it "performs lineally" do
-          #   Benchmark.realtime{ round.pair_numbers }.should < 0.5
-          # end
+          it "performs lineally" do
+            Benchmark.realtime{ round.pair_numbers }.should < 0.5
+          end
         end
       end
     end
