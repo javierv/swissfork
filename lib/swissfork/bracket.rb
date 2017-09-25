@@ -150,14 +150,6 @@ module Swissfork
     end
 
   private
-    def players_with(numbers)
-      numbers.map { |number| player_with(number) }
-    end
-
-    def player_with(number)
-      players.select { |player| player.number == number }.first
-    end
-
     def differences
       s1.product(s2).map do |players|
         PlayersDifference.new(*players)
