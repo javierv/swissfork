@@ -249,7 +249,7 @@ module Swissfork
     end
 
     def clear_established_pairs
-      @established_pairs = []
+      @established_pairs = nil
       @bracket_already_paired = false
     end
 
@@ -258,7 +258,7 @@ module Swissfork
     end
 
     def restart_pairs
-      @impossible_pairs = []
+      @impossible_pairs = nil
       clear_established_pairs
     end
 

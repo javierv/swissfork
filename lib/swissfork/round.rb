@@ -55,6 +55,7 @@ module Swissfork
     end
 
     def impossible_pairs
+
       @impossible_pairs ||= []
     end
 
@@ -63,7 +64,7 @@ module Swissfork
     end
 
     def reset_pairs
-      @established_pairs = []
+      @established_pairs = nil
       @brackets = nil
     end
   end
