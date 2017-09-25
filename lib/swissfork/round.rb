@@ -16,13 +16,11 @@ module Swissfork
             if impossible_pairs.include?(established_pairs + bracket.pairs)
               bracket.mark_established_pairs_as_impossible
               break
+            elsif brackets.count > 1 && bracket == brackets[-2] && brackets.last.pairs.empty?
+              bracket.mark_established_pairs_as_impossible
+              bracket.move_players_to_allow_pairs_for(brackets.last)
+              redo
             else
-              if brackets.count > 1 && bracket == brackets[-2] && brackets.last.pairs.empty?
-                bracket.mark_established_pairs_as_impossible
-                bracket.move_players_to_allow_pairs_for(brackets.last)
-                redo
-              end
-
               established_pairs.push(*bracket.pairs)
 
               unless bracket == brackets.last
