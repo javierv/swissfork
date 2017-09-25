@@ -4,8 +4,12 @@ module Swissfork
   class Pair
     initialize_with :s1_player, :s2_player
 
+    def players
+      [s1_player, s2_player]
+    end
+
     def numbers
-      [s1_player.number, s2_player.number]
+      players.map(&:number)
     end
 
     def include?(player)

@@ -275,7 +275,7 @@ module Swissfork
     end
 
     def unpaired_players_after(pairs)
-      players - (pairs.map(&:s1_player) + pairs.map(&:s2_player))
+      players - pairs.map(&:players).flatten
     end
 
     def all_players_have_the_same_points?
