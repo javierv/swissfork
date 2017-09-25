@@ -194,9 +194,7 @@ module Swissfork
     end
 
     def still_unpaired_players_can_downfloat?
-      still_unpaired_s2_players.any? do |unpaired_player|
-        possible_downfloaters.include?(unpaired_player)
-      end
+      (still_unpaired_s2_players & possible_downfloaters).any?
     end
 
     def possible_downfloaters
