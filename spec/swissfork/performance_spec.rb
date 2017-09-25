@@ -56,7 +56,7 @@ module Swissfork
           # increase linearly, and that probably cause performance to drop once
           # we reach a certain number of players.
           # it "performs lineally" do
-          #   Benchmark.realtime{ round.pair_numbers }.should < 1
+          #   Benchmark.realtime{ round.pair_numbers }.should < 0.7
           # end
         end
       end

@@ -165,6 +165,7 @@ module Swissfork
     end
 
     def current_exchange_pairs
+      return definitive_pairs if @bracket_already_paired
       clear_established_pairs
 
       while(!pairings_completed?)
@@ -172,6 +173,7 @@ module Swissfork
         return nil if established_pairs.empty?
 
         if definitive_pairs_obtained?
+          @bracket_already_paired = true
           return definitive_pairs
         else
           mark_established_pairs_as_impossible
@@ -250,6 +252,7 @@ module Swissfork
 
     def clear_established_pairs
       @established_pairs = []
+      @bracket_already_paired = false
     end
 
     def impossible_pairs
