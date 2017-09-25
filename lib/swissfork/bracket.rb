@@ -172,7 +172,7 @@ module Swissfork
         establish_pairs
         return nil if established_pairs.empty?
 
-        if definitive_pairs_obtained?
+        if best_pairs_obtained?
           @bracket_already_paired = true
           return definitive_pairs
         else
@@ -211,7 +211,7 @@ module Swissfork
       end
     end
 
-    def definitive_pairs_obtained?
+    def best_pairs_obtained?
       pairings_completed? && best_possible_pairs?
     end
 

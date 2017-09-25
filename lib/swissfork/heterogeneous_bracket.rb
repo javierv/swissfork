@@ -9,7 +9,7 @@ module Swissfork
     end
 
   private
-    def definitive_pairs_obtained?
+    def best_pairs_obtained?
       pairings_completed? && remainder_pairs.any? && best_possible_pairs?
     end
 
