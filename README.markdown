@@ -8,7 +8,6 @@ It's curerntly in early development stages, and expect development to be slow ;)
 TODO
 ----
 
-* Floating conditions (don't float twice in a row)
 * Byes.
 * Colour preferences (for chess tournaments).
 * Support exchanges for more than one player in a bracket.

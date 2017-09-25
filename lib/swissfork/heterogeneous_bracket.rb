@@ -4,6 +4,8 @@ module Swissfork
   # This class isn't supposed to be used by other classes, with the
   # exception of the Bracket class.
   class HeterogeneousBracket < Bracket
+    require "swissfork/remainder"
+
     def pairs
       current_exchange_pairs
     end
@@ -18,7 +20,11 @@ module Swissfork
     end
 
     def remainder_pairs
-      Bracket.new(still_unpaired_players).pairs
+      Remainder.new(still_unpaired_players).pairs
+    end
+
+    def pairings_completed?
+      established_pairs.count == s1.count
     end
   end
 end

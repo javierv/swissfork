@@ -157,7 +157,7 @@ module Swissfork
         end
       end
 
-      context "many brackets, the first one being impossible to pair" do
+      context "many brackets, the first one being impossible to pair at all" do
         let(:players) { create_players(1..10) }
 
         before(:each) do
@@ -169,6 +169,22 @@ module Swissfork
 
         it "descends all players to the next bracket" do
           round.pair_numbers.should == [[1, 3], [2, 4], [5, 8], [6, 9], [7, 10]]
+        end
+      end
+
+      context "many brackets, the first one having unpairable players" do
+        let(:players) { create_players(1..10) }
+
+        before(:each) do
+          players[0..3].each { |player| player.stub(:points).and_return(1) }
+          players[4..9].each { |player| player.stub(:points).and_return(0) }
+          players[0..1].each { |player| player.stub(:opponents).and_return([players[2], players[3]]) }
+          players[2].stub(:opponents).and_return([players[0], players[1], players[3]])
+          players[3].stub(:opponents).and_return([players[0], players[1], players[2]])
+        end
+
+        it "descends the unpairable players to the next bracket" do
+          round.pair_numbers.should == [[1, 2], [3, 5], [4, 6], [7, 9], [8, 10]]
         end
       end
 

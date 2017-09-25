@@ -44,7 +44,7 @@ module Swissfork
     end
 
     def compatible_with?(player)
-      !opponents.include?(player)
+      player != self && !opponents.include?(player)
     end
 
     # FIXME: Currently a stub for tests.

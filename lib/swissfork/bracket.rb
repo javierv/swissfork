@@ -221,8 +221,16 @@ module Swissfork
       end
     end
 
+    def players_compatible_for(player)
+      players.select { |opponent| player.compatible_with?(opponent) }
+    end
+
+    def pairable_players
+      players.select { |player| players_compatible_for(player).any? }
+    end
+
     def pairings_completed?
-      established_pairs.count == s1.count
+      established_pairs.count == pairable_players.count / 2
     end
 
     def exchanged_players(players, player1, player2)
