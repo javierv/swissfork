@@ -14,7 +14,6 @@ module Swissfork
 
     def add_player(player)
       @players = (players << player).sort
-      @s1, @s2 = nil
     end
 
     def add_players(players)
