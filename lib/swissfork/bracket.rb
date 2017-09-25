@@ -183,9 +183,10 @@ module Swissfork
 
     def establish_pairs
       s1.each do |player|
-        if pair_for(player)
+        pair = pair_for(player)
+        if pair
           return nil unless still_unpaired_players_can_downfloat?
-          established_pairs << pair_for(player)
+          established_pairs << pair
         else
           return nil
         end

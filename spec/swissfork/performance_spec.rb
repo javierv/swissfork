@@ -21,7 +21,7 @@ module Swissfork
           end
 
           it "is very fast" do
-            Benchmark.realtime{ round.pair_numbers }.should < 0.1
+            Benchmark.realtime{ round.pair_numbers }.should < 0.07
           end
         end
       end
@@ -37,7 +37,7 @@ module Swissfork
           end
 
           it "performs lineally" do
-            Benchmark.realtime{ round.pair_numbers }.should < 0.5
+            Benchmark.realtime{ round.pair_numbers }.should < 0.2
           end
         end
       end
@@ -56,7 +56,7 @@ module Swissfork
           # increase linearly, and that probably cause performance to drop once
           # we reach a certain number of players.
           # it "performs lineally" do
-          #   Benchmark.realtime{ round.pair_numbers }.should < 0.7
+          #   Benchmark.realtime{ round.pair_numbers }.should < 0.5
           # end
         end
       end
