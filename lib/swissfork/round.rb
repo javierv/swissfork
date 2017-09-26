@@ -29,7 +29,6 @@ module Swissfork
             end
           else
             mark_established_pairs_as_impossible
-            reset_pairs
             break
           end
         end
@@ -50,6 +49,7 @@ module Swissfork
 
     def mark_established_pairs_as_impossible
       impossible_pairs << established_pairs
+      reset_pairs
     end
 
     def impossible_pairs
