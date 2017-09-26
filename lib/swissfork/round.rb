@@ -15,7 +15,7 @@ module Swissfork
           if bracket.pairs
             if impossible_pairs.include?(established_pairs + bracket.pairs)
               bracket.mark_established_pairs_as_impossible
-              break
+              redo
             elsif brackets.count > 1 && bracket == brackets[-2] && bracket.leftover_players.empty? && brackets.last.pairs.empty?
               bracket.mark_established_pairs_as_impossible
               bracket.move_players_to_allow_pairs_for(brackets.last)
