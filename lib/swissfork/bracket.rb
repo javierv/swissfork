@@ -1,5 +1,6 @@
 require "swissfork/players_difference"
 require "swissfork/pair"
+require "array_exchange"
 
 module Swissfork
   # Handles the main pairing logic.
@@ -137,7 +138,7 @@ module Swissfork
     def exchange
       players.sort!
 
-      @players = exchanged_players(players, differences[exchange_count].s1_player, differences[exchange_count].s2_player)
+      @players = players.exchange(differences[exchange_count].s1_player, differences[exchange_count].s2_player)
       @exchange_count += 1
     end
 
@@ -237,14 +238,6 @@ module Swissfork
 
     def pairings_completed?
       established_pairs.count == pairable_players.count / 2
-    end
-
-    def exchanged_players(players, player1, player2)
-      index1, index2 = players.index(player1), players.index(player2)
-
-      players.dup.tap do |new_players|
-        new_players[index1], new_players[index2] = player2, player1
-      end
     end
 
     def exchange_count
