@@ -339,9 +339,7 @@ module Swissfork
     end
 
     def heterogeneous_pairs
-      established_pairs.select do |pair|
-        pair.s1_player.points != pair.s2_player.points
-      end
+      established_pairs.select(&:heterogeneous?)
     end
   end
 end

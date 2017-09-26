@@ -12,6 +12,10 @@ module Swissfork
       players.map(&:number)
     end
 
+    def heterogeneous?
+      s1_player.points != s2_player.points
+    end
+
     def include?(player)
       player == s1_player || player == s2_player
     end
