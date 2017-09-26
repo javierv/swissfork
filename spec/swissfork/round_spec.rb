@@ -202,6 +202,21 @@ module Swissfork
           round.pair_numbers.should == [[1, 4], [2, 5], [3, 6], [7, 9], [8, 10]]
         end
       end
+
+      context "PPB has leftovers and last bracket has incompatible players" do
+        let(:players) { create_players(1..11) }
+
+        before(:each) do
+          players[0..8].each { |player| player.stub(:points).and_return(1) }
+          players[9..10].each { |player| player.stub(:points).and_return(0) }
+          players[9].stub(:opponents).and_return([players[10]])
+          players[10].stub(:opponents).and_return([players[9]])
+        end
+
+        it "pairs normally, using the leftovers " do
+          round.pair_numbers.should == [[1, 5], [2, 6], [3, 7], [4, 8], [9, 10]]
+        end
+      end
     end
   end
 end
