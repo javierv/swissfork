@@ -216,15 +216,15 @@ module Swissfork
       established_pairs
     end
 
-    def pair_for(s1_player)
-      players_for(s1_player).map  { |s2_player| Pair.new(s1_player, s2_player) }.select do |pair|
+    def pair_for(player)
+      opponents_for(player).map  { |opponent| Pair.new(player, opponent) }.select do |pair|
         !impossible_pairs.include?(established_pairs + [pair])
       end.first
     end
 
-    def players_for(s1_player)
-      s2.select do |s2_player|
-        s1_player.compatible_with?(s2_player) && !already_paired?(s2_player)
+    def opponents_for(player)
+      s2.select do |opponent|
+        player.compatible_with?(opponent) && !already_paired?(opponent)
       end
     end
 
