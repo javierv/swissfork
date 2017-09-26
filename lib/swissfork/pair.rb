@@ -1,6 +1,10 @@
 require "simple_initialize"
 
 module Swissfork
+  # Contains all data related to a game.
+  #
+  # Currently it only contains which players played the game,
+  # but color and result information will be added in the future.
   class Pair
     initialize_with :s1_player, :s2_player
 

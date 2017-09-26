@@ -1,6 +1,13 @@
 require "simple_initialize"
 
 module Swissfork
+  # Contains data related to a player: name, elo.
+  #
+  # It also contains information about the games a player has
+  # played, its opponents, and results.
+  #
+  # Currently it's basically a stub with the minimum necessary
+  # to generate pairs.
   class Player
     include Comparable
 

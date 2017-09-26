@@ -2,6 +2,10 @@ require "simple_initialize"
 require "swissfork/bracket"
 
 module Swissfork
+  # Generates the pairs of a whole round.
+  #
+  # Its only useful public method is #pairs. All the other
+  # public methods are public so they can be easily tested.
   class Round
     initialize_with :players
 

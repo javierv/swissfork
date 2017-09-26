@@ -2,6 +2,13 @@ require "swissfork/players_difference"
 require "swissfork/pair"
 
 module Swissfork
+  # Handles the main pairing logic.
+  #
+  # A Bracket is generally made of players with the same score
+  # or a similar one.
+  #
+  # The main method in this class is #pairs, which pairs its
+  # players according to the rules described by FIDE.
   class Bracket
     require "swissfork/heterogeneous_bracket"
 
