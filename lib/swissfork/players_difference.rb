@@ -23,11 +23,24 @@ module Swissfork
     end
 
     def max_s1
-      s1_players.map(&:number).max
+      s1_numbers.max
     end
 
     def max_s2
-      s2_players.map(&:number).max
+      s2_numbers.max
+    end
+
+    def inspect
+      [s1_numbers, s2_numbers]
+    end
+
+  private
+    def s1_numbers
+      s1_players.map(&:number)
+    end
+
+    def s2_numbers
+      s2_players.map(&:number)
     end
   end
 end
