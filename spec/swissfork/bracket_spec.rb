@@ -409,6 +409,22 @@ module Swissfork
             bracket.pair_numbers.should == [[1, 5], [2, 7], [3, 8], [4, 9], [6, 10]]
           end
         end
+
+        context "two players from S1 have played against everyone in S2" do
+          before(:each) do
+            players[0].stub(:opponents).and_return([players[1]] + players[3..9])
+            players[1].stub(:opponents).and_return(
+              [players[0], players[2]] + players[4..9]
+            )
+            players[2].stub(:opponents).and_return([players[1]])
+            players[3].stub(:opponents).and_return([players[0]])
+            players[4..9].stub(:opponents).and_return([players[0], players[1]])
+          end
+
+          it "pairs those two players with players from S1" do
+            bracket.pair_numbers.should == [[1, 3], [2, 4], [5, 8], [6, 9], [7, 10]]
+          end
+        end
       end
 
       context "odd number of players" do

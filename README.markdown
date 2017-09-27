@@ -10,5 +10,4 @@ TODO
 
 * Byes.
 * Colour preferences (for chess tournaments).
-* Support exchanges for more than one player in a bracket.
 * API to manage a whole tournament and not just a round.
