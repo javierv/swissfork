@@ -292,36 +292,13 @@ module Swissfork
       let(:s2_players) { create_players(6..11) }
       let(:bracket) { Bracket.new(s1_players + s2_players) }
 
-      context "first exchange" do
-        before(:each) { bracket.exchange }
-
-        it "exchanges the closest players" do
-          bracket.s1_numbers.should == [1, 2, 3, 4, 6]
-          bracket.s2_numbers.should == [5, 7, 8, 9, 10, 11]
-        end
-      end
-
-      context "second exchange" do
+      context "two exchanges" do
         before(:each) { 2.times { bracket.exchange }}
 
-        it "exchanges the next closest players, choosing the bottom player from S1" do
+        it "exchanges the players and reorders S1 and S2" do
           bracket.s1_numbers.should == [1, 2, 3, 4, 7]
           bracket.s2_numbers.should == [5, 6, 8, 9, 10, 11]
         end
-      end
-
-      context "third exchange" do
-        before(:each) { 3.times { bracket.exchange }}
-
-        it "exchanges the next closest players" do
-          bracket.s1_numbers.should == [1, 2, 3, 5, 6]
-          bracket.s2_numbers.should == [4, 7, 8, 9, 10, 11]
-        end
-      end
-
-      context "exchanges limit reached" do
-          # TODO: raise exception? Return false?
-          # Or should we start exchanging more than one player?
       end
     end
 

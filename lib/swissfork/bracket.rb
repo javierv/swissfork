@@ -1,6 +1,5 @@
-require "swissfork/players_difference"
 require "swissfork/pair"
-require "array_exchange"
+require "swissfork/exchanger"
 
 module Swissfork
   # Handles the main pairing logic.
@@ -118,7 +117,7 @@ module Swissfork
 
     def homogeneous_pairs
       while(!current_exchange_pairs)
-        if exchange_count >= differences.count
+        if exchanger.limit_reached?
           if failure_criterias.empty?
             return []
           else
@@ -136,10 +135,11 @@ module Swissfork
     end
 
     def exchange
-      players.sort!
+      @players = exchanger.next
+    end
 
-      @players = players.exchange(differences[exchange_count].s1_player, differences[exchange_count].s2_player)
-      @exchange_count += 1
+    def exchanger
+      @exchanger ||= Exchanger.new(s1, s2)
     end
 
     # Helper method which makes tests more readable.
@@ -157,12 +157,6 @@ module Swissfork
     end
 
   private
-    def differences
-      s1.product(s2).map do |players|
-        PlayersDifference.new(*players)
-      end.sort
-    end
-
     def current_exchange_pairs
       return definitive_pairs if @bracket_already_paired
       clear_established_pairs
@@ -238,10 +232,6 @@ module Swissfork
 
     def pairings_completed?
       established_pairs.count == pairable_players.count / 2
-    end
-
-    def exchange_count
-      @exchange_count ||= 0
     end
 
     def established_pairs
