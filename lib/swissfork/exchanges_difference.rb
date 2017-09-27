@@ -1,7 +1,11 @@
 require "simple_initialize"
 
 module Swissfork
-  class PlayersDifference
+  # Calculates and compares the differences in a exchange.
+  #
+  # It follows the priority criterias as defined in FIDE
+  # Dutch System D.2.b, D.2.c and D.2.d.
+  class ExchangesDifference
     include Comparable
 
     initialize_with :s1_players, :s2_players

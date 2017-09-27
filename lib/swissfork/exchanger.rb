@@ -1,4 +1,4 @@
-require "swissfork/players_difference"
+require "swissfork/exchanges_difference"
 
 module Swissfork
   # Handles exchanges of players between S1 and S2 in
@@ -68,7 +68,7 @@ module Swissfork
     def differences_with_n_players(n)
       s1.combination(n).to_a.product(s2.combination(n).to_a).map do |players|
 
-        PlayersDifference.new(*players)
+        ExchangesDifference.new(*players)
       end.sort
     end
 
