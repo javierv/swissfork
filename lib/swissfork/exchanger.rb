@@ -14,7 +14,8 @@ module Swissfork
     end
 
     def limit_reached?
-      exchanges_count >= differences.count - 1
+      number_of_players_in_a_exchange >= s1.count &&
+        exchanges_count >= differences.count - 1
     end
 
     # Helper methods to make tests easier
@@ -43,13 +44,22 @@ module Swissfork
     end
 
     def differences
-      @differences ||= (1..s1.count).reduce([]) do |differences, n|
+      if exchanges_count > current_differences.count
+        increase_number_of_players_in_a_exchange
+      end
+
+      current_differences
+    end
+
+    def current_differences
+      @current_differences ||= (1..number_of_players_in_a_exchange).reduce([]) do |differences, n|
         differences + differences_with_n_players(n)
       end
     end
 
     def differences_with_n_players(n)
       s1.combination(n).to_a.product(s2.combination(n).to_a).map do |players|
+
         PlayersDifference.new(*players)
       end.sort
     end
@@ -61,6 +71,16 @@ module Swissfork
     def increase_exchanges_count
       @exchanges_count ||= 0
       @exchanges_count += 1
+    end
+
+    def number_of_players_in_a_exchange
+      @number_of_players_in_a_exchange ||= 1
+    end
+
+    def increase_number_of_players_in_a_exchange
+      @number_of_players_in_a_exchange ||= 1
+      @number_of_players_in_a_exchange += 1
+      @current_differences = nil
     end
 
     def players
