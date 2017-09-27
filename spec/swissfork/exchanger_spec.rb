@@ -35,6 +35,17 @@ module Swissfork
           exchanger.numbers.should == [1, 2, 3, 6, 5, 4, 7, 8, 9, 10, 11]
         end
       end
+
+      context "exchanges limit reached" do
+        before(:each) do
+          (exchanger.s1.count * exchanger.s2.count).times { exchanger.next }
+          exchanger.next
+        end
+
+        it "exchanges two players" do
+          exchanger.numbers.should == [1, 2, 3, 6, 7, 4, 5, 8, 9, 10, 11]
+        end
+      end
     end
   end
 end

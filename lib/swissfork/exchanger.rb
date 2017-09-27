@@ -14,7 +14,7 @@ module Swissfork
     end
 
     def limit_reached?
-      exchanges_count >= differences.count - 1
+      exchanges_count >= differences_with_one_player.count - 1
     end
 
     # Helper methods to make tests easier
@@ -24,22 +24,40 @@ module Swissfork
 
   private
     def exchanged_players
-      exchange(differences[exchanges_count - 1].s1_player,
-               differences[exchanges_count - 1].s2_player)
+      exchange(differences[exchanges_count - 1].s1_players,
+               differences[exchanges_count - 1].s2_players)
     end
 
-    def exchange(first_player, second_player)
-      first_index, second_index =
-        players.index(first_player), players.index(second_player)
-
+    def exchange(first_players, second_players)
       players.dup.tap do |new_players|
-        new_players[first_index], new_players[second_index] =
-          second_player, first_player
+        first_players.each.with_index do |first_player, index|
+          second_player = second_players[index]
+
+          first_index, second_index =
+            players.index(first_player), players.index(second_player)
+
+          new_players[first_index], new_players[second_index] =
+            second_player, first_player
+        end
       end
     end
 
     def differences
-      @differences ||= s1.product(s2).map do |players|
+      if exchanges_count <= differences_with_one_player.count
+        differences_with_one_player
+      else
+        differences_with_one_player + differences_with_two_players
+      end
+    end
+
+    def differences_with_one_player
+      s1.combination(1).to_a.product(s2.combination(1).to_a).map do |players|
+        PlayersDifference.new(*players)
+      end.sort
+    end
+
+    def differences_with_two_players
+      s1.combination(2).to_a.product(s2.combination(2).to_a).map do |players|
         PlayersDifference.new(*players)
       end.sort
     end
