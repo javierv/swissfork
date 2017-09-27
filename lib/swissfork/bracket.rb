@@ -148,7 +148,7 @@ module Swissfork
     end
 
     def leftover_players
-      @leftover_players ||= unpaired_players_after(pairs)
+      pairs && still_unpaired_players
     end
 
     def mark_established_pairs_as_impossible
@@ -257,15 +257,11 @@ module Swissfork
     end
 
     def still_unpaired_players
-      unpaired_players_after(established_pairs)
+      players - established_pairs.map(&:players).flatten
     end
 
     def still_unpaired_s2_players
       s2 & still_unpaired_players
-    end
-
-    def unpaired_players_after(pairs)
-      players - pairs.map(&:players).flatten
     end
 
     def all_players_have_the_same_points?
