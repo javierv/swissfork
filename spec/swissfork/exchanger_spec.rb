@@ -26,6 +26,15 @@ module Swissfork
         it "exchanges the next closest players, choosing the bottom player from S1" do
           exchanger.numbers.should == [1, 2, 3, 4, 7, 6, 5, 8, 9, 10, 11]
         end
+
+        context "players with non-consecutive numbers" do
+          let(:s1_players) { create_players([1, 2, 3]) }
+          let(:s2_players) { create_players([4, 28, 29, 30]) }
+
+          it "exchanges according to the in-bracket sequence numbers" do
+            exchanger.numbers.should == [1, 2, 28, 4, 3, 29, 30]
+          end
+        end
       end
 
       context "third exchange" do

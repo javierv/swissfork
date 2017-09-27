@@ -1,4 +1,3 @@
-require "simple_initialize"
 require "swissfork/players_difference"
 
 module Swissfork
@@ -6,7 +5,13 @@ module Swissfork
   # homogeneous brackets, as described in FIDE system,
   # section D.2
   class Exchanger
-    initialize_with :s1, :s2
+    attr_reader :s1, :s2
+
+    def initialize(s1, s2)
+      @s1 = s1
+      @s2 = s2
+      assign_in_bracket_sequence_numbers
+    end
 
     def next
       increase_exchanges_count
@@ -88,6 +93,12 @@ module Swissfork
 
     def players
       s1 + s2
+    end
+
+    def assign_in_bracket_sequence_numbers
+      players.each.with_index do |player, index|
+        player.define_singleton_method(:bsn) { index + 1 }
+      end
     end
   end
 end
