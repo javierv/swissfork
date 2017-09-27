@@ -74,13 +74,13 @@ module Swissfork
         end
 
         context "same differences between players, same S2 players" do
-          let(:smaller_s1_players) { [double(number: 1), double(number: 4)] }
-          let(:bigger_s1_players) { [double(number: 2), double(number: 3)] }
+          let(:bigger_s1_players) { [double(number: 1), double(number: 4)] }
+          let(:smaller_s1_players) { [double(number: 2), double(number: 3)] }
           let(:s2_players) { [double(number: 5), double(number: 6)] }
 
-          it "the one with the biggest difference between S1 players is smaller" do
-            PlayersDifference.new(smaller_s1_players, s2_players).should be <
-            PlayersDifference.new(bigger_s1_players, s2_players)
+          it "the one with the biggest S1 player is smaller" do
+            PlayersDifference.new(bigger_s1_players, s2_players).should be <
+            PlayersDifference.new(smaller_s1_players, s2_players)
           end
         end
 
@@ -89,21 +89,33 @@ module Swissfork
           let(:smaller_s2_players) { [double(number: 3), double(number: 6)] }
           let(:bigger_s2_players) { [double(number: 4), double(number: 5)] }
 
-          it "the one with the lowest difference between S2 players is smaller" do
-            PlayersDifference.new(s1_players, bigger_s2_players).should be <
-            PlayersDifference.new(s1_players, smaller_s2_players)
+          it "the one with the smallest S2 player is smaller" do
+            PlayersDifference.new(s1_players, smaller_s2_players).should be <
+            PlayersDifference.new(s1_players, bigger_s2_players)
           end
         end
 
         context "same differences between players, different S1 and S2 players" do
-          let(:smaller_s1_players) { [double(number: 1), double(number: 4)] }
-          let(:bigger_s1_players) { [double(number: 2), double(number: 3)] }
-          let(:smaller_s2_players) { [double(number: 3), double(number: 6)] }
-          let(:bigger_s2_players) { [double(number: 4), double(number: 5)] }
+          let(:bigger_s1_players) { [double(number: 1), double(number: 4)] }
+          let(:smaller_s1_players) { [double(number: 2), double(number: 3)] }
+          let(:bigger_s2_players) { [double(number: 3), double(number: 6)] }
+          let(:smaller_s2_players) { [double(number: 4), double(number: 5)] }
 
-          it "the one with the biggest difference between S1 players is smaller" do
-            PlayersDifference.new(smaller_s1_players, smaller_s2_players).should be <
-            PlayersDifference.new(bigger_s1_players, bigger_s2_players)
+          it "the one with the biggest S1 player is smaller" do
+            PlayersDifference.new(bigger_s1_players, bigger_s2_players).should be <
+            PlayersDifference.new(smaller_s1_players, smaller_s2_players)
+          end
+        end
+
+        context "same differences between players, highest S1 player is the same" do
+          let(:smaller_s1_players) { [double(number: 3), double(number: 5)] }
+          let(:bigger_s1_players) { [double(number: 4), double(number: 5)] }
+          let(:smaller_s2_players) { [double(number: 6), double(number: 7)] }
+          let(:bigger_s2_players) { [double(number: 6), double(number: 8)] }
+
+          it "the one with the bigger S1 players is smaller" do
+            PlayersDifference.new(bigger_s1_players, bigger_s2_players).should be <
+            PlayersDifference.new(smaller_s1_players, smaller_s2_players)
           end
         end
       end

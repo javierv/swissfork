@@ -8,10 +8,10 @@ module Swissfork
 
     def <=>(other_difference)
       if difference == other_difference.difference
-        if max_s1 == other_difference.max_s1
-          max_s2 <=> other_difference.max_s2
+        if s1_numbers.sort.reverse == other_difference.s1_numbers.sort.reverse
+          s2_numbers.sort <=> other_difference.s2_numbers.sort
         else
-          other_difference.max_s1 <=> max_s1
+          other_difference.s1_numbers.sort.reverse <=> s1_numbers.sort.reverse
         end
       else
         difference <=> other_difference.difference
@@ -22,19 +22,10 @@ module Swissfork
       (s1_players.map(&:number).sum - s2_players.map(&:number).sum).abs
     end
 
-    def max_s1
-      s1_numbers.max
-    end
-
-    def max_s2
-      s2_numbers.max
-    end
-
     def inspect
       [s1_numbers, s2_numbers]
     end
 
-  private
     def s1_numbers
       s1_players.map(&:number)
     end

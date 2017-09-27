@@ -37,13 +37,23 @@ module Swissfork
       end
 
       context "exchanges limit reached" do
-        before(:each) do
-          (exchanger.s1.count * exchanger.s2.count).times { exchanger.next }
-          exchanger.next
+        let(:one_player_exchanges) { exchanger.s1.count * exchanger.s2.count }
+        before(:each) { one_player_exchanges.times { exchanger.next } }
+
+        context "first exchange" do
+          before(:each) { exchanger.next }
+
+          it "exchanges two players" do
+            exchanger.numbers.should == [1, 2, 3, 6, 7, 4, 5, 8, 9, 10, 11]
+          end
         end
 
-        it "exchanges two players" do
-          exchanger.numbers.should == [1, 2, 3, 6, 7, 4, 5, 8, 9, 10, 11]
+        context "second exchange" do
+          before(:each) { 2.times { exchanger.next }}
+
+          it "exchanges the next closest players, choosing the bottom players from S1" do
+            exchanger.numbers.should == [1, 2, 3, 6, 8, 4, 7, 5, 9, 10, 11]
+          end
         end
       end
     end
