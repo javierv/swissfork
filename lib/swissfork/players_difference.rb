@@ -8,7 +8,7 @@ module Swissfork
 
     def <=>(other_difference)
       if difference == other_difference.difference
-        other_difference.s1_player <=> s1_player
+        other_difference.s1_player.number <=> s1_player.number
       else
         difference <=> other_difference.difference
       end

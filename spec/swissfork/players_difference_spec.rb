@@ -38,12 +38,12 @@ module Swissfork
 
       context "same differences between players" do
         let(:smaller_s1_player) { double(number: 1) }
-        let(:bigger_s2_player) { double(number: 2) }
+        let(:bigger_s1_player) { double(number: 2) }
         let(:smaller_s2_player) { double(number: 3) }
         let(:bigger_s2_player) { double(number: 4) }
 
         it "the one with the bigger s1 player is smaller" do
-          PlayersDifference.new(smaller_s2_player, bigger_s2_player).should be < PlayersDifference.new(smaller_s1_player, smaller_s2_player)
+          PlayersDifference.new(bigger_s1_player, bigger_s2_player).should be < PlayersDifference.new(smaller_s1_player, smaller_s2_player)
         end
       end
     end
