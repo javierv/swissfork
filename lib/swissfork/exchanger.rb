@@ -25,8 +25,11 @@ module Swissfork
 
   private
     def exchanged_players
-      exchange(differences[exchanges_count - 1].s1_players,
-               differences[exchanges_count - 1].s2_players)
+      exchange(current_difference.s1_players, current_difference.s2_players)
+    end
+
+    def current_difference
+      differences[exchanges_count - 1]
     end
 
     def exchange(first_players, second_players)
