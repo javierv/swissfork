@@ -18,10 +18,6 @@ module Swissfork
       criterias.pop
     end
 
-    def include?(element)
-      criterias.include?(element)
-    end
-
     def s2_leftovers_can_downfloat?
       (s2_leftovers & possible_downfloaters).any?
     end
@@ -84,6 +80,10 @@ module Swissfork
           player.descended_two_rounds_ago?
         )
       end
+    end
+
+    def include?(element)
+      criterias.include?(element)
     end
 
     def leftovers
