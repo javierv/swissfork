@@ -13,7 +13,7 @@ module Swissfork
       assign_in_bracket_sequence_numbers
     end
 
-    def next
+    def next_exchange
       increase_exchanges_count
       exchanged_players
     end

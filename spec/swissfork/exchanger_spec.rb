@@ -7,13 +7,13 @@ module Swissfork
       numbers.map { |number| double(number: number, inspect: number) }
     end
 
-    describe "#next" do
+    describe "#next_exchange" do
       let(:s1_players) { create_players(1..5) }
       let(:s2_players) { create_players(6..11) }
       let(:exchanger) { Exchanger.new(s1_players, s2_players) }
 
       context "first exchange" do
-        before(:each) { exchanger.next }
+        before(:each) { exchanger.next_exchange }
 
         it "exchanges the closest players" do
           exchanger.numbers.should == [1, 2, 3, 4, 6, 5, 7, 8, 9, 10, 11]
@@ -21,7 +21,7 @@ module Swissfork
       end
 
       context "second exchange" do
-        before(:each) { 2.times { exchanger.next }}
+        before(:each) { 2.times { exchanger.next_exchange }}
 
         it "exchanges the next closest players, choosing the bottom player from S1" do
           exchanger.numbers.should == [1, 2, 3, 4, 7, 6, 5, 8, 9, 10, 11]
@@ -38,7 +38,7 @@ module Swissfork
       end
 
       context "third exchange" do
-        before(:each) { 3.times { exchanger.next }}
+        before(:each) { 3.times { exchanger.next_exchange }}
 
         it "exchanges the next closest players" do
           exchanger.numbers.should == [1, 2, 3, 6, 5, 4, 7, 8, 9, 10, 11]
@@ -47,10 +47,10 @@ module Swissfork
 
       context "exchanges limit reached" do
         let(:one_player_exchanges) { exchanger.s1.count * exchanger.s2.count }
-        before(:each) { one_player_exchanges.times { exchanger.next } }
+        before(:each) { one_player_exchanges.times { exchanger.next_exchange } }
 
         context "first exchange" do
-          before(:each) { exchanger.next }
+          before(:each) { exchanger.next_exchange }
 
           it "exchanges two players" do
             exchanger.numbers.should == [1, 2, 3, 6, 7, 4, 5, 8, 9, 10, 11]
@@ -58,7 +58,7 @@ module Swissfork
         end
 
         context "second exchange" do
-          before(:each) { 2.times { exchanger.next }}
+          before(:each) { 2.times { exchanger.next_exchange }}
 
           it "exchanges the next closest players, choosing the bottom players from S1" do
             exchanger.numbers.should == [1, 2, 3, 6, 8, 4, 7, 5, 9, 10, 11]

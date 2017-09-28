@@ -136,7 +136,7 @@ module Swissfork
     end
 
     def exchange
-      @players = exchanger.next
+      @players = exchanger.next_exchange
     end
 
     def exchanger
