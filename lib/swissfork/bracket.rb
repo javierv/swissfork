@@ -178,8 +178,9 @@ module Swissfork
     def establish_pairs
       s1.each do |player|
         pair = pair_for(player)
-        if pair
-          return nil unless quality.s2_leftovers_can_downfloat?
+        # Not doing the quality check here decreases performance
+        # dramatically.
+        if pair && quality.s2_leftovers_can_downfloat?
           established_pairs << pair
         else
           return nil
