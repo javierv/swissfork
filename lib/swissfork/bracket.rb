@@ -11,6 +11,7 @@ module Swissfork
   # players according to the rules described by FIDE.
   class Bracket
     require "swissfork/heterogeneous_bracket"
+    require "swissfork/quality_criterias"
 
     include Comparable
     attr_reader :players
@@ -118,10 +119,10 @@ module Swissfork
     def homogeneous_pairs
       while(!current_exchange_pairs)
         if exchanger.limit_reached?
-          if failure_criterias.empty?
+          if quality.worst_possible?
             return []
           else
-            failure_criterias.pop
+            quality.be_more_permissive
             restart_pairs
             players.sort!
           end
@@ -193,10 +194,10 @@ module Swissfork
     def possible_downfloaters
       players.select do |player|
         !(
-          failure_criterias.include?(:same_downfloats_as_previous_round?) &&
+          quality.include?(:same_downfloats_as_previous_round?) &&
           player.descended_in_the_previous_round?
         ) && !(
-          failure_criterias.include?(:same_downfloats_as_two_rounds_ago?) &&
+          quality.include?(:same_downfloats_as_two_rounds_ago?) &&
           player.descended_two_rounds_ago?
         )
       end
@@ -277,55 +278,11 @@ module Swissfork
     end
 
     def best_possible_pairs?
-      failure_criterias.none? { |condition| send(condition) }
+      quality.ok?
     end
 
-    def failure_criterias
-      @failure_criterias ||= [
-        :any_players_descending_twice?,
-        :same_downfloats_as_previous_round?,
-        :same_upfloats_as_previous_round?,
-        :same_downfloats_as_two_rounds_ago?,
-        :same_upfloats_as_two_rounds_ago?
-      ]
-    end
-
-    def any_players_descending_twice?
-      still_unpaired_players.any? do |player|
-        player.points > points
-      end
-    end
-
-    def same_downfloats_as_previous_round?
-      still_unpaired_players.any? do |player|
-        player.descended_in_the_previous_round?
-      end
-    end
-
-    def same_upfloats_as_previous_round?
-      ascending_players.any? do |player|
-        player.ascended_in_the_previous_round?
-      end
-    end
-
-    def same_downfloats_as_two_rounds_ago?
-      still_unpaired_players.any? do |player|
-        player.descended_two_rounds_ago?
-      end
-    end
-
-    def same_upfloats_as_two_rounds_ago?
-      ascending_players.any? do |player|
-        player.ascended_two_rounds_ago?
-      end
-    end
-
-    def ascending_players
-      heterogeneous_pairs.map(&:s2_player)
-    end
-
-    def heterogeneous_pairs
-      established_pairs.select(&:heterogeneous?)
+    def quality
+      @quality ||= QualityCriterias.new(self)
     end
   end
 end
