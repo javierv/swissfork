@@ -22,6 +22,10 @@ module Swissfork
       criterias.include?(element)
     end
 
+    def s2_leftovers_can_downfloat?
+      (s2_leftovers & possible_downfloaters).any?
+    end
+
   private
     def criterias
       @criterias ||= [
@@ -66,12 +70,36 @@ module Swissfork
       pairs.select(&:heterogeneous?)
     end
 
+    def s2_leftovers
+      s2 & leftovers
+    end
+
+    def possible_downfloaters
+      players.select do |player|
+        !(
+          include?(:same_downfloats_as_previous_round?) &&
+          player.descended_in_the_previous_round?
+        ) && !(
+          include?(:same_downfloats_as_two_rounds_ago?) &&
+          player.descended_two_rounds_ago?
+        )
+      end
+    end
+
     def leftovers
       bracket.send(:still_unpaired_players)
     end
 
     def pairs
       bracket.send(:established_pairs)
+    end
+
+    def players
+      bracket.players
+    end
+
+    def s2
+      bracket.s2
     end
   end
 end

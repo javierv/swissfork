@@ -179,27 +179,11 @@ module Swissfork
       s1.each do |player|
         pair = pair_for(player)
         if pair
-          return nil unless still_unpaired_players_can_downfloat?
+          return nil unless quality.s2_leftovers_can_downfloat?
           established_pairs << pair
         else
           return nil
         end
-      end
-    end
-
-    def still_unpaired_players_can_downfloat?
-      (still_unpaired_s2_players & possible_downfloaters).any?
-    end
-
-    def possible_downfloaters
-      players.select do |player|
-        !(
-          quality.include?(:same_downfloats_as_previous_round?) &&
-          player.descended_in_the_previous_round?
-        ) && !(
-          quality.include?(:same_downfloats_as_two_rounds_ago?) &&
-          player.descended_two_rounds_ago?
-        )
       end
     end
 
@@ -259,10 +243,6 @@ module Swissfork
 
     def still_unpaired_players
       players - established_pairs.map(&:players).flatten
-    end
-
-    def still_unpaired_s2_players
-      s2 & still_unpaired_players
     end
 
     def all_players_have_the_same_points?
