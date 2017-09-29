@@ -10,8 +10,8 @@ module Swissfork
   # The main method in this class is #pairs, which pairs its
   # players according to the rules described by FIDE.
   class Bracket
-    require "swissfork/heterogeneous_bracket"
     require "swissfork/quality_criterias"
+    require "swissfork/remainder"
 
     include Comparable
     attr_reader :players
@@ -118,10 +118,10 @@ module Swissfork
     end
 
     def pairs
-      if heterogeneous?
-        HeterogeneousBracket.new(players).pairs
-      else
+      if homogeneous?
         homogeneous_pairs
+      else
+        current_exchange_pairs
       end
     end
 
@@ -198,11 +198,23 @@ module Swissfork
     end
 
     def best_pairs_obtained?
-      pairings_completed? && best_possible_pairs?
+      if homogeneous?
+        pairings_completed? && best_possible_pairs?
+      else
+        pairings_completed? && remainder_pairs.any? && best_possible_pairs?
+      end
     end
 
     def definitive_pairs
-      established_pairs
+      if homogeneous?
+        established_pairs
+      else
+        established_pairs + remainder_pairs
+      end
+    end
+
+    def remainder_pairs
+      Remainder.new(still_unpaired_players).pairs
     end
 
     def pair_for(player)
