@@ -78,16 +78,16 @@ module Swissfork
     end
     alias_method :p1, :possible_number_of_pairs # FIDE nomenclature
 
-    def pairable_descended_players
+    def number_of_pairable_descended_players
       number_of_descended_players
     end
-    alias_method :m1, :pairable_descended_players # FIDE nomenclature
+    alias_method :m1, :number_of_pairable_descended_players # FIDE nomenclature
 
     def number_of_required_pairs
       if homogeneous?
         possible_number_of_pairs
       else
-        pairable_descended_players
+        number_of_pairable_descended_players
       end
     end
     alias_method :p, :number_of_required_pairs # FIDE nomenclature
