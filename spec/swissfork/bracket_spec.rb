@@ -161,7 +161,7 @@ module Swissfork
       end
     end
 
-    describe "#number_of_descended_players" do
+    describe "#number_of_moved_down_players" do
       let(:players) { create_players(1..6) }
       let(:bracket) { Bracket.new(players) }
 
@@ -171,7 +171,7 @@ module Swissfork
 
       context "homogeneous bracket" do
         it "returns zero" do
-          bracket.number_of_descended_players.should == 0
+          bracket.number_of_moved_down_players.should == 0
         end
       end
 
@@ -179,7 +179,7 @@ module Swissfork
         before(:each) { players.first.stub(:points).and_return(1.5) }
 
         it "returns the number of descended players" do
-          bracket.number_of_descended_players.should == 1
+          bracket.number_of_moved_down_players.should == 1
         end
       end
     end

@@ -56,7 +56,7 @@ module Swissfork
     end
 
     def homogeneous?
-      all_players_have_the_same_points? || half_or_more_players_were_descended?
+      all_players_have_the_same_points? || half_or_more_players_were_moved_down?
     end
 
     def heterogeneous?
@@ -68,26 +68,26 @@ module Swissfork
     end
     alias_method :p0, :maximum_number_of_pairs # FIDE nomenclature
 
-    def number_of_descended_players
-      @number_of_descended_players ||= descended_players.count
+    def number_of_moved_down_players
+      @number_of_moved_down_players ||= moved_down_players.count
     end
-    alias_method :m0, :number_of_descended_players # FIDE nomenclature
+    alias_method :m0, :number_of_moved_down_players # FIDE nomenclature
 
     def possible_number_of_pairs
       maximum_number_of_pairs
     end
     alias_method :p1, :possible_number_of_pairs # FIDE nomenclature
 
-    def number_of_pairable_descended_players
-      number_of_descended_players
+    def number_of_pairable_moved_down_players
+      number_of_moved_down_players
     end
-    alias_method :m1, :number_of_pairable_descended_players # FIDE nomenclature
+    alias_method :m1, :number_of_pairable_moved_down_players # FIDE nomenclature
 
     def number_of_required_pairs
       if homogeneous?
         possible_number_of_pairs
       else
-        number_of_pairable_descended_players
+        number_of_pairable_moved_down_players
       end
     end
     alias_method :p, :number_of_required_pairs # FIDE nomenclature
@@ -250,11 +250,11 @@ module Swissfork
       players.map(&:points).uniq.one?
     end
 
-    def half_or_more_players_were_descended?
-      number_of_descended_players >= players.length / 2
+    def half_or_more_players_were_moved_down?
+      number_of_moved_down_players >= players.length / 2
     end
 
-    def descended_players
+    def moved_down_players
       players.select { |player| player.points > points }
     end
 
