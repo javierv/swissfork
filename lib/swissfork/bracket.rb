@@ -69,7 +69,7 @@ module Swissfork
     alias_method :max_pairs, :maximum_number_of_pairs # FIDE nomenclature
 
     def possible_number_of_pairs
-      maximum_number_of_pairs
+      pairable_players.count / 2
     end
 
     def number_of_moved_down_players
@@ -226,7 +226,7 @@ module Swissfork
     end
 
     def pairings_completed?
-      established_pairs.count == pairable_players.count / 2
+      established_pairs.count == number_of_required_pairs
     end
 
     def established_pairs

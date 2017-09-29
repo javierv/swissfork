@@ -20,9 +20,5 @@ module Swissfork
     def remainder_pairs
       Remainder.new(still_unpaired_players).pairs
     end
-
-    def pairings_completed?
-      established_pairs.count == s1.count
-    end
   end
 end
