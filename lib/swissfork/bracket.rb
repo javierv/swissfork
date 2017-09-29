@@ -66,22 +66,32 @@ module Swissfork
     def maximum_number_of_pairs
       players.count / 2
     end
-    alias_method :p0, :maximum_number_of_pairs # FIDE nomenclature
+    alias_method :max_pairs, :maximum_number_of_pairs # FIDE nomenclature
+
+    def possible_number_of_pairs
+      maximum_number_of_pairs
+    end
 
     def number_of_moved_down_players
       @number_of_moved_down_players ||= moved_down_players.count
     end
     alias_method :m0, :number_of_moved_down_players # FIDE nomenclature
 
-    def possible_number_of_pairs
-      maximum_number_of_pairs
-    end
-    alias_method :p1, :possible_number_of_pairs # FIDE nomenclature
-
     def number_of_pairable_moved_down_players
+      # FIXME: write test for the case where this number is lower
+      # than the number of the resident players.
       number_of_moved_down_players
     end
     alias_method :m1, :number_of_pairable_moved_down_players # FIDE nomenclature
+
+    def number_of_players_in_s1
+      if homogeneous?
+        maximum_number_of_pairs
+      else
+        number_of_pairable_moved_down_players
+      end
+    end
+    alias_method :n1, :number_of_players_in_s1 # FIDE nomenclature
 
     def number_of_required_pairs
       if homogeneous?
@@ -90,10 +100,9 @@ module Swissfork
         number_of_pairable_moved_down_players
       end
     end
-    alias_method :p, :number_of_required_pairs # FIDE nomenclature
 
     def s1
-      players[0..number_of_required_pairs-1].sort
+      players[0..number_of_players_in_s1-1].sort
     end
 
     def s2
