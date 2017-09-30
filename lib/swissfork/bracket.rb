@@ -34,12 +34,8 @@ module Swissfork
     end
 
     def move_players_to_allow_pairs_for(bracket)
-      number_of_players = bracket.leftover_players.count
-
-      if(number_of_players > 1)
-        moved_players = players[(-1 * number_of_players)..-1]
-        bracket.add_players(moved_players)
-        players.reject! { |player| moved_players.include?(player) }
+      bracket.leftover_players.count.times do
+        bracket.add_player(players.pop)
       end
     end
 
