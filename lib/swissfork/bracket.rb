@@ -33,26 +33,6 @@ module Swissfork
       players.reject! { |player| leftovers.include?(player) }
     end
 
-    def move_players_to_allow_pairs_for(bracket)
-      leftovers = bracket.leftovers
-
-      permutations = players.select do |player|
-        leftovers.any? { |leftover| player.compatible_with?(leftover) }
-      end.permutation
-
-      while(true)
-        players_to_move = permutations.next[-1*leftovers.count..-1]
-
-        duplicate_bracket = bracket.dup
-        duplicate_bracket.add_players(players_to_move)
-
-        break if duplicate_bracket.leftovers.count <= 1
-      end
-
-      bracket.add_players(players_to_move)
-      players.reject! { |player| players_to_move.include?(player) }
-    end
-
     def numbers
       players.map(&:number)
     end

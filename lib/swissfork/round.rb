@@ -7,6 +7,8 @@ module Swissfork
   # Its only useful public method is #pairs. All the other
   # public methods are public so they can be easily tested.
   class Round
+    require "swissfork/penultimate_bracket_handler"
+
     initialize_with :players
 
     def brackets
@@ -22,7 +24,8 @@ module Swissfork
               redo
             elsif brackets.count > 1 && bracket == brackets[-2] && bracket.leftovers.empty? && brackets.last.pairs.empty?
               bracket.mark_established_pairs_as_impossible
-              bracket.move_players_to_allow_pairs_for(brackets.last)
+              PenultimateBracketHandler.new(bracket.players, brackets.last).
+                move_players_to_allow_last_bracket_pairs
               redo
             else
               established_pairs.push(*bracket.pairs)
