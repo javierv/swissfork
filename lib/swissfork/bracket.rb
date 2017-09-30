@@ -169,7 +169,7 @@ module Swissfork
           @bracket_already_paired = true
           return definitive_pairs
         else
-          mark_established_pairs_as_impossible
+          mark_established_pairs_as_not_ideal
         end
       end
     end
@@ -209,7 +209,9 @@ module Swissfork
 
     def pair_for(player)
       opponents_for(player).map  { |opponent| Pair.new(player, opponent) }.select do |pair|
+        !not_ideal_pairs.include?(established_pairs + [pair]) &&
         !impossible_pairs.include?(established_pairs + [pair])
+
       end.first
     end
 
@@ -240,12 +242,21 @@ module Swissfork
       @bracket_already_paired = false
     end
 
+    def not_ideal_pairs
+      @not_ideal_pairs ||= []
+    end
+
     def impossible_pairs
       @impossible_pairs ||= []
     end
 
+    def mark_established_pairs_as_not_ideal
+      not_ideal_pairs << established_pairs
+      clear_established_pairs
+    end
+
     def restart_pairs
-      @impossible_pairs = nil
+      @not_ideal_pairs = nil
       clear_established_pairs
     end
 
