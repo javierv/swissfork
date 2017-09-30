@@ -12,7 +12,11 @@ module Swissfork
 
     def move_players_to_allow_last_bracket_pairs
       while(true)
-        players_to_move = permutations.next.last(last_bracket.leftovers.count)
+        begin
+          players_to_move = permutations.next.last(last_bracket.leftovers.count)
+        rescue StopIteration
+          return nil
+        end
 
         duplicate_bracket = last_bracket.dup
         duplicate_bracket.add_players(players_to_move)

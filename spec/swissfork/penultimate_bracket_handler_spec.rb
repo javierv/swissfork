@@ -77,6 +77,18 @@ module Swissfork
           penultimate_bracket_players.should == players[0..3] + players[5..6]
         end
       end
+
+      context "no players allow last bracket pairs" do
+        before(:each) do
+          players[0..7].each { |player| player.stub(:opponents).and_return([players[8], players[9]]) }
+          players[8].stub(:opponents).and_return(players[0..7] + [players[9]])
+          players[9].stub(:opponents).and_return(players[0..7] + [players[8]])
+        end
+
+        it "returns nil" do
+          handler.move_players_to_allow_last_bracket_pairs.should be nil
+        end
+      end
     end
   end
 end
