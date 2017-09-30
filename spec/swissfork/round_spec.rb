@@ -194,12 +194,31 @@ module Swissfork
         before(:each) do
           players[0..7].each { |player| player.stub(:points).and_return(1) }
           players[8..9].each { |player| player.stub(:points).and_return(0) }
-          players[8].stub(:opponents).and_return([players[9]])
-          players[9].stub(:opponents).and_return([players[8]])
         end
 
-        it "descends players from the previous bracket" do
-          round.pair_numbers.should == [[1, 4], [2, 5], [3, 6], [7, 9], [8, 10]]
+        context "last players from the PPB complete the pairing" do
+          before(:each) do
+            players[8].stub(:opponents).and_return([players[9]])
+            players[9].stub(:opponents).and_return([players[8]])
+          end
+
+          it "descends players from the previous bracket" do
+            round.pair_numbers.should == [[1, 4], [2, 5], [3, 6], [7, 9], [8, 10]]
+          end
+        end
+
+        context "last players from the PPB don't complete the pairing" do
+          before(:each) do
+            players[5].stub(:opponents).and_return([players[8], players[9]])
+            players[6].stub(:opponents).and_return([players[8]])
+            players[7].stub(:opponents).and_return([players[8]])
+            players[8].stub(:opponents).and_return(players[6..7] + [players[9], players[5]])
+            players[9].stub(:opponents).and_return([players[5], players[8]])
+          end
+
+          it "descends a different set of players" do
+            round.pair_numbers.should == [[1, 4], [2, 6], [3, 7], [5, 9], [8, 10]]
+          end
         end
       end
 

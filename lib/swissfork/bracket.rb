@@ -21,7 +21,7 @@ module Swissfork
     end
 
     def add_player(player)
-      @players = (players << player).sort
+      @players = (players + [player]).sort
     end
 
     def add_players(players)
@@ -34,9 +34,23 @@ module Swissfork
     end
 
     def move_players_to_allow_pairs_for(bracket)
-      bracket.leftover_players.count.times do
-        bracket.add_player(players.pop)
+      leftovers = bracket.leftover_players
+
+      permutations = players.select do |player|
+        leftovers.any? { |leftover| player.compatible_with?(leftover) }
+      end.permutation
+
+      while(true)
+        players_to_move = permutations.next[-1*leftovers.count..-1]
+
+        duplicate_bracket = bracket.dup
+        duplicate_bracket.add_players(players_to_move)
+
+        break if duplicate_bracket.leftover_players.count <= 1
       end
+
+      bracket.add_players(players_to_move)
+      players.reject! { |player| players_to_move.include?(player) }
     end
 
     def numbers
