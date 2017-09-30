@@ -502,13 +502,13 @@ module Swissfork
     end
 
 
-    describe "#leftover_players" do
+    describe "#leftovers" do
       context "even number of players" do
         let(:players) { create_players(1..10) }
         let(:bracket) { Bracket.new(players) }
 
         it "returns an empty array" do
-          bracket.leftover_players.should == []
+          bracket.leftovers.should == []
         end
       end
 
@@ -518,7 +518,7 @@ module Swissfork
 
         context "no previous opponents" do
           it "returns the last player" do
-            bracket.leftover_players.should == [players[10]]
+            bracket.leftovers.should == [players[10]]
           end
         end
 
@@ -529,7 +529,7 @@ module Swissfork
           end
 
           it "returns the second to last player" do
-            bracket.leftover_players.should == [players[9]]
+            bracket.leftovers.should == [players[9]]
           end
         end
       end

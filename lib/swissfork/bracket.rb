@@ -28,13 +28,13 @@ module Swissfork
       players.each { |player| add_player(player) }
     end
 
-    def move_leftover_players_to(bracket)
-      bracket.add_players(leftover_players)
-      players.reject! { |player| leftover_players.include?(player) }
+    def move_leftovers_to(bracket)
+      bracket.add_players(leftovers)
+      players.reject! { |player| leftovers.include?(player) }
     end
 
     def move_players_to_allow_pairs_for(bracket)
-      leftovers = bracket.leftover_players
+      leftovers = bracket.leftovers
 
       permutations = players.select do |player|
         leftovers.any? { |leftover| player.compatible_with?(leftover) }
@@ -46,7 +46,7 @@ module Swissfork
         duplicate_bracket = bracket.dup
         duplicate_bracket.add_players(players_to_move)
 
-        break if duplicate_bracket.leftover_players.count <= 1
+        break if duplicate_bracket.leftovers.count <= 1
       end
 
       bracket.add_players(players_to_move)
@@ -167,7 +167,7 @@ module Swissfork
       pairs.map(&:numbers)
     end
 
-    def leftover_players
+    def leftovers
       pairs && still_unpaired_players
     end
 
