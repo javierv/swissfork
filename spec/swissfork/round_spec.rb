@@ -139,7 +139,7 @@ module Swissfork
 
           context "homogeneous group" do
             it "descends the last player from S1" do
-              round.pair_numbers.should == [[1, 4], [3, 5], [2, 6], [7, 9], [8, 10]]
+              round.pair_numbers.should == [[1, 4], [2, 6], [3, 5], [7, 9], [8, 10]]
             end
           end
 

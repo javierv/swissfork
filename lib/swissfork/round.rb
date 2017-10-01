@@ -41,7 +41,7 @@ module Swissfork
         end
       end
 
-      established_pairs
+      established_pairs.sort
     end
 
     # Helper method which makes tests more readable.

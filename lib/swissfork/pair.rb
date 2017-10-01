@@ -7,6 +7,7 @@ module Swissfork
   # but color and result information will be added in the future.
   class Pair
     initialize_with :s1_player, :s2_player
+    include Comparable
 
     def players
       [s1_player, s2_player]
@@ -30,6 +31,10 @@ module Swissfork
 
     def ==(pair)
       eql?(pair)
+    end
+
+    def <=>(pair)
+      players.min <=> pair.players.min
     end
   end
 end

@@ -27,5 +27,14 @@ module Swissfork
         end
       end
     end
+
+    describe "<=>" do
+      let(:smaller_pair) { Pair.new(1, 5) }
+      let(:bigger_pair) { Pair.new(2, 3) }
+
+      it "the pair with the smallest player is smaller" do
+        smaller_pair.should be < bigger_pair
+      end
+    end
   end
 end
