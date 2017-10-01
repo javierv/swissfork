@@ -8,7 +8,7 @@ module Swissfork
   # of the remaining players isn't possible, we need to use
   # players from the last paired bracket.
   class PenultimateBracketHandler
-    initialize_with :penultimate_bracket_players, :last_bracket
+    initialize_with :penultimate_bracket, :last_bracket
 
     def move_players_to_allow_last_bracket_pairs
       while(true)
@@ -25,7 +25,12 @@ module Swissfork
       end
 
       last_bracket.add_players(players_to_move)
-      penultimate_bracket_players.reject! { |player| players_to_move.include?(player) }
+      penultimate_bracket.players.reject! { |player| players_to_move.include?(player) }
+    end
+
+    def normal_pairing_is_ok?
+      pairs = Bracket.new(penultimate_bracket.leftovers + last_bracket.players).pairs
+      pairs && !pairs.empty?
     end
 
   private
@@ -34,7 +39,7 @@ module Swissfork
     end
 
     def compatible_players
-      penultimate_bracket_players.select do |player|
+      penultimate_bracket.players.select do |player|
         leftovers.any? { |leftover| player.compatible_with?(leftover) }
       end
     end

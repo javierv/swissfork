@@ -28,11 +28,6 @@ module Swissfork
       players.each { |player| add_player(player) }
     end
 
-    def move_leftovers_to(bracket)
-      bracket.add_players(leftovers)
-      players.reject! { |player| leftovers.include?(player) }
-    end
-
     def numbers
       players.map(&:number)
     end

@@ -11,8 +11,8 @@ module Swissfork
     describe "#move_players_to_allow_last_bracket_pairs" do
       let(:players) { create_players(1..10) }
       let(:last_bracket) { Bracket.new(players[8..9]) }
-      let(:penultimate_bracket_players) { players[0..7] }
-      let(:handler) { PenultimateBracketHandler.new(penultimate_bracket_players, last_bracket) }
+      let(:penultimate_bracket) { Bracket.new(players[0..7]) }
+      let(:handler) { PenultimateBracketHandler.new(penultimate_bracket, last_bracket) }
 
       before(:each) do
         players[0..7].each { |player| player.stub(:points).and_return(1) }
@@ -24,7 +24,7 @@ module Swissfork
 
         it "doesn't move players" do
           last_bracket.players.should == players[8..9]
-          penultimate_bracket_players.should == players[0..7]
+          penultimate_bracket.players.should == players[0..7]
         end
       end
 
@@ -40,7 +40,7 @@ module Swissfork
         end
 
         it "removes players from the previous bracket" do
-          penultimate_bracket_players.should == players[0..5]
+          penultimate_bracket.players.should == players[0..5]
         end
       end
 
@@ -58,7 +58,7 @@ module Swissfork
         end
 
         it "removes those players and only those players from the previous bracket" do
-          penultimate_bracket_players.should == players[0..3] + players[6..7]
+          penultimate_bracket.players.should == players[0..3] + players[6..7]
         end
       end
 
@@ -74,7 +74,7 @@ module Swissfork
 
         it "descends the lowest players allowing the pair" do
           last_bracket.players.should == [players[4], players[7]] + players[8..9]
-          penultimate_bracket_players.should == players[0..3] + players[5..6]
+          penultimate_bracket.players.should == players[0..3] + players[5..6]
         end
       end
 
