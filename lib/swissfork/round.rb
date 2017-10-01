@@ -8,11 +8,14 @@ module Swissfork
   # public methods are public so they can be easily tested.
   class Round
     require "swissfork/penultimate_bracket_handler"
+    require "swissfork/last_bracket"
 
     initialize_with :players
 
     def brackets
-      @brackets ||= players.group_by(&:points).values.map { |players| Bracket.new(players) }.sort
+      @brackets ||= basic_brackets.tap do |brackets|
+        brackets[-1] = LastBracket.new(brackets.last.players)
+      end
     end
 
     def pairs
@@ -70,6 +73,14 @@ module Swissfork
     def reset_pairs
       @established_pairs = nil
       @brackets = nil
+    end
+
+    def scoregroups
+      players.group_by(&:points).values
+    end
+
+    def basic_brackets
+      scoregroups.map { |players| Bracket.new(players) }.sort
     end
   end
 end

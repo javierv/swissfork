@@ -204,7 +204,8 @@ module Swissfork
     end
 
     def remainder_pairs
-      Remainder.new(still_unpaired_players).pairs
+      # FIXME: hack.
+      Remainder.new(players - established_pairs.map(&:players).flatten).pairs
     end
 
     def pair_for(player)
