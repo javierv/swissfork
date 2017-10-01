@@ -28,11 +28,6 @@ module Swissfork
       penultimate_bracket.players.reject! { |player| players_to_move.include?(player) }
     end
 
-    def normal_pairing_is_ok?
-      pairs = Bracket.new(penultimate_bracket.leftovers + last_bracket.players).pairs
-      pairs && !pairs.empty?
-    end
-
   private
     def permutations
       @permutations ||= compatible_players.permutation

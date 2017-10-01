@@ -14,7 +14,7 @@ module Swissfork
 
     def pairs
       if penultimate?
-        if handler.normal_pairing_is_ok?
+        if next_bracket_pairing_is_ok?
           bracket.pairs
         else
           handler.move_players_to_allow_last_bracket_pairs && bracket.pairs
@@ -60,6 +60,14 @@ module Swissfork
 
     def handler
       PenultimateBracketHandler.new(bracket, next_bracket)
+    end
+
+    def hypothetical_next_pairs
+      Bracket.new(leftovers + next_bracket.players).pairs
+    end
+
+    def next_bracket_pairing_is_ok?
+      hypothetical_next_pairs && !hypothetical_next_pairs.empty?
     end
   end
 end
