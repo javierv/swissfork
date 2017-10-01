@@ -13,7 +13,7 @@ module Swissfork
     def move_players_to_allow_last_bracket_pairs
       while(true)
         begin
-          players_to_move = permutations.next.last(last_bracket.leftovers.count)
+          players_to_move = permutations.next.last(leftovers.count)
         rescue StopIteration
           return nil
         end
@@ -35,8 +35,12 @@ module Swissfork
 
     def compatible_players
       penultimate_bracket_players.select do |player|
-        last_bracket.leftovers.any? { |leftover| player.compatible_with?(leftover) }
+        leftovers.any? { |leftover| player.compatible_with?(leftover) }
       end
+    end
+
+    def leftovers
+      last_bracket.dup.leftovers
     end
   end
 end
