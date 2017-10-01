@@ -9,13 +9,5 @@ module Swissfork
         super
       end
     end
-
-    def still_unpaired_players
-      if heterogeneous? && @bracket_already_paired
-        players - (established_pairs + remainder_pairs).map(&:players).flatten
-      else
-        super
-      end
-    end
   end
 end

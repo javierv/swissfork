@@ -148,7 +148,11 @@ module Swissfork
     end
 
     def leftovers
-      pairs && still_unpaired_players
+      if heterogeneous?
+        pairs && (still_unpaired_players - remainder_pairs.map(&:players).flatten)
+      else
+        pairs && still_unpaired_players
+      end
     end
 
     def mark_established_pairs_as_impossible
@@ -202,8 +206,7 @@ module Swissfork
     end
 
     def remainder_pairs
-      # FIXME: hack.
-      Remainder.new(players - established_pairs.map(&:players).flatten).pairs
+      Remainder.new(still_unpaired_players).pairs
     end
 
     def pair_for(player)
