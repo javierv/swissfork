@@ -220,6 +220,19 @@ module Swissfork
             round.pair_numbers.should == [[1, 4], [2, 6], [3, 7], [5, 9], [8, 10]]
           end
         end
+
+        context "no players from the PPB complete the pairing" do
+          before(:each) do
+            players[0..1].each { |player| player.stub(:points).and_return(2) }
+            players[2..7].each { |player| player.stub(:opponents).and_return([players[8], players[9]]) }
+            players[8].stub(:opponents).and_return(players[2..7] + [players[9]])
+            players[9].stub(:opponents).and_return(players[2..7] + [players[8]])
+          end
+
+          it "redoes the pairing of the last paired bracket" do
+            round.pair_numbers.should == [[1, 9], [2, 10], [3, 6], [4, 7], [5, 8]]
+          end
+        end
       end
 
       context "PPB has leftovers and last bracket has incompatible players" do

@@ -25,15 +25,27 @@ module Swissfork
             if impossible_pairs.include?(established_pairs + bracket.pairs)
               bracket.mark_established_pairs_as_impossible
               redo
-            elsif brackets.count > 1 && bracket == brackets[-2] && bracket.leftovers.empty? && brackets.last.pairs.empty?
-              bracket.mark_established_pairs_as_impossible
-              PenultimateBracketHandler.new(bracket.players, brackets.last).
-                move_players_to_allow_last_bracket_pairs
-              redo
+            elsif brackets.count > 1 && bracket == brackets[-2]
+              pairs = LastBracket.new(bracket.leftovers + brackets.last.players).pairs
+
+              if !pairs || pairs.empty?
+                bracket.mark_established_pairs_as_impossible
+                if PenultimateBracketHandler.new(bracket.players, brackets.last).move_players_to_allow_last_bracket_pairs
+                  redo
+                else
+                  mark_established_pairs_as_impossible
+                  break
+                end
+              else
+                established_pairs.push(*bracket.pairs)
+                bracket.move_leftovers_to(brackets[index + 1])
+              end
             else
               established_pairs.push(*bracket.pairs)
 
-              unless bracket == brackets.last
+              if bracket == brackets.last
+                mark_established_pairs_as_impossible unless pairings_completed?
+              else
                 bracket.move_leftovers_to(brackets[index + 1])
               end
             end
