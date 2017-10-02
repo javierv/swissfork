@@ -11,7 +11,8 @@ module Swissfork
   # players according to the rules described by FIDE.
   class Bracket
     require "swissfork/quality_criterias"
-    require "swissfork/remainder"
+    require "swissfork/heterogeneous_bracket"
+    require "swissfork/homogeneous_bracket"
 
     include Comparable
     attr_reader :players
@@ -21,6 +22,10 @@ module Swissfork
     end
 
     def add_player(player)
+      if self.class == Bracket
+        @pairing_bracket = nil
+      end
+
       @players = (players + [player]).sort
     end
 
@@ -29,6 +34,10 @@ module Swissfork
     end
 
     def remove_players(players_to_remove)
+      if self.class == Bracket
+        @pairing_bracket = nil
+      end
+
       players.reject! { |player| players_to_remove.include?(player) }
     end
 
@@ -57,10 +66,6 @@ module Swissfork
     end
     alias_method :max_pairs, :maximum_number_of_pairs # FIDE nomenclature
 
-    def possible_number_of_pairs
-      pairable_players.count / 2
-    end
-
     def number_of_moved_down_players
       @number_of_moved_down_players ||= moved_down_players.count
     end
@@ -73,22 +78,14 @@ module Swissfork
     end
     alias_method :m1, :number_of_pairable_moved_down_players # FIDE nomenclature
 
+    def number_of_required_pairs
+      pairing_bracket.number_of_required_pairs
+    end
+
     def number_of_players_in_s1
-      if homogeneous?
-        maximum_number_of_pairs
-      else
-        number_of_pairable_moved_down_players
-      end
+      pairing_bracket.number_of_players_in_s1
     end
     alias_method :n1, :number_of_players_in_s1 # FIDE nomenclature
-
-    def number_of_required_pairs
-      if homogeneous?
-        possible_number_of_pairs
-      else
-        number_of_pairable_moved_down_players
-      end
-    end
 
     def s1
       players[0..number_of_players_in_s1-1].sort
@@ -106,35 +103,8 @@ module Swissfork
       s2.map(&:number)
     end
 
-    def pairs
-      if homogeneous?
-        homogeneous_pairs
-      else
-        current_exchange_pairs
-      end
-    end
-
     def unpairable_moved_down_players
       unpairable_players & moved_down_players
-    end
-
-    def homogeneous_pairs
-      while(!current_exchange_pairs)
-        if exchanger.limit_reached?
-          if quality.worst_possible?
-            return []
-          else
-            quality.be_more_permissive
-            restart_pairs
-            players.sort!
-          end
-        else
-          exchange
-          restart_pairs
-        end
-      end
-
-      current_exchange_pairs
     end
 
     def exchange
@@ -145,20 +115,32 @@ module Swissfork
       @exchanger ||= Exchanger.new(s1, s2)
     end
 
+    def pairs
+      pairing_bracket.pairs
+    end
+
+    def leftovers
+      pairing_bracket.leftovers
+    end
+
+    def pairing_bracket
+      @pairing_bracket ||= if homogeneous?
+        HomogeneousBracket.new(players)
+      else
+        HeterogeneousBracket.new(players)
+      end
+    end
+
     # Helper method which makes tests more readable.
     def pair_numbers
       pairs.map(&:numbers)
     end
 
-    def leftovers
-      if heterogeneous?
-        pairs && (still_unpaired_players - remainder_pairs.map(&:players).flatten)
-      else
-        pairs && still_unpaired_players
-      end
-    end
-
     def mark_established_pairs_as_impossible
+      if self.class == Bracket
+        pairing_bracket.mark_established_pairs_as_impossible
+      end
+
       impossible_pairs << established_pairs
       clear_established_pairs
     end
@@ -193,23 +175,11 @@ module Swissfork
     end
 
     def best_pairs_obtained?
-      if homogeneous?
-        pairings_completed? && best_possible_pairs?
-      else
-        pairings_completed? && remainder_pairs.any? && best_possible_pairs?
-      end
+      raise "Implement in subclass"
     end
 
     def definitive_pairs
-      if homogeneous?
-        established_pairs
-      else
-        established_pairs + remainder_pairs
-      end
-    end
-
-    def remainder_pairs
-      Remainder.new(still_unpaired_players).pairs
+      raise "Implement in subclass"
     end
 
     def pair_for(player)
