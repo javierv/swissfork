@@ -488,6 +488,7 @@ module Swissfork
         context "one of the descended players can't be paired" do
           before(:each) do
             players[0].stub(opponents: players[1..10])
+            players[1..10].each { |player| player.stub(opponents: [players[0]]) }
           end
 
           it "can't pair the bracket" do
