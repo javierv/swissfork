@@ -54,6 +54,10 @@ module Swissfork
       player != self && !opponents.include?(player)
     end
 
+    def compatible_players_in(players)
+      players.select { |player| compatible_with?(player) }
+    end
+
     # FIXME: Currently a stub for tests.
     def points
       0

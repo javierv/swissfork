@@ -217,17 +217,13 @@ module Swissfork
     end
 
     def opponents_for(player)
-      s2.select do |opponent|
-        player.compatible_with?(opponent) && !already_paired?(opponent)
+      player.compatible_players_in(s2).select do |opponent|
+        !already_paired?(opponent)
       end
     end
 
-    def players_compatible_for(player)
-      players.select { |opponent| player.compatible_with?(opponent) }
-    end
-
     def pairable_players
-      players.select { |player| players_compatible_for(player).any? }
+      players.select { |player| player.compatible_players_in(players).any? }
     end
 
     def unpairable_players
