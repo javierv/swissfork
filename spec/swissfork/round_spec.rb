@@ -75,7 +75,7 @@ module Swissfork
           players[0..4].each { |player| player.stub(points: 1) }
         end
 
-        it "pairs the descendent player on the second bracket" do
+        it "pairs the moved down player on the second bracket" do
           round.pair_numbers.should == [[1, 3], [2, 4], [5, 6], [7, 9], [8, 10]]
         end
 
