@@ -65,7 +65,7 @@ module Swissfork
     def number_of_pairable_moved_down_players
       # FIXME: write test for the case where this number is lower
       # than the number of the resident players.
-      number_of_moved_down_players
+      (moved_down_players & pairable_players).count
     end
     alias_method :m1, :number_of_pairable_moved_down_players # FIDE nomenclature
 
@@ -108,6 +108,10 @@ module Swissfork
       else
         current_exchange_pairs
       end
+    end
+
+    def unpairable_moved_down_players
+      unpairable_players & moved_down_players
     end
 
     def homogeneous_pairs
@@ -224,6 +228,10 @@ module Swissfork
 
     def pairable_players
       players.select { |player| players_compatible_for(player).any? }
+    end
+
+    def unpairable_players
+      players - pairable_players
     end
 
     def pairings_completed?

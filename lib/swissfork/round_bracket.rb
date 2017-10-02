@@ -13,6 +13,10 @@ module Swissfork
     initialize_with :bracket, :brackets
 
     def pairs
+      if bracket.heterogeneous? && !last?
+        move_unpairable_moved_down_players_to_limbo
+      end
+
       if penultimate?
         if next_bracket_pairing_is_ok?
           bracket.pairs
@@ -29,7 +33,7 @@ module Swissfork
     end
 
     def leftovers
-      bracket.leftovers
+      limbo + bracket.leftovers.to_a
     end
 
     def players
@@ -49,7 +53,20 @@ module Swissfork
       bracket == brackets.last
     end
 
+    def pair_numbers
+      pairs.map(&:numbers)
+    end
+
   private
+    def move_unpairable_moved_down_players_to_limbo
+      limbo.push(*unpairable_moved_down_players)
+      players.reject! { |player| unpairable_moved_down_players.include?(player) }
+    end
+
+    def unpairable_moved_down_players
+      bracket.unpairable_moved_down_players
+    end
+
     def next_bracket
       brackets[brackets.index(bracket) + 1]
     end
@@ -68,6 +85,10 @@ module Swissfork
 
     def next_bracket_pairing_is_ok?
       hypothetical_next_pairs && !hypothetical_next_pairs.empty?
+    end
+
+    def limbo
+      @limbo ||= []
     end
   end
 end

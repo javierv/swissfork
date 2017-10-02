@@ -247,6 +247,22 @@ module Swissfork
           round.pair_numbers.should == [[1, 5], [2, 6], [3, 7], [4, 8], [9, 10]]
         end
       end
+
+      context "a player is required to downfloat twice" do
+        let(:players) { create_players(1..10) }
+
+        before(:each) do
+          players[0..2].each { |player| player.stub(points: 2) }
+          players[3..6].each { |player| player.stub(points: 1) }
+          players[7..9].each { |player| player.stub(points: 0) }
+          players[0].stub(opponents: players[1..6])
+          players[1..6].each { |player| player.stub(opponents: [players[0]]) }
+        end
+
+        it "downfloats the unpairable player twice" do
+          round.pair_numbers.should == [[1, 8], [2, 3], [4, 6], [5, 7], [9, 10]]
+        end
+      end
     end
   end
 end
