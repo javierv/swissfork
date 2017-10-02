@@ -42,7 +42,7 @@ module Swissfork
 
     def move_leftovers_to_next_bracket
       next_bracket.add_players(leftovers)
-      players.reject! { |player| leftovers.include?(player) }
+      bracket.remove_players(leftovers)
     end
 
     def mark_established_pairs_as_impossible
@@ -60,7 +60,7 @@ module Swissfork
   private
     def move_unpairable_moved_down_players_to_limbo
       limbo.push(*unpairable_moved_down_players)
-      players.reject! { |player| unpairable_moved_down_players.include?(player) }
+      bracket.remove_players(unpairable_moved_down_players)
     end
 
     def unpairable_moved_down_players

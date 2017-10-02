@@ -25,7 +25,7 @@ module Swissfork
       end
 
       last_bracket.add_players(players_to_move)
-      penultimate_bracket.players.reject! { |player| players_to_move.include?(player) }
+      penultimate_bracket.remove_players(players_to_move)
     end
 
   private

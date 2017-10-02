@@ -28,6 +28,10 @@ module Swissfork
       players.each { |player| add_player(player) }
     end
 
+    def remove_players(players_to_remove)
+      players.reject! { |player| players_to_remove.include?(player) }
+    end
+
     def numbers
       players.map(&:number)
     end
