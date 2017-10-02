@@ -501,7 +501,6 @@ module Swissfork
       end
     end
 
-
     describe "#leftovers" do
       context "even number of players" do
         let(:players) { create_players(1..10) }
