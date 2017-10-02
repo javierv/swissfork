@@ -24,11 +24,11 @@ module Swissfork
 
     describe "#<=>" do
       context "players with different points" do
-        let(:player) { Player.new(2).tap { |player| player.stub(:points).and_return(1) } }
+        let(:player) { Player.new(2).tap { |player| player.stub(points: 1) } }
 
         it "uses the points in descending order to compare players" do
           player.should be < Player.new(1)
-          player.should be > Player.new(3).tap { |player| player.stub(:points).and_return(2) }
+          player.should be > Player.new(3).tap { |player| player.stub(points: 2) }
         end
       end
 
@@ -45,7 +45,7 @@ module Swissfork
     describe "#compatible_with" do
       let(:player) { Player.new(2) }
       before(:each) do
-        player.stub(:opponents).and_return([Player.new(3)])
+        player.stub(opponents: [Player.new(3)])
       end
 
       it "isn't compatible with a previous opponents" do

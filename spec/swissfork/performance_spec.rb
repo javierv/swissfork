@@ -16,8 +16,8 @@ module Swissfork
 
         context "no obvious downfloat" do
           before(:each) do
-            players[0..8].each { |player| player.stub(:points).and_return(1) }
-            players[4..8].each { |player| player.stub(:floats).and_return([:down]) }
+            players[0..8].each { |player| player.stub(points: 1) }
+            players[4..8].each { |player| player.stub(floats: [:down]) }
           end
 
           it "is very fast" do
@@ -32,8 +32,8 @@ module Swissfork
         context "no obvious downfloat" do
 
           before(:each) do
-            players[0..14].each { |player| player.stub(:points).and_return(1) }
-            players[7..14].each { |player| player.stub(:floats).and_return([:down]) }
+            players[0..14].each { |player| player.stub(points: 1) }
+            players[7..14].each { |player| player.stub(floats: [:down]) }
           end
 
           it "performs lineally" do
@@ -47,8 +47,8 @@ module Swissfork
 
         context "no obvious downfloat" do
           before(:each) do
-            players[0..24].each { |player| player.stub(:points).and_return(1) }
-            players[12..24].each { |player| player.stub(:floats).and_return([:down]) }
+            players[0..24].each { |player| player.stub(points: 1) }
+            players[12..24].each { |player| player.stub(floats: [:down]) }
           end
 
           # TODO: improve the time this test takes.

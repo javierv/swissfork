@@ -15,8 +15,8 @@ module Swissfork
       let(:handler) { PenultimateBracketHandler.new(penultimate_bracket, last_bracket) }
 
       before(:each) do
-        players[0..7].each { |player| player.stub(:points).and_return(1) }
-        players[8..9].each { |player| player.stub(:points).and_return(0) }
+        players[0..7].each { |player| player.stub(points: 1) }
+        players[8..9].each { |player| player.stub(points: 0) }
       end
 
       context "no need to move players" do
@@ -30,8 +30,8 @@ module Swissfork
 
       context "last players from the PPB complete the pairing" do
         before(:each) do
-          players[8].stub(:opponents).and_return([players[9]])
-          players[9].stub(:opponents).and_return([players[8]])
+          players[8].stub(opponents: [players[9]])
+          players[9].stub(opponents: [players[8]])
           handler.move_players_to_allow_last_bracket_pairs
         end
 
@@ -46,10 +46,10 @@ module Swissfork
 
       context "last players from the PPB don't complete the pairing" do
         before(:each) do
-          players[6].stub(:opponents).and_return([players[8], players[9]])
-          players[7].stub(:opponents).and_return([players[8], players[9]])
-          players[8].stub(:opponents).and_return([players[9]] + players[6..7])
-          players[9].stub(:opponents).and_return([players[8]] + players[6..7])
+          players[6].stub(opponents: [players[8], players[9]])
+          players[7].stub(opponents: [players[8], players[9]])
+          players[8].stub(opponents: [players[9]] + players[6..7])
+          players[9].stub(opponents: [players[8]] + players[6..7])
           handler.move_players_to_allow_last_bracket_pairs
         end
 
@@ -64,11 +64,11 @@ module Swissfork
 
       context "more than one permutation needed" do
         before(:each) do
-          players[5].stub(:opponents).and_return([players[8], players[9]])
-          players[6].stub(:opponents).and_return([players[8]])
-          players[7].stub(:opponents).and_return([players[8]])
-          players[8].stub(:opponents).and_return(players[6..7] + [players[9], players[5]])
-          players[9].stub(:opponents).and_return([players[5], players[8]])
+          players[5].stub(opponents: [players[8], players[9]])
+          players[6].stub(opponents: [players[8]])
+          players[7].stub(opponents: [players[8]])
+          players[8].stub(opponents: players[6..7] + [players[9], players[5]])
+          players[9].stub(opponents: [players[5], players[8]])
           handler.move_players_to_allow_last_bracket_pairs
         end
 
@@ -80,9 +80,9 @@ module Swissfork
 
       context "no players allow last bracket pairs" do
         before(:each) do
-          players[0..7].each { |player| player.stub(:opponents).and_return([players[8], players[9]]) }
-          players[8].stub(:opponents).and_return(players[0..7] + [players[9]])
-          players[9].stub(:opponents).and_return(players[0..7] + [players[8]])
+          players[0..7].each { |player| player.stub(opponents: [players[8], players[9]]) }
+          players[8].stub(opponents: players[0..7] + [players[9]])
+          players[9].stub(opponents: players[0..7] + [players[8]])
         end
 
         it "returns nil" do

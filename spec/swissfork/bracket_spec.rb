@@ -53,7 +53,7 @@ module Swissfork
       let(:bracket) { Bracket.new(players) }
 
       before(:each) do
-        players.each { |player| player.stub(:points).and_return(1) }
+        players.each { |player| player.stub(points: 1) }
       end
 
       context "players with the same points" do
@@ -64,7 +64,7 @@ module Swissfork
 
       context "players with different number of points" do
         before(:each) do
-          players.first.stub(:points).and_return(1.5)
+          players.first.stub(points: 1.5)
         end
 
         it "returns false" do
@@ -74,7 +74,7 @@ module Swissfork
 
       context "at least half of the players have different number of points" do
         before(:each) do
-          players[0..2].each { |player| player.stub(:points).and_return(1.5) }
+          players[0..2].each { |player| player.stub(points: 1.5) }
         end
 
         it "returns true" do
@@ -88,7 +88,7 @@ module Swissfork
       let(:bracket) { Bracket.new(players) }
 
       before(:each) do
-        players.each { |player| player.stub(:points).and_return(1) }
+        players.each { |player| player.stub(points: 1) }
       end
 
       context "players with the same points" do
@@ -99,7 +99,7 @@ module Swissfork
 
       context "players with different number of points" do
         before(:each) do
-          players.first.stub(:points).and_return(1.5)
+          players.first.stub(points: 1.5)
         end
 
         it "returns true" do
@@ -109,7 +109,7 @@ module Swissfork
 
       context "at least half of the players have different number of points" do
         before(:each) do
-          players[0..2].each { |player| player.stub(:points).and_return(1.5) }
+          players[0..2].each { |player| player.stub(points: 1.5) }
         end
 
         it "returns false" do
@@ -143,7 +143,7 @@ module Swissfork
       let(:bracket) { Bracket.new(players) }
 
       before(:each) do
-        players.each { |player| player.stub(:points).and_return(1) }
+        players.each { |player| player.stub(points: 1) }
       end
 
       context "homogeneous bracket" do
@@ -153,7 +153,7 @@ module Swissfork
       end
 
       context "heterogeneous bracket" do
-        before(:each) { players.last.stub(:points).and_return(0.5) }
+        before(:each) { players.last.stub(points: 0.5) }
 
         it "returns the points from the player with the lowest amount of points" do
           bracket.points.should == 0.5
@@ -166,7 +166,7 @@ module Swissfork
       let(:bracket) { Bracket.new(players) }
 
       before(:each) do
-        players.each { |player| player.stub(:points).and_return(1) }
+        players.each { |player| player.stub(points: 1) }
       end
 
       context "homogeneous bracket" do
@@ -176,7 +176,7 @@ module Swissfork
       end
 
       context "heterogeneous bracket" do
-        before(:each) { players.first.stub(:points).and_return(1.5) }
+        before(:each) { players.first.stub(points: 1.5) }
 
         it "returns the number of descended players" do
           bracket.number_of_moved_down_players.should == 1
@@ -187,7 +187,7 @@ module Swissfork
     describe "#s1_numbers" do
       let(:bracket) do
         Bracket.new([]).tap do |bracket|
-          bracket.stub(:s1).and_return(create_players(1..4))
+          bracket.stub(s1: create_players(1..4))
         end
       end
 
@@ -199,7 +199,7 @@ module Swissfork
     describe "#s2_numbers" do
       let(:bracket) do
         Bracket.new([]).tap do |bracket|
-          bracket.stub(:s2).and_return(create_players(5..8))
+          bracket.stub(s2: create_players(5..8))
         end
       end
 
@@ -213,7 +213,7 @@ module Swissfork
         let(:players) { create_players(1..6) }
         let(:bracket) { Bracket.new(players) }
         before(:each) do
-          players.each { |player| player.stub(:points).and_return(1) }
+          players.each { |player| player.stub(points: 1) }
         end
 
         context "homogeneous bracket" do
@@ -224,7 +224,7 @@ module Swissfork
 
         context "heterogeneous bracket" do
           before(:each) do
-            players[0..1].each { |player| player.stub(:points).and_return(1.5) }
+            players[0..1].each { |player| player.stub(points: 1.5) }
           end
 
           it "returns the descended players" do
@@ -257,7 +257,7 @@ module Swissfork
         let(:bracket) { Bracket.new(players) }
 
         before(:each) do
-          players.each { |player| player.stub(:points).and_return(1) }
+          players.each { |player| player.stub(points: 1) }
         end
 
         context "homogeneous bracket" do
@@ -268,7 +268,7 @@ module Swissfork
 
         context "heterogeneous bracket" do
           before(:each) do
-            players[0..1].each { |player| player.stub(:points).and_return(1.5) }
+            players[0..1].each { |player| player.stub(points: 1.5) }
           end
 
           it "returns all players but the descended ones" do
@@ -307,7 +307,7 @@ module Swissfork
         let(:players) { create_players(1..10) }
         let(:bracket) { Bracket.new(players) }
         before(:each) do
-          players.each { |player| player.stub(:opponents).and_return([]) }
+          players.each { |player| player.stub(opponents: []) }
         end
 
         context "no previous opponents" do
@@ -318,8 +318,8 @@ module Swissfork
 
         context "need to transpose once" do
           before(:each) do
-            players[4].stub(:opponents).and_return([players[9]])
-            players[9].stub(:opponents).and_return([players[4]])
+            players[4].stub(opponents: [players[9]])
+            players[9].stub(opponents: [players[4]])
           end
 
           it "pairs the players after transposing" do
@@ -329,9 +329,9 @@ module Swissfork
 
         context "need to transpose twice" do
           before(:each) do
-            players[3].stub(:opponents).and_return([players[9], players[8]])
-            players[9].stub(:opponents).and_return([players[3]])
-            players[8].stub(:opponents).and_return([players[3]])
+            players[3].stub(opponents: [players[9], players[8]])
+            players[9].stub(opponents: [players[3]])
+            players[8].stub(opponents: [players[3]])
           end
 
           it "pairs using the next transposition" do
@@ -341,10 +341,10 @@ module Swissfork
 
         context "need to transpose three times" do
           before(:each) do
-            players[3].stub(:opponents).and_return([players[8]])
-            players[4].stub(:opponents).and_return(players[8..9])
-            players[9].stub(:opponents).and_return([players[4]])
-            players[8].stub(:opponents).and_return(players[3..4])
+            players[3].stub(opponents: [players[8]])
+            players[4].stub(opponents: players[8..9])
+            players[9].stub(opponents: [players[4]])
+            players[8].stub(opponents: players[3..4])
           end
 
           it "pairs using the next transposition" do
@@ -354,15 +354,15 @@ module Swissfork
 
         context "only the last transposition makes pairing possible" do
           before(:each) do
-            players[4].stub(:opponents).and_return(players[6..9])
-            players[3].stub(:opponents).and_return(players[7..9])
-            players[2].stub(:opponents).and_return(players[8..9])
-            players[1].stub(:opponents).and_return([players[9]])
+            players[4].stub(opponents: players[6..9])
+            players[3].stub(opponents: players[7..9])
+            players[2].stub(opponents: players[8..9])
+            players[1].stub(opponents: [players[9]])
 
-            players[9].stub(:opponents).and_return(players[1..4])
-            players[8].stub(:opponents).and_return(players[2..4])
-            players[7].stub(:opponents).and_return(players[3..4])
-            players[6].stub(:opponents).and_return([players[4]])
+            players[9].stub(opponents: players[1..4])
+            players[8].stub(opponents: players[2..4])
+            players[7].stub(opponents: players[3..4])
+            players[6].stub(opponents: [players[4]])
           end
 
           it "pairs after transposing every player" do
@@ -372,10 +372,10 @@ module Swissfork
 
         context "one previous opponent" do
           before(:each) do
-            players[0].stub(:opponents).and_return([players[5]])
-            players[5].stub(:opponents).and_return([players[0]])
-            players[3].stub(:opponents).and_return([players[8]])
-            players[8].stub(:opponents).and_return([players[3]])
+            players[0].stub(opponents: [players[5]])
+            players[5].stub(opponents: [players[0]])
+            players[3].stub(opponents: [players[8]])
+            players[8].stub(opponents: [players[3]])
           end
 
           it "pairs the players avoiding previous opponents" do
@@ -385,13 +385,13 @@ module Swissfork
 
         context "several previous opponents" do
           before(:each) do
-            players[2].stub(:opponents).and_return([players[9]])
-            players[3].stub(:opponents).and_return(players[8..9])
-            players[4].stub(:opponents).and_return(players[7..9])
+            players[2].stub(opponents: [players[9]])
+            players[3].stub(opponents: players[8..9])
+            players[4].stub(opponents: players[7..9])
 
-            players[9].stub(:opponents).and_return(players[2..4])
-            players[8].stub(:opponents).and_return(players[3..4])
-            players[7].stub(:opponents).and_return([players[4]])
+            players[9].stub(opponents: players[2..4])
+            players[8].stub(opponents: players[3..4])
+            players[7].stub(opponents: [players[4]])
           end
 
           it "pairs the players avoiding previous opponents" do
@@ -401,8 +401,8 @@ module Swissfork
 
         context "one player from S1 has played against everyone in S2" do
           before(:each) do
-            players[0].stub(:opponents).and_return(players[5..9])
-            players[5..9].each { |player| player.stub(:opponents).and_return([players[0]]) }
+            players[0].stub(opponents: players[5..9])
+            players[5..9].each { |player| player.stub(opponents: [players[0]]) }
           end
 
           it "pairs the players with another player from S1" do
@@ -412,13 +412,11 @@ module Swissfork
 
         context "two players from S1 have played against everyone in S2" do
           before(:each) do
-            players[0].stub(:opponents).and_return([players[1]] + players[3..9])
-            players[1].stub(:opponents).and_return(
-              [players[0], players[2]] + players[4..9]
-            )
-            players[2].stub(:opponents).and_return([players[1]])
-            players[3].stub(:opponents).and_return([players[0]])
-            players[4..9].stub(:opponents).and_return([players[0], players[1]])
+            players[0].stub(opponents: [players[1]] + players[3..9])
+            players[1].stub(opponents: [players[0], players[2]] + players[4..9])
+            players[2].stub(opponents: [players[1]])
+            players[3].stub(opponents: [players[0]])
+            players[4..9].stub(opponents: [players[0], players[1]])
           end
 
           it "pairs those two players with players from S1" do
@@ -431,7 +429,7 @@ module Swissfork
         let(:players) { create_players(1..11) }
         let(:bracket) { Bracket.new(players) }
         before(:each) do
-          players.each { |player| player.stub(:opponents).and_return([]) }
+          players.each { |player| player.stub(opponents: []) }
         end
 
         context "no previous opponents" do
@@ -442,8 +440,8 @@ module Swissfork
 
         context "previous opponents affecting the second to last player" do
           before(:each) do
-            players[4].stub(:opponents).and_return([players[9]])
-            players[9].stub(:opponents).and_return([players[4]])
+            players[4].stub(opponents: [players[9]])
+            players[9].stub(opponents: [players[4]])
           end
 
           it "pairs all players except the second to last one" do
@@ -456,8 +454,8 @@ module Swissfork
         let(:players) { create_players(1..10) }
         let(:bracket) { Bracket.new(players) }
         before(:each) do
-          players[0].stub(:points).and_return(1.5)
-          players[1].stub(:points).and_return(1.5)
+          players[0].stub(points: 1.5)
+          players[1].stub(points: 1.5)
         end
 
         context "the resulting homogeneous group is possible to pair" do
@@ -468,10 +466,8 @@ module Swissfork
 
         context "the resulting homogeneous group isn't possible to pair" do
           before(:each) do
-            players[4].stub(:opponents).and_return(players[5..9])
-            players[5..9].each do |player|
-              player.stub(:opponents).and_return([players[4]])
-            end
+            players[4].stub(opponents: players[5..9])
+            players[5..9].each { |player| player.stub(opponents: [players[4]]) }
           end
 
           it "redoes the pairing of the descended players" do
@@ -485,13 +481,13 @@ module Swissfork
         let(:bracket) { Bracket.new(players) }
 
         before(:each) do
-          players[0].stub(:points).and_return(1.5)
-          players[1].stub(:points).and_return(1.5)
+          players[0].stub(points: 1.5)
+          players[1].stub(points: 1.5)
         end
 
         context "one of the descended players can't be paired" do
           before(:each) do
-            players[0].stub(:opponents).and_return(players[1..10])
+            players[0].stub(opponents: players[1..10])
           end
 
           it "can't pair the bracket" do
@@ -523,8 +519,8 @@ module Swissfork
 
         context "previous opponents affecting the second to last player" do
           before(:each) do
-            players[4].stub(:opponents).and_return([players[9]])
-            players[9].stub(:opponents).and_return([players[4]])
+            players[4].stub(opponents: [players[9]])
+            players[9].stub(opponents: [players[4]])
           end
 
           it "returns the second to last player" do
@@ -537,7 +533,7 @@ module Swissfork
     describe "<=>" do
       def bracket_with_points(points)
         Bracket.new([]).tap do |bracket|
-          bracket.stub(:points).and_return(points)
+          bracket.stub(points: points)
         end
       end
 
