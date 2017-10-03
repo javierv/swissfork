@@ -1,6 +1,11 @@
 require "swissfork/bracket"
 
 module Swissfork
+  # Handles the pairing of a homogeneous bracket.
+  #
+  # This class isn't supposed to be used directly; brackets
+  # should be created using Bracket.for(players), which returns
+  # either a homogeneous or a heterogeneous bracket.
   class HomogeneousBracket < Bracket
     def leftovers
       pairs && still_unpaired_players
