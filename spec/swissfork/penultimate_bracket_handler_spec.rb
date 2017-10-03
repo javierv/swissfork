@@ -10,8 +10,8 @@ module Swissfork
 
     describe "#move_players_to_allow_last_bracket_pairs" do
       let(:players) { create_players(1..10) }
-      let(:last_bracket) { Bracket.new(players[8..9]) }
-      let(:penultimate_bracket) { Bracket.new(players[0..7]) }
+      let(:last_bracket) { Bracket.for(players[8..9]) }
+      let(:penultimate_bracket) { Bracket.for(players[0..7]) }
       let(:handler) { PenultimateBracketHandler.new(penultimate_bracket, last_bracket) }
 
       before(:each) do

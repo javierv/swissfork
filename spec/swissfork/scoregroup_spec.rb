@@ -9,7 +9,7 @@ module Swissfork
     end
 
     def create_bracket(numbers, points: 0)
-      Bracket.new(create_players(numbers)).tap do |bracket|
+      Bracket.for(create_players(numbers)).tap do |bracket|
         bracket.stub(points: points)
       end
     end
@@ -17,7 +17,7 @@ module Swissfork
     describe "#pairs" do
       context "heterogeneous bracket" do
         let(:players) { create_players(1..11) }
-        let(:bracket) { Bracket.new(players) }
+        let(:bracket) { Bracket.for(players) }
 
         before(:each) do
           players[0].stub(points: 3.5)

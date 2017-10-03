@@ -7,7 +7,7 @@ module Swissfork
       numbers.map { |number| Player.new(number) }
     end
 
-    let(:bracket) { Bracket.new(players) }
+    let(:bracket) { Bracket.for(players) }
 
     describe "#add_player" do
       let(:players) { create_players(1..6) }
@@ -180,7 +180,7 @@ module Swissfork
 
     describe "#s1_numbers" do
       let(:bracket) do
-        Bracket.new([]).tap do |bracket|
+        Bracket.for([]).tap do |bracket|
           bracket.stub(s1: create_players(1..4))
         end
       end
@@ -192,7 +192,7 @@ module Swissfork
 
     describe "#s2_numbers" do
       let(:bracket) do
-        Bracket.new([]).tap do |bracket|
+        Bracket.for([]).tap do |bracket|
           bracket.stub(s2: create_players(5..8))
         end
       end
@@ -280,7 +280,7 @@ module Swissfork
     describe "#exchange" do
       let(:s1_players) { create_players(1..5) }
       let(:s2_players) { create_players(6..11) }
-      let(:bracket) { Bracket.new(s1_players + s2_players) }
+      let(:bracket) { Bracket.for(s1_players + s2_players) }
 
       context "two exchanges" do
         before(:each) { 2.times { bracket.exchange }}
@@ -517,7 +517,7 @@ module Swissfork
 
     describe "<=>" do
       def bracket_with_points(points)
-        Bracket.new([]).tap do |bracket|
+        Bracket.for([]).tap do |bracket|
           bracket.stub(points: points)
         end
       end

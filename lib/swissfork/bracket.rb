@@ -9,6 +9,10 @@ module Swissfork
   #
   # The main method in this class is #pairs, which pairs its
   # players according to the rules described by FIDE.
+  #
+  # Objects from this class are useless, so the way to create
+  # them is using Bracket.for(players), which creates an object
+  # from either HomogeneousBracket or HeterogeneousBracket.
   class Bracket
     require "swissfork/quality_criterias"
     require "swissfork/heterogeneous_bracket"
@@ -17,15 +21,19 @@ module Swissfork
     include Comparable
     attr_reader :players
 
+    def self.for(players)
+      if new(players).homogeneous?
+        HomogeneousBracket.new(players)
+      else
+        HeterogeneousBracket.new(players)
+      end
+    end
+
     def initialize(players)
       @players = players.sort
     end
 
     def add_player(player)
-      if self.class == Bracket
-        @pairing_bracket = nil
-      end
-
       @players = (players + [player]).sort
     end
 
@@ -34,10 +42,6 @@ module Swissfork
     end
 
     def remove_players(players_to_remove)
-      if self.class == Bracket
-        @pairing_bracket = nil
-      end
-
       players.reject! { |player| players_to_remove.include?(player) }
     end
 
@@ -79,11 +83,11 @@ module Swissfork
     alias_method :m1, :number_of_pairable_moved_down_players # FIDE nomenclature
 
     def number_of_required_pairs
-      pairing_bracket.number_of_required_pairs
+      raise "Implement in subclass"
     end
 
     def number_of_players_in_s1
-      pairing_bracket.number_of_players_in_s1
+      raise "Implement in subclass"
     end
     alias_method :n1, :number_of_players_in_s1 # FIDE nomenclature
 
@@ -115,20 +119,8 @@ module Swissfork
       @exchanger ||= Exchanger.new(s1, s2)
     end
 
-    def pairs
-      pairing_bracket.pairs
-    end
-
     def leftovers
-      pairing_bracket.leftovers
-    end
-
-    def pairing_bracket
-      @pairing_bracket ||= if homogeneous?
-        HomogeneousBracket.new(players)
-      else
-        HeterogeneousBracket.new(players)
-      end
+      raise "Implement in subclass"
     end
 
     # Helper method which makes tests more readable.
@@ -137,10 +129,6 @@ module Swissfork
     end
 
     def mark_established_pairs_as_impossible
-      if self.class == Bracket
-        pairing_bracket.mark_established_pairs_as_impossible
-      end
-
       impossible_pairs << established_pairs
       clear_established_pairs
     end

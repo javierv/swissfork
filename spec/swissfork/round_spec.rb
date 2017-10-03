@@ -52,7 +52,7 @@ module Swissfork
         let(:players) { create_players(1..7) }
 
         it "returns the same pairs as the bracket" do
-          round.pair_numbers.should == Bracket.new(players).pair_numbers
+          round.pair_numbers.should == Bracket.for(players).pair_numbers
         end
       end
 
@@ -64,7 +64,7 @@ module Swissfork
         end
 
         it "returns the combination of each brackets pairs" do
-          round.pair_numbers.should == Bracket.new(players[0..9]).pair_numbers + Bracket.new(players[10..19]).pair_numbers
+          round.pair_numbers.should == Bracket.for(players[0..9]).pair_numbers + Bracket.for(players[10..19]).pair_numbers
         end
       end
 

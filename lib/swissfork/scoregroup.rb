@@ -80,7 +80,7 @@ module Swissfork
     end
 
     def hypothetical_next_pairs
-      Bracket.new(leftovers + next_bracket.players).pairs
+      Bracket.for(leftovers + next_bracket.players).pairs
     end
 
     def next_bracket_pairing_is_ok?

@@ -72,7 +72,7 @@ module Swissfork
     end
 
     def brackets
-      @brackets ||= player_groups.map { |players| Bracket.new(players) }.sort
+      @brackets ||= player_groups.map { |players| Bracket.for(players) }.sort
     end
   end
 end
