@@ -7,26 +7,26 @@ module Swissfork
   # Its only useful public method is #pairs. All the other
   # public methods are public so they can be easily tested.
   class Round
-    require "swissfork/round_bracket"
+    require "swissfork/scoregroup"
 
     initialize_with :players
 
-    def brackets
-      @brackets ||= basic_brackets.map do |bracket|
-        RoundBracket.new(bracket, basic_brackets)
+    def scoregroups
+      @scoregroups ||= brackets.map do |bracket|
+        Scoregroup.new(bracket, brackets)
       end
     end
 
     def pairs
       while(!pairings_completed?)
-        brackets.each.with_index do |bracket, index|
-          if bracket.pairs
-            if impossible_pairs.include?(established_pairs + bracket.pairs)
-              bracket.mark_established_pairs_as_impossible
+        scoregroups.each.with_index do |scoregroup, index|
+          if scoregroup.pairs
+            if impossible_pairs.include?(established_pairs + scoregroup.pairs)
+              scoregroup.mark_established_pairs_as_impossible
               redo
             else
-              established_pairs.push(*bracket.pairs)
-              bracket.move_leftovers_to_next_bracket unless bracket.last?
+              established_pairs.push(*scoregroup.pairs)
+              scoregroup.move_leftovers_to_next_bracket unless scoregroup.last?
             end
           else
             mark_established_pairs_as_impossible
@@ -63,16 +63,16 @@ module Swissfork
 
     def reset_pairs
       @established_pairs = nil
+      @scoregroups = nil
       @brackets = nil
-      @basic_brackets = nil
     end
 
-    def scoregroups
+    def player_groups
       players.group_by(&:points).values
     end
 
-    def basic_brackets
-      @basic_brackets ||= scoregroups.map { |players| Bracket.new(players) }.sort
+    def brackets
+      @brackets ||= player_groups.map { |players| Bracket.new(players) }.sort
     end
   end
 end

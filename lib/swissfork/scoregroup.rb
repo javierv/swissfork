@@ -7,7 +7,7 @@ module Swissfork
   # Sometimes a bracket needs to know about other brackets;
   # for example, in criterias C.4 (penultimate bracket) and
   # C.7 (maximize pairs in the next bracket).
-  class RoundBracket
+  class Scoregroup
     require "swissfork/penultimate_bracket_handler"
 
     initialize_with :bracket, :brackets

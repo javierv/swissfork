@@ -1,9 +1,9 @@
-require "swissfork/round_bracket"
+require "swissfork/scoregroup"
 require "swissfork/bracket"
 require "swissfork/player"
 
 module Swissfork
-  describe RoundBracket do
+  describe Scoregroup do
     def create_players(numbers)
       numbers.map { |number| Player.new(number) }
     end
@@ -33,10 +33,10 @@ module Swissfork
 
           context "it's the last bracket" do
             let(:brackets) { [bracket] }
-            let(:round_bracket) { RoundBracket.new(bracket, brackets) }
+            let(:scoregroup) { Scoregroup.new(bracket, brackets) }
 
             it "can't pair the bracket" do
-              round_bracket.pairs.should be nil
+              scoregroup.pairs.should be nil
             end
           end
 
@@ -47,11 +47,11 @@ module Swissfork
                create_bracket(31..40, points: 0)]
             end
 
-            let(:round_bracket) { RoundBracket.new(bracket, brackets) }
+            let(:scoregroup) { Scoregroup.new(bracket, brackets) }
 
             it "pairs the bracket and downfloats the moved down player" do
-              round_bracket.pair_numbers.should == [[2, 3], [4, 8], [5, 9], [6, 10], [7, 11]]
-              round_bracket.leftovers.should == [players[0]]
+              scoregroup.pair_numbers.should == [[2, 3], [4, 8], [5, 9], [6, 10], [7, 11]]
+              scoregroup.leftovers.should == [players[0]]
             end
           end
         end

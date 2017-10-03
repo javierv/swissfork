@@ -7,12 +7,12 @@ module Swissfork
       numbers.map { |number| Player.new(number) }
     end
 
-    describe "#brackets" do
+    describe "#scoregroups" do
       context "players with the same points" do
         let(:players) { create_players(1..6) }
 
         it "returns only one bracket" do
-          Round.new(players).brackets.count.should be 1
+          Round.new(players).scoregroups.count.should be 1
         end
       end
 
@@ -26,21 +26,21 @@ module Swissfork
           players[3].stub(points: 0.5)
         end
 
-        let(:brackets) { Round.new(players).brackets }
+        let(:scoregroups) { Round.new(players).scoregroups }
 
-        it "returns as many brackets as different points" do
-          brackets.count.should be 4
+        it "returns as many scoregroups as different points" do
+          scoregroups.count.should be 4
         end
 
         it "sorts the bracket by number of points" do
-          brackets.map(&:points).should == [2, 1, 0.5, 0]
+          scoregroups.map(&:points).should == [2, 1, 0.5, 0]
         end
 
         it "groups each player to the right bracket" do
-          brackets[0].players.should == [players[2]]
-          brackets[1].players.should == [players[0], players[1]]
-          brackets[2].players.should == [players[3]]
-          brackets[3].players.should == [players[4], players[5]]
+          scoregroups[0].players.should == [players[2]]
+          scoregroups[1].players.should == [players[0], players[1]]
+          scoregroups[2].players.should == [players[3]]
+          scoregroups[3].players.should == [players[4], players[5]]
         end
       end
     end
