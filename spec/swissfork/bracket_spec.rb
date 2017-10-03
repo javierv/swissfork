@@ -7,9 +7,10 @@ module Swissfork
       numbers.map { |number| Player.new(number) }
     end
 
+    let(:bracket) { Bracket.new(players) }
+
     describe "#add_player" do
       let(:players) { create_players(1..6) }
-      let(:bracket) { Bracket.new(players) }
 
       context "player is the lowest player" do
         let(:player) { Player.new(7) }
@@ -41,7 +42,6 @@ module Swissfork
 
     describe "#numbers" do
       let(:players) { create_players(1..6) }
-      let(:bracket) { Bracket.new(players) }
 
       it "returns the numbers for the players in the bracket" do
         bracket.numbers.should == [1, 2, 3, 4, 5, 6]
@@ -50,7 +50,6 @@ module Swissfork
 
     describe "#homogeneous?" do
       let(:players) { create_players(1..6) }
-      let(:bracket) { Bracket.new(players) }
 
       before(:each) do
         players.each { |player| player.stub(points: 1) }
@@ -85,7 +84,6 @@ module Swissfork
 
     describe "#heterogeneous?" do
       let(:players) { create_players(1..6) }
-      let(:bracket) { Bracket.new(players) }
 
       before(:each) do
         players.each { |player| player.stub(points: 1) }
@@ -121,7 +119,6 @@ module Swissfork
     describe "#maximum_number_of_pairs" do
       context "even number of players" do
         let(:players) { create_players(1..6) }
-        let(:bracket) { Bracket.new(players) }
 
         it "returns half of the number of players" do
           bracket.maximum_number_of_pairs.should == 3
@@ -130,7 +127,6 @@ module Swissfork
 
       context "odd number of players" do
         let(:players) { create_players(1..7) }
-        let(:bracket) { Bracket.new(players) }
 
         it "returns half of the number of players rounded downwards" do
           bracket.maximum_number_of_pairs.should == 3
@@ -140,7 +136,6 @@ module Swissfork
 
     describe "#points" do
       let(:players) { create_players(1..6) }
-      let(:bracket) { Bracket.new(players) }
 
       before(:each) do
         players.each { |player| player.stub(points: 1) }
@@ -163,7 +158,6 @@ module Swissfork
 
     describe "#number_of_moved_down_players" do
       let(:players) { create_players(1..6) }
-      let(:bracket) { Bracket.new(players) }
 
       before(:each) do
         players.each { |player| player.stub(points: 1) }
@@ -211,7 +205,6 @@ module Swissfork
     describe "#s1" do
       context "even number of players" do
         let(:players) { create_players(1..6) }
-        let(:bracket) { Bracket.new(players) }
         before(:each) do
           players.each { |player| player.stub(points: 1) }
         end
@@ -243,7 +236,6 @@ module Swissfork
 
       context "odd number of players" do
         let(:players) { create_players(1..7) }
-        let(:bracket) { Bracket.new(players) }
 
         it "returns the first half of the players, rounded downwards" do
           bracket.s1_numbers.should == [1, 2, 3]
@@ -254,7 +246,6 @@ module Swissfork
     describe "#s2" do
       context "even number of players" do
         let(:players) { create_players(1..6) }
-        let(:bracket) { Bracket.new(players) }
 
         before(:each) do
           players.each { |player| player.stub(points: 1) }
@@ -279,7 +270,6 @@ module Swissfork
 
       context "odd number of players" do
         let(:players) { create_players(1..7) }
-        let(:bracket) { Bracket.new(players) }
 
         it "returns the second half of the players, rounded upwards" do
           bracket.s2_numbers.should == [4, 5, 6, 7]
@@ -305,7 +295,6 @@ module Swissfork
     describe "#pair_numbers" do
       context "even number of players" do
         let(:players) { create_players(1..10) }
-        let(:bracket) { Bracket.new(players) }
         before(:each) do
           players.each { |player| player.stub(opponents: []) }
         end
@@ -427,7 +416,6 @@ module Swissfork
 
       context "odd number of players" do
         let(:players) { create_players(1..11) }
-        let(:bracket) { Bracket.new(players) }
         before(:each) do
           players.each { |player| player.stub(opponents: []) }
         end
@@ -452,7 +440,6 @@ module Swissfork
 
       context "heterogeneous groups" do
         let(:players) { create_players(1..10) }
-        let(:bracket) { Bracket.new(players) }
         before(:each) do
           players[0].stub(points: 1.5)
           players[1].stub(points: 1.5)
@@ -478,7 +465,6 @@ module Swissfork
 
       context "heterogeneous groups with odd number of players" do
         let(:players) { create_players(1..11) }
-        let(:bracket) { Bracket.new(players) }
 
         before(:each) do
           players[0].stub(points: 1.5)
@@ -501,7 +487,6 @@ module Swissfork
     describe "#leftovers" do
       context "even number of players" do
         let(:players) { create_players(1..10) }
-        let(:bracket) { Bracket.new(players) }
 
         it "returns an empty array" do
           bracket.leftovers.should == []
@@ -510,7 +495,6 @@ module Swissfork
 
       context "odd number of players" do
         let(:players) { create_players(1..11) }
-        let(:bracket) { Bracket.new(players) }
 
         context "no previous opponents" do
           it "returns the last player" do
