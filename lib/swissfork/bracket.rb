@@ -150,7 +150,7 @@ module Swissfork
         if pair && quality.s2_leftovers_can_downfloat?
           established_pairs << pair
         else
-          return nil
+          return established_pairs
         end
       end
     end
