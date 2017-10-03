@@ -82,7 +82,7 @@ module Swissfork
 
             it "pairs the bracket and downfloats the moved down player" do
               scoregroup.pair_numbers.should == [[2, 3], [4, 8], [5, 9], [6, 10], [7, 11]]
-              scoregroup.leftovers.should == [players[0]]
+              scoregroup.leftover_numbers.should == [1]
             end
           end
         end

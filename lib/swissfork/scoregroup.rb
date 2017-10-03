@@ -77,6 +77,10 @@ module Swissfork
       pairs.map(&:numbers)
     end
 
+    def leftover_numbers
+      leftovers.map(&:number)
+    end
+
   private
     def move_unpairable_moved_down_players_to_limbo
       limbo.push(*unpairable_moved_down_players)

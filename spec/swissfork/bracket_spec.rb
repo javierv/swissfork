@@ -393,7 +393,7 @@ module Swissfork
           end
 
           it "moves that player and the last player down" do
-            bracket.leftovers.should == [players[0], players[9]]
+            bracket.leftover_numbers.should == [1, 10]
           end
         end
       end
@@ -482,7 +482,7 @@ module Swissfork
 
         context "no previous opponents" do
           it "returns the last player" do
-            bracket.leftovers.should == [players[10]]
+            bracket.leftover_numbers.should == [11]
           end
         end
 
@@ -493,7 +493,7 @@ module Swissfork
           end
 
           it "returns the second to last player" do
-            bracket.leftovers.should == [players[9]]
+            bracket.leftover_numbers.should == [10]
           end
         end
       end

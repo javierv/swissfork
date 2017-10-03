@@ -121,6 +121,10 @@ module Swissfork
       pairs.map(&:numbers)
     end
 
+    def leftover_numbers
+      leftovers.map(&:number)
+    end
+
     def mark_established_pairs_as_impossible
       impossible_pairs << established_pairs
       clear_established_pairs
