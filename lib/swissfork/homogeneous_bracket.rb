@@ -7,7 +7,7 @@ module Swissfork
     end
 
     def number_of_players_in_s1
-      maximum_number_of_pairs
+      number_of_required_pairs
     end
 
     def number_of_required_pairs

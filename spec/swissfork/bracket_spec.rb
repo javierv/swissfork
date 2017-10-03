@@ -381,6 +381,21 @@ module Swissfork
             bracket.pair_numbers.should == [[1, 3], [2, 4], [5, 8], [6, 9], [7, 10]]
           end
         end
+
+        context "one of the players can't be paired" do
+          before(:each) do
+            players[0].stub(opponents: players[1..9])
+            players[1..9].each { |player| player.stub(opponents: [players[0]]) }
+          end
+
+          it "doesn't pair that player" do
+            bracket.pair_numbers.should == [[2, 6], [3, 7], [4, 8], [5, 9]]
+          end
+
+          it "moves that player and the last player down" do
+            bracket.leftovers.should == [players[0], players[9]]
+          end
+        end
       end
 
       context "odd number of players" do
