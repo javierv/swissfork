@@ -12,9 +12,7 @@ module Swissfork
     initialize_with :players
 
     def scoregroups
-      @scoregroups ||= brackets.map do |bracket|
-        Scoregroup.new(bracket, brackets)
-      end
+      @scoregroups ||= player_groups.map { |players| Scoregroup.new(players, self) }.sort
     end
 
     def pairs
@@ -26,8 +24,9 @@ module Swissfork
               redo
             else
               established_pairs.push(*scoregroup.pairs)
-              scoregroup.move_leftovers_to_next_bracket unless scoregroup.last?
+              scoregroup.move_leftovers_to_next_scoregroup unless scoregroup.last?
             end
+
           else
             mark_established_pairs_as_impossible
             break
@@ -64,15 +63,10 @@ module Swissfork
     def reset_pairs
       @established_pairs = nil
       @scoregroups = nil
-      @brackets = nil
     end
 
     def player_groups
       players.group_by(&:points).values
-    end
-
-    def brackets
-      @brackets ||= player_groups.map { |players| Bracket.for(players) }.sort
     end
   end
 end

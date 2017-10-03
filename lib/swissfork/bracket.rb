@@ -33,18 +33,6 @@ module Swissfork
       @players = players.sort
     end
 
-    def add_player(player)
-      @players = (players + [player]).sort
-    end
-
-    def add_players(players)
-      players.each { |player| add_player(player) }
-    end
-
-    def remove_players(players_to_remove)
-      players.reject! { |player| players_to_remove.include?(player) }
-    end
-
     def numbers
       players.map(&:number)
     end
@@ -117,6 +105,10 @@ module Swissfork
 
     def exchanger
       @exchanger ||= Exchanger.new(s1, s2)
+    end
+
+    def pairs
+      raise "Implement in subclass"
     end
 
     def leftovers

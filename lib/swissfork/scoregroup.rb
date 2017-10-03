@@ -1,8 +1,9 @@
 require "simple_initialize"
+require "swissfork/bracket"
 
 module Swissfork
   # Holds information about a bracket and the rest of the
-  # brackets we need to pair.
+  # scoregroups we need to pair.
   #
   # Sometimes a bracket needs to know about other brackets;
   # for example, in criterias C.4 (penultimate bracket) and
@@ -10,7 +11,30 @@ module Swissfork
   class Scoregroup
     require "swissfork/penultimate_bracket_handler"
 
-    initialize_with :bracket, :brackets
+    initialize_with :players, :round
+    include Comparable
+
+    def add_player(player)
+      @bracket = nil
+      @players = (players + [player]).sort
+    end
+
+    def add_players(players)
+      players.each { |player| add_player(player) }
+    end
+
+    def remove_players(players_to_remove)
+      @bracket = nil
+      @players = players.reject { |player| players_to_remove.include?(player) }
+    end
+
+    def points
+      players.map(&:points).min
+    end
+
+    def <=>(scoregroup)
+      scoregroup.points <=> points
+    end
 
     def pairs
       if bracket.heterogeneous? && !last?
@@ -18,7 +42,7 @@ module Swissfork
       end
 
       if penultimate?
-        if next_bracket_pairing_is_ok?
+        if next_scoregroup_pairing_is_ok?
           bracket.pairs
         else
           handler.move_players_to_allow_last_bracket_pairs && bracket.pairs
@@ -28,21 +52,17 @@ module Swissfork
       end
     end
 
-    def points
-      bracket.points
+    def bracket
+      @bracket ||= Bracket.for(players)
     end
 
     def leftovers
       limbo + bracket.leftovers.to_a
     end
 
-    def players
-      bracket.players
-    end
-
-    def move_leftovers_to_next_bracket
-      next_bracket.add_players(leftovers)
-      bracket.remove_players(leftovers)
+    def move_leftovers_to_next_scoregroup
+      next_scoregroup.add_players(leftovers)
+      remove_players(leftovers)
     end
 
     def mark_established_pairs_as_impossible
@@ -50,7 +70,7 @@ module Swissfork
     end
 
     def last?
-      bracket == brackets.last
+      self == scoregroups.last
     end
 
     def pair_numbers
@@ -60,35 +80,43 @@ module Swissfork
   private
     def move_unpairable_moved_down_players_to_limbo
       limbo.push(*unpairable_moved_down_players)
-      bracket.remove_players(unpairable_moved_down_players)
+      remove_players(unpairable_moved_down_players)
     end
 
     def unpairable_moved_down_players
       bracket.unpairable_moved_down_players
     end
 
-    def next_bracket
-      brackets[brackets.index(bracket) + 1]
+    def next_scoregroup
+      scoregroups[next_scoregroup_index]
+    end
+
+    def next_scoregroup_index
+      scoregroups.index(self) + 1
     end
 
     def penultimate?
-      brackets.count > 1 && bracket == brackets[-2]
+      scoregroups.count > 1 && self == scoregroups[-2]
     end
 
     def handler
-      PenultimateBracketHandler.new(bracket, next_bracket)
+      PenultimateBracketHandler.new(self, next_scoregroup)
     end
 
     def hypothetical_next_pairs
-      Bracket.for(leftovers + next_bracket.players).pairs
+      Bracket.for(leftovers + next_scoregroup.players).pairs
     end
 
-    def next_bracket_pairing_is_ok?
+    def next_scoregroup_pairing_is_ok?
       hypothetical_next_pairs && !hypothetical_next_pairs.empty?
     end
 
     def limbo
       @limbo ||= []
+    end
+
+    def scoregroups
+      round.scoregroups
     end
   end
 end
