@@ -219,6 +219,11 @@ module Swissfork
       clear_established_pairs
     end
 
+    def reset_exchanger
+      @exchanger = nil
+      players.sort!
+    end
+
     def already_paired?(player)
       established_pairs.any? { |pair| pair.include?(player) }
     end

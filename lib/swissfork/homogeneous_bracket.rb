@@ -32,7 +32,7 @@ module Swissfork
           else
             quality.be_more_permissive
             restart_pairs
-            players.sort!
+            reset_exchanger
           end
         else
           exchange

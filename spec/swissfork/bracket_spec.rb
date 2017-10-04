@@ -534,6 +534,17 @@ module Swissfork
             bracket.pair_numbers.should == [[1, 6], [2, 7], [3, 8], [4, 9], [5, 11]]
           end
         end
+
+        context "all players downfloated; the first one did so 2 rounds ago" do
+          before(:each) do
+            players[0].stub(floats: [:down, nil])
+            players[1..10].each { |player| player.stub(floats: [nil, :down]) }
+          end
+
+          it "downfloats that player and pairs the rest in order" do
+            bracket.pair_numbers.should == [[2, 7], [3, 8], [4, 9], [5, 10], [6, 11]]
+          end
+        end
       end
 
       context "heterogeneous groups" do
