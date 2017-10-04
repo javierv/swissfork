@@ -20,6 +20,8 @@ module Swissfork
 
     include Comparable
     attr_reader :players
+    attr_writer :set_maximum_number_of_pairs
+    attr_writer :set_maximum_number_of_moved_down_pairs
 
     def self.for(players)
       if new(players).homogeneous?
@@ -54,12 +56,11 @@ module Swissfork
     end
 
     def number_of_possible_pairs
-      @number_of_possible_pairs ||=
-        (players.count - number_of_opponent_incompatibilities) / 2
+      [maximum_number_of_pairs, number_of_compatible_pairs].min
     end
 
     def maximum_number_of_pairs
-      players.count / 2
+      @set_maximum_number_of_pairs || players.count / 2
     end
     alias_method :max_pairs, :maximum_number_of_pairs # FIDE nomenclature
 
@@ -98,10 +99,6 @@ module Swissfork
 
     def s2_numbers
       s2.map(&:number)
-    end
-
-    def unpairable_moved_down_players
-      unpairable_players & moved_down_players
     end
 
     def exchange
@@ -189,10 +186,6 @@ module Swissfork
       players.select { |player| player.compatible_players_in(players).any? }
     end
 
-    def unpairable_players
-      players - pairable_players
-    end
-
     def pairings_completed?
       established_pairs.count == number_of_required_pairs
     end
@@ -272,6 +265,11 @@ module Swissfork
           incompatibilities
         end
       end
+    end
+
+    def number_of_compatible_pairs
+      @number_of_compatible_pairs ||=
+        (players.count - number_of_opponent_incompatibilities) / 2
     end
 
     def best_possible_pairs?

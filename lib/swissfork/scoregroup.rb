@@ -9,8 +9,6 @@ module Swissfork
   # for example, in criterias C.4 (penultimate bracket) and
   # C.7 (maximize pairs in the next bracket).
   class Scoregroup
-    require "swissfork/penultimate_bracket_handler"
-
     initialize_with :players, :round
     include Comparable
 
@@ -46,14 +44,18 @@ module Swissfork
       end
 
       if penultimate?
-        if next_scoregroup_pairing_is_ok?
-          bracket.pairs
-        else
-          handler.move_players_to_allow_last_bracket_pairs && bracket.pairs
+        return nil if impossible_to_pair?
+
+
+        while(!next_scoregroup_pairing_is_ok?)
+          set_maximum_number_of_pairs
+          set_maximum_number_of_moved_down_pairs
+
+          mark_established_pairs_as_impossible
         end
-      else
-        bracket.pairs
       end
+
+      bracket.pairs
     end
 
     # This is an approach to detect the Collapsed Last Bracket.
@@ -118,10 +120,6 @@ module Swissfork
       scoregroups.count > 1 && self == scoregroups[-2]
     end
 
-    def handler
-      PenultimateBracketHandler.new(self, next_scoregroup)
-    end
-
     def hypothetical_next_pairs
       Bracket.for(leftovers + next_scoregroup.players).pairs
     end
@@ -142,12 +140,60 @@ module Swissfork
       remaining_scoregroups.map(&:players).flatten
     end
 
+    def number_of_pairs_after_downfloats
+      @number_of_pairs_after_downfloats ||= (players.count - required_number_of_downfloats) / 2
+    end
+
+    def required_number_of_downfloats
+      # TODO: write tests.
+      if players.count.odd? && next_scoregroup.players.count.even?
+        next_scoregroup.leftovers.count - 1
+      else
+        next_scoregroup.leftovers.count
+      end
+    end
+
+    def possible_downfloats
+      @possible_downfloats ||= players.select do |player|
+        player.compatible_players_in(next_scoregroup.leftovers).any?
+      end
+    end
+
+    def required_number_of_moved_down_downfloats
+      if(possible_resident_downfloats.count > required_number_of_downfloats)
+        0
+      else
+        required_number_of_downfloats - possible_resident_downfloats.count
+      end
+    end
+
+    def possible_resident_downfloats
+      possible_downfloats & resident_players
+    end
+
+    def resident_players
+      players - moved_down_players
+    end
+
+    # TODO: duplication with bracket
+    def moved_down_players
+      players.select { |player| player.points > points }
+    end
+
     def limbo
       @limbo ||= []
     end
 
     def scoregroups
       round.scoregroups
+    end
+
+    def set_maximum_number_of_pairs
+      bracket.set_maximum_number_of_pairs = number_of_pairs_after_downfloats
+    end
+
+    def set_maximum_number_of_moved_down_pairs
+      bracket.set_maximum_number_of_moved_down_pairs = moved_down_players.count - required_number_of_moved_down_downfloats
     end
   end
 end

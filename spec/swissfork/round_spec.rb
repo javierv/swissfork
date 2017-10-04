@@ -205,6 +205,18 @@ module Swissfork
           end
         end
 
+        context "last players from the PPB complete the pairing, but shouldn't downfloat" do
+          before(:each) do
+            players[8].stub(opponents: [players[9]])
+            players[9].stub(opponents: [players[8]])
+            players[7].stub(floats: [:down])
+          end
+
+          it "descends players who may downfloat" do
+            round.pair_numbers.should == [[1, 4], [2, 5], [3, 8], [6, 9], [7, 10]]
+          end
+        end
+
         context "last players from the PPB don't complete the pairing" do
           before(:each) do
             players[5].stub(opponents: [players[8], players[9]])

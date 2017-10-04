@@ -7,7 +7,10 @@ module Swissfork
   # should be created using Bracket.for(players), which returns
   # either a homogeneous or a heterogeneous bracket.
   class HeterogeneousBracket < Bracket
+
     def pairs
+      return remainder_pairs if number_of_required_pairs == 0
+
       while(!current_exchange_pairs)
         if quality.worst_possible?
           if exchanger.limit_reached?
@@ -30,7 +33,7 @@ module Swissfork
     end
 
     def number_of_required_pairs
-      number_of_moved_down_possible_pairs
+      @set_maximum_number_of_moved_down_pairs || number_of_moved_down_possible_pairs
     end
 
   private
@@ -43,7 +46,7 @@ module Swissfork
     end
 
     def remainder_pairs
-      HomogeneousBracket.new(still_unpaired_players).pairs
+      HomogeneousBracket.new(still_unpaired_players - moved_down_players).pairs
     end
   end
 end
