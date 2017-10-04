@@ -8,6 +8,10 @@ module Swissfork
       maximum_number_of_pairs
     end
 
+    def number_of_required_pairs
+      pairable_players.count / 2
+    end
+
   private
     # TODO: write failing test for the case when the homogeneous bracket
     # is impossible to pair
