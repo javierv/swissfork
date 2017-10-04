@@ -26,7 +26,6 @@ module Swissfork
               established_pairs.push(*scoregroup.pairs)
               scoregroup.move_leftovers_to_next_scoregroup unless scoregroup.last?
             end
-
           else
             mark_established_pairs_as_impossible
             break
