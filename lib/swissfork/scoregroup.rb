@@ -61,6 +61,20 @@ module Swissfork
       remaining_pairs.count < remaining_players.count / 2
     end
 
+    def required_number_of_downfloats
+      all_players = players + next_scoregroup.players
+
+      if all_players.count.odd?
+        if next_scoregroup.players.count.even?
+          next_scoregroup.leftovers.count + 1
+        else
+          next_scoregroup.leftovers.count - 1
+        end
+      else
+        next_scoregroup.leftovers.count
+      end
+    end
+
     def bracket
       @bracket ||= Bracket.for(players)
     end
@@ -129,15 +143,6 @@ module Swissfork
 
     def number_of_pairs_after_downfloats
       @number_of_pairs_after_downfloats ||= (players.count - required_number_of_downfloats) / 2
-    end
-
-    def required_number_of_downfloats
-      # TODO: write tests.
-      if players.count.odd? && next_scoregroup.players.count.even?
-        next_scoregroup.leftovers.count - 1
-      else
-        next_scoregroup.leftovers.count
-      end
     end
 
     def possible_downfloats

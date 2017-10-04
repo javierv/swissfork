@@ -145,6 +145,156 @@ module Swissfork
       end
     end
 
+    describe "#required_number_of_downfloats" do
+      let(:round) { double }
+
+      context "even number of players" do
+        let(:players) { create_players(1..8) }
+
+        context "both brackets have an even number of players" do
+          let(:scoregroup) { Scoregroup.new(players[0..3], round) }
+          let(:last_scoregroup) { Scoregroup.new(players[4..7], round) }
+
+          before(:each) do
+            players[0..3].each { |player| players.stub(points: 1) }
+            players[4..7].each { |player| players.stub(points: 0) }
+            round.stub(scoregroups: [scoregroup, last_scoregroup])
+          end
+
+          context "last bracket can be paired" do
+            it "returns zero" do
+              scoregroup.required_number_of_downfloats.should == 0
+            end
+          end
+
+          context "two leftovers in the last bracket" do
+            before(:each) do
+              players[4].stub(opponents: players[5..7])
+              players[5..7].each { |player| players.stub(opponents: [players[4]]) }
+            end
+
+            it "returns two" do
+              scoregroup.required_number_of_downfloats.should == 2
+            end
+          end
+        end
+
+        context "both brackets have an odd number of players" do
+          let(:scoregroup) { Scoregroup.new(players[0..2], round) }
+          let(:last_scoregroup) { Scoregroup.new(players[3..7], round) }
+
+          before(:each) do
+            players[0..2].each { |player| players.stub(points: 1) }
+            players[3..7].each { |player| players.stub(points: 0) }
+            round.stub(scoregroups: [scoregroup, last_scoregroup])
+          end
+
+          context "last bracket can be paired" do
+            it "returns one" do
+              scoregroup.required_number_of_downfloats.should == 1
+            end
+          end
+
+          context "one player in the last bracket can't be paired" do
+            before(:each) do
+              players[3].stub(opponents: players[4..7])
+              players[4..7].each { |player| players.stub(opponents: [players[3]]) }
+            end
+
+            it "returns one" do
+              scoregroup.required_number_of_downfloats.should == 1
+            end
+          end
+
+          context "three leftovers in the last bracket" do
+            before(:each) do
+              players[3].stub(opponents: players[4..7])
+              players[4].stub(opponents: [players[3]] + players[5..7])
+              players[5].stub(opponents: players[3..4] + players[6..7])
+              players[6..7].each { |player| players.stub(opponents: players[3..5]) }
+            end
+
+            it "returns three" do
+              scoregroup.required_number_of_downfloats.should == 3
+            end
+          end
+        end
+      end
+
+      context "odd number of players" do
+        let(:players) { create_players(1..9) }
+
+        context "last bracket has an even number of players" do
+          let(:scoregroup) { Scoregroup.new(players[0..4], round) }
+          let(:last_scoregroup) { Scoregroup.new(players[5..8], round) }
+
+          before(:each) do
+            players[0..4].each { |player| players.stub(points: 1) }
+            players[5..8].each { |player| players.stub(points: 0) }
+            round.stub(scoregroups: [scoregroup, last_scoregroup])
+          end
+
+          context "last bracket can be paired" do
+            it "returns one" do
+              scoregroup.required_number_of_downfloats.should == 1
+            end
+          end
+
+          context "two leftovers in the last bracket" do
+            before(:each) do
+              players[5].stub(opponents: players[6..8])
+              players[6..8].each { |player| players.stub(opponents: [players[5]]) }
+            end
+
+            it "returns three" do
+              scoregroup.required_number_of_downfloats.should == 3
+            end
+          end
+        end
+
+        context "last bracket has and odd number of players" do
+          let(:scoregroup) { Scoregroup.new(players[0..3], round) }
+          let(:last_scoregroup) { Scoregroup.new(players[4..8], round) }
+
+          before(:each) do
+            players[0..3].each { |player| players.stub(points: 1) }
+            players[4..8].each { |player| players.stub(points: 0) }
+            round.stub(scoregroups: [scoregroup, last_scoregroup])
+          end
+
+          context "last bracket can be paired" do
+            it "returns zero" do
+              scoregroup.required_number_of_downfloats.should == 0
+            end
+          end
+
+          context "one player in the last bracket can't be paired" do
+            before(:each) do
+              players[5].stub(opponents: players[5..8])
+              players[5..8].each { |player| players.stub(opponents: [players[4]]) }
+            end
+
+            it "returns zero" do
+              scoregroup.required_number_of_downfloats.should == 0
+            end
+          end
+
+          context "three leftovers in the last bracket" do
+            before(:each) do
+              players[4].stub(opponents: players[5..8])
+              players[5].stub(opponents: [players[4]] + players[6..8])
+              players[6].stub(opponents: players[4..5] + players[7..8])
+              players[7..8].each { |player| players.stub(opponents: players[4..6]) }
+            end
+
+            it "returns two" do
+              scoregroup.required_number_of_downfloats.should == 2
+            end
+          end
+        end
+      end
+    end
+
     describe "#pairs" do
       let(:round) { double }
 
