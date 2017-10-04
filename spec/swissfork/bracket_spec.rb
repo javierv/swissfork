@@ -659,6 +659,19 @@ module Swissfork
             bracket.pair_numbers.should == [[1, 3], [2, 5], [4, 8], [6, 9], [7, 10]]
           end
         end
+
+        context "no moved down players can't be paired" do
+          before(:each) do
+            players[0].stub(opponents: players[1..9])
+            players[1].stub(opponents: [players[0]] + players[2..9])
+            players[2..9].each { |player| player.stub(opponents: players[0..1]) }
+          end
+
+          it "moves those players down and pairs the rest" do
+            bracket.pair_numbers.should == [[3, 7], [4, 8], [5, 9], [6, 10]]
+            bracket.leftover_numbers.should == [1, 2]
+          end
+        end
       end
 
       context "heterogeneous groups with odd number of players" do
