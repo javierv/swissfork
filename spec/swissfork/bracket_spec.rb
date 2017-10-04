@@ -150,86 +150,175 @@ module Swissfork
     describe "#number_of_possible_pairs" do
       let(:players) { create_players(1..6) }
 
-      context "homogeneous bracket" do
-        context "all players can be paired" do
-          it "returns half of the total number of players" do
+      context "all players can be paired" do
+        it "returns half of the total number of players" do
+          bracket.number_of_possible_pairs.should == 3
+        end
+
+        context "odd number of players" do
+          let(:players) { create_players(1..7) }
+
+          it "returns half of the total number of players, rounding down" do
             bracket.number_of_possible_pairs.should == 3
           end
+        end
+      end
 
-          context "odd number of players" do
-            let(:players) { create_players(1..7) }
+      context "some players can't be paired" do
+        before(:each) do
+          players[0].stub(opponents: players[1..5])
+          players[1..5].each { |player| player.stub(opponents: [players[0]]) }
+        end
 
-            it "returns half of the total number of players, rounding down" do
-              bracket.number_of_possible_pairs.should == 3
-            end
+        it "returns half of the number of pairable players, rounding down" do
+          bracket.number_of_possible_pairs.should == 2
+        end
+      end
+
+      context "two players can only be paired to the same opponent" do
+        before(:each) do
+          players[0].stub(opponents: players[1..4])
+          players[1].stub(opponents: [players[0]] + players[2..4])
+          players[2..4].each { |player| player.stub(opponents: players[0..1]) }
+        end
+
+        it "counts only one of those players as pairable" do
+          bracket.number_of_possible_pairs.should == 2
+        end
+      end
+
+      context "five players can only be paired to the same opponent" do
+        before(:each) do
+          players[0..4].each do |player|
+            player.stub(opponents: players[0..4] - [player])
           end
         end
 
-        context "some players can't be paired" do
-          before(:each) do
-            players[0].stub(opponents: players[1..5])
-            players[1..5].each { |player| player.stub(opponents: [players[0]]) }
-          end
+        it "counts only one of those players as pairable" do
+          bracket.number_of_possible_pairs.should == 1
+        end
+      end
 
-          it "returns half of the number of pairable players, rounding down" do
-            bracket.number_of_possible_pairs.should == 2
-          end
+      context "three players can only be paired to the same two opponents" do
+        let(:players) { create_players(1..8) }
+
+        before(:each) do
+          players[0].stub(opponents: players[0..3] + players[6..7])
+          players[1].stub(opponents: players[0..3] + players[6..7])
+          players[2].stub(opponents: players[0..3] + players[6..7])
+
+          # Rest of the pairs are there just to complicate things
+          players[3].stub(opponents: players[0..2])
+          players[4].stub(opponents: players[4..7])
+          players[5].stub(opponents: players[4..7])
+          players[6].stub(opponents: players[0..2] + players[4..5])
+          players[7].stub(opponents: players[0..2] + players[4..5])
         end
 
-        context "two players can only be paired to the same opponent" do
-          before(:each) do
-            players[0].stub(opponents: players[1..4])
-            players[1].stub(opponents: [players[0]] + players[2..4])
-            players[2..4].each { |player| player.stub(opponents: players[0..1]) }
-          end
-
-          it "counts only one of those players as pairable" do
-            bracket.number_of_possible_pairs.should == 2
-          end
+        it "counts only two of those players as pairable" do
+          bracket.number_of_possible_pairs.should == 3
         end
 
-        context "five players can only be paired to the same opponent" do
+        context "one of the players can also be paired to another one" do
           before(:each) do
-            players[0..4].each do |player|
-              player.stub(opponents: players[0..4] - [player])
-            end
+            players[2].stub(opponents: players[0..2] + players[6..7])
+            players[3].stub(opponents: players[0..1])
           end
 
-          it "counts only one of those players as pairable" do
-            bracket.number_of_possible_pairs.should == 1
+          it "counts all players as pairable" do
+            bracket.number_of_possible_pairs.should == 4
           end
         end
+      end
+    end
 
-        context "three players can only be paired to the same two opponents" do
-          let(:players) { create_players(1..8) }
+    describe "#number_of_moved_down_possible_pairs" do
+      let(:players) { create_players(1..10) }
 
-          before(:each) do
-            players[0].stub(opponents: players[0..3] + players[6..7])
-            players[1].stub(opponents: players[0..3] + players[6..7])
-            players[2].stub(opponents: players[0..3] + players[6..7])
+      before(:each) do
+        players[0..2].each { |player| player.stub(points: 1.5) }
+        players[3..9].each { |player| player.stub(points: 1) }
+      end
 
-            # Rest of the pairs are there just to complicate things
-            players[3].stub(opponents: players[0..2])
-            players[4].stub(opponents: players[4..7])
-            players[5].stub(opponents: players[4..7])
-            players[6].stub(opponents: players[0..2] + players[4..5])
-            players[7].stub(opponents: players[0..2] + players[4..5])
-          end
+      context "all moved down players can be paired" do
+        before(:each) do
+          players[0].stub(opponents: players[1..2])
+          players[1].stub(opponents: [players[0], players[2]])
+          players[2].stub(opponents: players[0..1])
+        end
 
-          it "counts only two of those players as pairable" do
-            bracket.number_of_possible_pairs.should == 3
-          end
+        it "returns the number of moved down players" do
+          bracket.number_of_moved_down_possible_pairs.should == 3
+        end
+      end
 
-          context "one of the players can also be paired to another one" do
-            before(:each) do
-              players[2].stub(opponents: players[0..2] + players[6..7])
-              players[3].stub(opponents: players[0..1])
-            end
+      context "there are more moved down players than resident players" do
+        let(:players) { create_players(1..5) }
 
-            it "counts all players as pairable" do
-              bracket.number_of_possible_pairs.should == 4
-            end
-          end
+        before(:each) do
+          players[0..2].each { |player| player.stub(points: 1.5) }
+          players[3..4].each { |player| player.stub(points: 1) }
+          players[0].stub(opponents: players[1..2])
+          players[1].stub(opponents: [players[0], players[2]])
+          players[2].stub(opponents: players[0..1])
+        end
+
+        it "returns the number of resident players" do
+          bracket.number_of_moved_down_possible_pairs.should == 2
+        end
+      end
+
+      context "one of the moved down players can't be paired" do
+        before(:each) do
+          players[0].stub(opponents: players[1..9])
+          players[1].stub(opponents: [players[0], players[2]])
+          players[2].stub(opponents: players[0..1])
+          players[3..9].stub(opponents: [players[0]])
+        end
+
+        it "doesn't count that player as pairable" do
+          bracket.number_of_moved_down_possible_pairs.should == 2
+        end
+      end
+
+      context "two of the moved down players can't be paired" do
+        before(:each) do
+          players[0].stub(opponents: players[1..9])
+          players[1].stub(opponents: [players[0]] + players[2..9])
+          players[2].stub(opponents: players[0..1])
+          players[3..9].stub(opponents: [players[0..1]])
+        end
+
+        it "doesn't count those players as pairable" do
+          bracket.number_of_moved_down_possible_pairs.should == 1
+        end
+      end
+
+      context "two players can only be paired to the same opponent" do
+        before(:each) do
+          players[0].stub(opponents: players[1..8])
+          players[1].stub(opponents: [players[0]] + players[2..8])
+          players[2].stub(opponents: players[0..1])
+          players[3..8].stub(opponents: [players[0..1]])
+        end
+
+        it "counts only one of those players as pairable" do
+          bracket.number_of_moved_down_possible_pairs.should == 2
+        end
+      end
+
+      context "three players can only be paired to the same two opponents" do
+        let(:players) { create_players(1..8) }
+
+        before(:each) do
+          players[0].stub(opponents: players[1..7])
+          players[1].stub(opponents: [players[0]] + players[2..7])
+          players[2].stub(opponents: players[0..1] + players[3..7])
+          players[3..8].stub(opponents: [players[0..7]])
+        end
+
+        it "counts only two of those players as pairable" do
+          bracket.number_of_possible_pairs.should == 2
         end
       end
     end
@@ -586,12 +675,25 @@ module Swissfork
             players[1..10].each { |player| player.stub(opponents: [players[0]]) }
           end
 
-          it "pairs he rest of the players" do
+          it "pairs the rest of the players" do
             bracket.pair_numbers.should == [[2, 3], [4, 8], [5, 9], [6, 10], [7, 11]]
           end
 
           it "downfloats the descended player" do
             bracket.leftover_numbers.should == [1]
+          end
+        end
+
+        context "same possible opponent for two moved down players" do
+          before(:each) do
+            players[0].stub(opponents: players[1..9])
+            players[1].stub(opponents: [players[0]] + players[2..9])
+            players[2..9].each { |player| player.stub(opponents: players[0..1]) }
+          end
+
+          it "downfloats the lower player and pairs the rest" do
+            bracket.pair_numbers.should == [[1, 11], [3, 7], [4, 8], [5, 9], [6, 10]]
+            bracket.leftover_numbers.should == [2]
           end
         end
       end

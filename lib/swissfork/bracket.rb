@@ -55,7 +55,7 @@ module Swissfork
 
     def number_of_possible_pairs
       @number_of_possible_pairs ||=
-        (players.count - number_of_players_with_incompatible_opponents) / 2
+        (players.count - number_of_opponent_incompatibilities) / 2
     end
 
     def maximum_number_of_pairs
@@ -68,19 +68,18 @@ module Swissfork
     end
     alias_method :m0, :number_of_moved_down_players # FIDE nomenclature
 
-    def number_of_pairable_moved_down_players
-      # FIXME: write test for the case where this number is lower
-      # than the number of the resident players.
-      (moved_down_players & pairable_players).count
+    def number_of_moved_down_possible_pairs
+      @number_of_moved_down_possible_pairs ||=
+        moved_down_players.count - number_of_moved_down_opponent_incompatibilities
     end
-    alias_method :m1, :number_of_pairable_moved_down_players # FIDE nomenclature
+    alias_method :m1, :number_of_moved_down_possible_pairs # FIDE nomenclature
 
     def number_of_required_pairs
       raise "Implement in subclass"
     end
 
     def number_of_players_in_s1
-      raise "Implement in subclass"
+      number_of_required_pairs
     end
     alias_method :n1, :number_of_players_in_s1 # FIDE nomenclature
 
@@ -249,17 +248,26 @@ module Swissfork
       players.select { |player| player.points > points }
     end
 
-    def pairable_opponents_list
-      @pairable_opponents_list ||= players.map do |player|
-        player.compatible_players_in(players)
+    def number_of_opponent_incompatibilities
+      number_of_opponent_incompatibilities_for(players)
+    end
+
+    def number_of_moved_down_opponent_incompatibilities
+      number_of_opponent_incompatibilities_for(moved_down_players)
+    end
+
+    def opponents_list(players, opponents)
+      players.map do |player|
+        player.compatible_players_in(opponents)
       end
     end
 
-    def number_of_players_with_incompatible_opponents
-      pairable_opponents_list.uniq.reduce(0) do |incompatibilities, opponents|
-        if pairable_opponents_list.count(opponents) > opponents.count
-          incompatibilities +
-            pairable_opponents_list.count(opponents) - opponents.count
+    def number_of_opponent_incompatibilities_for(players_to_pair)
+      opponents_list = opponents_list(players_to_pair, players)
+
+      opponents_list.uniq.reduce(0) do |incompatibilities, opponents|
+        if opponents_list.count(opponents) > opponents.count
+          incompatibilities + opponents_list.count(opponents) - opponents.count
         else
           incompatibilities
         end

@@ -11,12 +11,8 @@ module Swissfork
       pairs && (still_unpaired_players - remainder_pairs.map(&:players).flatten)
     end
 
-    def number_of_players_in_s1
-      number_of_pairable_moved_down_players
-    end
-
     def number_of_required_pairs
-      number_of_pairable_moved_down_players
+      number_of_moved_down_possible_pairs
     end
 
     def best_pairs_obtained?

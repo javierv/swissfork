@@ -11,10 +11,6 @@ module Swissfork
       pairs && still_unpaired_players
     end
 
-    def number_of_players_in_s1
-      number_of_possible_pairs
-    end
-
     def number_of_required_pairs
       number_of_possible_pairs
     end
