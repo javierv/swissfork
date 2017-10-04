@@ -37,6 +37,8 @@ module Swissfork
     end
 
     def pairs
+      return nil if last? && impossible_to_pair?
+
       if bracket.heterogeneous? && !last?
         move_unpairable_moved_down_players_to_limbo
       end

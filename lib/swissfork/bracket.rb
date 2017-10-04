@@ -53,6 +53,11 @@ module Swissfork
       !homogeneous?
     end
 
+    def number_of_possible_pairs
+      @number_of_possible_pairs ||=
+        (players.count - number_of_players_with_incompatible_opponents) / 2
+    end
+
     def maximum_number_of_pairs
       players.count / 2
     end
@@ -242,6 +247,23 @@ module Swissfork
 
     def moved_down_players
       players.select { |player| player.points > points }
+    end
+
+    def pairable_opponents_list
+      @pairable_opponents_list ||= players.map do |player|
+        player.compatible_players_in(players)
+      end
+    end
+
+    def number_of_players_with_incompatible_opponents
+      pairable_opponents_list.uniq.reduce(0) do |incompatibilities, opponents|
+        if pairable_opponents_list.count(opponents) > opponents.count
+          incompatibilities +
+            pairable_opponents_list.count(opponents) - opponents.count
+        else
+          incompatibilities
+        end
+      end
     end
 
     def best_possible_pairs?

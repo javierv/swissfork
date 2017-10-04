@@ -19,11 +19,6 @@ module Swissfork
       number_of_possible_pairs
     end
 
-    def number_of_possible_pairs
-      @number_of_possible_pairs ||=
-        (players.count - number_of_players_with_incompatible_opponents) / 2
-    end
-
     def pairs
       while(!current_exchange_pairs)
         if exchanger.limit_reached?
@@ -44,24 +39,6 @@ module Swissfork
     end
 
   private
-    def pairable_opponents_list
-      @pirable_opponents_list ||= players.map do |player|
-        player.compatible_players_in(players)
-      end
-    end
-
-    def number_of_players_with_incompatible_opponents
-      pairable_opponents_list.uniq.reduce(0) do |incompatibilities, opponents|
-        if pairable_opponents_list.count(opponents) > opponents.count
-          incompatibilities +
-            pairable_opponents_list.count(opponents) - opponents.count
-        else
-          incompatibilities
-        end
-      end
-    end
-
-
     def best_pairs_obtained?
       pairings_completed? && best_possible_pairs?
     end

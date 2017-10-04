@@ -586,8 +586,12 @@ module Swissfork
             players[1..10].each { |player| player.stub(opponents: [players[0]]) }
           end
 
-          it "can't pair the bracket" do
-            bracket.pairs.should be nil
+          it "pairs he rest of the players" do
+            bracket.pair_numbers.should == [[2, 3], [4, 8], [5, 9], [6, 10], [7, 11]]
+          end
+
+          it "downfloats the descended player" do
+            bracket.leftover_numbers.should == [1]
           end
         end
       end
