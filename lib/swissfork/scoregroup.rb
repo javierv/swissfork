@@ -16,6 +16,7 @@ module Swissfork
 
     def add_player(player)
       @bracket = nil
+      @remaining_pairs = nil
       @players = (players + [player]).sort
     end
 
@@ -25,6 +26,7 @@ module Swissfork
 
     def remove_players(players_to_remove)
       @bracket = nil
+      @remaining_pairs = nil
       @players = players.reject { |player| players_to_remove.include?(player) }
     end
 
@@ -125,11 +127,11 @@ module Swissfork
     end
 
     def next_scoregroup_pairing_is_ok?
-      hypothetical_next_pairs && !hypothetical_next_pairs.empty?
+      !hypothetical_next_pairs.to_a.empty?
     end
 
     def remaining_pairs
-      Bracket.for(remaining_players).pairs
+      @remaining_pairs ||= Bracket.for(remaining_players).pairs
     end
 
     def remaining_scoregroups
