@@ -591,6 +591,34 @@ module Swissfork
           end
         end
       end
+
+      context "heterogeneous groups with half of the players having more points" do
+        let(:players) { create_players(1..10) }
+
+        before(:each) do
+          players[0..4].each { |player| player.stub(points: 1.5) }
+          players[5..9].each { |player| player.stub(points: 1) }
+        end
+
+        it "pairs the bracket like a homogeneous bracket" do
+          bracket.pair_numbers.should == [[1, 6], [2, 7], [3, 8], [4, 9], [5, 10]]
+        end
+
+        context "one of the players can't be paired" do
+          before(:each) do
+            players[0].stub(opponents: players[1..9])
+            players[1..9].each { |player| player.stub(opponents: [players[0]]) }
+          end
+
+          it "doesn't pair that player" do
+            bracket.pair_numbers.should == [[2, 6], [3, 7], [4, 8], [5, 9]]
+          end
+
+          it "moves that player and the last player down" do
+            bracket.leftover_numbers.should == [1, 10]
+          end
+        end
+      end
     end
 
     describe "#leftovers" do

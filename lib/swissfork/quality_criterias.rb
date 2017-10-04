@@ -19,7 +19,7 @@ module Swissfork
     end
 
     def s2_leftovers_can_downfloat?
-      (s2_leftovers & possible_downfloaters).any?
+      (pairable_s2_leftovers & possible_downfloaters).any?
     end
 
   private
@@ -35,12 +35,12 @@ module Swissfork
 
     # C.6
     def any_players_descending_twice?
-      leftovers.any? { |player| player.points > bracket.points }
+      pairable_leftovers.any? { |player| player.points > bracket.points }
     end
 
     # C.12
     def same_downfloats_as_previous_round?
-      leftovers.any? { |player| player.descended_in_the_previous_round? }
+      pairable_leftovers.any? { |player| player.descended_in_the_previous_round? }
     end
 
     # C.13
@@ -50,7 +50,7 @@ module Swissfork
 
     # C.14
     def same_downfloats_as_two_rounds_ago?
-      leftovers.any? { |player| player.descended_two_rounds_ago? }
+      pairable_leftovers.any? { |player| player.descended_two_rounds_ago? }
     end
 
     # C.15
@@ -66,8 +66,8 @@ module Swissfork
       pairs.select(&:heterogeneous?)
     end
 
-    def s2_leftovers
-      s2 & leftovers
+    def pairable_s2_leftovers
+      s2 & pairable_leftovers
     end
 
     def possible_downfloaters
@@ -86,8 +86,10 @@ module Swissfork
       criterias.include?(element)
     end
 
-    def leftovers
-      bracket.send(:still_unpaired_players)
+    # TODO: is it OK to use "send" only because this is kind of a private
+    # doing part of the logic in Bracket? It looks terrible anyway.
+    def pairable_leftovers
+      bracket.send(:pairable_players) & bracket.send(:still_unpaired_players)
     end
 
     def pairs
