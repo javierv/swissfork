@@ -42,6 +42,109 @@ module Swissfork
       end
     end
 
+    describe "#impossible_to_pair?" do
+      let(:round) { double }
+      let(:players) { create_players(1..12) }
+
+      context "one pairable scoregroup" do
+        let(:scoregroup) { Scoregroup.new(players, round) }
+        before(:each) { round.stub(scoregroups: [scoregroup])  }
+
+        it "returns false" do
+          scoregroup.impossible_to_pair?.should be false
+        end
+      end
+
+      context "two scoregroup, last one is unpairable" do
+        let(:penultimate_scoregroup) { Scoregroup.new(players[0..5], round) }
+        let(:last_scoregroup) { Scoregroup.new(players[6..11], round) }
+
+        before(:each) do
+          players[0..5].each { |player| player.stub(points: 1) }
+          players[6..11].each { |player| player.stub(points: 0) }
+          round.stub(scoregroups: [penultimate_scoregroup, last_scoregroup])
+          players[11].stub(opponents: players[6..10])
+          players[6..10].each { |player| player.stub(opponents: [players[11]]) }
+        end
+
+        it "the last one returns true" do
+          last_scoregroup.impossible_to_pair?.should be true
+        end
+
+        it "the penultimate one returns true" do
+          penultimate_scoregroup.impossible_to_pair?.should be false
+        end
+      end
+
+      context "three scoregroups, with one unpairable player" do
+        let(:first_scoregroup) { Scoregroup.new(players[0..3], round) }
+        let(:penultimate_scoregroup) { Scoregroup.new(players[4..7], round) }
+        let(:last_scoregroup) { Scoregroup.new(players[8..11], round) }
+
+        before(:each) do
+          players[0..3].each { |player| player.stub(points: 2) }
+          players[4..7].each { |player| player.stub(points: 1) }
+          players[8..11].each { |player| player.stub(points: 0) }
+          round.stub(scoregroups: [first_scoregroup, penultimate_scoregroup, last_scoregroup])
+        end
+
+        context "the player can't be paired in the last scoregroup" do
+          before(:each) do
+            players[11].stub(opponents: players[8..10])
+            players[8..10].each { |player| player.stub(opponents: [players[11]]) }
+          end
+
+          it "returns true only for the last scoregroup" do
+            first_scoregroup.impossible_to_pair?.should be false
+            penultimate_scoregroup.impossible_to_pair?.should be false
+            last_scoregroup.impossible_to_pair?.should be true
+          end
+        end
+
+        context "the player can't be paired in the last two scoregroups" do
+          context "the player is in the last scoregroup" do
+            before(:each) do
+              players[11].stub(opponents: players[4..10])
+              players[4..10].each { |player| player.stub(opponents: [players[11]]) }
+            end
+
+            it "returns true for the last two scoregroups" do
+              first_scoregroup.impossible_to_pair?.should be false
+              penultimate_scoregroup.impossible_to_pair?.should be true
+              last_scoregroup.impossible_to_pair?.should be true
+            end
+          end
+
+          context "the player is in the penultimate scoregroup" do
+            before(:each) do
+              players[7].stub(opponents: players[4..11])
+              players[4..6].each { |player| player.stub(opponents: [players[7]]) }
+              players[8..11].each { |player| player.stub(opponents: [players[7]]) }
+            end
+
+            it "returns true for the penultimate scoregroup" do
+              first_scoregroup.impossible_to_pair?.should be false
+              penultimate_scoregroup.impossible_to_pair?.should be true
+              last_scoregroup.impossible_to_pair?.should be false
+            end
+          end
+        end
+
+        context "the player can't be paired at all" do
+            before(:each) do
+              players[11].stub(opponents: players[0..10])
+              players[0..10].each { |player| player.stub(opponents: [players[11]]) }
+            end
+
+            it "returns true for all scoregroups" do
+              first_scoregroup.impossible_to_pair?.should be true
+              penultimate_scoregroup.impossible_to_pair?.should be true
+              last_scoregroup.impossible_to_pair?.should be true
+            end
+        end
+      end
+    end
+
     describe "#pairs" do
       let(:round) { double }
 

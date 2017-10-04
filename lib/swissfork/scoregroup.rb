@@ -52,6 +52,13 @@ module Swissfork
       end
     end
 
+    # This is an approach to detect the Collapsed Last Bracket.
+    # TODO: While ideally we would call this method every time bracket.pairs
+    # isn't empty, this would make the program many times slower.
+    def impossible_to_pair?
+      remaining_pairs.count < remaining_players.count / 2
+    end
+
     def bracket
       @bracket ||= Bracket.for(players)
     end
@@ -95,8 +102,12 @@ module Swissfork
       scoregroups[next_scoregroup_index]
     end
 
+    def index
+      scoregroups.index(self)
+    end
+
     def next_scoregroup_index
-      scoregroups.index(self) + 1
+       index + 1
     end
 
     def penultimate?
@@ -113,6 +124,18 @@ module Swissfork
 
     def next_scoregroup_pairing_is_ok?
       hypothetical_next_pairs && !hypothetical_next_pairs.empty?
+    end
+
+    def remaining_pairs
+      Bracket.for(remaining_players).pairs
+    end
+
+    def remaining_scoregroups
+      scoregroups[index..-1]
+    end
+
+    def remaining_players
+      remaining_scoregroups.map(&:players).flatten
     end
 
     def limbo
