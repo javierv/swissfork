@@ -39,10 +39,6 @@ module Swissfork
     def pairs
       return nil if last? && impossible_to_pair?
 
-      if bracket.heterogeneous? && !last?
-        move_unpairable_moved_down_players_to_limbo
-      end
-
       if penultimate?
         return nil if impossible_to_pair?
 
@@ -70,7 +66,7 @@ module Swissfork
     end
 
     def leftovers
-      limbo + bracket.leftovers.to_a
+      bracket.leftovers.to_a
     end
 
     def move_leftovers_to_next_scoregroup
@@ -95,15 +91,6 @@ module Swissfork
     end
 
   private
-    def move_unpairable_moved_down_players_to_limbo
-      limbo.push(*unpairable_moved_down_players)
-      remove_players(unpairable_moved_down_players)
-    end
-
-    def unpairable_moved_down_players
-      bracket.unpairable_moved_down_players
-    end
-
     def next_scoregroup
       scoregroups[next_scoregroup_index]
     end
@@ -178,10 +165,6 @@ module Swissfork
     # TODO: duplication with bracket
     def moved_down_players
       players.select { |player| player.points > points }
-    end
-
-    def limbo
-      @limbo ||= []
     end
 
     def scoregroups
