@@ -8,7 +8,7 @@ module Swissfork
   # either a homogeneous or a heterogeneous bracket.
   class HomogeneousBracket < Bracket
     def leftovers
-      pairs && still_unpaired_players
+      pairs && still_unpaired_players.sort
     end
 
     def number_of_required_pairs

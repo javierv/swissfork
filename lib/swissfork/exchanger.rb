@@ -19,8 +19,8 @@ module Swissfork
     end
 
     def limit_reached?
-      number_of_players_in_a_exchange >= s1.count &&
-        exchanges_count >= differences.count - 1
+      s2.count == 0 || (number_of_players_in_a_exchange >= s1.count &&
+                        exchanges_count >= differences.count - 1)
     end
 
     # Helper methods to make tests easier

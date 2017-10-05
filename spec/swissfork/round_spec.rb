@@ -275,6 +275,28 @@ module Swissfork
           round.pair_numbers.should == [[1, 8], [2, 3], [4, 6], [5, 7], [9, 10]]
         end
       end
+
+      context "PPB with 3 moved down players, requiring 2 players two downfloat" do
+        let(:players) { create_players(1..10) }
+
+        before(:each) do
+          players[0..2].each { |player| player.stub(points: 2) }
+          players[3..5].each { |player| player.stub(points: 1) }
+          players[6..9].each { |player| player.stub(points: 0) }
+
+          # We need to downfloat two players, but if we downfloat two resident
+          # players, the moved down players can't be paired
+          players[0].stub(opponents: players[1..2])
+          players[1].stub(opponents: [players[0], players[2]])
+          players[2].stub(opponents: players[0..1])
+          players[9].stub(opponents: players[6..8])
+          players[6..8].each { |player| player.stub(opponents: [players[9]]) }
+        end
+
+        it "downfloats one moved down player and one resident player" do
+          round.pair_numbers.should == [[1, 4], [2, 5], [3, 7], [6, 10], [8, 9]]
+        end
+      end
     end
   end
 end

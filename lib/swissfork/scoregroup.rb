@@ -43,8 +43,6 @@ module Swissfork
 
         while(!next_scoregroup_pairing_is_ok?)
           set_maximum_number_of_pairs
-          set_maximum_number_of_moved_down_pairs
-
           mark_established_pairs_as_impossible
         end
       end
@@ -119,12 +117,19 @@ module Swissfork
       scoregroups.count > 1 && self == scoregroups[-2]
     end
 
+    def hypothetical_next_players
+      leftovers + next_scoregroup.players
+    end
+
     def hypothetical_next_pairs
-      Bracket.for(leftovers + next_scoregroup.players).pairs
+      Bracket.for(hypothetical_next_players).pairs
     end
 
     def next_scoregroup_pairing_is_ok?
-      !hypothetical_next_pairs.to_a.empty?
+      # TODO: Implement C.7 for non-PPB.
+      if penultimate?
+        hypothetical_next_pairs.to_a.count == hypothetical_next_players.count / 2
+      end
     end
 
     def remaining_pairs
@@ -143,33 +148,6 @@ module Swissfork
       @number_of_pairs_after_downfloats ||= (players.count - required_number_of_downfloats) / 2
     end
 
-    def possible_downfloats
-      @possible_downfloats ||= players.select do |player|
-        player.compatible_players_in(next_scoregroup.leftovers).any?
-      end
-    end
-
-    def required_number_of_moved_down_downfloats
-      if(possible_resident_downfloats.count > required_number_of_downfloats)
-        0
-      else
-        required_number_of_downfloats - possible_resident_downfloats.count
-      end
-    end
-
-    def possible_resident_downfloats
-      possible_downfloats & resident_players
-    end
-
-    def resident_players
-      players - moved_down_players
-    end
-
-    # TODO: duplication with bracket
-    def moved_down_players
-      players.select { |player| player.points > points }
-    end
-
     def scoregroups
       round.scoregroups
     end
@@ -182,10 +160,6 @@ module Swissfork
       @bracket = nil
       @remaining_pairs = nil
       @number_of_pairs_after_downfloats = nil
-    end
-
-    def set_maximum_number_of_moved_down_pairs
-      bracket.set_maximum_number_of_moved_down_pairs = moved_down_players.count - required_number_of_moved_down_downfloats
     end
   end
 end

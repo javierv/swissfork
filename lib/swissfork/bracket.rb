@@ -21,7 +21,6 @@ module Swissfork
     include Comparable
     attr_reader :players
     attr_writer :set_maximum_number_of_pairs
-    attr_writer :set_maximum_number_of_moved_down_pairs
 
     def self.for(players)
       if new(players).homogeneous?
@@ -105,10 +104,6 @@ module Swissfork
       @players = exchanger.next_exchange
     end
 
-    def exchanger
-      @exchanger ||= Exchanger.new(s1, s2)
-    end
-
     def pairs
       raise "Implement in subclass"
     end
@@ -132,6 +127,10 @@ module Swissfork
     end
 
   private
+    def exchanger
+      @exchanger ||= Exchanger.new(s1, s2)
+    end
+
     def current_exchange_pairs
       clear_established_pairs
 
@@ -184,6 +183,10 @@ module Swissfork
 
     def pairable_players
       players.select { |player| player.compatible_players_in(players).any? }
+    end
+
+    def unpairable_players
+      players - pairable_players
     end
 
     def pairings_completed?
