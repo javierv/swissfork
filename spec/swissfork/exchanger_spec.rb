@@ -66,5 +66,101 @@ module Swissfork
         end
       end
     end
+
+    describe "#limit_reached?" do
+      let(:exchanger) { Exchanger.new(s1_players, s2_players) }
+
+      context "no players in s1" do
+        let(:s1_players) { [] }
+        let(:s2_players) { create_players(1..5) }
+
+        it "returns true" do
+          exchanger.limit_reached?.should be true
+        end
+      end
+
+      context "no players in s2" do
+        let(:s1_players) { create_players(1..5) }
+        let(:s2_players) { [] }
+
+        it "returns true" do
+          exchanger.limit_reached?.should be true
+        end
+      end
+
+      context "one player in s1 and one player in s2" do
+        let(:s1_players) { create_players(1..1) }
+        let(:s2_players) { create_players(2..2) }
+
+        context "no exchanges" do
+          it "returns false" do
+            exchanger.limit_reached?.should be false
+          end
+        end
+
+        context "one exchange" do
+          before(:each) { exchanger.next_exchange }
+
+          it "returns true" do
+            exchanger.limit_reached?.should be true
+          end
+        end
+      end
+
+      context "one player in s1 and two players in s2" do
+        let(:s1_players) { create_players(1..1) }
+        let(:s2_players) { create_players(2..3) }
+
+        context "two exchanges" do
+          before(:each) { 2.times { exchanger.next_exchange }}
+
+          it "returns true" do
+            exchanger.limit_reached?.should be true
+          end
+        end
+      end
+
+      context "two players in s1 and one player in s2" do
+        let(:s1_players) { create_players(1..2) }
+        let(:s2_players) { create_players(3..3) }
+
+        context "one exchange" do
+          before(:each) { 1.times { exchanger.next_exchange }}
+
+          it "returns false" do
+            exchanger.limit_reached?.should be false
+          end
+        end
+
+        context "two exchanges" do
+          before(:each) { 2.times { exchanger.next_exchange }}
+
+          it "returns true" do
+            exchanger.limit_reached?.should be true
+          end
+        end
+      end
+
+      context "two players in s1 and two players in s2" do
+        let(:s1_players) { create_players(1..2) }
+        let(:s2_players) { create_players(3..4) }
+
+        context "all individual exchanges done" do
+          before(:each) { 4.times { exchanger.next_exchange }}
+
+          it "returns false" do
+            exchanger.limit_reached?.should be false
+          end
+        end
+
+        context "exchanges of two players also done" do
+          before(:each) { 5.times { exchanger.next_exchange }}
+
+          it "returns false" do
+            exchanger.limit_reached?.should be true
+          end
+        end
+      end
+    end
   end
 end

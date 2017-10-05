@@ -19,8 +19,11 @@ module Swissfork
     end
 
     def limit_reached?
-      s2.count == 0 || (number_of_players_in_a_exchange >= s1.count &&
-                        exchanges_count >= differences.count - 1)
+      if number_of_players_in_a_exchange >= maximum_number_of_players_in_a_exchange
+        exchanges_count >= differences.count
+      else
+        exchanges_count >= differences.count + 1
+      end
     end
 
     # Helper methods to make tests easier
@@ -99,6 +102,10 @@ module Swissfork
       players.each.with_index do |player, index|
         player.define_singleton_method(:bsn) { index + 1 }
       end
+    end
+
+    def maximum_number_of_players_in_a_exchange
+      [s1.count, s2.count].min
     end
   end
 end
