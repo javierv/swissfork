@@ -21,6 +21,12 @@ module Swissfork
         end
       end
 
+      context "a pair with the same players in different order" do
+        it "returns true" do
+          pair.should == Pair.new(s2_player, s1_player)
+        end
+      end
+
       context "a completely different object" do
         it "returns false" do
           pair.should_not == 3
