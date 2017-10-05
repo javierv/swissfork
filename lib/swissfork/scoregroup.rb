@@ -13,8 +13,7 @@ module Swissfork
     include Comparable
 
     def add_player(player)
-      @bracket = nil
-      @remaining_pairs = nil
+      reset
       @players = (players + [player]).sort
     end
 
@@ -23,8 +22,7 @@ module Swissfork
     end
 
     def remove_players(players_to_remove)
-      @bracket = nil
-      @remaining_pairs = nil
+      reset
       @players = players.reject { |player| players_to_remove.include?(player) }
     end
 
@@ -178,6 +176,12 @@ module Swissfork
 
     def set_maximum_number_of_pairs
       bracket.set_maximum_number_of_pairs = number_of_pairs_after_downfloats
+    end
+
+    def reset
+      @bracket = nil
+      @remaining_pairs = nil
+      @number_of_pairs_after_downfloats = nil
     end
 
     def set_maximum_number_of_moved_down_pairs
