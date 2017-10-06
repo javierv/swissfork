@@ -8,10 +8,10 @@ RSpec.configure do |config|
   end
 end
 
-require "set"
-
+# TODO: put in in a module,
+# the same way #stub is available.
 class Object
   def stub_opponents(opponents)
-    stub(opponents: Set.new(opponents))
+    stub(opponents: opponents)
   end
 end

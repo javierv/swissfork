@@ -43,18 +43,16 @@ module Swissfork
       end
     end
 
-    describe "#compatible_with" do
+    describe "#compatible_players_in" do
       let(:player) { Player.new(2) }
+      let(:compatible) { Player.new(1) }
+      let(:rival) { Player.new(3) }
       before(:each) do
-        player.stub_opponents([Player.new(3)])
+        player.stub_opponents([rival])
       end
 
-      it "isn't compatible with a previous opponents" do
-        player.compatible_with?(player.opponents.first).should be false
-      end
-
-      it "is compatible with players not in its opponents list" do
-        player.compatible_with?(Player.new(1)).should be true
+      it "isn't compatible with a previous opponents and compatible otherwise" do
+        player.compatible_players_in([rival, compatible]).should == [compatible]
       end
     end
   end

@@ -47,12 +47,10 @@ module Swissfork
       [other_player.points, number] <=> [points, other_player.number]
     end
 
-    def compatible_with?(player)
-      player != self && !opponents.include?(player)
-    end
-
     def compatible_players_in(players)
-      players.select { |player| compatible_with?(player) }
+      # TODO: We might need to change this defintion when we add absolute
+      # color preferences. Or, if we're lucky, we might not.
+      players - (opponents + [self])
     end
 
     # FIXME: Currently a stub for tests.
