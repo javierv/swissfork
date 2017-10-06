@@ -68,12 +68,17 @@ module Swissfork
       super && (established_pairs + remainder_pairs).count == number_of_possible_pairs
     end
 
+    def clear_established_pairs
+      @remainder_pairs = nil
+      super
+    end
+
     def definitive_pairs
       super + remainder_pairs
     end
 
     def remainder_pairs
-      HomogeneousBracket.new(still_unpaired_players - moved_down_players).pairs
+      @remainder_pairs ||= HomogeneousBracket.new(still_unpaired_players - moved_down_players).pairs
     end
 
     def initial_number_of_players_in_limbo
