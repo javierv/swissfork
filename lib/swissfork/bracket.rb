@@ -123,10 +123,6 @@ module Swissfork
     end
 
   private
-    def exchanger
-      @exchanger ||= Exchanger.new(s1, s2)
-    end
-
     def current_exchange_pairs
       return definitive_pairs if @definitive_pairs
       clear_established_pairs
@@ -157,11 +153,11 @@ module Swissfork
     end
 
     def best_pairs_obtained?
-      raise "Implement in subclass"
+      pairings_completed? && best_possible_pairs?
     end
 
     def definitive_pairs
-      raise "Implement in subclass"
+      established_pairs
     end
 
     def pair_for(player)

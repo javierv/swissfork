@@ -33,14 +33,9 @@ module Swissfork
 
       current_exchange_pairs
     end
-
   private
-    def best_pairs_obtained?
-      pairings_completed? && best_possible_pairs?
-    end
-
-    def definitive_pairs
-      established_pairs
+    def exchanger
+      @exchanger ||= Exchanger.new(s1, s2)
     end
   end
 end

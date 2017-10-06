@@ -64,12 +64,12 @@ module Swissfork
       @exchanger ||= Exchanger.new(s1, limbo)
     end
 
-    def best_pairs_obtained?
-      pairings_completed? && (established_pairs + remainder_pairs).count == number_of_possible_pairs && best_possible_pairs?
+    def pairings_completed?
+      super && (established_pairs + remainder_pairs).count == number_of_possible_pairs
     end
 
     def definitive_pairs
-      established_pairs + remainder_pairs
+      super + remainder_pairs
     end
 
     def remainder_pairs
