@@ -39,7 +39,7 @@ module Swissfork
     end
 
     def points
-      players.map(&:points).min
+      @points ||= players.map(&:points).min
     end
 
     def <=>(bracket)

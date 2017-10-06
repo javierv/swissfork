@@ -27,11 +27,11 @@ module Swissfork
     end
 
     def points
-      players.map(&:points).min
+      bracket.points
     end
 
     def <=>(scoregroup)
-      scoregroup.points <=> points
+      bracket <=> scoregroup.bracket
     end
 
     def pairs

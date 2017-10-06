@@ -11,7 +11,7 @@ module Swissfork
       context "players with the same points" do
         let(:players) { create_players(1..6) }
 
-        it "returns only one bracket" do
+        it "returns only one scoregroup" do
           Round.new(players).scoregroups.count.should be 1
         end
       end
@@ -32,11 +32,11 @@ module Swissfork
           scoregroups.count.should be 4
         end
 
-        it "sorts the bracket by number of points" do
+        it "sorts the scoregroups by number of points" do
           scoregroups.map(&:points).should == [2, 1, 0.5, 0]
         end
 
-        it "groups each player to the right bracket" do
+        it "groups each player to the right scoregroup" do
           scoregroups[0].players.should == [players[2]]
           scoregroups[1].players.should == [players[0], players[1]]
           scoregroups[2].players.should == [players[3]]
@@ -240,6 +240,7 @@ module Swissfork
           end
 
           it "redoes the pairing of the last paired bracket" do
+            # TODO: este es el test más lento con diferencia.
             round.pair_numbers.should == [[1, 9], [2, 10], [3, 6], [4, 7], [5, 8]]
           end
         end
