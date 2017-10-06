@@ -40,7 +40,7 @@ module Swissfork
     end
 
     def s2
-      (players - (s1 + limbo)).sort
+      players[number_of_players_in_s1+number_of_players_in_limbo..-1].sort
     end
 
     def limbo
@@ -82,7 +82,8 @@ module Swissfork
     end
 
     def initial_number_of_players_in_limbo
-      moved_down_players.count - number_of_required_pairs
+      @initial_number_of_players_in_limbo ||=
+        moved_down_players.count - number_of_required_pairs
     end
 
     def number_of_players_in_limbo
