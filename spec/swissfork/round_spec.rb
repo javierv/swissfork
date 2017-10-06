@@ -276,7 +276,7 @@ module Swissfork
         end
       end
 
-      context "PPB with 3 moved down players, requiring 2 players two downfloat" do
+      context "PPB with 3 moved down players, requiring 2 players to downfloat" do
         let(:players) { create_players(1..10) }
 
         before(:each) do
@@ -295,6 +295,18 @@ module Swissfork
 
         it "downfloats one moved down player and one resident player" do
           round.pair_numbers.should == [[1, 4], [2, 5], [3, 7], [6, 10], [8, 9]]
+        end
+
+        context "no resident players can downfloat" do
+          before(:each) do
+            players[8].stub(opponents: players[3..7] + [players[9]])
+            players[9].stub(opponents: players[3..8])
+            players[3..7].each { |player| player.stub(opponents: players[8..9]) }
+          end
+
+          it "downfloats two moved down players" do
+            round.pair_numbers.should == [[1, 4], [2, 9], [3, 10], [5, 6], [7, 8]]
+          end
         end
       end
     end

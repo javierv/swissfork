@@ -45,42 +45,8 @@ module Swissfork
           players[0..2].each { |player| player.stub(points: 1.5) }
         end
 
-        it "returns true" do
-          bracket.homogeneous?.should be true
-        end
-      end
-    end
-
-    describe "#heterogeneous?" do
-      let(:players) { create_players(1..6) }
-
-      before(:each) do
-        players.each { |player| player.stub(points: 1) }
-      end
-
-      context "players with the same points" do
         it "returns false" do
-          bracket.heterogeneous?.should be false
-        end
-      end
-
-      context "players with different number of points" do
-        before(:each) do
-          players.first.stub(points: 1.5)
-        end
-
-        it "returns true" do
-          bracket.heterogeneous?.should be true
-        end
-      end
-
-      context "at least half of the players have different number of points" do
-        before(:each) do
-          players[0..2].each { |player| player.stub(points: 1.5) }
-        end
-
-        it "returns false" do
-          bracket.heterogeneous?.should be false
+          bracket.homogeneous?.should be false
         end
       end
     end

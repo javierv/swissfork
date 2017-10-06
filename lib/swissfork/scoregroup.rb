@@ -122,7 +122,8 @@ module Swissfork
     end
 
     def hypothetical_next_pairs
-      Bracket.for(hypothetical_next_players).pairs
+      # TODO: using HomogeneousBracket only works for penultimate bracket.
+      HomogeneousBracket.new(hypothetical_next_players).pairs
     end
 
     def next_scoregroup_pairing_is_ok?
@@ -133,7 +134,8 @@ module Swissfork
     end
 
     def remaining_pairs
-      @remaining_pairs ||= Bracket.for(remaining_players).pairs
+      # We use homogeneous brackets here because they're easier to pair.
+      @remaining_pairs ||= HomogeneousBracket.new(remaining_players).pairs
     end
 
     def remaining_scoregroups

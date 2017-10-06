@@ -12,6 +12,8 @@ module Swissfork
 
       while(!current_exchange_pairs)
         if quality.worst_possible?
+          reset_quality
+
           if exchanger.limit_reached?
             reset_exchanger
             reduce_number_of_moved_down_pairs

@@ -47,11 +47,7 @@ module Swissfork
     end
 
     def homogeneous?
-      all_players_have_the_same_points? || half_or_more_players_were_moved_down?
-    end
-
-    def heterogeneous?
-      !homogeneous?
+      all_players_have_the_same_points?
     end
 
     def number_of_possible_pairs
@@ -281,6 +277,10 @@ module Swissfork
 
     def quality
       @quality ||= QualityCriterias.new(self)
+    end
+
+    def reset_quality
+      @quality = nil
     end
   end
 end
