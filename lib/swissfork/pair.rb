@@ -30,8 +30,7 @@ module Swissfork
     def eql?(pair)
       # TODO: Using array "-" for performance reasons. Check if it still
       # holds true when the program is more mature.
-      pair.respond_to?(:s1_player) &&
-        ([pair.s1_player, pair.s2_player] - [s1_player, s2_player]).empty?
+      ([pair.s1_player, pair.s2_player] - [s1_player, s2_player]).empty?
     end
 
     def ==(pair)
