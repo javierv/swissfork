@@ -435,6 +435,23 @@ module Swissfork
           bracket.s2_numbers.should == [5, 6, 8, 9, 10, 11]
         end
       end
+
+      context "heterogeneous bracket" do
+        before(:each) do
+          s1_players[0..2].each { |player| player.stub(points: 2) }
+          bracket.stub(number_of_required_pairs: 2)
+        end
+
+        context "two exchanges" do
+          before(:each) { 2.times { bracket.exchange }}
+
+          it "exchanges players and reorders S1 and Limbo" do
+            bracket.s1_numbers.should == [2, 3]
+            bracket.limbo_numbers.should == [1]
+            bracket.s2_numbers.should == [4, 5, 6, 7, 8, 9, 10, 11]
+          end
+        end
+      end
     end
 
     describe "#pair_numbers" do

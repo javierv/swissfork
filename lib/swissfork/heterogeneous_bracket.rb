@@ -7,18 +7,12 @@ module Swissfork
   # should be created using Bracket.for(players), which returns
   # either a homogeneous or a heterogeneous bracket.
   class HeterogeneousBracket < Bracket
-    def initialize(players)
-      super(players)
-      @players = players_not_in_limbo.sort + limbo.sort
-    end
-
     def pairs
       return remainder_pairs if number_of_required_pairs.zero?
 
       while(!current_exchange_pairs)
         if quality.worst_possible?
           if exchanger.limit_reached?
-            limbo.push(s1.last)
             reset_exchanger
             reduce_number_of_moved_down_pairs
             return remainder_pairs if number_of_required_pairs.zero?
@@ -39,17 +33,28 @@ module Swissfork
       pairs && (still_unpaired_players - remainder_pairs.map(&:players).flatten).sort
     end
 
-    def reduce_number_of_moved_down_pairs
-      @set_maximum_number_of_moved_down_pairs ||= number_of_moved_down_possible_pairs
-      @set_maximum_number_of_moved_down_pairs -= 1
-    end
-
     def number_of_required_pairs
       @set_maximum_number_of_moved_down_pairs || number_of_moved_down_possible_pairs
     end
 
     def s2
       (players - (s1 + limbo)).sort
+    end
+
+    def limbo
+      if number_of_players_in_limbo.zero?
+        []
+      else
+        (players - s1)[0..number_of_players_in_limbo-1].sort
+      end
+    end
+
+    def limbo_numbers
+      limbo.map(&:number)
+    end
+
+    def exchange
+      @players = exchanger.next_exchange + s2
     end
 
   private
@@ -69,36 +74,17 @@ module Swissfork
       HomogeneousBracket.new(still_unpaired_players - moved_down_players).pairs
     end
 
-    def limbo
-      @limbo ||= initial_limbo
+    def initial_number_of_players_in_limbo
+      moved_down_players.count - number_of_required_pairs
     end
 
-    def initial_limbo_count
-      moved_down_players.count - number_of_moved_down_possible_pairs
+    def number_of_players_in_limbo
+      @set_number_of_players_in_limbo || initial_number_of_players_in_limbo
     end
 
-    def initial_limbo
-      if initial_limbo_count > 0
-        moved_down_players_sort_by_pairability[-1*initial_limbo_count..-1]
-      else
-        []
-      end
-    end
-
-    def players_not_in_limbo
-      players - limbo
-    end
-
-    def pairable_moved_down_players
-      moved_down_players & pairable_players
-    end
-
-    def unpairable_moved_down_players
-      moved_down_players & unpairable_players
-    end
-
-    def moved_down_players_sort_by_pairability
-      pairable_moved_down_players.sort + unpairable_moved_down_players.sort
+    def reduce_number_of_moved_down_pairs
+      @set_number_of_players_in_limbo = number_of_players_in_limbo + 1
+      @set_maximum_number_of_moved_down_pairs = number_of_required_pairs - 1
     end
   end
 end
