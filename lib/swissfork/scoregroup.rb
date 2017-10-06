@@ -40,7 +40,6 @@ module Swissfork
       if penultimate?
         return nil if impossible_to_pair?
 
-
         while(!next_scoregroup_pairing_is_ok?)
           set_maximum_number_of_pairs
           mark_established_pairs_as_impossible
