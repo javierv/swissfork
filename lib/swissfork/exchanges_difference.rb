@@ -11,15 +11,8 @@ module Swissfork
     initialize_with :s1_players, :s2_players
 
     def <=>(other_difference)
-      if difference == other_difference.difference
-        if s1_numbers.sort.reverse == other_difference.s1_numbers.sort.reverse
-          s2_numbers.sort <=> other_difference.s2_numbers.sort
-        else
-          other_difference.s1_numbers.sort.reverse <=> s1_numbers.sort.reverse
-        end
-      else
-        difference <=> other_difference.difference
-      end
+      [difference, other_difference.s1_numbers.sort.reverse, s2_numbers.sort] <=>
+      [other_difference.difference, s1_numbers.sort.reverse, other_difference.s2_numbers.sort]
     end
 
     def difference
