@@ -178,10 +178,6 @@ module Swissfork
       players.select { |player| player.compatible_players_in(players).any? }
     end
 
-    def unpairable_players
-      players - pairable_players
-    end
-
     def pairings_completed?
       established_pairs.count == number_of_required_pairs
     end
