@@ -1,3 +1,4 @@
+require "spec_helper"
 require "swissfork/bracket"
 require "swissfork/player"
 
@@ -132,8 +133,8 @@ module Swissfork
 
       context "some players can't be paired" do
         before(:each) do
-          players[0].stub(opponents: players[1..5])
-          players[1..5].each { |player| player.stub(opponents: [players[0]]) }
+          players[0].stub_opponents(players[1..5])
+          players[1..5].each { |player| player.stub_opponents([players[0]]) }
         end
 
         it "returns half of the number of pairable players, rounding down" do
@@ -143,9 +144,9 @@ module Swissfork
 
       context "two players can only be paired to the same opponent" do
         before(:each) do
-          players[0].stub(opponents: players[1..4])
-          players[1].stub(opponents: [players[0]] + players[2..4])
-          players[2..4].each { |player| player.stub(opponents: players[0..1]) }
+          players[0].stub_opponents(players[1..4])
+          players[1].stub_opponents([players[0]] + players[2..4])
+          players[2..4].each { |player| player.stub_opponents(players[0..1]) }
         end
 
         it "counts only one of those players as pairable" do
@@ -156,7 +157,7 @@ module Swissfork
       context "five players can only be paired to the same opponent" do
         before(:each) do
           players[0..4].each do |player|
-            player.stub(opponents: players[0..4] - [player])
+            player.stub_opponents(players[0..4] - [player])
           end
         end
 
@@ -169,16 +170,16 @@ module Swissfork
         let(:players) { create_players(1..8) }
 
         before(:each) do
-          players[0].stub(opponents: players[0..3] + players[6..7])
-          players[1].stub(opponents: players[0..3] + players[6..7])
-          players[2].stub(opponents: players[0..3] + players[6..7])
+          players[0].stub_opponents(players[0..3] + players[6..7])
+          players[1].stub_opponents(players[0..3] + players[6..7])
+          players[2].stub_opponents(players[0..3] + players[6..7])
 
           # Rest of the pairs are there just to complicate things
-          players[3].stub(opponents: players[0..2])
-          players[4].stub(opponents: players[4..7])
-          players[5].stub(opponents: players[4..7])
-          players[6].stub(opponents: players[0..2] + players[4..5])
-          players[7].stub(opponents: players[0..2] + players[4..5])
+          players[3].stub_opponents(players[0..2])
+          players[4].stub_opponents(players[4..7])
+          players[5].stub_opponents(players[4..7])
+          players[6].stub_opponents(players[0..2] + players[4..5])
+          players[7].stub_opponents(players[0..2] + players[4..5])
         end
 
         it "counts only two of those players as pairable" do
@@ -187,8 +188,8 @@ module Swissfork
 
         context "one of the players can also be paired to another one" do
           before(:each) do
-            players[2].stub(opponents: players[0..2] + players[6..7])
-            players[3].stub(opponents: players[0..1])
+            players[2].stub_opponents(players[0..2] + players[6..7])
+            players[3].stub_opponents(players[0..1])
           end
 
           it "counts all players as pairable" do
@@ -208,9 +209,9 @@ module Swissfork
 
       context "all moved down players can be paired" do
         before(:each) do
-          players[0].stub(opponents: players[1..2])
-          players[1].stub(opponents: [players[0], players[2]])
-          players[2].stub(opponents: players[0..1])
+          players[0].stub_opponents(players[1..2])
+          players[1].stub_opponents([players[0], players[2]])
+          players[2].stub_opponents(players[0..1])
         end
 
         it "returns the number of moved down players" do
@@ -224,9 +225,9 @@ module Swissfork
         before(:each) do
           players[0..2].each { |player| player.stub(points: 1.5) }
           players[3..4].each { |player| player.stub(points: 1) }
-          players[0].stub(opponents: players[1..2])
-          players[1].stub(opponents: [players[0], players[2]])
-          players[2].stub(opponents: players[0..1])
+          players[0].stub_opponents(players[1..2])
+          players[1].stub_opponents([players[0], players[2]])
+          players[2].stub_opponents(players[0..1])
         end
 
         it "returns the number of resident players" do
@@ -236,10 +237,10 @@ module Swissfork
 
       context "one of the moved down players can't be paired" do
         before(:each) do
-          players[0].stub(opponents: players[1..9])
-          players[1].stub(opponents: [players[0], players[2]])
-          players[2].stub(opponents: players[0..1])
-          players[3..9].stub(opponents: [players[0]])
+          players[0].stub_opponents(players[1..9])
+          players[1].stub_opponents([players[0], players[2]])
+          players[2].stub_opponents(players[0..1])
+          players[3..9].stub_opponents([players[0]])
         end
 
         it "doesn't count that player as pairable" do
@@ -249,10 +250,10 @@ module Swissfork
 
       context "two of the moved down players can't be paired" do
         before(:each) do
-          players[0].stub(opponents: players[1..9])
-          players[1].stub(opponents: [players[0]] + players[2..9])
-          players[2].stub(opponents: players[0..1])
-          players[3..9].stub(opponents: [players[0..1]])
+          players[0].stub_opponents(players[1..9])
+          players[1].stub_opponents([players[0]] + players[2..9])
+          players[2].stub_opponents(players[0..1])
+          players[3..9].stub_opponents([players[0..1]])
         end
 
         it "doesn't count those players as pairable" do
@@ -262,10 +263,10 @@ module Swissfork
 
       context "two players can only be paired to the same opponent" do
         before(:each) do
-          players[0].stub(opponents: players[1..8])
-          players[1].stub(opponents: [players[0]] + players[2..8])
-          players[2].stub(opponents: players[0..1])
-          players[3..8].stub(opponents: [players[0..1]])
+          players[0].stub_opponents(players[1..8])
+          players[1].stub_opponents([players[0]] + players[2..8])
+          players[2].stub_opponents(players[0..1])
+          players[3..8].stub_opponents([players[0..1]])
         end
 
         it "counts only one of those players as pairable" do
@@ -277,10 +278,10 @@ module Swissfork
         let(:players) { create_players(1..8) }
 
         before(:each) do
-          players[0].stub(opponents: players[1..7])
-          players[1].stub(opponents: [players[0]] + players[2..7])
-          players[2].stub(opponents: players[0..1] + players[3..7])
-          players[3..8].stub(opponents: [players[0..7]])
+          players[0].stub_opponents(players[1..7])
+          players[1].stub_opponents([players[0]] + players[2..7])
+          players[2].stub_opponents(players[0..1] + players[3..7])
+          players[3..8].stub_opponents([players[0..7]])
         end
 
         it "counts only two of those players as pairable" do
@@ -424,7 +425,7 @@ module Swissfork
       context "even number of players" do
         let(:players) { create_players(1..10) }
         before(:each) do
-          players.each { |player| player.stub(opponents: []) }
+          players.each { |player| player.stub_opponents([]) }
         end
 
         context "no previous opponents" do
@@ -435,8 +436,8 @@ module Swissfork
 
         context "need to transpose once" do
           before(:each) do
-            players[4].stub(opponents: [players[9]])
-            players[9].stub(opponents: [players[4]])
+            players[4].stub_opponents([players[9]])
+            players[9].stub_opponents([players[4]])
           end
 
           it "pairs the players after transposing" do
@@ -446,9 +447,9 @@ module Swissfork
 
         context "need to transpose twice" do
           before(:each) do
-            players[3].stub(opponents: [players[9], players[8]])
-            players[9].stub(opponents: [players[3]])
-            players[8].stub(opponents: [players[3]])
+            players[3].stub_opponents([players[9], players[8]])
+            players[9].stub_opponents([players[3]])
+            players[8].stub_opponents([players[3]])
           end
 
           it "pairs using the next transposition" do
@@ -458,10 +459,10 @@ module Swissfork
 
         context "need to transpose three times" do
           before(:each) do
-            players[3].stub(opponents: [players[8]])
-            players[4].stub(opponents: players[8..9])
-            players[9].stub(opponents: [players[4]])
-            players[8].stub(opponents: players[3..4])
+            players[3].stub_opponents([players[8]])
+            players[4].stub_opponents(players[8..9])
+            players[9].stub_opponents([players[4]])
+            players[8].stub_opponents(players[3..4])
           end
 
           it "pairs using the next transposition" do
@@ -471,15 +472,15 @@ module Swissfork
 
         context "only the last transposition makes pairing possible" do
           before(:each) do
-            players[4].stub(opponents: players[6..9])
-            players[3].stub(opponents: players[7..9])
-            players[2].stub(opponents: players[8..9])
-            players[1].stub(opponents: [players[9]])
+            players[4].stub_opponents(players[6..9])
+            players[3].stub_opponents(players[7..9])
+            players[2].stub_opponents(players[8..9])
+            players[1].stub_opponents([players[9]])
 
-            players[9].stub(opponents: players[1..4])
-            players[8].stub(opponents: players[2..4])
-            players[7].stub(opponents: players[3..4])
-            players[6].stub(opponents: [players[4]])
+            players[9].stub_opponents(players[1..4])
+            players[8].stub_opponents(players[2..4])
+            players[7].stub_opponents(players[3..4])
+            players[6].stub_opponents([players[4]])
           end
 
           it "pairs after transposing every player" do
@@ -489,10 +490,10 @@ module Swissfork
 
         context "one previous opponent" do
           before(:each) do
-            players[0].stub(opponents: [players[5]])
-            players[5].stub(opponents: [players[0]])
-            players[3].stub(opponents: [players[8]])
-            players[8].stub(opponents: [players[3]])
+            players[0].stub_opponents([players[5]])
+            players[5].stub_opponents([players[0]])
+            players[3].stub_opponents([players[8]])
+            players[8].stub_opponents([players[3]])
           end
 
           it "pairs the players avoiding previous opponents" do
@@ -502,13 +503,13 @@ module Swissfork
 
         context "several previous opponents" do
           before(:each) do
-            players[2].stub(opponents: [players[9]])
-            players[3].stub(opponents: players[8..9])
-            players[4].stub(opponents: players[7..9])
+            players[2].stub_opponents([players[9]])
+            players[3].stub_opponents(players[8..9])
+            players[4].stub_opponents(players[7..9])
 
-            players[9].stub(opponents: players[2..4])
-            players[8].stub(opponents: players[3..4])
-            players[7].stub(opponents: [players[4]])
+            players[9].stub_opponents(players[2..4])
+            players[8].stub_opponents(players[3..4])
+            players[7].stub_opponents([players[4]])
           end
 
           it "pairs the players avoiding previous opponents" do
@@ -518,8 +519,8 @@ module Swissfork
 
         context "one player from S1 has played against everyone in S2" do
           before(:each) do
-            players[0].stub(opponents: players[5..9])
-            players[5..9].each { |player| player.stub(opponents: [players[0]]) }
+            players[0].stub_opponents(players[5..9])
+            players[5..9].each { |player| player.stub_opponents([players[0]]) }
           end
 
           it "pairs the players with another player from S1" do
@@ -529,11 +530,11 @@ module Swissfork
 
         context "two players from S1 have played against everyone in S2" do
           before(:each) do
-            players[0].stub(opponents: [players[1]] + players[3..9])
-            players[1].stub(opponents: [players[0], players[2]] + players[4..9])
-            players[2].stub(opponents: [players[1]])
-            players[3].stub(opponents: [players[0]])
-            players[4..9].stub(opponents: [players[0], players[1]])
+            players[0].stub_opponents([players[1]] + players[3..9])
+            players[1].stub_opponents([players[0], players[2]] + players[4..9])
+            players[2].stub_opponents([players[1]])
+            players[3].stub_opponents([players[0]])
+            players[4..9].stub_opponents([players[0], players[1]])
           end
 
           it "pairs those two players with players from S1" do
@@ -543,8 +544,8 @@ module Swissfork
 
         context "one of the players can't be paired" do
           before(:each) do
-            players[0].stub(opponents: players[1..9])
-            players[1..9].each { |player| player.stub(opponents: [players[0]]) }
+            players[0].stub_opponents(players[1..9])
+            players[1..9].each { |player| player.stub_opponents([players[0]]) }
           end
 
           it "doesn't pair that player" do
@@ -558,9 +559,9 @@ module Swissfork
 
         context "two players can only play against one opponent" do
           before(:each) do
-            players[0].stub(opponents: players[1..8])
-            players[1].stub(opponents: [players[0]] + players[1..8])
-            players[2..8].each { |player| player.stub(opponents: [players[0], players[1]]) }
+            players[0].stub_opponents(players[1..8])
+            players[1].stub_opponents([players[0]] + players[1..8])
+            players[2..8].each { |player| player.stub_opponents([players[0], players[1]]) }
           end
 
           it "pairs the higher of those two players" do
@@ -587,7 +588,7 @@ module Swissfork
       context "odd number of players" do
         let(:players) { create_players(1..11) }
         before(:each) do
-          players.each { |player| player.stub(opponents: []) }
+          players.each { |player| player.stub_opponents([]) }
         end
 
         context "no previous opponents" do
@@ -598,8 +599,8 @@ module Swissfork
 
         context "previous opponents affecting the second to last player" do
           before(:each) do
-            players[4].stub(opponents: [players[9]])
-            players[9].stub(opponents: [players[4]])
+            players[4].stub_opponents([players[9]])
+            players[9].stub_opponents([players[4]])
           end
 
           it "pairs all players except the second to last one" do
@@ -634,8 +635,8 @@ module Swissfork
 
         context "the resulting homogeneous group isn't possible to pair" do
           before(:each) do
-            players[4].stub(opponents: players[5..9])
-            players[5..9].each { |player| player.stub(opponents: [players[4]]) }
+            players[4].stub_opponents(players[5..9])
+            players[5..9].each { |player| player.stub_opponents([players[4]]) }
           end
 
           it "redoes the pairing of the descended players" do
@@ -645,9 +646,9 @@ module Swissfork
 
         context "no moved down players can't be paired" do
           before(:each) do
-            players[0].stub(opponents: players[1..9])
-            players[1].stub(opponents: [players[0]] + players[2..9])
-            players[2..9].each { |player| player.stub(opponents: players[0..1]) }
+            players[0].stub_opponents(players[1..9])
+            players[1].stub_opponents([players[0]] + players[2..9])
+            players[2..9].each { |player| player.stub_opponents(players[0..1]) }
           end
 
           it "moves those players down and pairs the rest" do
@@ -667,8 +668,8 @@ module Swissfork
 
         context "one of the descended players can't be paired" do
           before(:each) do
-            players[0].stub(opponents: players[1..10])
-            players[1..10].each { |player| player.stub(opponents: [players[0]]) }
+            players[0].stub_opponents(players[1..10])
+            players[1..10].each { |player| player.stub_opponents([players[0]]) }
           end
 
           it "pairs the rest of the players" do
@@ -682,9 +683,9 @@ module Swissfork
 
         context "same possible opponent for two moved down players" do
           before(:each) do
-            players[0].stub(opponents: players[1..9])
-            players[1].stub(opponents: [players[0]] + players[2..9])
-            players[2..9].each { |player| player.stub(opponents: players[0..1]) }
+            players[0].stub_opponents(players[1..9])
+            players[1].stub_opponents([players[0]] + players[2..9])
+            players[2..9].each { |player| player.stub_opponents(players[0..1]) }
           end
 
           it "downfloats the lower player and pairs the rest" do
@@ -708,8 +709,8 @@ module Swissfork
 
         context "one of the players can't be paired" do
           before(:each) do
-            players[0].stub(opponents: players[1..9])
-            players[1..9].each { |player| player.stub(opponents: [players[0]]) }
+            players[0].stub_opponents(players[1..9])
+            players[1..9].each { |player| player.stub_opponents([players[0]]) }
           end
 
           it "doesn't pair that player" do
@@ -743,8 +744,8 @@ module Swissfork
 
         context "previous opponents affecting the second to last player" do
           before(:each) do
-            players[4].stub(opponents: [players[9]])
-            players[9].stub(opponents: [players[4]])
+            players[4].stub_opponents([players[9]])
+            players[9].stub_opponents([players[4]])
           end
 
           it "returns the second to last player" do

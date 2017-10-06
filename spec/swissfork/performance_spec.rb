@@ -1,3 +1,4 @@
+require "spec_helper"
 require "benchmark"
 require "swissfork/round"
 require "swissfork/player"

@@ -1,3 +1,4 @@
+require "spec_helper"
 require "swissfork/scoregroup"
 require "swissfork/player"
 
@@ -63,8 +64,8 @@ module Swissfork
           players[0..5].each { |player| player.stub(points: 1) }
           players[6..11].each { |player| player.stub(points: 0) }
           round.stub(scoregroups: [penultimate_scoregroup, last_scoregroup])
-          players[11].stub(opponents: players[6..10])
-          players[6..10].each { |player| player.stub(opponents: [players[11]]) }
+          players[11].stub_opponents(players[6..10])
+          players[6..10].each { |player| player.stub_opponents([players[11]]) }
         end
 
         it "the last one returns true" do
@@ -90,8 +91,8 @@ module Swissfork
 
         context "the player can't be paired in the last scoregroup" do
           before(:each) do
-            players[11].stub(opponents: players[8..10])
-            players[8..10].each { |player| player.stub(opponents: [players[11]]) }
+            players[11].stub_opponents(players[8..10])
+            players[8..10].each { |player| player.stub_opponents([players[11]]) }
           end
 
           it "returns true only for the last scoregroup" do
@@ -104,8 +105,8 @@ module Swissfork
         context "the player can't be paired in the last two scoregroups" do
           context "the player is in the last scoregroup" do
             before(:each) do
-              players[11].stub(opponents: players[4..10])
-              players[4..10].each { |player| player.stub(opponents: [players[11]]) }
+              players[11].stub_opponents(players[4..10])
+              players[4..10].each { |player| player.stub_opponents([players[11]]) }
             end
 
             it "returns true for the last two scoregroups" do
@@ -117,9 +118,9 @@ module Swissfork
 
           context "the player is in the penultimate scoregroup" do
             before(:each) do
-              players[7].stub(opponents: players[4..11])
-              players[4..6].each { |player| player.stub(opponents: [players[7]]) }
-              players[8..11].each { |player| player.stub(opponents: [players[7]]) }
+              players[7].stub_opponents(players[4..11])
+              players[4..6].each { |player| player.stub_opponents([players[7]]) }
+              players[8..11].each { |player| player.stub_opponents([players[7]]) }
             end
 
             it "returns true for the penultimate scoregroup" do
@@ -132,8 +133,8 @@ module Swissfork
 
         context "the player can't be paired at all" do
             before(:each) do
-              players[11].stub(opponents: players[0..10])
-              players[0..10].each { |player| player.stub(opponents: [players[11]]) }
+              players[11].stub_opponents(players[0..10])
+              players[0..10].each { |player| player.stub_opponents([players[11]]) }
             end
 
             it "returns true for all scoregroups" do
@@ -169,8 +170,8 @@ module Swissfork
 
           context "two leftovers in the last bracket" do
             before(:each) do
-              players[4].stub(opponents: players[5..7])
-              players[5..7].each { |player| players.stub(opponents: [players[4]]) }
+              players[4].stub_opponents(players[5..7])
+              players[5..7].each { |player| players.stub_opponents([players[4]]) }
             end
 
             it "returns two" do
@@ -197,8 +198,8 @@ module Swissfork
 
           context "one player in the last bracket can't be paired" do
             before(:each) do
-              players[3].stub(opponents: players[4..7])
-              players[4..7].each { |player| players.stub(opponents: [players[3]]) }
+              players[3].stub_opponents(players[4..7])
+              players[4..7].each { |player| players.stub_opponents([players[3]]) }
             end
 
             it "returns one" do
@@ -208,10 +209,10 @@ module Swissfork
 
           context "three leftovers in the last bracket" do
             before(:each) do
-              players[3].stub(opponents: players[4..7])
-              players[4].stub(opponents: [players[3]] + players[5..7])
-              players[5].stub(opponents: players[3..4] + players[6..7])
-              players[6..7].each { |player| players.stub(opponents: players[3..5]) }
+              players[3].stub_opponents(players[4..7])
+              players[4].stub_opponents([players[3]] + players[5..7])
+              players[5].stub_opponents(players[3..4] + players[6..7])
+              players[6..7].each { |player| players.stub_opponents(players[3..5]) }
             end
 
             it "returns three" do
@@ -242,8 +243,8 @@ module Swissfork
 
           context "two leftovers in the last bracket" do
             before(:each) do
-              players[5].stub(opponents: players[6..8])
-              players[6..8].each { |player| players.stub(opponents: [players[5]]) }
+              players[5].stub_opponents(players[6..8])
+              players[6..8].each { |player| players.stub_opponents([players[5]]) }
             end
 
             it "returns three" do
@@ -270,8 +271,8 @@ module Swissfork
 
           context "one player in the last bracket can't be paired" do
             before(:each) do
-              players[5].stub(opponents: players[5..8])
-              players[5..8].each { |player| players.stub(opponents: [players[4]]) }
+              players[5].stub_opponents(players[5..8])
+              players[5..8].each { |player| players.stub_opponents([players[4]]) }
             end
 
             it "returns zero" do
@@ -281,10 +282,10 @@ module Swissfork
 
           context "three leftovers in the last bracket" do
             before(:each) do
-              players[4].stub(opponents: players[5..8])
-              players[5].stub(opponents: [players[4]] + players[6..8])
-              players[6].stub(opponents: players[4..5] + players[7..8])
-              players[7..8].each { |player| players.stub(opponents: players[4..6]) }
+              players[4].stub_opponents(players[5..8])
+              players[5].stub_opponents([players[4]] + players[6..8])
+              players[6].stub_opponents(players[4..5] + players[7..8])
+              players[7..8].each { |player| players.stub_opponents(players[4..6]) }
             end
 
             it "returns two" do
@@ -310,8 +311,8 @@ module Swissfork
 
         context "one of the moved down players can't be paired" do
           before(:each) do
-            players[0].stub(opponents: players[1..9])
-            players[1..9].each { |player| player.stub(opponents: [players[0]]) }
+            players[0].stub_opponents(players[1..9])
+            players[1..9].each { |player| player.stub_opponents([players[0]]) }
           end
 
           context "it's the last bracket" do

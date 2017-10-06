@@ -7,3 +7,11 @@ RSpec.configure do |config|
     c.syntax = [:expect, :should]
   end
 end
+
+require "set"
+
+class Object
+  def stub_opponents(opponents)
+    stub(opponents: Set.new(opponents))
+  end
+end

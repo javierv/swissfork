@@ -1,3 +1,4 @@
+require "spec_helper"
 require "swissfork/player"
 
 module Swissfork
@@ -45,7 +46,7 @@ module Swissfork
     describe "#compatible_with" do
       let(:player) { Player.new(2) }
       before(:each) do
-        player.stub(opponents: [Player.new(3)])
+        player.stub_opponents([Player.new(3)])
       end
 
       it "isn't compatible with a previous opponents" do
