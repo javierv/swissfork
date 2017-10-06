@@ -43,11 +43,8 @@ module Swissfork
     end
 
     def <=>(other_player)
-      if points == other_player.points
-        number <=> other_player.number
-      else
-        other_player.points <=> points
-      end
+      # Comparing the arrays results in better performance.
+      [other_player.points, number] <=> [points, other_player.number]
     end
 
     def compatible_with?(player)
