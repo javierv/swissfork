@@ -397,9 +397,8 @@ module Swissfork
       context "two exchanges" do
         before(:each) { 2.times { bracket.exchange }}
 
-        it "exchanges the players and reorders S1 and S2" do
+        it "exchanges the players and reorders S1" do
           bracket.s1_numbers.should == [1, 2, 3, 4, 7]
-          bracket.s2_numbers.should == [5, 6, 8, 9, 10, 11]
         end
       end
 

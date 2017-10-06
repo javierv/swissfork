@@ -85,7 +85,7 @@ module Swissfork
     end
 
     def s2
-      players[number_of_players_in_s1..-1].sort
+      players[number_of_players_in_s1..-1]
     end
 
     def s1_numbers
