@@ -22,7 +22,9 @@ module Swissfork
     end
 
     def include?(player)
-      player == s1_player || player == s2_player
+      # Faster than comparing with the pair players and than using
+      # Array#include? or Set#include?
+      (players - [player]) != players
     end
 
     def eql?(pair)
