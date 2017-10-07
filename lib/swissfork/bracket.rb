@@ -1,5 +1,6 @@
 require "swissfork/pair"
 require "swissfork/exchanger"
+require "set"
 
 module Swissfork
   # Handles the main pairing logic.
@@ -201,7 +202,7 @@ module Swissfork
     end
 
     def not_ideal_pairs
-      @not_ideal_pairs ||= []
+      @not_ideal_pairs ||= Set.new
     end
 
     def impossible_downfloats

@@ -13,6 +13,10 @@ module Swissfork
       [s1_player, s2_player]
     end
 
+    def hash
+      numbers.hash
+    end
+
     def last
       s2_player
     end
