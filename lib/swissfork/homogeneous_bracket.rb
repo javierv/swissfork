@@ -22,17 +22,16 @@ module Swissfork
             return []
           else
             quality.be_more_permissive
-            restart_pairs
             reset_exchanger
           end
         else
           exchange
-          restart_pairs
         end
       end
 
       current_exchange_pairs
     end
+
   private
     def exchanger
       @exchanger ||= Exchanger.new(s1, s2)

@@ -20,7 +20,6 @@ module Swissfork
             return remainder_pairs if number_of_required_pairs.zero?
           else
             exchange
-            restart_pairs
           end
         else
           quality.be_more_permissive
@@ -55,13 +54,13 @@ module Swissfork
       limbo.map(&:number)
     end
 
-    def exchange
-      @players = exchanger.next_exchange + s2
-    end
-
   private
     def exchanger
       @exchanger ||= Exchanger.new(s1, limbo)
+    end
+
+    def next_exchange
+      super + s2
     end
 
     def pairings_completed?

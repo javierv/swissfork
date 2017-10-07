@@ -97,7 +97,8 @@ module Swissfork
     end
 
     def exchange
-      @players = exchanger.next_exchange
+      restart_pairs
+      @players = next_exchange
     end
 
     def pairs
@@ -123,6 +124,10 @@ module Swissfork
     end
 
   private
+    def exchanger
+      raise "Implement in subclass"
+    end
+
     def current_exchange_pairs
       return definitive_pairs if @definitive_pairs
       clear_established_pairs
@@ -205,6 +210,10 @@ module Swissfork
     def restart_pairs
       @not_ideal_pairs = nil
       clear_established_pairs
+    end
+
+    def next_exchange
+      exchanger.next_exchange
     end
 
     def reset_exchanger
