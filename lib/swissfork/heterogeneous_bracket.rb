@@ -31,7 +31,7 @@ module Swissfork
     end
 
     def leftovers
-      pairs && (still_unpaired_players - remainder_pairs.map(&:players).flatten).sort
+      pairs && (still_unpaired_players - remainder_pairs.flat_map(&:players)).sort
     end
 
     def number_of_required_pairs

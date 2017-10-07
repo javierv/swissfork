@@ -142,7 +142,7 @@ module Swissfork
     end
 
     def remaining_players
-      remaining_scoregroups.map(&:players).flatten
+      remaining_scoregroups.flat_map(&:players)
     end
 
     def number_of_pairs_after_downfloats

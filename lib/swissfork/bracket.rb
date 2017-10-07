@@ -226,7 +226,7 @@ module Swissfork
     end
 
     def still_unpaired_players
-      players - established_pairs.map(&:players).flatten
+      players - established_pairs.flat_map(&:players)
     end
 
     def all_players_have_the_same_points?
