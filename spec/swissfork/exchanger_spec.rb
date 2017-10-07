@@ -47,7 +47,7 @@ module Swissfork
       end
 
       context "exchanges limit reached" do
-        let(:one_player_exchanges) { exchanger.s1.count * exchanger.s2.count }
+        let(:one_player_exchanges) { exchanger.s1.count * exchanger.s2_or_limbo.count }
         before(:each) { one_player_exchanges.times { exchanger.next_exchange } }
 
         context "first exchange" do

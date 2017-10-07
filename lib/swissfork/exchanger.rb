@@ -2,14 +2,15 @@ require "swissfork/exchanges_difference"
 
 module Swissfork
   # Handles exchanges of players between S1 and S2 in
-  # homogeneous brackets, as described in FIDE system,
-  # section D.2
+  # homogeneous brackets and between S1 and Limbo in
+  # heterogeneous brackets, as described in FIDE system,
+  # sections D.2 and D.3.
   class Exchanger
-    attr_reader :s1, :s2
+    attr_reader :s1, :s2_or_limbo
 
-    def initialize(s1, s2)
+    def initialize(s1, s2_or_limbo)
       @s1 = s1
-      @s2 = s2
+      @s2_or_limbo = s2_or_limbo
       assign_in_bracket_sequence_numbers
     end
 
@@ -69,7 +70,7 @@ module Swissfork
     end
 
     def differences_with_n_players(n)
-      s1.combination(n).to_a.product(s2.combination(n).to_a).map do |players|
+      s1.combination(n).to_a.product(s2_or_limbo.combination(n).to_a).map do |players|
 
         ExchangesDifference.new(*players)
       end.sort
@@ -95,7 +96,7 @@ module Swissfork
     end
 
     def players
-      s1 + s2
+      s1 + s2_or_limbo
     end
 
     def assign_in_bracket_sequence_numbers
@@ -105,7 +106,7 @@ module Swissfork
     end
 
     def maximum_number_of_players_in_a_exchange
-      [s1.count, s2.count].min
+      [s1.count, s2_or_limbo.count].min
     end
   end
 end
