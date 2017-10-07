@@ -61,6 +61,24 @@ module Swissfork
           end
         end
       end
+
+      context "homogeneous penultimate bracket; the last one can't be paired" do
+        let(:players) { create_players(1..16) }
+
+        before(:each) do
+          players[0..11].each { |player| player.stub(points: 1) }
+          players[12..15].each { |player| player.stub(points: 0) }
+          players[8..11].each { |player| player.stub_opponents(players[12..17]) }
+          players[12].stub_opponents(players[8..11] + players[13..15])
+          players[13].stub_opponents(players[8..12] + players[14..15])
+          players[14].stub_opponents(players[8..13] + [players[15]])
+          players[15].stub_opponents(players[8..12])
+        end
+
+        it "pairs at a reasonable speed" do
+          Benchmark.realtime{ round.pair_numbers }.should < 1
+        end
+      end
     end
   end
 end

@@ -206,7 +206,7 @@ module Swissfork
     end
 
     def impossible_downfloats
-      @impossible_downfloats ||= []
+      @impossible_downfloats ||= Set.new
     end
 
     def mark_established_pairs_as_not_ideal
