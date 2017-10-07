@@ -120,7 +120,7 @@ module Swissfork
     end
 
     def mark_established_pairs_as_impossible
-      impossible_downfloats << still_unpaired_players
+      impossible_downfloats << still_unpaired_players.to_set
       clear_established_pairs
     end
 
@@ -170,7 +170,7 @@ module Swissfork
       opponents_for(player).map  { |opponent| Pair.new(player, opponent) }.each do |pair|
         hypothetical_pairs = established_pairs + [pair]
         if !not_ideal_pairs.include?(hypothetical_pairs) &&
-          !impossible_downfloats.include?(players - hypothetical_pairs.flat_map(&:players))
+          !impossible_downfloats.include?((players - hypothetical_pairs.flat_map(&:players)).to_set)
           return pair
         end
       end
