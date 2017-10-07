@@ -81,8 +81,7 @@ module Swissfork
     end
 
     def increase_exchanges_count
-      @exchanges_count ||= 0
-      @exchanges_count += 1
+      @exchanges_count = exchanges_count + 1
     end
 
     def number_of_players_in_a_exchange
@@ -90,8 +89,7 @@ module Swissfork
     end
 
     def increase_number_of_players_in_a_exchange
-      @number_of_players_in_a_exchange ||= 1
-      @number_of_players_in_a_exchange += 1
+      @number_of_players_in_a_exchange = number_of_players_in_a_exchange + 1
       @current_differences = nil
     end
 
