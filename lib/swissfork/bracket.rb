@@ -166,9 +166,11 @@ module Swissfork
     end
 
     def pair_for(player)
-      opponents_for(player).map  { |opponent| Pair.new(player, opponent) }.select do |pair|
+      opponents_for(player).map  { |opponent| Pair.new(player, opponent) }.each do |pair|
         return pair if !(not_ideal_pairs + impossible_pairs).include?(established_pairs + [pair])
-      end.first
+      end
+
+      nil
     end
 
     def opponents_for(player)
