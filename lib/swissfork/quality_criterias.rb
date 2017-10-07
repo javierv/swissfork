@@ -59,7 +59,7 @@ module Swissfork
     end
 
     def ascending_players
-      heterogeneous_pairs.map(&:s2_player)
+      heterogeneous_pairs.map(&:last)
     end
 
     def heterogeneous_pairs

@@ -13,6 +13,10 @@ module Swissfork
       [s1_player, s2_player]
     end
 
+    def last
+      s2_player
+    end
+
     def numbers
       players.map(&:number)
     end
