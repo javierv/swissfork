@@ -41,7 +41,7 @@ module Swissfork
         return nil if impossible_to_pair?
 
         while(!next_scoregroup_pairing_is_ok?)
-          set_maximum_number_of_pairs
+          bracket.required_number_of_downfloats = required_number_of_downfloats
           mark_established_downfloats_as_impossible
         end
       end
@@ -145,22 +145,13 @@ module Swissfork
       remaining_scoregroups.flat_map(&:players)
     end
 
-    def number_of_pairs_after_downfloats
-      @number_of_pairs_after_downfloats ||= (players.count - required_number_of_downfloats) / 2
-    end
-
     def scoregroups
       round.scoregroups
-    end
-
-    def set_maximum_number_of_pairs
-      bracket.set_maximum_number_of_pairs = number_of_pairs_after_downfloats
     end
 
     def reset
       @bracket = nil
       @remaining_pairs = nil
-      @number_of_pairs_after_downfloats = nil
     end
   end
 end

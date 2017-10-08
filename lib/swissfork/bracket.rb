@@ -21,7 +21,7 @@ module Swissfork
 
     include Comparable
     attr_reader :players
-    attr_writer :set_maximum_number_of_pairs
+    attr_writer :required_number_of_downfloats
 
     def self.for(players)
       if new(players).homogeneous?
@@ -56,9 +56,13 @@ module Swissfork
     end
 
     def maximum_number_of_pairs
-      @set_maximum_number_of_pairs || players.count / 2
+      (players.count - required_number_of_downfloats) / 2
     end
     alias_method :max_pairs, :maximum_number_of_pairs # FIDE nomenclature
+
+    def required_number_of_downfloats
+      @required_number_of_downfloats ||= 0
+    end
 
     def number_of_moved_down_players
       @number_of_moved_down_players ||= moved_down_players.count
