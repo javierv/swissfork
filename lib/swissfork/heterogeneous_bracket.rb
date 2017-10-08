@@ -19,7 +19,7 @@ module Swissfork
             reduce_number_of_moved_down_pairs
             return remainder_pairs if number_of_required_pairs.zero?
           else
-            exchange
+            exchange_until_s2_players_can_downfloat
           end
         else
           quality.be_more_permissive

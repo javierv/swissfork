@@ -99,6 +99,24 @@ module Swissfork
             end
           end
         end
+
+        context "with 20 players; the last 7 in the first group can't downfloat" do
+          let(:players) { create_players(1..20) }
+
+          before(:each) do
+            players[0..15].each { |player| player.stub(points: 1) }
+            players[16..19].each { |player| player.stub(points: 0) }
+            players[9..15].each { |player| player.stub_opponents(players[16..19]) }
+            players[16].stub_opponents(players[9..15] + players[17..19])
+            players[17].stub_opponents(players[9..16] + players[18..19])
+            players[18].stub_opponents(players[9..17] + [players[19]])
+            players[19].stub_opponents(players[9..18])
+          end
+
+          it "pairs at a decent speed" do
+            Benchmark.realtime{ round.pair_numbers }.should < 17
+          end
+        end
       end
     end
   end

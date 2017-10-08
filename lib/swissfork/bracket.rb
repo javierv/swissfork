@@ -106,6 +106,16 @@ module Swissfork
       @players = next_exchange
     end
 
+    def exchange_until_s2_players_can_downfloat
+      begin
+        exchange
+      end while(!exchanger.limit_reached? && possible_s2_downfloats.count < required_number_of_downfloats)
+    end
+
+    def possible_s2_downfloats
+      s2.reject { |player| impossible_downfloats.include?(player) }
+    end
+
     def pairs
       raise "Implement in subclass"
     end

@@ -25,7 +25,7 @@ module Swissfork
             reset_exchanger
           end
         else
-          exchange
+          exchange_until_s2_players_can_downfloat
         end
       end
 
