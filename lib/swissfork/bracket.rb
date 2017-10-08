@@ -330,5 +330,9 @@ module Swissfork
     def remainder_pairs
       []
     end
+
+    def reduce_number_of_required_pairs
+      @set_number_of_required_pairs = number_of_required_pairs - 1
+    end
   end
 end

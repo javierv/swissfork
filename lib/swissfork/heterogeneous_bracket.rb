@@ -77,7 +77,7 @@ module Swissfork
 
     def reduce_number_of_required_pairs
       @set_number_of_players_in_limbo = number_of_players_in_limbo + 1
-      @set_number_of_required_pairs = number_of_required_pairs - 1
+      super
     end
   end
 end

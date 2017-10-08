@@ -15,9 +15,5 @@ module Swissfork
     def exchanger
       @exchanger ||= Exchanger.new(s1, s2)
     end
-
-    def reduce_number_of_required_pairs
-      @set_number_of_required_pairs = number_of_required_pairs - 1
-    end
   end
 end
