@@ -29,10 +29,6 @@ module Swissfork
       current_exchange_pairs
     end
 
-    def leftovers
-      pairs && (still_unpaired_players - remainder_pairs.flat_map(&:players)).sort
-    end
-
     def number_of_required_pairs
       @set_maximum_number_of_moved_down_pairs || number_of_moved_down_possible_pairs
     end

@@ -110,7 +110,7 @@ module Swissfork
     end
 
     def leftovers
-      raise "Implement in subclass"
+      pairs && (players - definitive_pairs.flat_map(&:players)).sort
     end
 
     # Helper method which makes tests more readable.
