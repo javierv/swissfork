@@ -16,7 +16,7 @@ module Swissfork
     end
 
     def pairs
-      while(!pairings_completed?)
+      until(pairings_completed?)
         scoregroups.each.with_index do |scoregroup, index|
           if scoregroup.pairs
             if impossible_pairs.include?(established_pairs + scoregroup.pairs)

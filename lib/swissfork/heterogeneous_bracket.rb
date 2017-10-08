@@ -10,7 +10,7 @@ module Swissfork
     def pairs
       return remainder_pairs if number_of_required_pairs.zero?
 
-      while(!current_exchange_pairs)
+      until(current_exchange_pairs)
         if quality.worst_possible?
           reset_quality
 

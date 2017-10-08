@@ -42,7 +42,7 @@ module Swissfork
 
         mark_impossible_downfloats_as_impossible
 
-        while(!next_scoregroup_pairing_is_ok?)
+        until(next_scoregroup_pairing_is_ok?)
           bracket.required_number_of_downfloats = required_number_of_downfloats
           mark_established_downfloats_as_impossible
         end

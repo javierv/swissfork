@@ -16,7 +16,7 @@ module Swissfork
     end
 
     def pairs
-      while(!current_exchange_pairs)
+      until(current_exchange_pairs)
         if exchanger.limit_reached?
           if quality.worst_possible?
             return []

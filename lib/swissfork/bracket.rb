@@ -109,7 +109,7 @@ module Swissfork
     def exchange_until_s2_players_can_downfloat
       begin
         exchange
-      end while(!exchanger.limit_reached? && possible_s2_downfloats.count < required_number_of_downfloats)
+      end until(exchanger.limit_reached? || possible_s2_downfloats.count >= required_number_of_downfloats)
     end
 
     def possible_s2_downfloats
@@ -151,7 +151,7 @@ module Swissfork
       return definitive_pairs if @definitive_pairs
       clear_established_pairs
 
-      while(!pairings_completed?)
+      until(pairings_completed?)
         establish_pairs
         return nil if established_pairs.empty?
 
