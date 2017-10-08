@@ -138,7 +138,7 @@ module Swissfork
 
     def current_exchange_pairs
       return definitive_pairs if @definitive_pairs
-      restart_pairs
+      clear_pairs
 
       until(pairings_completed?)
         establish_pairs
@@ -224,7 +224,7 @@ module Swissfork
       clear_established_pairs
     end
 
-    def restart_pairs
+    def clear_pairs
       @not_ideal_pairs = nil
       clear_established_pairs
     end
