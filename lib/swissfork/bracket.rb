@@ -128,6 +128,10 @@ module Swissfork
       clear_established_pairs
     end
 
+    def mark_as_impossible_downfloats(players)
+      players.each { |player| impossible_downfloats << player }
+    end
+
   private
     def exchanger
       raise "Implement in subclass"
@@ -173,8 +177,11 @@ module Swissfork
     def pair_for(player)
       opponents_for(player).map  { |opponent| Pair.new(player, opponent) }.each do |pair|
         hypothetical_pairs = established_pairs + [pair]
+        hypothetical_leftovers = (players - hypothetical_pairs.flat_map(&:players)).to_set
         if !not_ideal_pairs.include?(hypothetical_pairs) &&
-          !impossible_downfloats.include?((players - hypothetical_pairs.flat_map(&:players)).to_set)
+          !impossible_downfloats.include?(hypothetical_leftovers) &&
+          hypothetical_leftovers.reject { |leftover| impossible_downfloats.include?(leftover) }.count >= required_number_of_downfloats
+
           return pair
         end
       end

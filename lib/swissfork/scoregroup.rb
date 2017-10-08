@@ -40,6 +40,8 @@ module Swissfork
       if penultimate?
         return nil if impossible_to_pair?
 
+        mark_impossible_downfloats_as_impossible
+
         while(!next_scoregroup_pairing_is_ok?)
           bracket.required_number_of_downfloats = required_number_of_downfloats
           mark_established_downfloats_as_impossible
@@ -85,6 +87,16 @@ module Swissfork
 
     def mark_established_downfloats_as_impossible
       bracket.mark_established_downfloats_as_impossible
+    end
+
+    def mark_impossible_downfloats_as_impossible
+      bracket.mark_as_impossible_downfloats(impossible_downfloats)
+    end
+
+    def impossible_downfloats
+      @impossible_downfloats ||= players.select do |player|
+        player.compatible_players_in(next_scoregroup.players).none?
+      end
     end
 
     def last?
