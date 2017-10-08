@@ -63,7 +63,7 @@ module Swissfork
     end
 
     def clear_established_pairs
-      @remainder_pairs = nil
+      @remainder_bracket = nil
       super
     end
 
@@ -72,7 +72,20 @@ module Swissfork
     end
 
     def remainder_pairs
-      @remainder_pairs ||= HomogeneousBracket.new(still_unpaired_players - moved_down_players).pairs
+      while(impossible_downfloats.include?(hypothetical_leftovers.to_set))
+        remainder_bracket.mark_established_downfloats_as_impossible
+      end
+
+      remainder_bracket.pairs
+    end
+
+    def remainder_bracket
+      @remainder_bracket ||=
+        HomogeneousBracket.new(still_unpaired_players - moved_down_players)
+    end
+
+    def hypothetical_leftovers
+      players - (established_pairs + remainder_bracket.pairs).flat_map(&:players)
     end
 
     def initial_number_of_players_in_limbo

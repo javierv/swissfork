@@ -126,6 +126,29 @@ module Swissfork
           end
         end
       end
+
+      context "PPB + last bracket can't be paired" do
+        context "20 players, heterogeneous PPB, 4 players in the last bracket" do
+          let(:players) { create_players(1..20) }
+
+          before(:each) do
+            players[0..5].each { |player| player.stub(points: 3) }
+            players[6..11].each { |player| player.stub(points: 2) }
+            players[12..15].each { |player| player.stub(points: 1) }
+            players[16..19].each { |player| player.stub(points: 0) }
+            players[13..15].each { |player| player.stub_opponents(players[16..19]) }
+            players[16].stub_opponents(players[13..15] + players[17..19])
+            players[17].stub_opponents(players[13..16] + players[18..19])
+            players[18].stub_opponents(players[13..17] + [players[19]])
+            players[19].stub_opponents(players[13..18])
+          end
+
+          it "pairs at a decent speed" do
+            Benchmark.realtime{ round.pair_numbers }.should be < 5
+            round.pair_numbers.should == [[1, 4], [2, 5], [3, 6], [7, 8], [9, 14], [10, 17], [11, 18], [12, 19], [13, 20], [15, 16]]
+          end
+        end
+      end
     end
   end
 end

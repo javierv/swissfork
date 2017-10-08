@@ -341,6 +341,31 @@ module Swissfork
           end
         end
       end
+
+      context "heterogeneous PPB, unpairable last bracket" do
+        let(:players) { create_players(1..12) }
+        let(:scoregroup) { Scoregroup.new(players[0..7], round) }
+        let(:last_scoregroup) { Scoregroup.new(players[8..11], round) }
+
+        before(:each) do
+          round.stub(scoregroups: [scoregroup, last_scoregroup])
+
+          players[0..3].each { |player| player.stub(points: 2) }
+          players[4..7].each { |player| player.stub(points: 1) }
+          players[8..11].each { |player| player.stub(points: 0) }
+
+          players[5..7].each { |player| player.stub_opponents(players[8..11]) }
+          players[8].stub_opponents(players[5..7] + players[9..11])
+          players[9].stub_opponents(players[5..7] + [players[8]] + players[10..11])
+          players[10].stub_opponents(players[5..7] + players[9..10] + [players[11]])
+          players[11].stub_opponents(players[5..7] + players[8..10])
+        end
+
+        it "downfloats some resident players, and some moved down players" do
+          scoregroup.pair_numbers.should == [[1, 6], [7, 8]]
+          scoregroup.leftover_numbers.should == [2, 3, 4, 5]
+        end
+      end
     end
   end
 end

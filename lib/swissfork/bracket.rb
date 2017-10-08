@@ -123,7 +123,7 @@ module Swissfork
     end
 
     def mark_established_downfloats_as_impossible
-      impossible_downfloats << still_unpaired_players.to_set
+      impossible_downfloats << (players - definitive_pairs.flat_map(&:players)).to_set
       clear_established_pairs
     end
 
