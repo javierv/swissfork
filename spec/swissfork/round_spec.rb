@@ -243,6 +243,16 @@ module Swissfork
           it "redoes the pairing of the last paired bracket" do
             round.pair_numbers.should == [[1, 9], [2, 10], [3, 6], [4, 7], [5, 8]]
           end
+
+          context "the last bracket has some pairable players" do
+            before(:each) do
+              players[6..7].each { |player| player.stub(points: 0) }
+            end
+
+            it "pairs those players against each other" do
+              round.pair_numbers.should == [[1, 9], [2, 10], [3, 5], [4, 6], [7, 8]]
+            end
+          end
         end
       end
 
