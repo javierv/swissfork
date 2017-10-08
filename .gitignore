@@ -1,3 +1,4 @@
 Gemfile.lock
 .rspec
 *.pdf
+test_tournaments/
