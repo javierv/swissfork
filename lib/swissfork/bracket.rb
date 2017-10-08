@@ -119,7 +119,7 @@ module Swissfork
       leftovers.map(&:number)
     end
 
-    def mark_established_pairs_as_impossible
+    def mark_established_downfloats_as_impossible
       impossible_downfloats << still_unpaired_players.to_set
       clear_established_pairs
     end

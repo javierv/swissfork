@@ -20,7 +20,7 @@ module Swissfork
         scoregroups.each.with_index do |scoregroup, index|
           if scoregroup.pairs
             if impossible_pairs.include?(established_pairs + scoregroup.pairs)
-              scoregroup.mark_established_pairs_as_impossible
+              scoregroup.mark_established_downfloats_as_impossible
               redo
             else
               established_pairs.push(*scoregroup.pairs)

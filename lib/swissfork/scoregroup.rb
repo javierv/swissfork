@@ -42,7 +42,7 @@ module Swissfork
 
         while(!next_scoregroup_pairing_is_ok?)
           set_maximum_number_of_pairs
-          mark_established_pairs_as_impossible
+          mark_established_downfloats_as_impossible
         end
       end
 
@@ -83,8 +83,8 @@ module Swissfork
       remove_players(leftovers)
     end
 
-    def mark_established_pairs_as_impossible
-      bracket.mark_established_pairs_as_impossible
+    def mark_established_downfloats_as_impossible
+      bracket.mark_established_downfloats_as_impossible
     end
 
     def last?
