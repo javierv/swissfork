@@ -23,7 +23,6 @@ module Swissfork
           end
         else
           quality.be_more_permissive
-          restart_pairs
         end
       end
 

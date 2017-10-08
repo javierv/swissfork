@@ -102,7 +102,6 @@ module Swissfork
     end
 
     def exchange
-      restart_pairs
       @players = next_exchange
     end
 
@@ -139,7 +138,7 @@ module Swissfork
 
     def current_exchange_pairs
       return definitive_pairs if @definitive_pairs
-      clear_established_pairs
+      restart_pairs
 
       until(pairings_completed?)
         establish_pairs
