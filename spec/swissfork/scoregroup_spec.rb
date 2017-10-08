@@ -209,9 +209,7 @@ module Swissfork
 
           context "three leftovers in the last bracket" do
             before(:each) do
-              players[3].stub_opponents(players[4..7])
-              players[4].stub_opponents([players[3]] + players[5..7])
-              players[5].stub_opponents(players[3..4] + players[6..7])
+              players[3..5].each { |player| player.stub_opponents(players[3..7]) }
               players[6..7].each { |player| players.stub_opponents(players[3..5]) }
             end
 
@@ -282,9 +280,7 @@ module Swissfork
 
           context "three leftovers in the last bracket" do
             before(:each) do
-              players[4].stub_opponents(players[5..8])
-              players[5].stub_opponents([players[4]] + players[6..8])
-              players[6].stub_opponents(players[4..5] + players[7..8])
+              players[4..6].each { |player| player.stub_opponents(players[4..8]) }
               players[7..8].each { |player| players.stub_opponents(players[4..6]) }
             end
 
@@ -355,10 +351,7 @@ module Swissfork
           players[8..11].each { |player| player.stub(points: 0) }
 
           players[5..7].each { |player| player.stub_opponents(players[8..11]) }
-          players[8].stub_opponents(players[5..7] + players[9..11])
-          players[9].stub_opponents(players[5..7] + [players[8]] + players[10..11])
-          players[10].stub_opponents(players[5..7] + players[9..10] + [players[11]])
-          players[11].stub_opponents(players[5..7] + players[8..10])
+          players[8..11].each { |player| player.stub_opponents(players[5..11]) }
         end
 
         it "downfloats some resident players, and some moved down players" do

@@ -12,6 +12,6 @@ end
 # the same way #stub is available.
 class Object
   def stub_opponents(opponents)
-    stub(opponents: opponents)
+    stub(opponents: opponents - [self])
   end
 end

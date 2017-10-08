@@ -223,7 +223,7 @@ module Swissfork
             players[5].stub_opponents([players[8], players[9]])
             players[6].stub_opponents([players[8]])
             players[7].stub_opponents([players[8]])
-            players[8].stub_opponents(players[6..7] + [players[9], players[5]])
+            players[8].stub_opponents(players[5..9])
             players[9].stub_opponents([players[5], players[8]])
           end
 
@@ -236,8 +236,7 @@ module Swissfork
           before(:each) do
             players[0..1].each { |player| player.stub(points: 2) }
             players[2..7].each { |player| player.stub_opponents([players[8], players[9]]) }
-            players[8].stub_opponents(players[2..7] + [players[9]])
-            players[9].stub_opponents(players[2..7] + [players[8]])
+            players[8..9].each { |player| player.stub_opponents(players[2..9]) }
           end
 
           it "redoes the pairing of the last paired bracket" do
@@ -258,8 +257,7 @@ module Swissfork
             before(:each) do
               players[2..3].each { |player| player.stub(points: 2) }
               players[2..3].each { |player| player.stub_opponents([]) }
-              players[8].stub_opponents(players[4..7] + [players[9]])
-              players[9].stub_opponents(players[4..7] + [players[8]])
+              players[8..9].each { |player| player.stub_opponents(players[4..9]) }
             end
 
             it "downfloats only the needed players" do
@@ -323,8 +321,7 @@ module Swissfork
 
         context "no resident players can downfloat" do
           before(:each) do
-            players[8].stub_opponents(players[3..7] + [players[9]])
-            players[9].stub_opponents(players[3..8])
+            players[8..9].each { |player| player.stub_opponents(players[3..9]) }
             players[3..7].each { |player| player.stub_opponents(players[8..9]) }
           end
 

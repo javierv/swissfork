@@ -78,9 +78,7 @@ module Swissfork
           context "the last 4 players in the first group can't downfloat" do
             before(:each) do
               players[8..11].each { |player| player.stub_opponents(players[12..15]) }
-              players[12].stub_opponents(players[8..11] + players[13..15])
-              players[13].stub_opponents(players[8..12] + players[14..15])
-              players[14].stub_opponents(players[8..13] + [players[15]])
+              players[12..14].each { |player| player.stub_opponents(players[8..15]) }
               players[15].stub_opponents(players[8..12])
             end
 
@@ -94,9 +92,7 @@ module Swissfork
           context "the last 6 players in the first group can't downfloat" do
             before(:each) do
               players[6..11].each { |player| player.stub_opponents(players[12..15]) }
-              players[12].stub_opponents(players[6..11] + players[13..15])
-              players[13].stub_opponents(players[6..12] + players[14..15])
-              players[14].stub_opponents(players[6..13] + [players[15]])
+              players[12..14].each { |player| player.stub_opponents(players[6..15]) }
               players[15].stub_opponents(players[6..12])
             end
 
@@ -114,10 +110,7 @@ module Swissfork
             players[0..15].each { |player| player.stub(points: 1) }
             players[16..19].each { |player| player.stub(points: 0) }
             players[9..15].each { |player| player.stub_opponents(players[16..19]) }
-            players[16].stub_opponents(players[9..15] + players[17..19])
-            players[17].stub_opponents(players[9..16] + players[18..19])
-            players[18].stub_opponents(players[9..17] + [players[19]])
-            players[19].stub_opponents(players[9..18])
+            players[16..19].each { |player| player.stub_opponents(players[9..19]) }
           end
 
           it "pairs at a decent speed" do
@@ -137,10 +130,7 @@ module Swissfork
             players[12..15].each { |player| player.stub(points: 1) }
             players[16..19].each { |player| player.stub(points: 0) }
             players[13..15].each { |player| player.stub_opponents(players[16..19]) }
-            players[16].stub_opponents(players[13..15] + players[17..19])
-            players[17].stub_opponents(players[13..16] + players[18..19])
-            players[18].stub_opponents(players[13..17] + [players[19]])
-            players[19].stub_opponents(players[13..18])
+            players[16..19].each { |player| player.stub_opponents(players[13..19]) }
           end
 
           it "pairs at a decent speed" do
