@@ -11,6 +11,10 @@ module Swissfork
       @set_number_of_required_pairs || number_of_possible_pairs
     end
 
+    def s2
+      players[number_of_players_in_s1..-1]
+    end
+
   private
     def exchanger
       @exchanger ||= Exchanger.new(s1, s2)

@@ -90,7 +90,7 @@ module Swissfork
     end
 
     def s2
-      players[number_of_players_in_s1..-1]
+      raise "Implement in subclass"
     end
 
     def s1_numbers
