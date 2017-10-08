@@ -63,7 +63,7 @@ module Swissfork
     end
 
     def pairings_completed?
-      super && (established_pairs + remainder_pairs).count == number_of_possible_pairs
+      super && definitive_pairs.count == number_of_possible_pairs
     end
 
     def clear_established_pairs
