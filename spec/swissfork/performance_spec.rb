@@ -22,7 +22,8 @@ module Swissfork
           end
 
           it "is very fast" do
-            Benchmark.realtime{ round.pair_numbers }.should < 0.03
+            Benchmark.realtime{ round.pair_numbers }.should be < 0.03
+            round.pair_numbers.should == [[1, 6], [2, 7], [3, 8], [4, 10], [5, 9], [11, 15], [12, 16], [13, 17], [14, 18]]
           end
         end
 
@@ -37,7 +38,8 @@ module Swissfork
             end
 
             it "performs like O(n^2)" do
-              Benchmark.realtime{ round.pair_numbers }.should < 0.07
+              Benchmark.realtime{ round.pair_numbers }.should be < 0.07
+              round.pair_numbers.should == [[1, 9], [2, 10], [3, 11], [4, 12], [5, 13], [6, 14], [7, 16], [8, 15], [17, 24], [18, 25], [19, 26], [20, 27], [21, 28], [22, 29], [23, 30]]
             end
           end
         end
@@ -52,7 +54,13 @@ module Swissfork
             end
 
             it "performs like O(n^2)" do
-              Benchmark.realtime{ round.pair_numbers }.should < 0.2
+              Benchmark.realtime{ round.pair_numbers }.should be < 0.2
+              round.pair_numbers.should == [
+                [1, 14], [2, 15], [3, 16], [4, 17], [5, 18], [6, 19], [7, 20],
+                [8, 21], [9, 22], [10, 23], [11, 24], [12, 26], [13, 25],
+                [27, 39], [28, 40], [29, 41], [30, 42], [31, 43], [32, 44],
+                [33, 45], [34, 46], [35, 47], [36, 48], [37, 49], [38, 50]
+              ]
             end
           end
         end
@@ -77,7 +85,9 @@ module Swissfork
             end
 
             it "pairs fast" do
-              Benchmark.realtime{ round.pair_numbers }.should < 0.2
+              Benchmark.realtime{ round.pair_numbers }.should be < 0.2
+              round.pair_numbers.should == [[1, 9], [2, 10], [3, 11], [4, 12],
+                                            [5, 13], [6, 14], [7, 15], [8, 16]]
             end
           end
 
@@ -91,7 +101,8 @@ module Swissfork
             end
 
             it "pairs at a reasonable speed" do
-              Benchmark.realtime{ round.pair_numbers }.should < 1
+              Benchmark.realtime{ round.pair_numbers }.should be < 1
+              round.pair_numbers.should == [[1, 9], [2, 10], [3, 13], [4, 14], [5, 15], [6, 16], [7, 11], [8, 12]]
             end
           end
         end
@@ -110,7 +121,8 @@ module Swissfork
           end
 
           it "pairs at a decent speed" do
-            Benchmark.realtime{ round.pair_numbers }.should < 17
+            Benchmark.realtime{ round.pair_numbers }.should be < 17
+            round.pair_numbers.should == [[1, 11], [2, 12], [3, 13], [4, 14], [5, 15], [6, 17], [7, 18], [8, 19], [9, 20], [10, 16]]
           end
         end
       end
