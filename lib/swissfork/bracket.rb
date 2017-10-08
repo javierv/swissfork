@@ -106,7 +106,25 @@ module Swissfork
     end
 
     def pairs
-      raise "Implement in subclass"
+      return remainder_pairs if number_of_required_pairs.zero?
+
+      until(current_exchange_pairs)
+        if exchanger.limit_reached?
+          reset_exchanger
+
+          if quality.worst_possible?
+            reduce_number_of_required_pairs
+            reset_quality
+            return remainder_pairs if number_of_required_pairs.zero?
+          else
+            quality.be_more_permissive
+          end
+        else
+          exchange_until_s2_players_can_downfloat
+        end
+      end
+
+      current_exchange_pairs
     end
 
     def leftovers
@@ -307,6 +325,10 @@ module Swissfork
 
     def reset_quality
       @quality = nil
+    end
+
+    def remainder_pairs
+      []
     end
   end
 end

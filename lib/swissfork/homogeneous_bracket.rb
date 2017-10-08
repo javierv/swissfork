@@ -11,28 +11,6 @@ module Swissfork
       @set_number_of_required_pairs || number_of_possible_pairs
     end
 
-    def pairs
-      return [] if number_of_required_pairs.zero?
-
-      until(current_exchange_pairs)
-        if exchanger.limit_reached?
-          reset_exchanger
-
-          if quality.worst_possible?
-            reduce_number_of_required_pairs
-            reset_quality
-            return [] if number_of_required_pairs.zero?
-          else
-            quality.be_more_permissive
-          end
-        else
-          exchange_until_s2_players_can_downfloat
-        end
-      end
-
-      current_exchange_pairs
-    end
-
   private
     def exchanger
       @exchanger ||= Exchanger.new(s1, s2)
