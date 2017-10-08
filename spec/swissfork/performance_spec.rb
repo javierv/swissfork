@@ -12,52 +12,48 @@ module Swissfork
     describe "#pairs" do
       let(:round) { Round.new(players) }
 
-      context "18 players" do
-        let(:players) { create_players(1..18) }
+      context "no obvious downfloat" do
+        context "18 players" do
+          let(:players) { create_players(1..18) }
 
-        context "no obvious downfloat" do
           before(:each) do
             players[0..8].each { |player| player.stub(points: 1) }
             players[4..8].each { |player| player.stub(floats: [:down]) }
           end
 
           it "is very fast" do
-            Benchmark.realtime{ round.pair_numbers }.should < 0.04
+            Benchmark.realtime{ round.pair_numbers }.should < 0.03
           end
         end
-      end
 
-      context "30 players" do
-        let(:players) { create_players(1..30) }
+        context "30 players" do
+          let(:players) { create_players(1..30) }
 
-        context "no obvious downfloat" do
+          context "no obvious downfloat" do
 
-          before(:each) do
-            players[0..14].each { |player| player.stub(points: 1) }
-            players[7..14].each { |player| player.stub(floats: [:down]) }
-          end
+            before(:each) do
+              players[0..14].each { |player| player.stub(points: 1) }
+              players[7..14].each { |player| player.stub(floats: [:down]) }
+            end
 
-          it "performs lineally" do
-            Benchmark.realtime{ round.pair_numbers }.should < 0.12
+            it "performs like O(n^2)" do
+              Benchmark.realtime{ round.pair_numbers }.should < 0.07
+            end
           end
         end
-      end
 
-      context "50 players" do
-        let(:players) { create_players(1..50) }
+        context "50 players" do
+          let(:players) { create_players(1..50) }
 
-        context "no obvious downfloat" do
-          before(:each) do
-            players[0..24].each { |player| player.stub(points: 1) }
-            players[12..24].each { |player| player.stub(floats: [:down]) }
-          end
+          context "no obvious downfloat" do
+            before(:each) do
+              players[0..24].each { |player| player.stub(points: 1) }
+              players[12..24].each { |player| player.stub(floats: [:down]) }
+            end
 
-          # TODO: improve the time this test takes.
-          # Right now, it looks like the number of calls to pair_for player doesn't
-          # increase linearly, and that probably cause performance to drop once
-          # we reach a certain number of players.
-          it "performs lineally" do
-            Benchmark.realtime{ round.pair_numbers }.should < 0.5
+            it "performs like O(n^2)" do
+              Benchmark.realtime{ round.pair_numbers }.should < 0.2
+            end
           end
         end
       end
