@@ -1,8 +1,8 @@
 module Swissfork
   # Checks quality of pairs following the quality criterias
-  # described in FIDE Dutch System, sections C.6 to C.19.
+  # described in FIDE Dutch System, sections C.8 to C.19.
   #
-  # Criteria C.5 is already implemented in the main algorithm.
+  # Criterias C.5 to C.7 are implemented in the main algorithm.
   class QualityCriterias
     initialize_with :bracket
 
@@ -25,17 +25,11 @@ module Swissfork
   private
     def criterias
       @criterias ||= [
-        :any_players_descending_twice?,
         :same_downfloats_as_previous_round?,
         :same_upfloats_as_previous_round?,
         :same_downfloats_as_two_rounds_ago?,
         :same_upfloats_as_two_rounds_ago?
       ]
-    end
-
-    # C.6
-    def any_players_descending_twice?
-      pairable_leftovers.any? { |player| player.points > bracket.points }
     end
 
     # C.12
