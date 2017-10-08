@@ -189,9 +189,7 @@ module Swissfork
     end
 
     def opponents_for(player)
-      player.compatible_players_in(s2).select do |opponent|
-        !already_paired?(opponent)
-      end
+      player.compatible_players_in(s2) & still_unpaired_players
     end
 
     def pairable_players
@@ -246,10 +244,6 @@ module Swissfork
 
     def possible_s2_downfloats
       s2.reject { |player| impossible_downfloats.include?(player) }
-    end
-
-    def already_paired?(player)
-      established_pairs.any? { |pair| pair.include?(player) }
     end
 
     def still_unpaired_players
