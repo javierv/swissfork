@@ -366,6 +366,28 @@ module Swissfork
           scoregroup.leftover_numbers.should == [2, 3, 4, 5]
         end
       end
+
+      context "downfloats result in worse pairings in the next scoregrouop" do
+        let(:players) { create_players(1..10) }
+        let(:scoregroup) { Scoregroup.new(players[0..4], round) }
+        let(:next_scoregroup) { Scoregroup.new(players[5..7], round) }
+        let(:last_scoregroup) { Scoregroup.new(players[8..9], round) }
+
+        before(:each) do
+          players[0..4].each { |player| player.stub(points: 2) }
+          players[5..7].each { |player| player.stub(points: 1) }
+          players[8..9].each { |player| player.stub(points: 0) }
+          round.stub(scoregroups: [scoregroup, next_scoregroup, last_scoregroup])
+
+          players[4].stub_opponents(players[5..7])
+          players[5..7].each { |player| player.stub_opponents([players[4]]) }
+        end
+
+        it "downfloats other players" do
+          scoregroup.pair_numbers.should == [[1, 3], [2, 5]]
+          scoregroup.leftover_numbers.should == [4]
+        end
+      end
     end
   end
 end

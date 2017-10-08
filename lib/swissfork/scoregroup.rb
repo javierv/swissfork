@@ -35,11 +35,9 @@ module Swissfork
     end
 
     def pairs
-      return nil if last? && impossible_to_pair?
+      return nil if (penultimate? || last?) && impossible_to_pair?
 
-      if penultimate?
-        return nil if impossible_to_pair?
-
+      unless last?
         mark_impossible_downfloats_as_impossible
 
         until(next_scoregroup_pairing_is_ok?)
@@ -133,15 +131,11 @@ module Swissfork
     end
 
     def hypothetical_next_pairs
-      # TODO: using HomogeneousBracket only works for penultimate bracket.
-      HomogeneousBracket.new(hypothetical_next_players).pairs
+      Bracket.for(hypothetical_next_players).pairs
     end
 
     def next_scoregroup_pairing_is_ok?
-      # TODO: Implement C.7 for non-PPB.
-      if penultimate?
-        hypothetical_next_pairs.to_a.count == hypothetical_next_players.count / 2
-      end
+      hypothetical_next_pairs.to_a.count == hypothetical_next_players.count / 2
     end
 
     def remaining_pairs
