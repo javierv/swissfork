@@ -253,6 +253,19 @@ module Swissfork
               round.pair_numbers.should == [[1, 9], [2, 10], [3, 5], [4, 6], [7, 8]]
             end
           end
+
+          context "the last paired bracket has more players than downfloaters" do
+            before(:each) do
+              players[2..3].each { |player| player.stub(points: 2) }
+              players[2..3].each { |player| player.stub_opponents([]) }
+              players[8].stub_opponents(players[4..7] + [players[9]])
+              players[9].stub_opponents(players[4..7] + [players[8]])
+            end
+
+            it "downfloats only the needed players" do
+              round.pair_numbers.should == [[1, 2], [3, 9], [4, 10], [5, 7], [6, 8]]
+            end
+          end
         end
       end
 
