@@ -110,7 +110,7 @@ module Swissfork
     end
 
     def leftovers
-      pairs && (players - definitive_pairs.flat_map(&:players)).sort
+      pairs && definitive_unpaired_players.sort
     end
 
     # Helper method which makes tests more readable.
@@ -123,7 +123,7 @@ module Swissfork
     end
 
     def mark_established_downfloats_as_impossible
-      impossible_downfloats << (players - definitive_pairs.flat_map(&:players)).to_set
+      impossible_downfloats << definitive_unpaired_players.to_set
       clear_established_pairs
     end
 
@@ -248,6 +248,10 @@ module Swissfork
 
     def still_unpaired_players
       players - established_pairs.flat_map(&:players)
+    end
+
+    def definitive_unpaired_players
+      players - definitive_pairs.flat_map(&:players)
     end
 
     def all_players_have_the_same_points?
