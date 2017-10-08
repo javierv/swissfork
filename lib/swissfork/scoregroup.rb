@@ -43,7 +43,7 @@ module Swissfork
         mark_impossible_downfloats_as_impossible
 
         until(next_scoregroup_pairing_is_ok?)
-          bracket.required_number_of_downfloats = required_number_of_downfloats
+          bracket.number_of_required_downfloats = number_of_required_downfloats
           mark_established_downfloats_as_impossible
         end
       end
@@ -58,7 +58,7 @@ module Swissfork
       remaining_pairs.count < remaining_players.count / 2
     end
 
-    def required_number_of_downfloats
+    def number_of_required_downfloats
       all_players = players + next_scoregroup.players
 
       if all_players.count.odd?

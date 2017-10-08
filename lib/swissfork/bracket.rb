@@ -21,7 +21,7 @@ module Swissfork
 
     include Comparable
     attr_reader :players
-    attr_writer :required_number_of_downfloats
+    attr_writer :number_of_required_downfloats
 
     def self.for(players)
       if new(players).homogeneous?
@@ -56,12 +56,12 @@ module Swissfork
     end
 
     def maximum_number_of_pairs
-      (players.count - required_number_of_downfloats) / 2
+      (players.count - number_of_required_downfloats) / 2
     end
     alias_method :max_pairs, :maximum_number_of_pairs # FIDE nomenclature
 
-    def required_number_of_downfloats
-      @required_number_of_downfloats ||= 0
+    def number_of_required_downfloats
+      @number_of_required_downfloats ||= 0
     end
 
     def number_of_moved_down_players
@@ -180,7 +180,7 @@ module Swissfork
         hypothetical_leftovers = (players - hypothetical_pairs.flat_map(&:players)).to_set
         if !not_ideal_pairs.include?(hypothetical_pairs) &&
           !impossible_downfloats.include?(hypothetical_leftovers) &&
-          hypothetical_leftovers.reject { |leftover| impossible_downfloats.include?(leftover) }.count >= required_number_of_downfloats
+          hypothetical_leftovers.reject { |leftover| impossible_downfloats.include?(leftover) }.count >= number_of_required_downfloats
 
           return pair
         end
@@ -242,7 +242,7 @@ module Swissfork
     def exchange_until_s2_players_can_downfloat
       begin
         exchange
-      end until(exchanger.limit_reached? || possible_s2_downfloats.count >= required_number_of_downfloats)
+      end until(exchanger.limit_reached? || possible_s2_downfloats.count >= number_of_required_downfloats)
     end
 
     def possible_s2_downfloats

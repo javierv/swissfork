@@ -146,7 +146,7 @@ module Swissfork
       end
     end
 
-    describe "#required_number_of_downfloats" do
+    describe "#number_of_required_downfloats" do
       let(:round) { double }
 
       context "even number of players" do
@@ -164,7 +164,7 @@ module Swissfork
 
           context "last bracket can be paired" do
             it "returns zero" do
-              scoregroup.required_number_of_downfloats.should == 0
+              scoregroup.number_of_required_downfloats.should == 0
             end
           end
 
@@ -175,7 +175,7 @@ module Swissfork
             end
 
             it "returns two" do
-              scoregroup.required_number_of_downfloats.should == 2
+              scoregroup.number_of_required_downfloats.should == 2
             end
           end
         end
@@ -192,7 +192,7 @@ module Swissfork
 
           context "last bracket can be paired" do
             it "returns one" do
-              scoregroup.required_number_of_downfloats.should == 1
+              scoregroup.number_of_required_downfloats.should == 1
             end
           end
 
@@ -203,7 +203,7 @@ module Swissfork
             end
 
             it "returns one" do
-              scoregroup.required_number_of_downfloats.should == 1
+              scoregroup.number_of_required_downfloats.should == 1
             end
           end
 
@@ -216,7 +216,7 @@ module Swissfork
             end
 
             it "returns three" do
-              scoregroup.required_number_of_downfloats.should == 3
+              scoregroup.number_of_required_downfloats.should == 3
             end
           end
         end
@@ -237,7 +237,7 @@ module Swissfork
 
           context "last bracket can be paired" do
             it "returns one" do
-              scoregroup.required_number_of_downfloats.should == 1
+              scoregroup.number_of_required_downfloats.should == 1
             end
           end
 
@@ -248,7 +248,7 @@ module Swissfork
             end
 
             it "returns three" do
-              scoregroup.required_number_of_downfloats.should == 3
+              scoregroup.number_of_required_downfloats.should == 3
             end
           end
         end
@@ -265,7 +265,7 @@ module Swissfork
 
           context "last bracket can be paired" do
             it "returns zero" do
-              scoregroup.required_number_of_downfloats.should == 0
+              scoregroup.number_of_required_downfloats.should == 0
             end
           end
 
@@ -276,7 +276,7 @@ module Swissfork
             end
 
             it "returns zero" do
-              scoregroup.required_number_of_downfloats.should == 0
+              scoregroup.number_of_required_downfloats.should == 0
             end
           end
 
@@ -289,7 +289,7 @@ module Swissfork
             end
 
             it "returns two" do
-              scoregroup.required_number_of_downfloats.should == 2
+              scoregroup.number_of_required_downfloats.should == 2
             end
           end
         end
