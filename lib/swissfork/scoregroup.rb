@@ -135,12 +135,16 @@ module Swissfork
       leftovers + next_scoregroup.players
     end
 
+    def hypothetical_remaining_players
+      (remaining_players - players) + leftovers # TODO: simplify.
+    end
+
     def hypothetical_next_pairs
       Bracket.for(hypothetical_next_players).pairs
     end
 
     def next_scoregroup_pairing_is_ok?
-      hypothetical_next_pairs.to_a.count == number_of_next_scoregroup_required_pairs
+      hypothetical_next_pairs.to_a.count == number_of_next_scoregroup_required_pairs && (Bracket.for(hypothetical_remaining_players).number_of_possible_pairs == hypothetical_remaining_players.count / 2)
     end
 
     # Applies criterias C.4, C.5, C.6 and C.7.
