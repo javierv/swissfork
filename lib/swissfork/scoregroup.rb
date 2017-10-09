@@ -41,16 +41,14 @@ module Swissfork
         mark_impossible_downfloats_as_impossible
 
         until(bracket.pairs && next_scoregroup_pairing_is_ok?)
-          return nil if bracket.number_of_required_pairs.zero?
-
           if penultimate?
             bracket.number_of_required_downfloats = number_of_required_downfloats
           end
 
-          if bracket.pairs
-            mark_established_downfloats_as_impossible
-          else
+          if bracket.pairs.to_a.empty?
             reduce_pair_requirements
+          else
+            mark_established_downfloats_as_impossible
           end
         end
       end

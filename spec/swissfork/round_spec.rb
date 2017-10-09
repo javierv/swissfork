@@ -330,6 +330,39 @@ module Swissfork
           end
         end
       end
+
+      context "many brackets, PPB + last bracket can't be paired" do
+        let(:players) { create_players(1..12) }
+
+        before(:each) do
+          players[0..1].each { |player| player.stub(points: 3) }
+          players[2..5].each { |player| player.stub(points: 2) }
+          players[6..9].each { |player| player.stub(points: 1) }
+          players[9..11].each { |player| player.stub(points: 0) }
+          players[7..8].each { |player| player.stub_opponents(players[9..11]) }
+          players[9..11].each { |player| player.stub_opponents(players[7..11]) }
+        end
+
+        it "downfloats players from previous brackets" do
+          round.pair_numbers.should == [[1, 2], [3, 4], [5, 10], [6, 11], [7, 12], [8, 9]]
+        end
+      end
+
+      context "the first two brackets can't be paired" do
+        let(:players) { create_players(1..10) }
+
+        before(:each) do
+          players[0..1].each { |player| player.stub(points: 3) }
+          players[2..3].each { |player| player.stub(points: 2) }
+          players[4..9].each { |player| player.stub(points: 1) }
+
+          players[0..3].each { |player| player.stub_opponents(players[0..3]) }
+        end
+
+        it "downfloats players from both brackets" do
+          round.pair_numbers.should == [[1, 5], [2, 6], [3, 7], [4, 8], [9, 10]]
+        end
+      end
     end
   end
 end
