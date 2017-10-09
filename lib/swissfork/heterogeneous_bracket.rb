@@ -7,6 +7,12 @@ module Swissfork
   # should be created using Bracket.for(players), which returns
   # either a homogeneous or a heterogeneous bracket.
   class HeterogeneousBracket < Bracket
+    def number_of_moved_down_possible_pairs
+      @number_of_moved_down_possible_pairs ||=
+        moved_down_players.count - number_of_moved_down_opponent_incompatibilities
+    end
+    alias_method :m1, :number_of_moved_down_possible_pairs # FIDE nomenclature
+
     def number_of_required_pairs
       @set_number_of_required_pairs || number_of_moved_down_possible_pairs
     end
@@ -78,6 +84,10 @@ module Swissfork
     def reduce_number_of_required_pairs
       @set_number_of_players_in_limbo = number_of_players_in_limbo + 1
       super
+    end
+
+    def number_of_moved_down_opponent_incompatibilities
+      number_of_opponent_incompatibilities_for(moved_down_players)
     end
   end
 end

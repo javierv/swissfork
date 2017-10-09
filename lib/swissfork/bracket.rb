@@ -69,11 +69,6 @@ module Swissfork
     end
     alias_method :m0, :number_of_moved_down_players # FIDE nomenclature
 
-    def number_of_moved_down_possible_pairs
-      @number_of_moved_down_possible_pairs ||=
-        moved_down_players.count - number_of_moved_down_opponent_incompatibilities
-    end
-    alias_method :m1, :number_of_moved_down_possible_pairs # FIDE nomenclature
 
     def number_of_required_pairs
       raise "Implement in subclass"
@@ -286,10 +281,6 @@ module Swissfork
 
     def number_of_opponent_incompatibilities
       number_of_opponent_incompatibilities_for(players)
-    end
-
-    def number_of_moved_down_opponent_incompatibilities
-      number_of_opponent_incompatibilities_for(moved_down_players)
     end
 
     def opponents_list(players, opponents)
