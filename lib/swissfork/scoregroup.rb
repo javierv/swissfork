@@ -41,6 +41,8 @@ module Swissfork
         mark_impossible_downfloats_as_impossible
 
         until(bracket.pairs && next_scoregroup_pairing_is_ok?)
+          return nil if bracket.number_of_required_pairs.zero?
+
           if penultimate?
             bracket.number_of_required_downfloats = number_of_required_downfloats
           end
@@ -48,15 +50,7 @@ module Swissfork
           if bracket.pairs
             mark_established_downfloats_as_impossible
           else
-            return nil if bracket.number_of_required_pairs.zero?
-
-            if penultimate? || number_of_next_scoregroup_required_pairs.zero?
-              reset_number_of_next_scoregroup_required_pairs
-              bracket.reduce_number_of_required_pairs
-            else
-              bracket.impossible_downfloats = impossible_downfloats
-              reduce_number_of_next_scoregroup_required_pairs
-            end
+            reduce_pair_requirements
           end
         end
       end
@@ -151,6 +145,17 @@ module Swissfork
 
     def next_scoregroup_pairing_is_ok?
       hypothetical_next_pairs.to_a.count == number_of_next_scoregroup_required_pairs
+    end
+
+    # Applies criterias C.4, C.5, C.6 and C.7.
+    def reduce_pair_requirements
+      if penultimate? || number_of_next_scoregroup_required_pairs.zero?
+        reset_number_of_next_scoregroup_required_pairs
+        bracket.reduce_number_of_required_pairs
+      else
+        bracket.impossible_downfloats = impossible_downfloats
+        reduce_number_of_next_scoregroup_required_pairs
+      end
     end
 
     def number_of_next_scoregroup_required_pairs
