@@ -35,7 +35,7 @@ module Swissfork
     end
 
     def pairs
-      return nil if (penultimate? || last?) && impossible_to_pair?
+      return nil if impossible_to_pair?
 
       unless last?
         mark_impossible_downfloats_as_impossible
