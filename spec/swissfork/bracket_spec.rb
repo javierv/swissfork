@@ -237,7 +237,7 @@ module Swissfork
           players[0].stub_opponents(players[1..9])
           players[1].stub_opponents([players[0], players[2]])
           players[2].stub_opponents(players[0..1])
-          players[3..9].stub_opponents([players[0]])
+          players[3..9].each { |player| player.stub_opponents([players[0]]) }
         end
 
         it "doesn't count that player as pairable" do
@@ -249,7 +249,7 @@ module Swissfork
         before(:each) do
           players[0..1].each { |player| player.stub_opponents(players[0..9]) }
           players[2].stub_opponents(players[0..1])
-          players[3..9].stub_opponents([players[0..1]])
+          players[3..9].each { |player| player.stub_opponents(players[0..1]) }
         end
 
         it "doesn't count those players as pairable" do
@@ -261,7 +261,7 @@ module Swissfork
         before(:each) do
           players[0..1].each { |player| player.stub_opponents(players[0..8]) }
           players[2].stub_opponents(players[0..1])
-          players[3..8].stub_opponents([players[0..1]])
+          players[3..8].each { |player| player.stub_opponents(players[0..1]) }
         end
 
         it "counts only one of those players as pairable" do
@@ -274,7 +274,7 @@ module Swissfork
 
         before(:each) do
           players[0..2].each { |player| player.stub_opponents(players[0..7]) }
-          players[3..8].stub_opponents([players[0..7]])
+          players[3..7].each { |player| player.stub_opponents(players[0..2]) }
         end
 
         it "counts only two of those players as pairable" do
@@ -526,7 +526,7 @@ module Swissfork
             players[1].stub_opponents(players[0..2] + players[4..9])
             players[2].stub_opponents([players[1]])
             players[3].stub_opponents([players[0]])
-            players[4..9].stub_opponents([players[0], players[1]])
+            players[4..9].each { |player| player.stub_opponents([players[0], players[1]]) }
           end
 
           it "pairs those two players with players from S1" do
