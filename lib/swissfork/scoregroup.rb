@@ -136,7 +136,7 @@ module Swissfork
     end
 
     def hypothetical_remaining_players
-      (remaining_players - players) + leftovers # TODO: simplify.
+      remaining_players - bracket.paired_players
     end
 
     def hypothetical_next_pairs

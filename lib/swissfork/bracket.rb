@@ -134,6 +134,10 @@ module Swissfork
       pairs && definitive_unpaired_players.sort
     end
 
+    def paired_players
+      definitive_pairs.flat_map(&:players)
+    end
+
     # Helper method which makes tests more readable.
     def pair_numbers
       pairs.map(&:numbers)
@@ -276,7 +280,7 @@ module Swissfork
     end
 
     def definitive_unpaired_players
-      players - definitive_pairs.flat_map(&:players)
+      players - paired_players
     end
 
     def all_players_have_the_same_points?
