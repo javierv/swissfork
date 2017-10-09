@@ -58,11 +58,9 @@ module Swissfork
       bracket.pairs
     end
 
-    # This is an approach to detect the Collapsed Last Bracket.
-    # TODO: While ideally we would call this method every time bracket.pairs
-    # isn't empty, this would make the program many times slower.
+    # Detects the Collapsed Last Bracket.
     def impossible_to_pair?
-      remaining_pairs.count < remaining_players.count / 2
+      remaining_bracket.number_of_possible_pairs < remaining_players.count / 2
     end
 
     def number_of_required_downfloats
@@ -170,9 +168,8 @@ module Swissfork
       @number_of_next_scoregroup_required_pairs = nil
     end
 
-    def remaining_pairs
-      # We use homogeneous brackets here because they're easier to pair.
-      @remaining_pairs ||= HomogeneousBracket.new(remaining_players).pairs
+    def remaining_bracket
+      Bracket.for(remaining_players)
     end
 
     def remaining_scoregroups
@@ -189,7 +186,6 @@ module Swissfork
 
     def reset
       @bracket = nil
-      @remaining_pairs = nil
     end
   end
 end
