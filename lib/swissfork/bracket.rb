@@ -60,6 +60,10 @@ module Swissfork
     end
     alias_method :max_pairs, :maximum_number_of_pairs # FIDE nomenclature
 
+    def all_players_can_be_paired?
+      number_of_possible_pairs == players.count / 2
+    end
+
     def number_of_required_downfloats
       @number_of_required_downfloats ||= 0
     end
