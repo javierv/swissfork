@@ -361,15 +361,15 @@ module Swissfork
       end
 
       context "downfloats result in worse pairings in the next scoregrouop" do
-        let(:players) { create_players(1..10) }
+        let(:players) { create_players(1..12) }
         let(:scoregroup) { Scoregroup.new(players[0..4], round) }
         let(:next_scoregroup) { Scoregroup.new(players[5..7], round) }
-        let(:last_scoregroup) { Scoregroup.new(players[8..9], round) }
+        let(:last_scoregroup) { Scoregroup.new(players[8..11], round) }
 
         before(:each) do
           players[0..4].each { |player| player.stub(points: 2) }
           players[5..7].each { |player| player.stub(points: 1) }
-          players[8..9].each { |player| player.stub(points: 0) }
+          players[8..11].each { |player| player.stub(points: 0) }
           round.stub(scoregroups: [scoregroup, next_scoregroup, last_scoregroup])
         end
 
