@@ -371,14 +371,54 @@ module Swissfork
           players[5..7].each { |player| player.stub(points: 1) }
           players[8..9].each { |player| player.stub(points: 0) }
           round.stub(scoregroups: [scoregroup, next_scoregroup, last_scoregroup])
-
-          players[4].stub_opponents(players[5..7])
-          players[5..7].each { |player| player.stub_opponents([players[4]]) }
         end
 
-        it "downfloats other players" do
-          scoregroup.pair_numbers.should == [[1, 3], [2, 5]]
-          scoregroup.leftover_numbers.should == [4]
+        context "next scoregroup can be paired" do
+          before(:each) do
+            players[4].stub_opponents(players[5..7])
+            players[5..7].each { |player| player.stub_opponents([players[4]]) }
+          end
+
+          it "downfloats players allowing the pair" do
+            scoregroup.pair_numbers.should == [[1, 3], [2, 5]]
+            scoregroup.leftover_numbers.should == [4]
+          end
+        end
+
+        context "next scoregroup can't be paired" do
+          before(:each) do
+            players[4..7].each { |player| player.stub_opponents(players[4..7]) }
+          end
+
+          it "downfloats players minimizaing downfloats in the next scoregroup" do
+            scoregroup.pair_numbers.should == [[1, 3], [2, 5]]
+            scoregroup.leftover_numbers.should == [4]
+          end
+        end
+
+        context "next scoregroup can't be paired even with downfloats" do
+          before(:each) do
+            players[0..4].each { |player| player.stub_opponents(players[5..7]) }
+            players[5..7].each { |player| player.stub_opponents(players[0..7]) }
+          end
+
+          it "ignores next scoregroup and downfloats the last player" do
+            scoregroup.pair_numbers.should == [[1, 3], [2, 4]]
+            scoregroup.leftover_numbers.should == [5]
+          end
+        end
+
+        context "next scoregroup can be paired with MDPs" do
+          before(:each) do
+            players[0].stub(points: 3)
+            players[1..4].each { |player| player.stub_opponents(players[5..7]) }
+            players[5..7].each { |player| player.stub_opponents(players[1..7]) }
+          end
+
+          it "ignores next scoregroup and downfloats the last player" do
+            scoregroup.pair_numbers.should == [[1, 2], [3, 4]]
+            scoregroup.leftover_numbers.should == [5]
+          end
         end
       end
     end

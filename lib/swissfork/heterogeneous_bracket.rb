@@ -17,6 +17,11 @@ module Swissfork
       @set_number_of_required_pairs || number_of_moved_down_possible_pairs
     end
 
+    def reduce_number_of_required_pairs
+      @set_number_of_players_in_limbo = number_of_players_in_limbo + 1
+      super
+    end
+
     def s2
       players[number_of_players_in_s1+number_of_players_in_limbo..-1]
     end
@@ -52,7 +57,7 @@ module Swissfork
     end
 
     def definitive_pairs
-      super + remainder_pairs
+      super + remainder_pairs.to_a
     end
 
     def remainder_pairs
@@ -69,7 +74,7 @@ module Swissfork
     end
 
     def hypothetical_leftovers
-      players - (established_pairs + remainder_bracket.pairs).flat_map(&:players)
+      players - (established_pairs + remainder_bracket.pairs.to_a).flat_map(&:players)
     end
 
     def initial_number_of_players_in_limbo
@@ -79,11 +84,6 @@ module Swissfork
 
     def number_of_players_in_limbo
       @set_number_of_players_in_limbo || initial_number_of_players_in_limbo
-    end
-
-    def reduce_number_of_required_pairs
-      @set_number_of_players_in_limbo = number_of_players_in_limbo + 1
-      super
     end
 
     def number_of_moved_down_opponent_incompatibilities

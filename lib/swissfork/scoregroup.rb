@@ -40,9 +40,24 @@ module Swissfork
       unless last?
         mark_impossible_downfloats_as_impossible
 
-        until(next_scoregroup_pairing_is_ok?)
-          bracket.number_of_required_downfloats = number_of_required_downfloats
-          mark_established_downfloats_as_impossible
+        until(bracket.pairs && next_scoregroup_pairing_is_ok?)
+          if penultimate?
+            bracket.number_of_required_downfloats = number_of_required_downfloats
+          end
+
+          if bracket.pairs
+            mark_established_downfloats_as_impossible
+          else
+            return nil if bracket.number_of_required_pairs.zero?
+
+            if penultimate? || number_of_next_scoregroup_required_pairs.zero?
+              reset_number_of_next_scoregroup_required_pairs
+              bracket.reduce_number_of_required_pairs
+            else
+              bracket.impossible_downfloats = impossible_downfloats
+              reduce_number_of_next_scoregroup_required_pairs
+            end
+          end
         end
       end
 
@@ -135,7 +150,19 @@ module Swissfork
     end
 
     def next_scoregroup_pairing_is_ok?
-      hypothetical_next_pairs.to_a.count == hypothetical_next_players.count / 2
+      hypothetical_next_pairs.to_a.count == number_of_next_scoregroup_required_pairs
+    end
+
+    def number_of_next_scoregroup_required_pairs
+      @number_of_next_scoregroup_required_pairs || hypothetical_next_players.count / 2
+    end
+
+    def reduce_number_of_next_scoregroup_required_pairs
+      @number_of_next_scoregroup_required_pairs = number_of_next_scoregroup_required_pairs - 1
+    end
+
+    def reset_number_of_next_scoregroup_required_pairs
+      @number_of_next_scoregroup_required_pairs = nil
     end
 
     def remaining_pairs

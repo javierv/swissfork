@@ -74,6 +74,10 @@ module Swissfork
       raise "Implement in subclass"
     end
 
+    def reduce_number_of_required_pairs
+      @set_number_of_required_pairs = number_of_required_pairs - 1
+    end
+
     def number_of_players_in_s1
       number_of_required_pairs
     end
@@ -108,9 +112,13 @@ module Swissfork
           reset_exchanger
 
           if quality.worst_possible?
-            reduce_number_of_required_pairs
             reset_quality
-            return remainder_pairs if number_of_required_pairs.zero?
+
+            if number_of_required_pairs.zero?
+              return remainder_pairs
+            else
+              return nil
+            end
           else
             quality.be_more_permissive
           end
@@ -142,6 +150,10 @@ module Swissfork
 
     def mark_as_impossible_downfloats(players)
       players.each { |player| impossible_downfloats << player }
+    end
+
+    def impossible_downfloats=(players)
+      @impossible_downfloats = Set.new(players)
     end
 
   private
@@ -320,10 +332,6 @@ module Swissfork
 
     def remainder_pairs
       []
-    end
-
-    def reduce_number_of_required_pairs
-      @set_number_of_required_pairs = number_of_required_pairs - 1
     end
   end
 end
