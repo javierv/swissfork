@@ -16,7 +16,7 @@ module Swissfork
     end
 
     def difference
-      (s1_players.map(&:bsn).sum - s2_players.map(&:bsn).sum).abs
+      (s1_numbers.sum - s2_numbers.sum).abs
     end
 
     def inspect
