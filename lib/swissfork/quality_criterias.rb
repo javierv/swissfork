@@ -18,8 +18,8 @@ module Swissfork
       criterias.pop
     end
 
-    def s2_leftovers_can_downfloat?
-      (pairable_s2_leftovers & possible_downfloaters).any?
+    def any_can_downfloat?(players)
+      (players & possible_downfloaters).any?
     end
 
   private
@@ -60,10 +60,6 @@ module Swissfork
       pairs.select(&:heterogeneous?)
     end
 
-    def pairable_s2_leftovers
-      s2 & pairable_leftovers
-    end
-
     def possible_downfloaters
       players.select do |player|
         !(
@@ -80,22 +76,17 @@ module Swissfork
       criterias.include?(element)
     end
 
-    # TODO: is it OK to use "send" only because this is kind of a private
-    # doing part of the logic in Bracket? It looks terrible anyway.
     def pairable_leftovers
-      bracket.send(:pairable_players) & bracket.send(:still_unpaired_players)
+      bracket.pairable_unpaired_players
     end
 
+    # TODO: this isn't very elegant.
     def pairs
       bracket.send(:established_pairs)
     end
 
     def players
       bracket.players
-    end
-
-    def s2
-      bracket.s2
     end
   end
 end

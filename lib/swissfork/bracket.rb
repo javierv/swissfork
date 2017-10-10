@@ -138,6 +138,14 @@ module Swissfork
       pairs && definitive_unpaired_players.sort
     end
 
+    def pairable_unpaired_players
+      pairable_players & still_unpaired_players
+    end
+
+    def pairable_unpaired_s2_players
+      s2 & pairable_unpaired_players
+    end
+
     def paired_players
       definitive_pairs.flat_map(&:players)
     end
@@ -190,7 +198,7 @@ module Swissfork
         pair = pair_for(player)
         # Not doing the quality check here decreases performance
         # dramatically.
-        if pair && quality.s2_leftovers_can_downfloat?
+        if pair && quality.any_can_downfloat?(pairable_unpaired_s2_players)
           established_pairs << pair
         else
           return established_pairs
