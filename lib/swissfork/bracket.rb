@@ -79,7 +79,7 @@ module Swissfork
     end
 
     def reduce_number_of_required_pairs
-      @set_number_of_required_pairs = number_of_required_pairs - 1
+      raise "Implement in subclass"
     end
 
     def number_of_players_in_s1

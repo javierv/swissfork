@@ -363,6 +363,43 @@ module Swissfork
           round.pair_numbers.should == [[1, 5], [2, 6], [3, 7], [4, 8], [9, 10]]
         end
       end
+
+      context "Only remainder players can complete the PPB + last bracket" do
+        let(:players) { create_players(1..8) }
+
+        before(:each) do
+          players[0].stub(points: 3)
+          players[1..3].each { |player| player.stub(points: 2) }
+          players[4..5].each { |player| player.stub(points: 1) }
+          players[6..7].each { |player| player.stub(points: 0) }
+          players[4..5].each { |player| player.stub_opponents(players[6..7]) }
+          players[6..7].each { |player| player.stub_opponents(players[4..7]) }
+        end
+
+        it "pairs the MDP and downfloats players from the remainder" do
+          round.pair_numbers.should == [[1, 2], [3, 7], [4, 8], [5, 6]]
+        end
+      end
+
+      context "a combinations of MDPs and remainders complete the pairing" do
+        let(:players) { create_players(1..10) }
+
+        before(:each) do
+          # The first two brackets will be merged as one; its pairing is the
+          # one we're testing.
+          players[0..1].each { |player| player.stub(points: 3) }
+          players[2..5].each { |player| player.stub(points: 2) }
+          players[6..9].each { |player| player.stub(points: 1) }
+
+          players[0..1].each { |player| player.stub_opponents(players[0..1]) }
+          players[5].stub_opponents(players[6..9])
+          players[6..9].each { |player| player.stub_opponents([players[5]] + players[6..9]) }
+        end
+
+        it "maximizes number of pairs, then number of MDP pairs" do
+          round.pair_numbers.should == [[1, 6], [2, 7], [3, 8], [4, 9], [5, 10]]
+        end
+      end
     end
   end
 end

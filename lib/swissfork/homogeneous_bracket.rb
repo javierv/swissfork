@@ -7,8 +7,14 @@ module Swissfork
   # should be created using Bracket.for(players), which returns
   # either a homogeneous or a heterogeneous bracket.
   class HomogeneousBracket < Bracket
+    attr_writer :number_of_required_pairs
+
     def number_of_required_pairs
-      @set_number_of_required_pairs || number_of_possible_pairs
+      @number_of_required_pairs || number_of_possible_pairs
+    end
+
+    def reduce_number_of_required_pairs
+      @number_of_required_pairs = number_of_required_pairs - 1
     end
 
     def s2

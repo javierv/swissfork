@@ -152,7 +152,7 @@ module Swissfork
         hypothetical_remaining_bracket.all_players_can_be_paired?
     end
 
-    # Applies criterias C.4, C.5, C.6 and C.7.
+    # Applies criterias C.4, C.5 and C.7.
     def reduce_pair_requirements
       if penultimate? || number_of_next_scoregroup_required_pairs.zero?
         reset_number_of_next_scoregroup_required_pairs
