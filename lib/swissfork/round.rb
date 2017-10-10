@@ -41,6 +41,10 @@ module Swissfork
       pairs.map(&:numbers)
     end
 
+    def bye
+      (players - pairs.flat_map(&:players)).first
+    end
+
   private
     def pairings_completed?
       established_pairs.count == players.count / 2

@@ -401,5 +401,25 @@ module Swissfork
         end
       end
     end
+
+    describe "#bye" do
+      let(:round) { Round.new(players) }
+
+      context "even number of players" do
+        let(:players) { create_players(1..10) }
+
+        it "returns nil" do
+          round.bye.should == nil
+        end
+      end
+
+      context "odd number of players" do
+        let(:players) { create_players(1..11) }
+
+        it "returns the unpaired player" do
+          round.bye.number.should == 11
+        end
+      end
+    end
   end
 end
