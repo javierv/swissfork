@@ -43,7 +43,7 @@ module Swissfork
 
   private
     def pairings_completed?
-      established_pairs.count == (players.count / 2.0).truncate
+      established_pairs.count == players.count / 2
     end
 
     def mark_established_pairs_as_impossible
