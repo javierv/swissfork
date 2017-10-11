@@ -65,8 +65,7 @@ module Swissfork
 
     # Detects the Collapsed Last Bracket.
     def impossible_to_pair?
-      !remaining_bracket.all_players_can_be_paired? ||
-        !remaining_bracket.bye_can_be_selected?
+      !remaining_bracket.can_finish_the_pairing?
     end
 
     def number_of_required_downfloats
@@ -157,7 +156,7 @@ module Swissfork
 
     def next_scoregroup_pairing_is_ok?
       hypothetical_next_pairs.to_a.count == number_of_next_scoregroup_required_pairs &&
-        hypothetical_remaining_bracket.all_players_can_be_paired? && hypothetical_remaining_bracket.bye_can_be_selected?
+        hypothetical_remaining_bracket.can_finish_the_pairing?
     end
 
     # Applies criterias C.4, C.5 and C.7.
