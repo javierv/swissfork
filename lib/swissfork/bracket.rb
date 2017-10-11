@@ -64,6 +64,14 @@ module Swissfork
       number_of_possible_pairs == players.count / 2
     end
 
+    def bye_can_be_selected?
+      return true if players.count.even?
+
+      players.select { |player| !player.had_bye? }.any? do |player|
+        Bracket.for(players - [player]).all_players_can_be_paired?
+      end
+    end
+
     def number_of_required_downfloats
       @number_of_required_downfloats ||= 0
     end

@@ -65,7 +65,8 @@ module Swissfork
 
     # Detects the Collapsed Last Bracket.
     def impossible_to_pair?
-      !remaining_bracket.all_players_can_be_paired?
+      !remaining_bracket.all_players_can_be_paired? ||
+        !remaining_bracket.bye_can_be_selected?
     end
 
     def number_of_required_downfloats
