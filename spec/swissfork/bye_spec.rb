@@ -64,6 +64,7 @@ module Swissfork
 
           it "gives the bye to a player from the previous bracket" do
             round.bye.number.should == 6
+
             round.pair_numbers.should == [[1, 3], [2, 4], [5, 7], [8, 10], [9, 11]]
           end
 
@@ -75,6 +76,28 @@ module Swissfork
             it "gives the bye to a different player" do
               round.bye.number.should == 2
               round.pair_numbers.should == [[1, 4], [3, 5], [6, 7], [8, 10], [9, 11]]
+            end
+          end
+        end
+
+        context "all players in the last bracket have downfloated" do
+          before(:each) do
+            players[6..10].each { |player| player.stub(floats: [:down]) }
+          end
+
+          it "gives the bye to the last player in the last bracket" do
+            round.bye.number.should == 11
+            round.pair_numbers.should == [[1, 4], [2, 5], [3, 6], [7, 9], [8, 10]]
+          end
+
+          context "the first player in the bracket didn't downfloat" do
+            before(:each) do
+              players[6].stub(floats: [])
+            end
+
+            it "gives the bye to that player" do
+              round.bye.number.should == 7
+              round.pair_numbers.should == [[1, 4], [2, 5], [3, 6], [8, 10], [9, 11]]
             end
           end
         end
@@ -105,6 +128,17 @@ module Swissfork
               round.bye.number.should == 2
               round.pair_numbers.should == [[1, 5], [3, 6], [4, 7], [8, 10], [9, 11]]
             end
+          end
+        end
+
+        context "all players in the last bracket have downfloated" do
+          before(:each) do
+            players[7..10].each { |player| player.stub(floats: [:down]) }
+          end
+
+          it "gives the bye to the last player in the last bracket" do
+            round.bye.number.should == 11
+            round.pair_numbers.should == [[1, 4], [2, 5], [3, 6], [7, 8], [9, 10]]
           end
         end
       end
