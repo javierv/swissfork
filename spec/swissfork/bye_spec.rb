@@ -66,6 +66,17 @@ module Swissfork
             round.bye.number.should == 6
             round.pair_numbers.should == [[1, 3], [2, 4], [5, 7], [8, 10], [9, 11]]
           end
+
+          context "the last players in the PPB had a bye" do
+            before(:each) do
+              players[2..5].each { |player| player.stub(had_bye?: true) }
+            end
+
+            it "gives the bye to a different player" do
+              round.bye.number.should == 2
+              round.pair_numbers.should == [[1, 4], [3, 5], [6, 7], [8, 10], [9, 11]]
+            end
+          end
         end
       end
 
