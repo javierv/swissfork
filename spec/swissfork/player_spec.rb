@@ -55,5 +55,49 @@ module Swissfork
         player.compatible_players_in([rival, compatible]).should == [compatible]
       end
     end
+
+    describe "#descended_in_the_previous_round?" do
+      let(:player) { Player.new(1) }
+
+      context "first round" do
+        before(:each) { player.stub(floats: []) }
+
+        it "returns false" do
+          player.descended_in_the_previous_round?.should be false
+        end
+      end
+
+      context "downfloated in the previous round" do
+        before(:each) { player.stub(floats: [nil, :up, :down]) }
+
+        it "returns true" do
+          player.descended_in_the_previous_round?.should be true
+        end
+      end
+
+      context "had a bye in the previous round" do
+        before(:each) { player.stub(floats: [:up, nil, :bye]) }
+
+        it "returns true" do
+          player.descended_in_the_previous_round?.should be true
+        end
+      end
+
+      context "downfloated two rounds ago" do
+        before(:each) { player.stub(floats: [:up, :down, nil]) }
+
+        it "returns false" do
+          player.descended_in_the_previous_round?.should be false
+        end
+      end
+
+      context "had a bye two rounds ago" do
+        before(:each) { player.stub(floats: [:bye, :down, :up]) }
+
+        it "returns false" do
+          player.descended_in_the_previous_round?.should be false
+        end
+      end
+    end
   end
 end

@@ -23,7 +23,7 @@ module Swissfork
     end
 
     def descended_in_the_previous_round?
-      floats.last == :down
+      [:down, :bye].include?(floats.last)
     end
 
     def ascended_in_the_previous_round?
@@ -31,7 +31,7 @@ module Swissfork
     end
 
     def descended_two_rounds_ago?
-      floats[-2] == :down
+      [:down, :bye].include?(floats[-2])
     end
 
     def ascended_two_rounds_ago?
