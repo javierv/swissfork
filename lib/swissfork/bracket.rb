@@ -168,8 +168,8 @@ module Swissfork
       players.each { |player| impossible_downfloats << player }
     end
 
-    def impossible_downfloats=(players)
-      @impossible_downfloats = Set.new(players)
+    def reset_impossible_downfloats
+      @impossible_downfloats = nil
     end
 
   private
