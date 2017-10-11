@@ -40,7 +40,7 @@ module Swissfork
       unless last?
         until(bracket.pairs && next_scoregroup_pairing_is_ok?)
           if penultimate?
-            mark_impossible_downfloats_as_impossible
+            bracket.mark_as_forbidden_downfloats(forbidden_downfloats)
             bracket.number_of_required_downfloats = number_of_required_downfloats
           end
 
@@ -91,12 +91,8 @@ module Swissfork
       bracket.mark_established_downfloats_as_impossible
     end
 
-    def mark_impossible_downfloats_as_impossible
-      bracket.mark_as_impossible_downfloats(impossible_downfloats)
-    end
-
-    def impossible_downfloats
-      @impossible_downfloats ||= players.select do |player|
+    def forbidden_downfloats
+      @forbidden_downfloats ||= players.select do |player|
         player.compatible_players_in(next_scoregroup.players).none?
       end
     end

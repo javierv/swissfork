@@ -164,8 +164,8 @@ module Swissfork
       clear_established_pairs
     end
 
-    def mark_as_impossible_downfloats(players)
-      players.each { |player| impossible_downfloats << player }
+    def mark_as_forbidden_downfloats(players)
+      players.each { |player| forbidden_downfloats << player }
     end
 
     def reset_impossible_downfloats
@@ -220,7 +220,7 @@ module Swissfork
         hypothetical_leftovers = (players - hypothetical_pairs.flat_map(&:players)).to_set
         if !not_ideal_pairs.include?(hypothetical_pairs) &&
           !impossible_downfloats.include?(hypothetical_leftovers) &&
-          hypothetical_leftovers.reject { |leftover| impossible_downfloats.include?(leftover) }.count >= number_of_required_downfloats
+          hypothetical_leftovers.reject { |leftover| forbidden_downfloats.include?(leftover) }.count >= number_of_required_downfloats
 
           return pair
         end
@@ -258,6 +258,10 @@ module Swissfork
       @impossible_downfloats ||= Set.new
     end
 
+    def forbidden_downfloats
+      @forbidden_downfloats ||= Set.new
+    end
+
     def mark_established_pairs_as_not_ideal
       not_ideal_pairs << established_pairs
       clear_established_pairs
@@ -284,7 +288,7 @@ module Swissfork
     end
 
     def possible_s2_downfloats
-      s2.reject { |player| impossible_downfloats.include?(player) }
+      s2.reject { |player| forbidden_downfloats.include?(player) }
     end
 
     def still_unpaired_players
