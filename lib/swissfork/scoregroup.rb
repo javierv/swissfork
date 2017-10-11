@@ -37,7 +37,12 @@ module Swissfork
     def pairs
       return nil if impossible_to_pair?
 
-      unless last?
+      if last?
+        if players.count.odd?
+          bracket.number_of_required_downfloats = 1
+          bracket.mark_as_forbidden_downfloats(byes)
+        end
+      else
         until(bracket.pairs && next_scoregroup_pairing_is_ok?)
           if penultimate?
             bracket.mark_as_forbidden_downfloats(forbidden_downfloats)
@@ -95,6 +100,10 @@ module Swissfork
       @forbidden_downfloats ||= players.select do |player|
         player.compatible_players_in(next_scoregroup.players).none?
       end
+    end
+
+    def byes
+      @byes ||= players.select(&:had_bye?)
     end
 
     def last?

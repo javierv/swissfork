@@ -57,5 +57,9 @@ module Swissfork
     def points
       0
     end
+
+    def had_bye?
+      # TODO.
+    end
   end
 end
