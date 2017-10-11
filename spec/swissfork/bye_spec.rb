@@ -50,6 +50,19 @@ module Swissfork
           round.bye.number.should == 10
         end
       end
+
+      context "all players in the last bracket had byes" do
+        before(:each) do
+          players[0..5].each { |player| player.stub(points: 1) }
+          players[6..10].each { |player| player.stub(points: 0) }
+          players[6..10].each { |player| player.stub(had_bye?: true) }
+        end
+
+        it "gives the bye to a player from the previous bracket" do
+          round.pair_numbers.should == [[1, 3], [2, 4], [5, 7], [8, 10], [9, 11]]
+          round.bye.number.should == 6
+        end
+      end
     end
   end
 end

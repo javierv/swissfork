@@ -42,6 +42,9 @@ module Swissfork
           bracket.number_of_required_downfloats = 1
           bracket.mark_as_forbidden_downfloats(byes)
         end
+
+        reduce_pair_requirements until(bracket.pairs) # Needed for heterogeneous.
+        return nil if bracket.leftovers.count > 1
       else
         until(bracket.pairs && next_scoregroup_pairing_is_ok?)
           if penultimate?
@@ -158,7 +161,7 @@ module Swissfork
 
     # Applies criterias C.4, C.5 and C.7.
     def reduce_pair_requirements
-      if penultimate? || number_of_next_scoregroup_required_pairs.zero?
+      if penultimate? || last? || number_of_next_scoregroup_required_pairs.zero?
         reset_number_of_next_scoregroup_required_pairs
         bracket.reduce_number_of_required_pairs
       else
