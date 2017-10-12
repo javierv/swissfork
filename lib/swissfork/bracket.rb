@@ -215,7 +215,7 @@ module Swissfork
         pair = pair_for(player)
         # Not doing the quality check here decreases performance
         # dramatically.
-        if pair && quality.any_can_downfloat?(pairable_unpaired_s2_players)
+        if pair && (pairable_unpaired_s2_players & quality.possible_downfloats).any?
           established_pairs << pair
         else
           return established_pairs

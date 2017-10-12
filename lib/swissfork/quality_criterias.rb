@@ -18,8 +18,16 @@ module Swissfork
       criterias.pop
     end
 
-    def any_can_downfloat?(players)
-      (players & possible_downfloaters).any?
+    def possible_downfloats
+      players.select do |player|
+        !(
+          include?(:same_downfloats_as_previous_round?) &&
+          player.descended_in_the_previous_round?
+        ) && !(
+          include?(:same_downfloats_as_two_rounds_ago?) &&
+          player.descended_two_rounds_ago?
+        )
+      end
     end
 
   private
@@ -58,18 +66,6 @@ module Swissfork
 
     def heterogeneous_pairs
       pairs.select(&:heterogeneous?)
-    end
-
-    def possible_downfloaters
-      players.select do |player|
-        !(
-          include?(:same_downfloats_as_previous_round?) &&
-          player.descended_in_the_previous_round?
-        ) && !(
-          include?(:same_downfloats_as_two_rounds_ago?) &&
-          player.descended_two_rounds_ago?
-        )
-      end
     end
 
     def include?(element)
