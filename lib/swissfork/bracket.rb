@@ -321,10 +321,6 @@ module Swissfork
       players.map(&:points).uniq.one?
     end
 
-    def half_or_more_players_were_moved_down?
-      number_of_moved_down_players >= players.length / 2
-    end
-
     def moved_down_players
       players.select { |player| player.points > points }
     end

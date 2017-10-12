@@ -29,12 +29,6 @@ module Swissfork
       s1_player.points != s2_player.points
     end
 
-    def include?(player)
-      # Faster than comparing with the pair players and than using
-      # Array#include? or Set#include?
-      (players - [player]) != players
-    end
-
     def eql?(pair)
       # TODO: Using array "-" for performance reasons. Check if it still
       # holds true when the program is more mature.
