@@ -232,14 +232,7 @@ module Swissfork
 
     def pair_for(player)
       opponents_for(player).map  { |opponent| Pair.new(player, opponent) }.each do |pair|
-        hypothetical_pairs = established_pairs + [pair]
-        hypothetical_leftovers = (players - hypothetical_pairs.flat_map(&:players)).to_set
-        if !not_ideal_pairs.include?(hypothetical_pairs) &&
-          !impossible_downfloats.include?(hypothetical_leftovers) &&
-          hypothetical_leftovers.reject { |leftover| forbidden_downfloats.include?(leftover) }.count >= number_of_required_downfloats
-
-          return pair
-        end
+        return pair if is_possible?(pair)
       end
 
       nil
@@ -247,6 +240,14 @@ module Swissfork
 
     def opponents_for(player)
       player.compatible_players_in(s2) & still_unpaired_players
+    end
+
+    def is_possible?(pair)
+      hypothetical_pairs = established_pairs + [pair]
+      hypothetical_leftovers = (players - hypothetical_pairs.flat_map(&:players)).to_set
+      !not_ideal_pairs.include?(hypothetical_pairs) &&
+        !impossible_downfloats.include?(hypothetical_leftovers) &&
+        hypothetical_leftovers.reject { |leftover| forbidden_downfloats.include?(leftover) }.count >= number_of_required_downfloats
     end
 
     def pairable_players
