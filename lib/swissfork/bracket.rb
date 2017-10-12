@@ -159,7 +159,8 @@ module Swissfork
     end
 
     def pairable_unpaired_s2_players
-      s2 & pairable_unpaired_players
+      # Consider S2 and limbo. TODO: change method name.
+      players[number_of_players_in_s1..-1] & pairable_unpaired_players
     end
 
     def paired_players
