@@ -18,6 +18,7 @@ module Swissfork
     require "swissfork/quality_criterias"
     require "swissfork/heterogeneous_bracket"
     require "swissfork/homogeneous_bracket"
+    require "swissfork/opponents_incompatibilities"
 
     include Comparable
     attr_reader :players
@@ -329,22 +330,8 @@ module Swissfork
       number_of_opponent_incompatibilities_for(players)
     end
 
-    def opponents_list(players, opponents)
-      players.map do |player|
-        player.compatible_players_in(opponents)
-      end
-    end
-
     def number_of_opponent_incompatibilities_for(players_to_pair)
-      opponents_list = opponents_list(players_to_pair, players)
-
-      opponents_list.uniq.reduce(0) do |incompatibilities, opponents|
-        if opponents_list.count(opponents) > opponents.count
-          incompatibilities + opponents_list.count(opponents) - opponents.count
-        else
-          incompatibilities
-        end
-      end
+      OpponentsIncompatibilities.new(players_to_pair, players).count
     end
 
     def number_of_compatible_pairs
