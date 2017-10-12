@@ -158,11 +158,6 @@ module Swissfork
       pairable_players & still_unpaired_players
     end
 
-    def pairable_unpaired_s2_players
-      # Consider S2 and limbo. TODO: change method name.
-      players[number_of_players_in_s1..-1] & pairable_unpaired_players
-    end
-
     def paired_players
       definitive_pairs.flat_map(&:players)
     end
@@ -179,6 +174,10 @@ module Swissfork
     def mark_established_downfloats_as_impossible
       impossible_downfloats << definitive_unpaired_players.to_set
       clear_established_pairs
+    end
+
+    def forbidden_downfloats
+      @forbidden_downfloats ||= Set.new
     end
 
     def mark_as_forbidden_downfloats(players)
@@ -215,7 +214,7 @@ module Swissfork
         pair = pair_for(player)
         # Not doing the quality check here decreases performance
         # dramatically.
-        if pair && (pairable_unpaired_s2_players & quality.possible_downfloats).any?
+        if pair && possible_non_s1_downfloats.count >= number_of_required_downfloats
           established_pairs << pair
         else
           return established_pairs
@@ -254,6 +253,11 @@ module Swissfork
       players.select { |player| player.compatible_players_in(players).any? }
     end
 
+    def possible_non_s1_downfloats
+      players[number_of_players_in_s1..-1] & pairable_unpaired_players &
+        quality.possible_downfloats
+    end
+
     def pairings_completed?
       established_pairs.count == number_of_required_pairs
     end
@@ -273,10 +277,6 @@ module Swissfork
 
     def impossible_downfloats
       @impossible_downfloats ||= Set.new
-    end
-
-    def forbidden_downfloats
-      @forbidden_downfloats ||= Set.new
     end
 
     def mark_established_pairs_as_not_ideal
