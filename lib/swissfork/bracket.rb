@@ -214,7 +214,7 @@ module Swissfork
         pair = pair_for(player)
         # Not doing the quality check here decreases performance
         # dramatically.
-        if pair && possible_non_s1_downfloats.count >= number_of_required_downfloats
+        if pair
           established_pairs << pair
         else
           return established_pairs
@@ -247,7 +247,7 @@ module Swissfork
       hypothetical_leftovers = (players - hypothetical_pairs.flat_map(&:players)).to_set
       !not_ideal_pairs.include?(hypothetical_pairs) &&
         !impossible_downfloats.include?(hypothetical_leftovers) &&
-        hypothetical_leftovers.reject { |leftover| forbidden_downfloats.include?(leftover) }.count >= number_of_required_downfloats
+        (possible_non_s1_downfloats - pair.players).count >= number_of_required_downfloats
     end
 
     def pairable_players
@@ -255,7 +255,7 @@ module Swissfork
     end
 
     def possible_non_s1_downfloats
-      players[number_of_players_in_s1..-1] & pairable_unpaired_players &
+      players[number_of_players_in_s1..-1] & still_unpaired_players &
         quality.possible_downfloats
     end
 
