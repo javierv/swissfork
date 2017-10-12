@@ -68,17 +68,20 @@ module Swissfork
       !remaining_bracket.can_finish_the_pairing?
     end
 
+    # Only needed for the penultimate and last brackets
     def number_of_required_downfloats
-      all_players = players + next_scoregroup.players
+      next_scoregroup.number_of_required_mdps_from(players)
+    end
 
-      if all_players.count.odd?
-        if next_scoregroup.players.count.even?
-          next_scoregroup.leftovers.count + 1
+    def number_of_required_mdps_from(players_in_the_previous_scoregroup)
+      if((players + players_in_the_previous_scoregroup).count.odd?)
+        if players.count.even?
+          leftovers.count + 1
         else
-          next_scoregroup.leftovers.count - 1
+          leftovers.count - 1
         end
       else
-        next_scoregroup.leftovers.count
+        leftovers.count
       end
     end
 
