@@ -249,6 +249,29 @@ module Swissfork
               scoregroup.number_of_required_downfloats.should == 3
             end
           end
+
+          context "all players in the last bracket had byes" do
+            before(:each) do
+              players[5..8].each { |player| player.stub(had_bye?: true) }
+            end
+
+            context "no leftovers in the last bracket" do
+              it "returns one" do
+                scoregroup.number_of_required_downfloats.should == 1
+              end
+            end
+
+            context "two leftovers in the last bracket" do
+              before(:each) do
+                players[5].stub_opponents(players[6..8])
+                players[6..8].each { |player| player.stub_opponents([players[5]]) }
+              end
+
+              it "returns three" do
+                scoregroup.number_of_required_downfloats.should == 3
+              end
+            end
+          end
         end
 
         context "last bracket has and odd number of players" do
@@ -286,6 +309,69 @@ module Swissfork
 
             it "returns two" do
               scoregroup.number_of_required_downfloats.should == 2
+            end
+          end
+
+          context "players in the last bracket had byes" do
+            before(:each) do
+
+              players[4..8].each { |player| player.stub(had_bye?: true) }
+            end
+
+            context "no leftovers in the last bracket" do
+              it "returns two" do
+                scoregroup.number_of_required_downfloats.should == 2
+              end
+            end
+
+            context "one leftover in the last bracket" do
+              before(:each) do
+                players[4].stub_opponents(players[5..8])
+                players[5..8].each { |player| player.stub_opponents([players[4]]) }
+              end
+
+              it "returns two" do
+                scoregroup.number_of_required_downfloats.should == 2
+              end
+            end
+
+            context "three leftovers in the last bracket" do
+              before(:each) do
+                players[4..6].each { |player| player.stub_opponents(players[4..8]) }
+                players[7..8].each { |player| player.stub_opponents(players[4..6]) }
+              end
+
+              it "returns four" do
+                scoregroup.number_of_required_downfloats.should == 4
+              end
+            end
+          end
+
+          context "some players in the last bracket had byes" do
+            before(:each) do
+              players[4..7].each { |player| player.stub(had_bye?: true) }
+            end
+
+            context "one leftover who had a bye in the last bracket" do
+              before(:each) do
+                players[4].stub_opponents(players[5..8])
+                players[5..8].each { |player| player.stub_opponents([players[4]]) }
+              end
+
+              it "returns two" do
+                scoregroup.number_of_required_downfloats.should == 2
+              end
+            end
+
+            context "three leftovers who had a bye in the last bracket" do
+              before(:each) do
+                players[4..6].each { |player| player.stub_opponents(players[4..8]) }
+                players[7..8].each { |player| player.stub_opponents(players[4..6]) }
+              end
+
+              it "returns four" do
+                scoregroup.number_of_required_downfloats.should == 4
+              end
             end
           end
         end

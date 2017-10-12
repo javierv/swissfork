@@ -78,7 +78,11 @@ module Swissfork
         if players.count.even?
           leftovers.count + 1
         else
-          leftovers.count - 1
+          if((leftovers - players.select(&:had_bye?)).empty?)
+            leftovers.count + 1
+          else
+            leftovers.count - 1
+          end
         end
       else
         leftovers.count

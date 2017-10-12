@@ -139,6 +139,34 @@ module Swissfork
           end
         end
       end
+
+      context "all players in the last bracket had byes" do
+        let(:players) { create_players(1..11) }
+
+        before(:each) do
+          players[0..7].each { |player| player.stub(points: 1) }
+          players[8..10].each { |player| player.stub(points: 0) }
+          players[8..10].each { |player| player.stub(had_bye?: true) }
+        end
+
+        it "pairs fast" do
+          Benchmark.realtime{ round.pair_numbers }.should be < 0.05
+          round.bye.number.should == 8
+          round.pair_numbers.should == [[1, 4], [2, 5], [3, 6], [7, 9], [10, 11]]
+        end
+
+        context "the players in the last bracket can't be paired" do
+          before(:each) do
+            players[8..10].each { |player| player.stub_opponents(players[8..10]) }
+          end
+
+          it "pairs fast" do
+            Benchmark.realtime{ round.pair_numbers }.should be < 0.05
+            round.bye.number.should == 8
+            round.pair_numbers.should == [[1, 3], [2, 4], [5, 9], [6, 10], [7, 11]]
+          end
+        end
+      end
     end
   end
 end
