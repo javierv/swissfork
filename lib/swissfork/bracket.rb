@@ -134,12 +134,7 @@ module Swissfork
 
           if quality.worst_possible?
             reset_quality
-
-            if number_of_required_pairs.zero?
-              return remainder_pairs
-            else
-              return nil
-            end
+            return nil
           else
             quality.be_more_permissive
           end
