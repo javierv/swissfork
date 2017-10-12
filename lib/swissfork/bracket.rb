@@ -77,7 +77,11 @@ module Swissfork
     end
 
     def number_of_required_downfloats
-      @number_of_required_downfloats ||= 0
+      @number_of_required_downfloats ||= if players.count.odd?
+                                           1
+                                         else
+                                           0
+                                         end
     end
 
     def number_of_moved_down_players
