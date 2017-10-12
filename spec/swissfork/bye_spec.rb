@@ -80,6 +80,21 @@ module Swissfork
           end
         end
 
+        context "all players in the last two brackets had byes" do
+          before(:each) do
+            players[0..3].each { |player| player.stub(points: 2) }
+            players[4..7].each { |player| player.stub(points: 1) }
+            players[8..10].each { |player| player.stub(points: 0) }
+
+            players[4..10].each { |player| player.stub(had_bye?: true) }
+          end
+
+          it "a player from a previous bracket gets the bye" do
+            round.bye.number.should == 4
+            round.pair_numbers.should == [[1, 2], [3, 5], [6, 7], [8, 9], [10, 11]]
+          end
+        end
+
         context "all players in the last bracket have downfloated" do
           before(:each) do
             players[6..10].each { |player| player.stub(floats: [:down]) }
