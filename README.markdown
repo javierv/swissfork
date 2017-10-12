@@ -8,9 +8,8 @@ It's curerntly in early development stages, and expect development to be slow ;)
 TODO
 ----
 
-1. Byes.
-2. Colour preferences (for chess tournaments).
-3. API to manage a whole tournament and not just a round.
-4. Import and export files coded in the FIDE Data Exchange Format.
-5. Pairings checker.
-6. Random Tournament Generator.
+1. Colour preferences (for chess tournaments).
+2. API to manage a whole tournament and not just a round.
+3. Import and export files coded in the FIDE Data Exchange Format.
+4. Pairings checker.
+5. Random Tournament Generator.
