@@ -154,8 +154,8 @@ module Swissfork
       pairs && definitive_unpaired_players.sort
     end
 
-    def pairable_unpaired_players
-      pairable_players & still_unpaired_players
+    def pairable_hypothetical_leftovers
+      pairable_players & hypothetical_leftovers
     end
 
     def paired_players

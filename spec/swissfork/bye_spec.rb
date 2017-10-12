@@ -140,6 +140,17 @@ module Swissfork
             round.bye.number.should == 11
             round.pair_numbers.should == [[1, 4], [2, 5], [3, 6], [7, 8], [9, 10]]
           end
+
+          context "the first player in the bracket didn't downfloat" do
+            before(:each) do
+              players[7].stub(floats: [])
+            end
+
+            it "gives the bye to that player" do
+              round.bye.number.should == 8
+              round.pair_numbers.should == [[1, 4], [2, 5], [3, 6], [7, 9], [10, 11]]
+            end
+          end
         end
       end
     end

@@ -74,7 +74,7 @@ module Swissfork
     end
 
     def pairable_leftovers
-      bracket.pairable_unpaired_players
+      bracket.pairable_hypothetical_leftovers
     end
 
     # TODO: this isn't very elegant.

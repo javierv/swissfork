@@ -682,6 +682,37 @@ module Swissfork
             bracket.leftover_numbers.should == [2]
           end
         end
+
+        context "the lowest player has already downfloated" do
+          before(:each) { players[10].stub(floats: [:down]) }
+
+          it "downfloats a different player" do
+            bracket.leftover_numbers.should == [10]
+            bracket.pair_numbers.should == [[1, 3], [2, 4], [5, 8], [6, 9], [7, 11]]
+          end
+        end
+
+        context "all players have downfloated except the highest S2 one" do
+          before(:each) do
+            players[3..10].each { |player| player.stub(floats: [:down]) }
+          end
+
+          it "downfloats that player" do
+            bracket.leftover_numbers.should == [3]
+            bracket.pair_numbers.should == [[1, 4], [2, 5], [6, 9], [7, 10], [8, 11]]
+          end
+        end
+
+        context "all players in S2 have downfloated" do
+          before(:each) do
+            players[2..10].each { |player| player.stub(floats: [:down]) }
+          end
+
+          it "downfloats the lowest player" do
+            bracket.leftover_numbers.should == [11]
+            bracket.pair_numbers.should == [[1, 3], [2, 4], [5, 8], [6, 9], [7, 10]]
+          end
+        end
       end
 
       context "heterogeneous groups with half of the players having more points" do
