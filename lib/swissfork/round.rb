@@ -16,20 +16,10 @@ module Swissfork
     end
 
     def pairs
-      until(pairings_completed?)
-        scoregroups.each.with_index do |scoregroup, index|
-          if scoregroup.pairs
-            if impossible_pairs.include?(established_pairs + scoregroup.pairs)
-              scoregroup.mark_established_downfloats_as_impossible
-              redo
-            else
-              established_pairs.push(*scoregroup.pairs)
-              scoregroup.move_leftovers_to_next_scoregroup unless scoregroup.last?
-            end
-          else
-            mark_established_pairs_as_impossible
-            break
-          end
+      until(pairings_completed?) # TODO check why this condition is still necessary.
+        scoregroups.each do |scoregroup|
+          established_pairs.push(*scoregroup.pairs)
+          scoregroup.move_leftovers_to_next_scoregroup unless scoregroup.last?
         end
       end
 
@@ -50,22 +40,8 @@ module Swissfork
       established_pairs.count == players.count / 2
     end
 
-    def mark_established_pairs_as_impossible
-      impossible_pairs << established_pairs
-      reset_pairs
-    end
-
-    def impossible_pairs
-      @impossible_pairs ||= []
-    end
-
     def established_pairs
       @established_pairs ||= []
-    end
-
-    def reset_pairs
-      @established_pairs = nil
-      @scoregroups = nil
     end
 
     def player_groups
