@@ -29,7 +29,7 @@ module Swissfork
     # 2 MDPs + 1 remainder
     # ...
     def reduce_number_of_required_pairs
-      if can_reduce_moved_down_pairs? && can_increase_remainder_pairs?
+      if can_reduce_moved_down_pairs?
         reduce_number_of_moved_down_pairs
       else
         reduce_number_of_total_pairs
@@ -119,7 +119,7 @@ module Swissfork
     end
 
     def can_reduce_moved_down_pairs?
-      number_of_required_moved_down_pairs > 0
+      number_of_required_moved_down_pairs > 0 && can_increase_remainder_pairs?
     end
 
     def can_increase_remainder_pairs?
