@@ -47,8 +47,9 @@ module Swissfork
         return nil if bracket.leftovers.count > 1
       else
         until(bracket.pairs && next_scoregroup_pairing_is_ok?)
+          bracket.mark_as_forbidden_downfloats(forbidden_downfloats)
+
           if penultimate?
-            bracket.mark_as_forbidden_downfloats(forbidden_downfloats)
             bracket.number_of_required_downfloats = number_of_required_downfloats
           end
 
@@ -108,7 +109,7 @@ module Swissfork
 
     def forbidden_downfloats
       @forbidden_downfloats ||= players.select do |player|
-        player.compatible_players_in(next_scoregroup.players).none?
+        player.compatible_players_in(remaining_players - players).none?
       end
     end
 
