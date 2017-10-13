@@ -39,7 +39,6 @@ module Swissfork
 
       if last?
         if players.count.odd?
-          bracket.number_of_required_downfloats = 1
           bracket.mark_as_forbidden_downfloats(byes)
         end
 
