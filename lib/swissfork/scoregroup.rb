@@ -37,20 +37,16 @@ module Swissfork
     def pairs
       if last?
         if players.count.odd?
-          bracket.mark_as_forbidden_downfloats(byes)
+          bracket.forbidden_downfloats = byes
         end
 
         return nil if leftovers.count > 1
       else
-        bracket.mark_as_forbidden_downfloats(forbidden_downfloats)
         bracket.number_of_required_downfloats = number_of_required_downfloats
+        bracket.forbidden_downfloats = forbidden_downfloats
 
         until(bracket.pairs && hypothetical_remaining_bracket.can_complete_the_pairing?)
-          if bracket.pairs.to_a.empty?
-            bracket.reduce_number_of_required_pairs # Needed for heterogeneous
-          else
-            mark_established_downfloats_as_impossible
-          end
+          mark_established_downfloats_as_impossible
         end
       end
 
@@ -79,13 +75,17 @@ module Swissfork
     end
 
     def forbidden_downfloats
-      @forbidden_downfloats ||= players.select do |player|
-        player.compatible_players_in(remaining_players).none?
+      @forbidden_downfloats ||= players.combination(bracket.number_of_required_downfloats).select do |players|
+        !Bracket.for(remaining_players + players).can_complete_the_pairing?
       end
     end
 
+    # HACK: we use arrays of 1 element, because that's the format
+    # forbidden_downfloats expects.
     def byes
-      @byes ||= players.select(&:had_bye?)
+      @byes ||= players.combination(bracket.number_of_required_downfloats).select do |players|
+        players.all?(&:had_bye?)
+      end
     end
 
     def last?

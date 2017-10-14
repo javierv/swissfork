@@ -20,7 +20,6 @@ module Swissfork
 
     def possible_downfloats
       players.select do |player|
-        !bracket.forbidden_downfloats.include?(player) &&
         !(
           include?(:same_downfloats_as_previous_round?) &&
           player.descended_in_the_previous_round?

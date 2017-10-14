@@ -10,11 +10,7 @@ module Swissfork
     attr_writer :number_of_required_pairs
 
     def number_of_required_pairs
-      @number_of_required_pairs || number_of_possible_pairs
-    end
-
-    def reduce_number_of_required_pairs
-      @number_of_required_pairs = number_of_required_pairs - 1
+      @number_of_required_pairs ||= number_of_possible_pairs
     end
 
     def s2

@@ -48,7 +48,9 @@ module Swissfork
     end
 
     def number_of_required_moved_down_downfloats
-      [number_of_required_downfloats - possible_resident_downfloats.count, 0].max
+      allowed_downfloats.map do |downfloats|
+        (downfloats - resident_players).count
+      end.min.to_i
     end
 
     def number_of_required_remainder_pairs
@@ -133,10 +135,6 @@ module Swissfork
 
     def resident_players
       players - moved_down_players
-    end
-
-    def possible_resident_downfloats
-      resident_players.reject { |player| forbidden_downfloats.include?(player) }
     end
 
     def reduce_number_of_total_pairs
