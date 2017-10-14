@@ -64,7 +64,6 @@ module Swissfork
 
           it "gives the bye to a player from the previous bracket" do
             round.bye.number.should == 6
-
             round.pair_numbers.should == [[1, 3], [2, 4], [5, 7], [8, 10], [9, 11]]
           end
 
