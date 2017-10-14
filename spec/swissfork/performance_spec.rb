@@ -78,8 +78,7 @@ module Swissfork
           context "the last 4 players in the first group can't downfloat" do
             before(:each) do
               players[8..11].each { |player| player.stub_opponents(players[12..15]) }
-              players[12..14].each { |player| player.stub_opponents(players[8..15]) }
-              players[15].stub_opponents(players[8..12])
+              players[12..15].each { |player| player.stub_opponents(players[8..15]) }
             end
 
             it "pairs fast" do
@@ -92,8 +91,7 @@ module Swissfork
           context "the last 6 players in the first group can't downfloat" do
             before(:each) do
               players[6..11].each { |player| player.stub_opponents(players[12..15]) }
-              players[12..14].each { |player| player.stub_opponents(players[6..15]) }
-              players[15].stub_opponents(players[6..12])
+              players[12..15].each { |player| player.stub_opponents(players[6..15]) }
             end
 
             it "is very fast" do
