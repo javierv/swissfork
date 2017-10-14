@@ -42,8 +42,14 @@ module Swissfork
         bracket.number_of_required_downfloats = number_of_required_downfloats
         bracket.forbidden_downfloats = forbidden_downfloats
 
-        until(bracket.pairs && hypothetical_remaining_bracket.can_complete_the_pairing?)
-          mark_established_downfloats_as_impossible
+        until(bracket.pairs && next_scoregroup_pairing_is_ok?)
+          # Criteria C.7
+          if bracket.pairs.to_a.empty?
+            reduce_number_of_next_scoregroup_required_pairs
+            bracket.reset_impossible_downfloats
+          else
+            mark_established_downfloats_as_impossible
+          end
         end
       end
 
@@ -107,7 +113,11 @@ module Swissfork
     end
 
     def hypothetical_next_pairs
-      Bracket.for(hypothetical_next_players).pairs
+      Bracket.for(hypothetical_next_players).tap do |bracket|
+        if next_scoregroup.last?
+          bracket.mark_byes_as_forbidden_downfloats
+        end
+      end.pairs
     end
 
     def hypothetical_remaining_players
@@ -119,11 +129,12 @@ module Swissfork
     end
 
     def next_scoregroup_pairing_is_ok?
-      hypothetical_next_pairs.to_a.count == number_of_next_scoregroup_required_pairs
+      hypothetical_remaining_bracket.can_complete_the_pairing? &&
+        hypothetical_next_pairs.to_a.count == number_of_next_scoregroup_required_pairs
     end
 
     def number_of_next_scoregroup_required_pairs
-      @number_of_next_scoregroup_required_pairs || hypothetical_next_players.count / 2
+      @number_of_next_scoregroup_required_pairs ||= (bracket.number_of_required_downfloats + next_scoregroup.players.count) / 2
     end
 
     def reduce_number_of_next_scoregroup_required_pairs

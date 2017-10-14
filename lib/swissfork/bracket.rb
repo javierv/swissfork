@@ -98,10 +98,6 @@ module Swissfork
       raise "Implement in subclass"
     end
 
-    def reduce_number_of_required_pairs
-      raise "Implement in subclass"
-    end
-
     def number_of_players_in_s1
       number_of_required_pairs
     end

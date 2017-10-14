@@ -775,48 +775,6 @@ module Swissfork
       end
     end
 
-    describe "#reduce_number_of_required_pairs" do
-      context "heterogeneous bracket" do
-        let(:players) { create_players(1..11) }
-        let(:bracket) { Bracket.for(players) }
-
-        before(:each) do
-          players[0..3].each { |player| player.stub(points: 1) }
-          players[4..10].each { |player| player.stub(points: 0) }
-        end
-
-        context "without reducing the number of pairs" do
-          it "returns the maximum number of pairs" do
-            bracket.number_of_required_total_pairs.should == 5
-            bracket.number_of_required_moved_down_pairs.should == 4
-            bracket.number_of_required_remainder_pairs.should == 1
-          end
-        end
-
-        context "reducing the number of pairs" do
-          context "can increase the number of remainder pairs" do
-            before(:each) { 1.times { bracket.reduce_number_of_required_pairs }}
-
-            it "reduces the MDP pairs and increases the remainder pairs" do
-              bracket.number_of_required_total_pairs.should == 5
-              bracket.number_of_required_moved_down_pairs.should == 3
-              bracket.number_of_required_remainder_pairs.should == 2
-            end
-          end
-
-          context "cannot increase the number of remainder pairs" do
-            before(:each) { 2.times { bracket.reduce_number_of_required_pairs }}
-
-            it "reduces total number of pairs" do
-              bracket.number_of_required_total_pairs.should == 4
-              bracket.number_of_required_moved_down_pairs.should == 4
-              bracket.number_of_required_remainder_pairs.should == 0
-            end
-          end
-        end
-      end
-    end
-
     describe "#bye_can_be_selected?" do
       context "even number of players" do
         let(:players) { create_players(1..6) }
@@ -877,7 +835,6 @@ module Swissfork
       it "raises an exception when called directly from Bracket" do
         lambda { bracket.s2 }.should raise_error("Implement in subclass")
         lambda { bracket.number_of_required_pairs }.should raise_error("Implement in subclass")
-        lambda { bracket.reduce_number_of_required_pairs }.should raise_error("Implement in subclass")
         lambda { bracket.exchange }.should raise_error("Implement in subclass")
       end
     end
