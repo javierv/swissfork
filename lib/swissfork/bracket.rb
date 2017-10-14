@@ -22,7 +22,6 @@ module Swissfork
 
     include Comparable
     attr_reader :players
-    attr_writer :number_of_required_downfloats
 
     def self.for(players)
       if new(players).homogeneous?
@@ -83,6 +82,10 @@ module Swissfork
                                          else
                                            0
                                          end
+    end
+
+    def number_of_required_downfloats=(number)
+      @number_of_required_downfloats = [number, players.count - number_of_possible_pairs * 2].max
     end
 
     def number_of_moved_down_players
