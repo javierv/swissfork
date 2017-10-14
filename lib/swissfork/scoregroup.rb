@@ -58,7 +58,7 @@ module Swissfork
     end
 
     def number_of_required_downfloats
-      HomogeneousBracket.new(remaining_players - players).number_of_required_mdps_from(players)
+      HomogeneousBracket.new(remaining_players).number_of_required_mdps_from(players)
     end
 
     def bracket
@@ -80,7 +80,7 @@ module Swissfork
 
     def forbidden_downfloats
       @forbidden_downfloats ||= players.select do |player|
-        player.compatible_players_in(remaining_players - players).none?
+        player.compatible_players_in(remaining_players).none?
       end
     end
 
@@ -126,7 +126,7 @@ module Swissfork
     end
 
     def hypothetical_remaining_players
-      remaining_players - bracket.paired_players
+      remaining_players + leftovers
     end
 
     def hypothetical_remaining_bracket
@@ -146,7 +146,7 @@ module Swissfork
     end
 
     def remaining_scoregroups
-      scoregroups[index..-1]
+      scoregroups[index+1..-1]
     end
 
     def remaining_players
