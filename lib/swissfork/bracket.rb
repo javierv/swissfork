@@ -204,6 +204,16 @@ module Swissfork
       @forbidden_downfloats = Set.new(downfloats.map { |players| players.to_set })
     end
 
+    def mark_byes_as_forbidden_downfloats
+      if players.count.odd?
+        # HACK: we use arrays of 1 element, because that's the format
+        # forbidden_downfloats expects.
+        self.forbidden_downfloats = players.combination(1).select do |players|
+          players.first.had_bye?
+        end
+      end
+    end
+
     def reset_impossible_downfloats
       @impossible_downfloats = nil
     end

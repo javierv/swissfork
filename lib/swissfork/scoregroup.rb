@@ -36,10 +36,7 @@ module Swissfork
 
     def pairs
       if last?
-        if players.count.odd?
-          bracket.forbidden_downfloats = byes
-        end
-
+        bracket.mark_byes_as_forbidden_downfloats
         return nil if leftovers.count > 1
       else
         bracket.number_of_required_downfloats = number_of_required_downfloats
@@ -77,14 +74,6 @@ module Swissfork
     def forbidden_downfloats
       @forbidden_downfloats ||= players.combination(bracket.number_of_required_downfloats).select do |players|
         !Bracket.for(remaining_players + players).can_complete_the_pairing?
-      end
-    end
-
-    # HACK: we use arrays of 1 element, because that's the format
-    # forbidden_downfloats expects.
-    def byes
-      @byes ||= players.combination(bracket.number_of_required_downfloats).select do |players|
-        players.all?(&:had_bye?)
       end
     end
 
