@@ -42,7 +42,6 @@ module Swissfork
           bracket.mark_as_forbidden_downfloats(byes)
         end
 
-        bracket.reduce_number_of_required_pairs until(bracket.pairs) # Needed for heterogeneous.
         return nil if bracket.leftovers.count > 1
       else
         bracket.mark_as_forbidden_downfloats(forbidden_downfloats)
