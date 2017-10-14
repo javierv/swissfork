@@ -9,7 +9,7 @@ module Swissfork
   class HeterogeneousBracket < Bracket
     def number_of_moved_down_possible_pairs
       @number_of_moved_down_possible_pairs ||=
-        moved_down_players.count - number_of_moved_down_opponent_incompatibilities
+        number_of_moved_down_players - number_of_moved_down_opponent_incompatibilities
     end
     alias_method :m1, :number_of_moved_down_possible_pairs # FIDE nomenclature
 
@@ -26,7 +26,7 @@ module Swissfork
     def number_of_required_moved_down_pairs
       @number_of_required_moved_down_pairs ||=
         [number_of_moved_down_possible_pairs, number_of_required_total_pairs,
-         moved_down_players.count - number_of_required_moved_down_downfloats].min
+         number_of_moved_down_players - number_of_required_moved_down_downfloats].min
     end
 
     def number_of_required_moved_down_downfloats
@@ -100,7 +100,7 @@ module Swissfork
     end
 
     def number_of_players_in_limbo
-      moved_down_players.count - number_of_required_moved_down_pairs
+      number_of_moved_down_players - number_of_required_moved_down_pairs
     end
 
     def number_of_moved_down_opponent_incompatibilities
