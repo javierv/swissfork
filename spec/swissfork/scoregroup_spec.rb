@@ -239,12 +239,36 @@ module Swissfork
             end
           end
 
-          context "two leftovers in the last bracket" do
+          context "one player in the last bracket can't be paired" do
             before(:each) do
               players[5].stub_opponents(players[6..8])
               players[6..8].each { |player| player.stub_opponents([players[5]]) }
             end
 
+            # 5 downfloats to play against 6.
+            it "returns one" do
+              scoregroup.number_of_required_downfloats.should == 1
+            end
+          end
+
+          context "two players in the last bracket can't be paired" do
+            before(:each) do
+              players[5..6].each { |player| player.stub_opponents(players[5..8]) }
+              players[7..8].each { |player| player.stub_opponents(players[5..6]) }
+            end
+
+            # 4 and 5 downfloat to play against 6 and 7, leaving 3 unpaired.
+            it "returns three" do
+              scoregroup.number_of_required_downfloats.should == 3
+            end
+          end
+
+          context "no players in the last bracket can be paired" do
+            before(:each) do
+              players[5..8].each { |player| player.stub_opponents(players[5..8]) }
+            end
+
+            # 3, 4, and 5 downfloat to play against 6, 7 and 8. 9 gets the bye.
             it "returns three" do
               scoregroup.number_of_required_downfloats.should == 3
             end
@@ -267,6 +291,8 @@ module Swissfork
                 players[6..8].each { |player| player.stub_opponents([players[5]]) }
               end
 
+              # 1-2, 5 downfloats to receive the bye, 3 and 4 downfloat to complete
+              # the pairing against 6.
               it "returns three" do
                 scoregroup.number_of_required_downfloats.should == 3
               end
@@ -314,7 +340,6 @@ module Swissfork
 
           context "players in the last bracket had byes" do
             before(:each) do
-
               players[4..8].each { |player| player.stub(had_bye?: true) }
             end
 

@@ -104,6 +104,27 @@ module Swissfork
     end
     alias_method :n1, :number_of_players_in_s1 # FIDE nomenclature
 
+    def number_of_required_mdps_from(players_in_the_previous_scoregroup)
+      # TODO: write more tests and refactor.
+      if players_in_the_previous_scoregroup.count.odd?
+        if players.count.odd?
+          (number_of_total_incompatibilities / 2) * 2 + 1
+        else
+          if number_of_total_incompatibilities == players.count
+            (number_of_total_incompatibilities / 2) * 2 - 1
+          else
+            (number_of_total_incompatibilities / 2) * 2 + 1
+          end
+        end
+      else
+        if players.count.odd?
+          (number_of_total_incompatibilities / 2) * 2
+        else
+          ((number_of_total_incompatibilities + 1) / 2) * 2
+        end
+      end
+    end
+
     def s1
       return [] if number_of_players_in_s1 < 1
       players[0..number_of_players_in_s1-1].sort
@@ -332,6 +353,22 @@ module Swissfork
     def number_of_compatible_pairs
       @number_of_compatible_pairs ||=
         (players.count - number_of_opponent_incompatibilities) / 2
+    end
+
+    def number_of_bye_incompatibilities
+      if (leftovers.count > 0 && (leftovers - players.select(&:had_bye?)).empty?)
+        if players.count.even?
+          1
+        else
+          2
+        end
+      else
+        0
+      end
+    end
+
+    def number_of_total_incompatibilities
+      number_of_opponent_incompatibilities + number_of_bye_incompatibilities
     end
 
     def best_possible_pairs?

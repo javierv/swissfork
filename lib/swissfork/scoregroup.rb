@@ -70,23 +70,7 @@ module Swissfork
 
     # Only needed for the penultimate and last brackets
     def number_of_required_downfloats
-      next_scoregroup.number_of_required_mdps_from(players)
-    end
-
-    def number_of_required_mdps_from(players_in_the_previous_scoregroup)
-      if((players + players_in_the_previous_scoregroup).count.odd?)
-        if players.count.even?
-          leftovers.count + 1
-        else
-          if((leftovers - players.select(&:had_bye?)).empty?)
-            leftovers.count + 1
-          else
-            leftovers.count - 1
-          end
-        end
-      else
-        leftovers.count
-      end
+      HomogeneousBracket.new(remaining_players - players).number_of_required_mdps_from(players)
     end
 
     def bracket
