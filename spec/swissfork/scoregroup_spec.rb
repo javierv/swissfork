@@ -295,6 +295,17 @@ module Swissfork
                 scoregroup.number_of_required_downfloats.should == 4
               end
             end
+
+            context "two players who had a bye have only one possible opponent" do
+              before(:each) do
+                players[4..5].each { |player| player.stub_opponents(players[4..7]) }
+                players[6..7].each { |player| player.stub_opponents(players[4..5]) }
+              end
+
+              it "returns two" do
+                scoregroup.number_of_required_downfloats.should == 2
+              end
+            end
           end
         end
       end
