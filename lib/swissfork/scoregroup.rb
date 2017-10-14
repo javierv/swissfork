@@ -58,7 +58,7 @@ module Swissfork
     end
 
     def number_of_required_downfloats
-      HomogeneousBracket.new(remaining_players).number_of_required_mdps_from(players)
+      remaining_bracket.number_of_required_mdps_from(players)
     end
 
     def bracket
@@ -141,12 +141,18 @@ module Swissfork
       @number_of_next_scoregroup_required_pairs = number_of_next_scoregroup_required_pairs - 1
     end
 
-    def remaining_scoregroups
-      scoregroups[index+1..-1]
+    def remaining_bracket
+      # HomogeneousBracket makes pairing easier, and we only use it
+      # to check which players cannot be paired.
+      HomogeneousBracket.new(remaining_players)
     end
 
     def remaining_players
       remaining_scoregroups.flat_map(&:players)
+    end
+
+    def remaining_scoregroups
+      scoregroups[index+1..-1]
     end
 
     def scoregroups
