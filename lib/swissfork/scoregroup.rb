@@ -40,7 +40,7 @@ module Swissfork
           bracket.mark_as_forbidden_downfloats(byes)
         end
 
-        return nil if bracket.leftovers.count > 1
+        return nil if leftovers.count > 1
       else
         bracket.mark_as_forbidden_downfloats(forbidden_downfloats)
         bracket.number_of_required_downfloats = number_of_required_downfloats
