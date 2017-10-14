@@ -882,6 +882,60 @@ module Swissfork
       end
     end
 
+    describe "#all_players_can_be_paired?" do
+      let(:players) { create_players(1..12) }
+      let(:bracket) { Bracket.for(players) }
+
+      context "pairable bracket" do
+        it "returns true" do
+          bracket.all_players_can_be_paired?.should be true
+        end
+      end
+
+      context "existing opponents still make the bracket pairable" do
+        before(:each) do
+          players[11].stub_opponents(players[6..10])
+          players[6..10].each { |player| player.stub_opponents([players[11]]) }
+        end
+
+        it "returns true" do
+          bracket.all_players_can_be_paired?.should be true
+        end
+      end
+
+      context "completely unpairable bracket" do
+        before(:each) do
+          players[0..11].each { |player| player.stub_opponents(players[0..11]) }
+        end
+
+        it "returns false" do
+          bracket.all_players_can_be_paired?.should be false
+        end
+      end
+
+      context "one player can't be paired at all" do
+        before(:each) do
+          players[11].stub_opponents(players[0..10])
+          players[0..10].each { |player| player.stub_opponents([players[11]]) }
+        end
+
+        it "returns false" do
+          bracket.all_players_can_be_paired?.should be false
+        end
+      end
+
+      context "two players have the same possible opponent" do
+        before(:each) do
+          players[10..11].each { |player| player.stub_opponents(players[1..11]) }
+          players[1..9].each { |player| player.stub_opponents(players[10..11]) }
+        end
+
+        it "returns false" do
+          bracket.all_players_can_be_paired?.should be false
+        end
+      end
+    end
+
     describe "<=>" do
       def bracket_with_points(points)
         Bracket.for([]).tap do |bracket|

@@ -35,8 +35,6 @@ module Swissfork
     end
 
     def pairs
-      return nil if impossible_to_pair?
-
       if last?
         if players.count.odd?
           bracket.mark_as_forbidden_downfloats(byes)
@@ -57,11 +55,6 @@ module Swissfork
       end
 
       bracket.pairs
-    end
-
-    # Detects the Collapsed Last Bracket.
-    def impossible_to_pair?
-      !remaining_bracket.can_complete_the_pairing?
     end
 
     def number_of_required_downfloats
@@ -150,10 +143,6 @@ module Swissfork
 
     def reduce_number_of_next_scoregroup_required_pairs
       @number_of_next_scoregroup_required_pairs = number_of_next_scoregroup_required_pairs - 1
-    end
-
-    def remaining_bracket
-      Bracket.for(remaining_players)
     end
 
     def remaining_scoregroups
