@@ -45,13 +45,10 @@ module Swissfork
         reduce_pair_requirements until(bracket.pairs) # Needed for heterogeneous.
         return nil if bracket.leftovers.count > 1
       else
+        bracket.mark_as_forbidden_downfloats(forbidden_downfloats)
+        bracket.number_of_required_downfloats = number_of_required_downfloats
+
         until(bracket.pairs && next_scoregroup_pairing_is_ok?)
-          bracket.mark_as_forbidden_downfloats(forbidden_downfloats)
-
-          if penultimate?
-            bracket.number_of_required_downfloats = number_of_required_downfloats
-          end
-
           if bracket.pairs.to_a.empty?
             reduce_pair_requirements
           else
@@ -68,7 +65,6 @@ module Swissfork
       !remaining_bracket.can_finish_the_pairing?
     end
 
-    # Only needed for the penultimate and last brackets
     def number_of_required_downfloats
       HomogeneousBracket.new(remaining_players - players).number_of_required_mdps_from(players)
     end

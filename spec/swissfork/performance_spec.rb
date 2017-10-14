@@ -133,8 +133,8 @@ module Swissfork
             players[16..19].each { |player| player.stub_opponents(players[13..19]) }
           end
 
-          it "pairs at a decent speed" do
-            Benchmark.realtime{ round.pair_numbers }.should be < 5
+          it "pairs fast" do
+            Benchmark.realtime{ round.pair_numbers }.should be < 0.1
             round.pair_numbers.should == [[1, 4], [2, 5], [3, 6], [7, 8], [9, 14], [10, 17], [11, 18], [12, 19], [13, 20], [15, 16]]
           end
         end
