@@ -113,10 +113,6 @@ module Swissfork
        index + 1
     end
 
-    def penultimate?
-      scoregroups.count > 1 && self == scoregroups[-2]
-    end
-
     def hypothetical_next_players
       leftovers + next_scoregroup.players
     end
