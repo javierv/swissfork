@@ -42,15 +42,15 @@ module Swissfork
           bracket.mark_as_forbidden_downfloats(byes)
         end
 
-        reduce_pair_requirements until(bracket.pairs) # Needed for heterogeneous.
+        bracket.reduce_number_of_required_pairs until(bracket.pairs) # Needed for heterogeneous.
         return nil if bracket.leftovers.count > 1
       else
         bracket.mark_as_forbidden_downfloats(forbidden_downfloats)
         bracket.number_of_required_downfloats = number_of_required_downfloats
 
-        until(bracket.pairs && next_scoregroup_pairing_is_ok?)
+        until(bracket.pairs && hypothetical_remaining_bracket.can_finish_the_pairing?)
           if bracket.pairs.to_a.empty?
-            reduce_pair_requirements
+            bracket.reduce_number_of_required_pairs # Needed for heterogeneous
           else
             mark_established_downfloats_as_impossible
           end
@@ -142,19 +142,7 @@ module Swissfork
     end
 
     def next_scoregroup_pairing_is_ok?
-      hypothetical_next_pairs.to_a.count == number_of_next_scoregroup_required_pairs &&
-        hypothetical_remaining_bracket.can_finish_the_pairing?
-    end
-
-    # Applies criterias C.4, C.5 and C.7.
-    def reduce_pair_requirements
-      if penultimate? || last? || number_of_next_scoregroup_required_pairs.zero?
-        reset_number_of_next_scoregroup_required_pairs
-        bracket.reduce_number_of_required_pairs
-      else
-        bracket.reset_impossible_downfloats
-        reduce_number_of_next_scoregroup_required_pairs
-      end
+      hypothetical_next_pairs.to_a.count == number_of_next_scoregroup_required_pairs
     end
 
     def number_of_next_scoregroup_required_pairs
@@ -163,10 +151,6 @@ module Swissfork
 
     def reduce_number_of_next_scoregroup_required_pairs
       @number_of_next_scoregroup_required_pairs = number_of_next_scoregroup_required_pairs - 1
-    end
-
-    def reset_number_of_next_scoregroup_required_pairs
-      @number_of_next_scoregroup_required_pairs = nil
     end
 
     def remaining_bracket
