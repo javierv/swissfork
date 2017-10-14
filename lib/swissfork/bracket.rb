@@ -60,7 +60,7 @@ module Swissfork
     end
     alias_method :max_pairs, :maximum_number_of_pairs # FIDE nomenclature
 
-    def can_finish_the_pairing?
+    def can_complete_the_pairing?
       all_players_can_be_paired? && bye_can_be_selected?
     end
 

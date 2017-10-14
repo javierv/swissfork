@@ -47,7 +47,7 @@ module Swissfork
         bracket.mark_as_forbidden_downfloats(forbidden_downfloats)
         bracket.number_of_required_downfloats = number_of_required_downfloats
 
-        until(bracket.pairs && hypothetical_remaining_bracket.can_finish_the_pairing?)
+        until(bracket.pairs && hypothetical_remaining_bracket.can_complete_the_pairing?)
           if bracket.pairs.to_a.empty?
             bracket.reduce_number_of_required_pairs # Needed for heterogeneous
           else
@@ -61,7 +61,7 @@ module Swissfork
 
     # Detects the Collapsed Last Bracket.
     def impossible_to_pair?
-      !remaining_bracket.can_finish_the_pairing?
+      !remaining_bracket.can_complete_the_pairing?
     end
 
     def number_of_required_downfloats
