@@ -33,7 +33,7 @@ module Swissfork
           players[0..1].each { |player| player.stub_opponents(players[0..7]) }
         end
 
-        it "returns 1" do
+        it "returns 0" do
           incompatibilities.count.should == 0
         end
       end
