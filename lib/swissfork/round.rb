@@ -16,14 +16,7 @@ module Swissfork
     end
 
     def pairs
-      until(pairings_completed?) # TODO check why this condition is still necessary.
-        scoregroups.each do |scoregroup|
-          established_pairs.push(*scoregroup.pairs)
-          scoregroup.move_leftovers_to_next_scoregroup unless scoregroup.last?
-        end
-      end
-
-      established_pairs.sort
+      @pairs ||= establish_pairs
     end
 
     # Helper method which makes tests more readable.
@@ -36,8 +29,13 @@ module Swissfork
     end
 
   private
-    def pairings_completed?
-      established_pairs.count == players.count / 2
+    def establish_pairs
+      scoregroups.each do |scoregroup|
+        established_pairs.push(*scoregroup.pairs)
+        scoregroup.move_leftovers_to_next_scoregroup unless scoregroup.last?
+      end
+
+      established_pairs.sort
     end
 
     def established_pairs
