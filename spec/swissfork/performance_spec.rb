@@ -66,6 +66,24 @@ module Swissfork
         end
       end
 
+      context "downfloats from two rounds ago need to repeat" do
+        context "with 15 players" do
+          let(:players) { create_players(1..15) }
+
+          before(:each) do
+            players[0..13].each { |player| player.stub(floats: [:down]) }
+            players[14].stub(floats: [:down, nil])
+          end
+
+          it "performs at a reasonable speed" do
+            Benchmark.realtime{ round.pair_numbers }.should be < 1
+            round.pair_numbers.should == [
+              [1, 8], [2, 9], [3, 10], [4, 11], [5, 12], [6, 13], [7, 14]
+            ]
+          end
+        end
+      end
+
       context "homogeneous penultimate bracket; the last one can't be paired" do
         context "16 players, 4 of them in the last group" do
           let(:players) { create_players(1..16) }

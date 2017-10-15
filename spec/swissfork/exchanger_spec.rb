@@ -46,7 +46,7 @@ module Swissfork
       end
 
       context "exchanges limit reached" do
-        let(:one_player_exchanges) { exchanger.s1.count * exchanger.s2_or_limbo.count }
+        let(:one_player_exchanges) { exchanger.s1.count * exchanger.s2.count }
         before(:each) { one_player_exchanges.times { exchanger.next_exchange } }
 
         context "first exchange" do
@@ -148,14 +148,13 @@ module Swissfork
         context "all individual exchanges done" do
           before(:each) { 4.times { exchanger.next_exchange }}
 
-          it "returns false" do
-            exchanger.limit_reached?.should be false
-          end
-        end
-
-        context "exchanges of two players also done" do
-          before(:each) { 5.times { exchanger.next_exchange }}
-
+          # Exchanging 2 players here doesn't make sense here because
+          # the pairings available would be the same pairings as we
+          # would get by exchanging no players at all.
+          #
+          # In theory, it would make sense if two players were required
+          # to downfloat, but in that case, brackets now would set S1
+          # to only one player.
           it "returns false" do
             exchanger.limit_reached?.should be true
           end

@@ -1,4 +1,5 @@
 require "swissfork/bracket"
+require "swissfork/limbo_exchanger"
 
 module Swissfork
   # Handles the pairing of a heterogeneous bracket.
@@ -57,7 +58,7 @@ module Swissfork
 
   private
     def exchanger
-      @exchanger ||= Exchanger.new(s1, limbo)
+      @exchanger ||= LimboExchanger.new(s1, limbo)
     end
 
     def next_exchange

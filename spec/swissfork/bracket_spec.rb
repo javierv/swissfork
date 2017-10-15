@@ -789,6 +789,27 @@ module Swissfork
           end
         end
       end
+
+      context "heterogeneous bracket with more than half moved down players" do
+        let(:players) { create_players(1..12) }
+
+        before(:each) do
+          players[0..7].each { |player| player.stub(points: 1.5) }
+          players[8..11].each { |player| player.stub(points: 1) }
+        end
+
+        context "the first four moved down player can't be paired" do
+          before(:each) do
+            players[0..3].each { |player| player.stub_opponents(players[0..11]) }
+            players[4..11].each { |player| player.stub_opponents(players[0..3]) }
+          end
+
+          it "moves those players down and pairs the rest" do
+            bracket.pair_numbers.should == [[5, 9], [6, 10], [7, 11], [8, 12]]
+            bracket.leftover_numbers.should == [1, 2, 3, 4]
+          end
+        end
+      end
     end
 
     describe "#leftovers" do
