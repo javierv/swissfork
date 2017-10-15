@@ -42,8 +42,8 @@ module Swissfork
   private
     attr_writer :old_failing_criteria
 
-    def criterias
-      @criterias ||= [
+    def self.criterias
+      [
         :same_downfloats_as_previous_round?,
         :same_upfloats_as_previous_round?,
         :same_downfloats_as_two_rounds_ago?,
@@ -51,42 +51,36 @@ module Swissfork
       ]
     end
 
+    def criterias
+      self.class.criterias
+    end
+
+    criterias.each do |criteria|
+      define_method criteria do
+        send(criteria.to_s.delete("?")).count > allowed_failures[criteria]
+      end
+    end
+
     def allowed_failures
       @allowed_failures ||= Hash.new(0)
     end
 
     # C.12
-    def same_downfloats_as_previous_round?
-      same_downfloats_as_previous_round.count > allowed_failures[:same_downfloats_as_previous_round?]
-    end
-
     def same_downfloats_as_previous_round
       pairable_leftovers.select { |player| player.descended_in_the_previous_round? }
     end
 
     # C.13
-    def same_upfloats_as_previous_round?
-      same_upfloats_as_previous_round.count > allowed_failures[:same_upfloats_as_previous_round]
-    end
-
     def same_upfloats_as_previous_round
       ascending_players.select { |player| player.ascended_in_the_previous_round? }
     end
 
     # C.14
-    def same_downfloats_as_two_rounds_ago?
-      same_downfloats_as_two_rounds_ago.count > allowed_failures[:same_downfloats_as_two_rounds_ago?]
-    end
-
     def same_downfloats_as_two_rounds_ago
       pairable_leftovers.select { |player| player.descended_two_rounds_ago? }
     end
 
     # C.15
-    def same_upfloats_as_two_rounds_ago?
-      same_upfloats_as_two_rounds_ago.count > allowed_failures[:same_upfloats_as_two_rounds_ago?]
-    end
-
     def same_upfloats_as_two_rounds_ago
       ascending_players.select { |player| player.ascended_two_rounds_ago? }
     end
