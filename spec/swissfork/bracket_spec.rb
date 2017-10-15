@@ -574,6 +574,53 @@ module Swissfork
             end
           end
         end
+
+        context "four players can only play against one opponent" do
+          before(:each) do
+            players[0..3].each { |player| player.stub_opponents(players[0..5] + players[7..9]) }
+            players[4..5].each { |player| player.stub_opponents(players[0..3]) }
+            players[7..9].each { |player| player.stub_opponents(players[0..3]) }
+          end
+
+          it "downfloats four players" do
+            bracket.pair_numbers.should == [[1, 7], [5, 8], [6, 9]]
+            bracket.leftover_numbers.should == [2, 3, 4, 10]
+          end
+
+          context "two of those players and the last one have already downfloated" do
+            before(:each) do
+              players[0..1].each { |player| player.stub(floats: [:down]) }
+              players[9].stub(floats: [:down])
+            end
+
+            it "minimizes same downfloats as the previous round (minimum: 2)" do
+              bracket.pair_numbers.should == [[1, 7], [5, 8], [6, 10]]
+              bracket.leftover_numbers.should == [2, 3, 4, 9]
+            end
+
+            context "the penultimate downfloated two rounds ago" do
+              before(:each) do
+                players[8].stub(floats: [:down, nil])
+              end
+
+              it "minimizes same downfloats as two rounds before (minimum: 0)" do
+                bracket.pair_numbers.should == [[1, 7], [5, 9], [6, 10]]
+                bracket.leftover_numbers.should == [2, 3, 4, 8]
+              end
+
+              context "one of the required downfloats also descended 2 rounds ago" do
+                before(:each) do
+                  players[3].stub(floats: [:down, nil])
+                end
+
+                it "minimizes same downfloats as two rounds before (minimum: 1)" do
+                  bracket.pair_numbers.should == [[1, 7], [5, 9], [6, 10]]
+                  bracket.leftover_numbers.should == [2, 3, 4, 8]
+                end
+              end
+            end
+          end
+        end
       end
 
       context "odd number of players" do

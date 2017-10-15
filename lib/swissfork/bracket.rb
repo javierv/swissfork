@@ -214,6 +214,10 @@ module Swissfork
       @impossible_downfloats = nil
     end
 
+    def allowed_downfloats
+      @allowed_downfloats ||= players.combination(number_of_required_downfloats).map { |downfloats| downfloats.to_set }.to_set - forbidden_downfloats
+    end
+
   private
     def exchanger
       raise "Implement in subclass"
@@ -272,22 +276,15 @@ module Swissfork
 
       !not_ideal_pairs.include?(hypothetical_pairs) &&
         !impossible_downfloats.include?(hypothetical_leftovers) &&
-        can_downfloat?(possible_non_s1_downfloats - pair.players)
-    end
-
-    def can_downfloat?(leftovers)
-      leftovers.combination(number_of_required_downfloats).any? do |downfloats|
-        allowed_downfloats.include?(downfloats.to_set)
-      end
+        quality.can_downfloat?(unpaired_non_s1_players - pair.players)
     end
 
     def pairable_players
       players.select { |player| player.compatible_players_in(players).any? }
     end
 
-    def possible_non_s1_downfloats
-      players[number_of_players_in_s1..-1] & still_unpaired_players &
-        quality.possible_downfloats
+    def unpaired_non_s1_players
+      players[number_of_players_in_s1..-1] & still_unpaired_players
     end
 
     def pairings_completed?
@@ -333,11 +330,7 @@ module Swissfork
     def exchange_until_s2_players_can_downfloat
       begin
         exchange
-      end until(exchanger.limit_reached? || can_downfloat?(s2))
-    end
-
-    def allowed_downfloats
-      @allowed_downfloats ||= players.combination(number_of_required_downfloats).map { |downfloats| downfloats.to_set }.to_set - forbidden_downfloats
+      end until(exchanger.limit_reached? || quality.can_downfloat?(s2))
     end
 
     def still_unpaired_players

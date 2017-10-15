@@ -11,26 +11,37 @@ module Swissfork
     end
 
     def worst_possible?
-      criterias.empty?
+      # TODO: change when we add support for colours.
+      allowed_failures[criterias[0]] > number_of_required_downfloats + 1
     end
 
     def be_more_permissive
-      criterias.pop
+      failing_criteria = current_failing_criteria
+
+      if failing_criteria != old_failing_criteria
+        if old_failing_criteria_is_less_important?
+          allowed_failures[old_failing_criteria] = 0
+        end
+
+        self.old_failing_criteria = failing_criteria
+      end
+
+      allowed_failures[failing_criteria] += 1
     end
 
-    def possible_downfloats
-      players.select do |player|
-        !(
-          include?(:same_downfloats_as_previous_round?) &&
-          player.descended_in_the_previous_round?
-        ) && !(
-          include?(:same_downfloats_as_two_rounds_ago?) &&
-          player.descended_two_rounds_ago?
-        )
+    def can_downfloat?(leftovers)
+      return true if number_of_required_downfloats.zero?
+
+      leftovers.combination(number_of_required_downfloats).any? do |players|
+        bracket.allowed_downfloats.include?(players.to_set) &&
+          !exceed_same_downfloats_as_previous_round?(players) &&
+          !exceed_same_downfloats_as_two_rounds_ago?(players)
       end
     end
 
   private
+    attr_writer :old_failing_criteria
+
     def criterias
       @criterias ||= [
         :same_downfloats_as_previous_round?,
@@ -40,24 +51,86 @@ module Swissfork
       ]
     end
 
+    def allowed_failures
+      @allowed_failures ||= Hash.new(0)
+    end
+
     # C.12
     def same_downfloats_as_previous_round?
-      pairable_leftovers.any? { |player| player.descended_in_the_previous_round? }
+      same_downfloats_as_previous_round.count > allowed_failures[:same_downfloats_as_previous_round?]
+    end
+
+    def same_downfloats_as_previous_round
+      pairable_leftovers.select { |player| player.descended_in_the_previous_round? }
     end
 
     # C.13
     def same_upfloats_as_previous_round?
-      ascending_players.any? { |player| player.ascended_in_the_previous_round? }
+      same_upfloats_as_previous_round.count > allowed_failures[:same_upfloats_as_previous_round]
+    end
+
+    def same_upfloats_as_previous_round
+      ascending_players.select { |player| player.ascended_in_the_previous_round? }
     end
 
     # C.14
     def same_downfloats_as_two_rounds_ago?
-      pairable_leftovers.any? { |player| player.descended_two_rounds_ago? }
+      same_downfloats_as_two_rounds_ago.count > allowed_failures[:same_downfloats_as_two_rounds_ago?]
+    end
+
+    def same_downfloats_as_two_rounds_ago
+      pairable_leftovers.select { |player| player.descended_two_rounds_ago? }
     end
 
     # C.15
     def same_upfloats_as_two_rounds_ago?
-      ascending_players.any? { |player| player.ascended_two_rounds_ago? }
+      same_upfloats_as_two_rounds_ago.count > allowed_failures[:same_upfloats_as_two_rounds_ago?]
+    end
+
+    def same_upfloats_as_two_rounds_ago
+      ascending_players.select { |player| player.ascended_two_rounds_ago? }
+    end
+
+    def current_failing_criteria
+      if ok? # HACK: hypothetical quality check in Bracket prevents pairings at all.
+        if allowed_failures[:same_downfloats_as_two_rounds_ago?] >= number_of_required_downfloats
+          :same_downfloats_as_previous_round?
+        else
+          :same_downfloats_as_two_rounds_ago?
+        end
+      else
+        criterias.select { |condition| send(condition) }.last
+      end
+    end
+
+    def old_failing_criteria
+      @old_failing_criteria ||= criterias.last
+    end
+
+    def old_failing_criteria_is_less_important?
+      criterias.index(old_failing_criteria) > criterias.index(current_failing_criteria)
+    end
+
+    def exceed_same_downfloats_as_previous_round?(players)
+      players.reject(&:descended_in_the_previous_round?).count <
+        number_of_downfloats_not_from_the_previous_round
+    end
+
+    def exceed_same_downfloats_as_two_rounds_ago?(players)
+      players.reject do |player|
+        player.descended_two_rounds_ago? &&
+          !player.descended_in_the_previous_round?
+      end.count < number_of_downfloats_not_from_two_rounds_ago
+    end
+
+    def number_of_downfloats_not_from_two_rounds_ago
+      number_of_required_downfloats -
+        allowed_failures[:same_downfloats_as_two_rounds_ago?]
+    end
+
+    def number_of_downfloats_not_from_the_previous_round
+      number_of_required_downfloats -
+        allowed_failures[:same_downfloats_as_previous_round?]
     end
 
     def ascending_players
@@ -66,10 +139,6 @@ module Swissfork
 
     def heterogeneous_pairs
       pairs.select(&:heterogeneous?)
-    end
-
-    def include?(element)
-      criterias.include?(element)
     end
 
     def pairable_leftovers
@@ -81,8 +150,8 @@ module Swissfork
       bracket.send(:established_pairs)
     end
 
-    def players
-      bracket.players
+    def number_of_required_downfloats
+      bracket.number_of_required_downfloats
     end
   end
 end
