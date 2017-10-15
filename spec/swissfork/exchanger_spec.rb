@@ -1,6 +1,5 @@
 require "spec_helper"
 require "swissfork/exchanger"
-require "swissfork/player"
 
 module Swissfork
   describe Exchanger do
