@@ -33,7 +33,7 @@ module Swissfork
       return true if number_of_required_downfloats.zero?
 
       leftovers.combination(number_of_required_downfloats).any? do |players|
-        bracket.allowed_downfloats.include?(players.to_set) &&
+        allowed_downfloats.include?(players.to_set) &&
           !exceed_same_downfloats_as_previous_round?(players) &&
           !exceed_same_downfloats_as_two_rounds_ago?(players)
       end
@@ -146,6 +146,10 @@ module Swissfork
 
     def number_of_required_downfloats
       bracket.number_of_required_downfloats
+    end
+
+    def allowed_downfloats
+      bracket.allowed_downfloats
     end
   end
 end
