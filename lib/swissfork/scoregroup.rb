@@ -48,7 +48,7 @@ module Swissfork
             reduce_number_of_next_scoregroup_required_pairs
             bracket.reset_impossible_downfloats
           else
-            mark_established_downfloats_as_impossible
+            bracket.mark_established_downfloats_as_impossible
           end
         end
       end
@@ -71,10 +71,6 @@ module Swissfork
     def move_leftovers_to_next_scoregroup
       next_scoregroup.add_players(leftovers)
       remove_players(leftovers)
-    end
-
-    def mark_established_downfloats_as_impossible
-      bracket.mark_established_downfloats_as_impossible
     end
 
     def forbidden_downfloats
