@@ -25,7 +25,7 @@ module Swissfork
 
   private
     def list
-      players.map { |player| player.compatible_players_in(opponents) }
+      @list ||= players.map { |player| player.compatible_players_in(opponents) }
     end
   end
 end
