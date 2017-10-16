@@ -14,18 +14,56 @@ module Swissfork
     initialize_with :players, :opponents
 
     def count
-      list.uniq.reduce(0) do |incompatibilities, opponents|
-        if list.count(opponents) > opponents.count
-          incompatibilities + list.count(opponents) - opponents.count
-        else
-          incompatibilities
+      return 0 if enough_players_to_guarantee_pairing?
+
+      incompatibilities = 0
+
+      until(players_in_a_combination > list.keys.count)
+        list.keys.combination(players_in_a_combination).each do |players|
+          opponents = list.values_at(*players).reduce(&:+).uniq
+
+          if opponents.count < players_in_a_combination
+            remove_from_list(players + opponents)
+
+            incompatibilities += players_in_a_combination - opponents.count
+            reset_players_in_a_combination
+            break
+          end
         end
+
+        increase_players_in_a_combination
       end
+
+      incompatibilities + list.values.select { |rivals| rivals.empty? }.count
     end
 
   private
     def list
-      @list ||= players.map { |player| player.compatible_players_in(opponents) }
+      @list ||= players.reduce({}) do |list, player|
+        list[player] = player.compatible_players_in(opponents)
+        list
+      end
+    end
+
+    def enough_players_to_guarantee_pairing?
+      (players & opponents).count > players.map(&:opponents).map(&:count).max * 2
+    end
+
+    def remove_from_list(removals)
+      removals.each { |player| list.delete(player) }
+      list.each { |person, rivals| list[person] = rivals - removals }
+    end
+
+    def players_in_a_combination
+      @players_in_a_combination ||= 1
+    end
+
+    def increase_players_in_a_combination
+      @players_in_a_combination = players_in_a_combination + 1
+    end
+
+    def reset_players_in_a_combination
+      @players_in_a_combination = nil
     end
   end
 end
