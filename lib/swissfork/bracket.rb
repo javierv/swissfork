@@ -52,13 +52,13 @@ module Swissfork
     end
 
     def number_of_possible_pairs
-      [maximum_number_of_pairs, number_of_compatible_pairs].min
+      [number_of_pairs_after_downfloats, number_of_compatible_pairs].min
     end
+    alias_method :max_pairs, :number_of_possible_pairs # FIDE nomenclature
 
-    def maximum_number_of_pairs
+    def number_of_pairs_after_downfloats
       (players.count - number_of_required_downfloats) / 2
     end
-    alias_method :max_pairs, :maximum_number_of_pairs # FIDE nomenclature
 
     def can_complete_the_pairing?
       all_players_can_be_paired? && bye_can_be_selected?

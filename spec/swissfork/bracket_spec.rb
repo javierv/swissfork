@@ -52,12 +52,12 @@ module Swissfork
       end
     end
 
-    describe "#maximum_number_of_pairs" do
+    describe "#number_of_pairs_after_downfloats" do
       context "even number of players" do
         let(:players) { create_players(1..6) }
 
         it "returns half of the number of players" do
-          bracket.maximum_number_of_pairs.should == 3
+          bracket.number_of_pairs_after_downfloats.should == 3
         end
       end
 
@@ -65,7 +65,7 @@ module Swissfork
         let(:players) { create_players(1..7) }
 
         it "returns half of the number of players rounded downwards" do
-          bracket.maximum_number_of_pairs.should == 3
+          bracket.number_of_pairs_after_downfloats.should == 3
         end
       end
     end
