@@ -196,7 +196,7 @@ module Swissfork
       end
     end
 
-    describe "#number_of_moved_down_possible_pairs" do
+    describe "#number_of_moved_down_compatible_pairs" do
       let(:players) { create_players(1..10) }
 
       before(:each) do
@@ -212,7 +212,7 @@ module Swissfork
         end
 
         it "returns the number of moved down players" do
-          bracket.number_of_moved_down_possible_pairs.should == 3
+          bracket.number_of_moved_down_compatible_pairs.should == 3
         end
       end
 
@@ -228,7 +228,7 @@ module Swissfork
         end
 
         it "returns the number of resident players" do
-          bracket.number_of_moved_down_possible_pairs.should == 2
+          bracket.number_of_moved_down_compatible_pairs.should == 2
         end
       end
 
@@ -241,7 +241,7 @@ module Swissfork
         end
 
         it "doesn't count that player as pairable" do
-          bracket.number_of_moved_down_possible_pairs.should == 2
+          bracket.number_of_moved_down_compatible_pairs.should == 2
         end
       end
 
@@ -253,7 +253,7 @@ module Swissfork
         end
 
         it "doesn't count those players as pairable" do
-          bracket.number_of_moved_down_possible_pairs.should == 1
+          bracket.number_of_moved_down_compatible_pairs.should == 1
         end
       end
 
@@ -265,7 +265,7 @@ module Swissfork
         end
 
         it "counts only one of those players as pairable" do
-          bracket.number_of_moved_down_possible_pairs.should == 2
+          bracket.number_of_moved_down_compatible_pairs.should == 2
         end
       end
 
@@ -398,7 +398,7 @@ module Swissfork
       context "heterogeneous bracket" do
         before(:each) do
           s1_players[0..2].each { |player| player.stub(points: 2) }
-          bracket.stub(number_of_required_moved_down_pairs: 2)
+          bracket.stub(number_of_moved_down_possible_pairs: 2)
         end
 
         context "two exchanges" do

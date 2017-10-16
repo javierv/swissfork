@@ -8,26 +8,30 @@ module Swissfork
   # should be created using Bracket.for(players), which returns
   # either a homogeneous or a heterogeneous bracket.
   class HeterogeneousBracket < Bracket
-    def number_of_moved_down_possible_pairs
-      @number_of_moved_down_possible_pairs ||=
-        number_of_moved_down_players - number_of_moved_down_opponent_incompatibilities
-    end
-    alias_method :m1, :number_of_moved_down_possible_pairs # FIDE nomenclature
-
     # This definition allows heterogeneous brackets to use the same
     # pairing algorithm as homogeneous brackets do.
     def number_of_required_pairs
-      number_of_required_moved_down_pairs
+      number_of_moved_down_possible_pairs
+    end
+
+    def number_of_moved_down_possible_pairs
+      @number_of_moved_down_possible_pairs ||=
+        [number_of_moved_down_compatible_pairs, number_of_required_total_pairs,
+         number_of_moved_down_pairs_after_downfloats].min
+    end
+    alias_method :m1, :number_of_moved_down_possible_pairs # FIDE nomenclature
+
+    def number_of_moved_down_compatible_pairs
+      @number_of_moved_down_compatible_pairs ||=
+        number_of_moved_down_players - number_of_moved_down_opponent_incompatibilities
     end
 
     def number_of_required_total_pairs
       @number_of_required_total_pairs ||= number_of_possible_pairs
     end
 
-    def number_of_required_moved_down_pairs
-      @number_of_required_moved_down_pairs ||=
-        [number_of_moved_down_possible_pairs, number_of_required_total_pairs,
-         number_of_moved_down_players - number_of_required_moved_down_downfloats].min
+    def number_of_moved_down_pairs_after_downfloats
+      number_of_moved_down_players - number_of_required_moved_down_downfloats
     end
 
     def number_of_required_moved_down_downfloats
@@ -37,7 +41,7 @@ module Swissfork
     end
 
     def number_of_required_remainder_pairs
-      number_of_required_total_pairs - number_of_required_moved_down_pairs
+      number_of_required_total_pairs - number_of_moved_down_possible_pairs
     end
 
     def s2
@@ -101,7 +105,7 @@ module Swissfork
     end
 
     def number_of_players_in_limbo
-      number_of_moved_down_players - number_of_required_moved_down_pairs
+      number_of_moved_down_players - number_of_moved_down_possible_pairs
     end
 
     def number_of_moved_down_opponent_incompatibilities
