@@ -143,9 +143,10 @@ module Swissfork
     end
 
     def pairs
+      return @definitive_pairs if @definitive_pairs
       return remainder_pairs if number_of_required_pairs.zero?
 
-      until(current_exchange_pairs)
+      until(@definitive_pairs = current_exchange_pairs)
         if exchanger.limit_reached?
           reset_exchanger
 
@@ -221,7 +222,6 @@ module Swissfork
     end
 
     def current_exchange_pairs
-      return definitive_pairs if @definitive_pairs
       clear_pairs
 
       until(pairings_completed?)
@@ -229,7 +229,7 @@ module Swissfork
         return nil if established_pairs.empty?
 
         if best_pairs_obtained?
-          return @definitive_pairs = definitive_pairs
+          return definitive_pairs
         else
           mark_established_pairs_as_not_ideal
         end
