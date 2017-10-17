@@ -10,7 +10,7 @@ module Swissfork
 
     describe "#count" do
       let(:players) { create_players(1..10) }
-      let(:incompatibilities) { OpponentsIncompatibilities.new(players, players) }
+      let(:incompatibilities) { OpponentsIncompatibilities.new(players) }
 
       context "no incompatibilities" do
         it "returns 0" do

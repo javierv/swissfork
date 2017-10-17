@@ -109,7 +109,7 @@ module Swissfork
     end
 
     def number_of_moved_down_opponent_incompatibilities
-      number_of_opponent_incompatibilities_for(moved_down_players)
+      OpponentsIncompatibilities.new(moved_down_players, resident_players).count
     end
 
     def resident_players

@@ -1,5 +1,3 @@
-require "simple_initialize"
-
 module Swissfork
   # Given a list of players to pair and possible opponents,
   # it calculates if some players remain unpaired.
@@ -11,7 +9,11 @@ module Swissfork
   # possible opponent (number 1) can't play against more than one
   # player.
   class OpponentsIncompatibilities
-    initialize_with :players, :opponents
+    def initialize(players, opponents = nil)
+      @players = players
+      @opponents = opponents || players
+    end
+    attr_reader :players, :opponents
 
     def count
       return 0 if enough_players_to_guarantee_pairing?

@@ -346,11 +346,7 @@ module Swissfork
     end
 
     def number_of_opponent_incompatibilities
-      number_of_opponent_incompatibilities_for(players)
-    end
-
-    def number_of_opponent_incompatibilities_for(players_to_pair)
-      OpponentsIncompatibilities.new(players_to_pair, players).count
+      OpponentsIncompatibilities.new(players).count
     end
 
     def number_of_compatible_pairs
