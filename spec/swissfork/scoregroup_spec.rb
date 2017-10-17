@@ -409,7 +409,7 @@ module Swissfork
             players[4..7].each { |player| player.stub_opponents(players[4..7]) }
           end
 
-          it "downfloats players minimizaing downfloats in the next scoregroup" do
+          it "downfloats players minimizing downfloats in the next scoregroup" do
             scoregroup.pair_numbers.should == [[1, 3], [2, 5]]
             scoregroup.leftover_numbers.should == [4]
           end
