@@ -265,12 +265,9 @@ module Swissfork
     end
 
     def is_possible?(pair)
-      hypothetical_pairs = established_pairs + [pair]
-      hypothetical_leftovers = players - hypothetical_pairs.flat_map(&:players)
-
-      !not_ideal_pairs.include?(hypothetical_pairs) &&
-        !impossible_downfloats.include?(hypothetical_leftovers) &&
-        quality.can_downfloat?(unpaired_non_s1_players - pair.players)
+      !not_ideal_pairs.include?(established_pairs + [pair]) &&
+        !impossible_downfloats.include?(still_unpaired_players - pair.players) &&
+        quality.can_downfloat?(unpaired_non_s1_players - [pair.s2_player])
     end
 
     def pairable_players
