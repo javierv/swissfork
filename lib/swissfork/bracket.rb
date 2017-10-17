@@ -35,10 +35,6 @@ module Swissfork
       @players = players.sort
     end
 
-    def numbers
-      players.map(&:number)
-    end
-
     def points
       @points ||= players.map(&:points).min
     end

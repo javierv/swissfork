@@ -10,14 +10,6 @@ module Swissfork
 
     let(:bracket) { Bracket.for(players) }
 
-    describe "#numbers" do
-      let(:players) { create_players(1..6) }
-
-      it "returns the numbers for the players in the bracket" do
-        bracket.numbers.should == [1, 2, 3, 4, 5, 6]
-      end
-    end
-
     describe "#homogeneous?" do
       let(:players) { create_players(1..6) }
 
