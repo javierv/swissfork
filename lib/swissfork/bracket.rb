@@ -57,15 +57,7 @@ module Swissfork
     end
 
     def can_complete_the_pairing?
-      all_players_can_be_paired? && compatibility.bye_can_be_selected?
-    end
-
-    def all_players_can_be_paired?
-      number_of_possible_pairs == players.count / 2
-    end
-
-    def bye_can_be_selected?
-      OpponentsIncompatibilities.new(players).bye_can_be_selected?
+      compatibility.can_complete_the_pairing?
     end
 
     def number_of_required_downfloats
@@ -350,8 +342,7 @@ module Swissfork
     end
 
     def number_of_compatible_pairs
-      @number_of_compatible_pairs ||=
-        (players.count - number_of_opponent_incompatibilities) / 2
+      @number_of_compatible_pairs ||= compatibility.number_of_compatible_pairs
     end
 
     def number_of_bye_incompatibilities

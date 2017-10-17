@@ -15,6 +15,18 @@ module Swissfork
     end
     attr_reader :players, :opponents
 
+    def can_complete_the_pairing?
+      all_players_can_be_paired? && bye_can_be_selected?
+    end
+
+    def number_of_compatible_pairs
+      (players.count - count) / 2
+    end
+
+    def all_players_can_be_paired?
+      number_of_compatible_pairs == players.count / 2
+    end
+
     def bye_can_be_selected?
       return true if players.count.even?
 
