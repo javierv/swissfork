@@ -8,9 +8,10 @@ module Swissfork
       numbers.map { |number| Player.new(number) }
     end
 
+    let(:incompatibilities) { OpponentsIncompatibilities.new(players) }
+
     describe "#count" do
       let(:players) { create_players(1..10) }
-      let(:incompatibilities) { OpponentsIncompatibilities.new(players) }
 
       context "no incompatibilities" do
         it "returns 0" do
@@ -110,6 +111,59 @@ module Swissfork
 
         it "returns 2" do
           incompatibilities.count.should == 2
+        end
+      end
+    end
+
+    describe "#bye_can_be_selected?" do
+      context "even number of players" do
+        let(:players) { create_players(1..6) }
+
+        context "all players had byes" do
+          before(:each) do
+            players[0..5].each { |player| player.stub(had_bye?: true) }
+          end
+
+          it "returns true" do
+            incompatibilities.bye_can_be_selected?.should be true
+          end
+        end
+      end
+
+      context "odd number of players" do
+        let(:players) { create_players(1..7) }
+
+        context "not all players had byes" do
+          before(:each) do
+            players[0..5].each { |player| player.stub(had_bye?: true) }
+          end
+
+          context "no pairing incompatibilities" do
+            it "returns true" do
+              incompatibilities.bye_can_be_selected?.should be true
+            end
+          end
+
+          context "pairing incompatibilities" do
+            before(:each) do
+              players[0].stub_opponents(players[1..5])
+              players[1..5].each { |player| player.stub_opponents([players[0]]) }
+            end
+
+            it "returns false" do
+              incompatibilities.bye_can_be_selected?.should be false
+            end
+          end
+        end
+
+        context "all players had byes" do
+          before(:each) do
+            players[0..6].each { |player| player.stub(had_bye?: true) }
+          end
+
+          it "returns true" do
+            incompatibilities.bye_can_be_selected?.should be false
+          end
         end
       end
     end

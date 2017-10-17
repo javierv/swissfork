@@ -57,7 +57,7 @@ module Swissfork
     end
 
     def can_complete_the_pairing?
-      all_players_can_be_paired? && bye_can_be_selected?
+      all_players_can_be_paired? && compatibility.bye_can_be_selected?
     end
 
     def all_players_can_be_paired?
@@ -65,11 +65,7 @@ module Swissfork
     end
 
     def bye_can_be_selected?
-      return true if players.count.even?
-
-      players.select { |player| !player.had_bye? }.any? do |player|
-        Bracket.for(players - [player]).all_players_can_be_paired?
-      end
+      OpponentsIncompatibilities.new(players).bye_can_be_selected?
     end
 
     def number_of_required_downfloats
@@ -345,8 +341,12 @@ module Swissfork
       players.select { |player| player.points > points }
     end
 
+    def compatibility
+      OpponentsIncompatibilities.new(players)
+    end
+
     def number_of_opponent_incompatibilities
-      OpponentsIncompatibilities.new(players).count
+      compatibility.count
     end
 
     def number_of_compatible_pairs

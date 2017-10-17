@@ -15,6 +15,14 @@ module Swissfork
     end
     attr_reader :players, :opponents
 
+    def bye_can_be_selected?
+      return true if players.count.even?
+
+      players.select { |player| !player.had_bye? }.any? do |player|
+        OpponentsIncompatibilities.new(players - [player]).count.zero?
+      end
+    end
+
     def count
       return 0 if enough_players_to_guarantee_pairing?
 
