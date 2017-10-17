@@ -85,7 +85,7 @@ module Swissfork
     def remainder_pairs
       remainder_bracket.number_of_required_pairs = number_of_required_remainder_pairs
 
-      while(impossible_downfloats.include?(hypothetical_leftovers.to_set))
+      while(impossible_downfloats.include?(hypothetical_leftovers))
         remainder_bracket.mark_established_downfloats_as_impossible
       end
 

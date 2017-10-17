@@ -186,7 +186,7 @@ module Swissfork
     end
 
     def mark_established_downfloats_as_impossible
-      impossible_downfloats << definitive_unpaired_players.to_set
+      impossible_downfloats << definitive_unpaired_players
       clear_established_pairs
     end
 
@@ -270,7 +270,7 @@ module Swissfork
 
     def is_possible?(pair)
       hypothetical_pairs = established_pairs + [pair]
-      hypothetical_leftovers = (players - hypothetical_pairs.flat_map(&:players)).to_set
+      hypothetical_leftovers = players - hypothetical_pairs.flat_map(&:players)
 
       !not_ideal_pairs.include?(hypothetical_pairs) &&
         !impossible_downfloats.include?(hypothetical_leftovers) &&
