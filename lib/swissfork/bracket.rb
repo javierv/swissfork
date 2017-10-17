@@ -143,7 +143,7 @@ module Swissfork
     end
 
     def pairs
-      return @definitive_pairs if @definitive_pairs
+      return @definitive_pairs if instance_variable_defined?("@definitive_pairs")
       return remainder_pairs if number_of_required_pairs.zero?
 
       until(@definitive_pairs = current_exchange_pairs)
@@ -161,7 +161,7 @@ module Swissfork
         end
       end
 
-      current_exchange_pairs
+      @definitive_pairs
     end
 
     def leftovers
@@ -209,6 +209,7 @@ module Swissfork
     end
 
     def reset_impossible_downfloats
+      clear_pairs
       @impossible_downfloats = nil
     end
 
@@ -294,7 +295,10 @@ module Swissfork
 
     def clear_established_pairs
       @established_pairs = nil
-      @definitive_pairs = nil
+
+      if instance_variable_defined?("@definitive_pairs")
+        remove_instance_variable("@definitive_pairs")
+      end
     end
 
     def not_ideal_pairs
