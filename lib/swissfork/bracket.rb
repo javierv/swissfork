@@ -140,7 +140,9 @@ module Swissfork
 
     def pairs
       return @definitive_pairs if instance_variable_defined?("@definitive_pairs")
+      return [] if players.empty?
       return remainder_pairs if number_of_required_pairs.zero?
+      return [] if number_of_possible_pairs < number_of_required_pairs
 
       until(@definitive_pairs = current_exchange_pairs)
         if exchanger.limit_reached?
