@@ -75,7 +75,7 @@ module Swissfork
 
     def forbidden_downfloats
       @forbidden_downfloats ||= players.combination(bracket.number_of_required_downfloats).select do |players|
-        !OpponentsIncompatibilities.new(remaining_players + players).can_complete_the_pairing?
+        !Completion.new(remaining_players + players).ok?
       end
     end
 

@@ -8,34 +8,34 @@ module Swissfork
   # numbers 3 and 4 will remain unpaired, because their only
   # possible opponent (number 1) can't play against more than one
   # player.
-  class OpponentsIncompatibilities
+  class Completion
     def initialize(players, opponents = nil)
       @players = players
       @opponents = opponents || players
     end
     attr_reader :players, :opponents
 
-    def can_complete_the_pairing?
+    def ok?
       all_players_can_be_paired? && bye_can_be_selected?
     end
 
-    def number_of_compatible_pairs
-      (players.count - count) / 2
-    end
-
     def all_players_can_be_paired?
-      number_of_compatible_pairs == players.count / 2
+      compatibilities == players.count / 2
     end
 
     def bye_can_be_selected?
       return true if players.count.even?
 
       players.select { |player| !player.had_bye? }.any? do |player|
-        OpponentsIncompatibilities.new(players - [player]).count.zero?
+        Completion.new(players - [player]).all_players_can_be_paired?
       end
     end
 
-    def count
+    def compatibilities
+      (players.count - incompatibilities) / 2
+    end
+
+    def incompatibilities
       return 0 if enough_players_to_guarantee_pairing?
 
       incompatibilities = 0

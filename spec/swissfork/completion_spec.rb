@@ -1,21 +1,21 @@
 require "spec_helper"
-require "swissfork/opponents_incompatibilities"
+require "swissfork/completion"
 require "swissfork/player"
 
 module Swissfork
-  describe OpponentsIncompatibilities do
+  describe Completion do
     def create_players(numbers)
       numbers.map { |number| Player.new(number) }
     end
 
-    let(:incompatibilities) { OpponentsIncompatibilities.new(players) }
+    let(:completion) { Completion.new(players) }
 
-    describe "#count" do
+    describe "#incompatibilities" do
       let(:players) { create_players(1..10) }
 
       context "no incompatibilities" do
         it "returns 0" do
-          incompatibilities.count.should == 0
+          completion.incompatibilities.should == 0
         end
       end
 
@@ -26,7 +26,7 @@ module Swissfork
         end
 
         it "returns 1" do
-          incompatibilities.count.should == 1
+          completion.incompatibilities.should == 1
         end
       end
 
@@ -37,7 +37,7 @@ module Swissfork
         end
 
         it "returns 0" do
-          incompatibilities.count.should == 0
+          completion.incompatibilities.should == 0
         end
 
         context "and another players' possible opponents is one of those ones" do
@@ -53,7 +53,7 @@ module Swissfork
           end
 
           it "returns 1" do
-            incompatibilities.count.should == 1
+            completion.incompatibilities.should == 1
           end
         end
 
@@ -72,7 +72,7 @@ module Swissfork
           end
 
           it "returns 1" do
-            incompatibilities.count.should == 1
+            completion.incompatibilities.should == 1
           end
         end
       end
@@ -84,7 +84,7 @@ module Swissfork
         end
 
         it "returns 2" do
-          incompatibilities.count.should == 2
+          completion.incompatibilities.should == 2
         end
       end
 
@@ -110,7 +110,7 @@ module Swissfork
         end
 
         it "returns 2" do
-          incompatibilities.count.should == 2
+          completion.incompatibilities.should == 2
         end
       end
     end
@@ -125,7 +125,7 @@ module Swissfork
           end
 
           it "returns true" do
-            incompatibilities.bye_can_be_selected?.should be true
+            completion.bye_can_be_selected?.should be true
           end
         end
       end
@@ -140,7 +140,7 @@ module Swissfork
 
           context "no pairing incompatibilities" do
             it "returns true" do
-              incompatibilities.bye_can_be_selected?.should be true
+              completion.bye_can_be_selected?.should be true
             end
           end
 
@@ -151,7 +151,7 @@ module Swissfork
             end
 
             it "returns false" do
-              incompatibilities.bye_can_be_selected?.should be false
+              completion.bye_can_be_selected?.should be false
             end
           end
         end
@@ -162,7 +162,7 @@ module Swissfork
           end
 
           it "returns true" do
-            incompatibilities.bye_can_be_selected?.should be false
+            completion.bye_can_be_selected?.should be false
           end
         end
       end
@@ -173,7 +173,7 @@ module Swissfork
 
       context "pairable players" do
         it "returns true" do
-          incompatibilities.all_players_can_be_paired?.should be true
+          completion.all_players_can_be_paired?.should be true
         end
       end
 
@@ -184,7 +184,7 @@ module Swissfork
         end
 
         it "returns true" do
-          incompatibilities.all_players_can_be_paired?.should be true
+          completion.all_players_can_be_paired?.should be true
         end
       end
 
@@ -194,7 +194,7 @@ module Swissfork
         end
 
         it "returns false" do
-          incompatibilities.all_players_can_be_paired?.should be false
+          completion.all_players_can_be_paired?.should be false
         end
       end
 
@@ -205,7 +205,7 @@ module Swissfork
         end
 
         it "returns false" do
-          incompatibilities.all_players_can_be_paired?.should be false
+          completion.all_players_can_be_paired?.should be false
         end
       end
 
@@ -216,26 +216,26 @@ module Swissfork
         end
 
         it "returns false" do
-          incompatibilities.all_players_can_be_paired?.should be false
+          completion.all_players_can_be_paired?.should be false
         end
       end
     end
 
     # TODO: these tests come from Bracket,
     # and they're probably redundant.
-    describe "#number_of_compatible_pairs" do
+    describe "#compatibilities" do
       let(:players) { create_players(1..6) }
 
       context "all players can be paired" do
         it "returns half of the total number of players" do
-          incompatibilities.number_of_compatible_pairs.should == 3
+          completion.compatibilities.should == 3
         end
 
         context "odd number of players" do
           let(:players) { create_players(1..7) }
 
           it "returns half of the total number of players, rounding down" do
-            incompatibilities.number_of_compatible_pairs.should == 3
+            completion.compatibilities.should == 3
           end
         end
       end
@@ -247,7 +247,7 @@ module Swissfork
         end
 
         it "returns half of the number of pairable players, rounding down" do
-          incompatibilities.number_of_compatible_pairs.should == 2
+          completion.compatibilities.should == 2
         end
       end
 
@@ -258,7 +258,7 @@ module Swissfork
         end
 
         it "counts only one of those players as pairable" do
-          incompatibilities.number_of_compatible_pairs.should == 2
+          completion.compatibilities.should == 2
         end
       end
 
@@ -268,7 +268,7 @@ module Swissfork
         end
 
         it "counts only one of those players as pairable" do
-          incompatibilities.number_of_compatible_pairs.should == 1
+          completion.compatibilities.should == 1
         end
       end
 
@@ -289,7 +289,7 @@ module Swissfork
         end
 
         it "counts only two of those players as pairable" do
-          incompatibilities.number_of_compatible_pairs.should == 3
+          completion.compatibilities.should == 3
         end
 
         context "one of the players can also be paired to another one" do
@@ -299,11 +299,10 @@ module Swissfork
           end
 
           it "counts all players as pairable" do
-            incompatibilities.number_of_compatible_pairs.should == 4
+            completion.compatibilities.should == 4
           end
         end
       end
     end
   end
 end
-

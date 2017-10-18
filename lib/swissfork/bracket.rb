@@ -18,7 +18,7 @@ module Swissfork
     require "swissfork/quality_criterias"
     require "swissfork/heterogeneous_bracket"
     require "swissfork/homogeneous_bracket"
-    require "swissfork/opponents_incompatibilities"
+    require "swissfork/completion"
 
     include Comparable
     attr_reader :players
@@ -57,7 +57,7 @@ module Swissfork
     end
 
     def can_complete_the_pairing?
-      compatibility.can_complete_the_pairing?
+      completion.ok?
     end
 
     def number_of_required_downfloats
@@ -333,16 +333,16 @@ module Swissfork
       players.select { |player| player.points > points }
     end
 
-    def compatibility
-      OpponentsIncompatibilities.new(players)
+    def completion
+      Completion.new(players)
     end
 
     def number_of_opponent_incompatibilities
-      compatibility.count
+      completion.incompatibilities
     end
 
     def number_of_compatible_pairs
-      @number_of_compatible_pairs ||= compatibility.number_of_compatible_pairs
+      @number_of_compatible_pairs ||= completion.compatibilities
     end
 
     def number_of_bye_incompatibilities
