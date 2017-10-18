@@ -25,8 +25,8 @@ module Swissfork
           players[2..8].each { |player| player.stub_opponents(players[0..1]) }
         end
 
-        it "returns 1" do
-          completion.incompatibilities.should == 1
+        it "returns 2" do
+          completion.incompatibilities.should == 2
         end
       end
 
@@ -52,8 +52,8 @@ module Swissfork
             players[3..7].each { |player| player.stub_opponents(players[0..2]) }
           end
 
-          it "returns 1" do
-            completion.incompatibilities.should == 1
+          it "returns 2" do
+            completion.incompatibilities.should == 2
           end
         end
 
@@ -71,8 +71,8 @@ module Swissfork
             players[4..6].each { |player| player.stub_opponents(players[0..3]) }
           end
 
-          it "returns 1" do
-            completion.incompatibilities.should == 1
+          it "returns 2" do
+            completion.incompatibilities.should == 2
           end
         end
       end
@@ -107,6 +107,17 @@ module Swissfork
           players[7].stub_opponents([players[0]] + players[3..4])
           players[8].stub_opponents(players[2..3] + [players[5]])
           players[9].stub_opponents([players[1]] + players[4..5])
+        end
+
+        it "returns 2" do
+          completion.incompatibilities.should == 2
+        end
+      end
+
+      context "three players can only play against each other" do
+        before(:each) do
+          players[0..2].each { |player| player.stub_opponents(players[3..9]) }
+          players[3..9].each { |player| player.stub_opponents(players[0..2]) }
         end
 
         it "returns 2" do

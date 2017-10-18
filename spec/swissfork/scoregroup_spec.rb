@@ -154,9 +154,9 @@ module Swissfork
               players[7..8].each { |player| player.stub_opponents(players[5..6]) }
             end
 
-            # 4 and 5 downfloat to play against 6 and 7, leaving 3 unpaired.
-            it "returns three" do
-              scoregroup.number_of_required_downfloats.should == 3
+            # 5 downfloats to play against 6, and 7 gets the bye
+            it "returns one" do
+              scoregroup.number_of_required_downfloats.should == 1
             end
           end
 

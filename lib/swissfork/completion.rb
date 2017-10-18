@@ -20,7 +20,7 @@ module Swissfork
     end
 
     def all_players_can_be_paired?
-      compatibilities == players.count / 2
+      incompatibilities < 2
     end
 
     def bye_can_be_selected?
@@ -35,6 +35,8 @@ module Swissfork
       (players.count - incompatibilities) / 2
     end
 
+    # Returns the number of players who will remain unpaired
+    # after the best possible pairing
     def incompatibilities
       return 0 if enough_players_to_guarantee_pairing?
 
@@ -48,6 +50,12 @@ module Swissfork
             remove_from_list(players + opponents)
 
             incompatibilities += players_in_a_combination - opponents.count
+            reset_players_in_a_combination
+            break
+          elsif players_in_a_combination.odd? && (opponents - players).empty?
+            remove_from_list(players + opponents)
+
+            incompatibilities += 1
             reset_players_in_a_combination
             break
           end
