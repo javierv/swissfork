@@ -80,16 +80,6 @@ module Swissfork
     end
     alias_method :n1, :number_of_players_in_s1 # FIDE nomenclature
 
-    def number_of_required_mdps
-      (0..players.count + 1).each do |number|
-        additional_players = Array.new(number) do |index|
-          Player.new(index + 10000) # Assuming there are less than 10000 players.
-        end
-
-        return number if Completion.new(players + additional_players).ok?
-      end
-    end
-
     def s1
       return [] if number_of_players_in_s1 < 1
       players[0..number_of_players_in_s1-1].sort

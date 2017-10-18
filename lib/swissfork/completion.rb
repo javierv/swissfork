@@ -35,6 +35,16 @@ module Swissfork
       (players.count - incompatibilities) / 2
     end
 
+    def number_of_required_mdps
+      (0..players.count + 1).each do |number|
+        additional_players = Array.new(number) do |index|
+          Player.new(index + 10000) # Assuming there are less than 10000 players.
+        end
+
+        return number if Completion.new(players + additional_players).ok?
+      end
+    end
+
     # Returns the number of players who will remain unpaired
     # after the best possible pairing
     def incompatibilities

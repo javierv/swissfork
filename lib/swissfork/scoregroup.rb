@@ -56,9 +56,8 @@ module Swissfork
       bracket.pairs
     end
 
-    # TODO: move to Completion.
     def number_of_required_downfloats
-      number = remaining_bracket.number_of_required_mdps
+      number = Completion.new(remaining_players).number_of_required_mdps
 
       if number.odd? && players.count.even? || number.even? && players.count.odd?
         number + 1
@@ -138,12 +137,6 @@ module Swissfork
 
     def reduce_number_of_next_scoregroup_required_pairs
       @number_of_next_scoregroup_required_pairs = number_of_next_scoregroup_required_pairs - 1
-    end
-
-    def remaining_bracket
-      # HomogeneousBracket makes pairing easier, and we only use it
-      # to check which players cannot be paired.
-      HomogeneousBracket.new(remaining_players)
     end
 
     def remaining_players
