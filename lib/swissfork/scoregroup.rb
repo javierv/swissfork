@@ -58,12 +58,12 @@ module Swissfork
     end
 
     def number_of_required_downfloats
-      number = Completion.new(remaining_players).number_of_required_mdps
+      required_mdps = Completion.new(remaining_players).number_of_required_mdps
 
-      if number.odd? && players.count.even? || number.even? && players.count.odd?
-        number + 1
+      if((players.count - required_mdps).odd?)
+        required_mdps + 1
       else
-        number
+        required_mdps
       end
     end
 
