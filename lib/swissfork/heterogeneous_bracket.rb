@@ -84,11 +84,15 @@ module Swissfork
     def remainder_pairs
       remainder_bracket.number_of_required_pairs = number_of_required_remainder_pairs
 
-      while(impossible_downfloats.include?(hypothetical_leftovers))
+      while(impossible_downfloats.include?(unpaired_players_after_remainder))
         remainder_bracket.mark_established_downfloats_as_impossible
       end
 
       remainder_bracket.pairs
+    end
+
+    def unpaired_players_after_remainder
+      still_unpaired_players - remainder_bracket.pairs.to_a.flat_map(&:players)
     end
 
     def remainder_bracket
@@ -100,7 +104,7 @@ module Swissfork
     end
 
     def hypothetical_leftovers
-      players - (established_pairs + remainder_bracket.pairs.to_a).flat_map(&:players)
+      still_unpaired_players & moved_down_players
     end
 
     def number_of_players_in_limbo
