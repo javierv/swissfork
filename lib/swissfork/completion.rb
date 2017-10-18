@@ -38,7 +38,7 @@ module Swissfork
     def number_of_required_mdps
       (0..players.count + 1).each do |number|
         additional_players = Array.new(number) do |index|
-          Player.new(index + 10000) # Assuming there are less than 10000 players.
+          Player.new(index + players.map(&:number).max + 1)
         end
 
         return number if Completion.new(players + additional_players).ok?
