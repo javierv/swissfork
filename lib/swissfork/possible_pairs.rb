@@ -21,6 +21,7 @@ module Swissfork
       if players == opponents
         (players.count - incompatibilities) / 2
       else
+        # Heterogeneous bracket. TODO: check if we can refactor it.
         players.count - incompatibilities
       end
     end
