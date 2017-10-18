@@ -22,8 +22,7 @@ module Swissfork
     alias_method :m1, :number_of_moved_down_possible_pairs # FIDE nomenclature
 
     def number_of_moved_down_compatible_pairs
-      @number_of_moved_down_compatible_pairs ||=
-        number_of_moved_down_players - number_of_moved_down_opponent_incompatibilities
+      @number_of_moved_down_compatible_pairs ||= PossiblePairs.new(moved_down_players, resident_players).count
     end
 
     def number_of_required_total_pairs
@@ -106,10 +105,6 @@ module Swissfork
 
     def number_of_players_in_limbo
       number_of_moved_down_players - number_of_moved_down_possible_pairs
-    end
-
-    def number_of_moved_down_opponent_incompatibilities
-      Completion.new(moved_down_players, resident_players).incompatibilities
     end
 
     def resident_players

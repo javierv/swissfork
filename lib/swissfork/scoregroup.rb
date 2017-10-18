@@ -1,5 +1,6 @@
 require "simple_initialize"
 require "swissfork/bracket"
+require "swissfork/completion"
 
 module Swissfork
   # Holds information about a bracket and the rest of the

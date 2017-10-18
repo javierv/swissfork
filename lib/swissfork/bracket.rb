@@ -18,7 +18,7 @@ module Swissfork
     require "swissfork/quality_criterias"
     require "swissfork/heterogeneous_bracket"
     require "swissfork/homogeneous_bracket"
-    require "swissfork/completion"
+    require "swissfork/possible_pairs"
 
     include Comparable
     attr_reader :players
@@ -309,7 +309,7 @@ module Swissfork
     end
 
     def number_of_compatible_pairs
-      @number_of_compatible_pairs ||= Completion.new(players).compatibilities
+      @number_of_compatible_pairs ||= PossiblePairs.new(players).count
     end
 
     def best_possible_pairs?
