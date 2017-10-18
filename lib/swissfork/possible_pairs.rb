@@ -10,9 +10,9 @@ module Swissfork
   # possible opponent (number 1) can't play against more than one
   # player.
   class PossiblePairs
-    def initialize(players, opponents = nil)
+    def initialize(players, opponents = players)
       @players = players
-      @opponents = opponents || players
+      @opponents = opponents
     end
 
     attr_reader :players, :opponents
