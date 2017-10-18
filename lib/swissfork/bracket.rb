@@ -56,10 +56,6 @@ module Swissfork
       (players.count - number_of_required_downfloats) / 2
     end
 
-    def can_complete_the_pairing?
-      completion.ok?
-    end
-
     def number_of_required_downfloats
       @number_of_required_downfloats ||=
         players.count - number_of_compatible_pairs * 2

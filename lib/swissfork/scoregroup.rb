@@ -56,6 +56,7 @@ module Swissfork
       bracket.pairs
     end
 
+    # TODO: move to Completion.
     def number_of_required_downfloats
       remaining_bracket.number_of_required_mdps_from(players)
     end
@@ -120,12 +121,8 @@ module Swissfork
       remaining_players + leftovers
     end
 
-    def hypothetical_remaining_bracket
-      Bracket.for(hypothetical_remaining_players)
-    end
-
     def next_scoregroup_pairing_is_ok?
-      hypothetical_remaining_bracket.can_complete_the_pairing? &&
+      Completion.new(hypothetical_remaining_players).ok? &&
         hypothetical_next_pairs.to_a.count == number_of_next_scoregroup_required_pairs
     end
 
