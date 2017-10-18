@@ -19,10 +19,6 @@ module Swissfork
       (s1_numbers.sum - s2_numbers.sum).abs
     end
 
-    def inspect
-      [s1_numbers, s2_numbers]
-    end
-
     def s1_numbers
       s1_players.map(&:bsn)
     end
