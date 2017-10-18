@@ -58,7 +58,13 @@ module Swissfork
 
     # TODO: move to Completion.
     def number_of_required_downfloats
-      remaining_bracket.number_of_required_mdps_from(players)
+      number = remaining_bracket.number_of_required_mdps
+
+      if number.odd? && players.count.even? || number.even? && players.count.odd?
+        number + 1
+      else
+        number
+      end
     end
 
     def bracket

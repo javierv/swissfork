@@ -80,24 +80,13 @@ module Swissfork
     end
     alias_method :n1, :number_of_players_in_s1 # FIDE nomenclature
 
-    def number_of_required_mdps_from(players_in_the_previous_scoregroup)
-      # TODO: write more tests and refactor.
-      if players_in_the_previous_scoregroup.count.odd?
-        if players.count.odd?
-          (number_of_total_incompatibilities / 2) * 2 + 1
-        else
-          if number_of_total_incompatibilities == players.count
-            (number_of_total_incompatibilities / 2) * 2 - 1
-          else
-            (number_of_total_incompatibilities / 2) * 2 + 1
-          end
+    def number_of_required_mdps
+      (0..players.count + 1).each do |number|
+        additional_players = Array.new(number) do |index|
+          Player.new(index + 10000) # Assuming there are less than 10000 players.
         end
-      else
-        if players.count.odd?
-          (number_of_total_incompatibilities / 2) * 2
-        else
-          ((number_of_total_incompatibilities + 1) / 2) * 2
-        end
+
+        return number if Completion.new(players + additional_players).ok?
       end
     end
 
@@ -329,32 +318,8 @@ module Swissfork
       players.select { |player| player.points > points }
     end
 
-    def completion
-      Completion.new(players)
-    end
-
-    def number_of_opponent_incompatibilities
-      completion.incompatibilities
-    end
-
     def number_of_compatible_pairs
-      @number_of_compatible_pairs ||= completion.compatibilities
-    end
-
-    def number_of_bye_incompatibilities
-      if (leftovers.count > 0 && (leftovers - players.select(&:had_bye?)).empty?)
-        if players.count.even?
-          1
-        else
-          2
-        end
-      else
-        0
-      end
-    end
-
-    def number_of_total_incompatibilities
-      number_of_opponent_incompatibilities + number_of_bye_incompatibilities
+      @number_of_compatible_pairs ||= Completion.new(players).compatibilities
     end
 
     def best_possible_pairs?
