@@ -3,8 +3,9 @@ module Swissfork
   # it calculates how many pairs can be generated.
   #
   # For example, if we've got players 1, 2, 3, 4, and 2 has
-  # played against 3 and 4, in theory all players have possible
-  # opponents and can be paired. However, if we pair number 2,
+  # played against 3 and 4, and 3 and 4 have also played between
+  # them, in theory all players have at least one possible
+  # opponent and can be paired. However, if we pair number 2,
   # numbers 3 and 4 will remain unpaired, because their only
   # possible opponent (number 1) can't play against more than one
   # player.
