@@ -112,7 +112,7 @@ module Swissfork
             quality.be_more_permissive
           end
         else
-          exchange_until_s2_players_can_downfloat
+          exchange_until_non_s1_players_can_downfloat
         end
       end
 
@@ -234,7 +234,11 @@ module Swissfork
     end
 
     def unpaired_non_s1_players
-      players[number_of_players_in_s1..-1] & still_unpaired_players
+      non_s1_players & still_unpaired_players
+    end
+
+    def non_s1_players
+      players[number_of_players_in_s1..-1]
     end
 
     def pairings_completed?
@@ -280,10 +284,10 @@ module Swissfork
       players.sort!
     end
 
-    def exchange_until_s2_players_can_downfloat
+    def exchange_until_non_s1_players_can_downfloat
       begin
         exchange
-      end until(exchanger.limit_reached? || quality.can_downfloat?(s2))
+      end until(exchanger.limit_reached? || quality.can_downfloat?(non_s1_players))
     end
 
     def still_unpaired_players
