@@ -38,7 +38,6 @@ module Swissfork
     def pairs
       if last?
         bracket.mark_byes_as_forbidden_downfloats
-        return nil if leftovers.count > 1
       else
         bracket.number_of_required_downfloats = number_of_required_downfloats
         bracket.forbidden_downfloats = forbidden_downfloats
