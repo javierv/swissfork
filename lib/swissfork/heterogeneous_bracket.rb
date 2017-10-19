@@ -8,6 +8,11 @@ module Swissfork
   # should be created using Bracket.for(players), which returns
   # either a homogeneous or a heterogeneous bracket.
   class HeterogeneousBracket < Bracket
+    def number_of_moved_down_players
+      @number_of_moved_down_players ||= moved_down_players.count
+    end
+    alias_method :m0, :number_of_moved_down_players # FIDE nomenclature
+
     # This definition allows heterogeneous brackets to use the same
     # pairing algorithm as homogeneous brackets do.
     def number_of_required_pairs

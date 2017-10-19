@@ -65,12 +65,6 @@ module Swissfork
       @number_of_required_downfloats = [number, players.count - number_of_possible_pairs * 2].max
     end
 
-    def number_of_moved_down_players
-      @number_of_moved_down_players ||= moved_down_players.count
-    end
-    alias_method :m0, :number_of_moved_down_players # FIDE nomenclature
-
-
     def number_of_required_pairs
       raise "Implement in subclass"
     end
