@@ -1,4 +1,5 @@
 require "simple_initialize"
+require "swissfork/possible_pairs"
 
 module Swissfork
   # Checks if a group of players can complete the pairing.
