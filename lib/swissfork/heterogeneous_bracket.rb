@@ -108,7 +108,7 @@ module Swissfork
       still_unpaired_players - moved_down_players
     end
 
-    def hypothetical_leftovers
+    def provisional_leftovers
       still_unpaired_players & moved_down_players
     end
 

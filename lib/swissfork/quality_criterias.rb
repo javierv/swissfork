@@ -136,7 +136,7 @@ module Swissfork
     end
 
     def pairable_leftovers
-      bracket.pairable_hypothetical_leftovers
+      bracket.pairable_provisional_leftovers
     end
 
     # TODO: this isn't very elegant.

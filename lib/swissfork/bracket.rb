@@ -123,8 +123,10 @@ module Swissfork
       pairs && definitive_unpaired_players.sort
     end
 
-    def pairable_hypothetical_leftovers
-      pairable_players & hypothetical_leftovers
+    # Here we consider the leftovers after we've completed
+    # the pairing but we need to check for its quality.
+    def pairable_provisional_leftovers
+      pairable_players & provisional_leftovers
     end
 
     def paired_players

@@ -18,7 +18,7 @@ module Swissfork
     end
 
   private
-    def hypothetical_leftovers
+    def provisional_leftovers
       still_unpaired_players
     end
 
