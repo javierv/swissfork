@@ -124,8 +124,15 @@ module Swissfork
     end
 
     def next_scoregroup_pairing_is_ok?
-      Completion.new(hypothetical_remaining_players).ok? &&
-        hypothetical_next_pairs.to_a.count == number_of_next_scoregroup_required_pairs
+      remaining_players_complete_the_pairing? && next_scoregroup_meets_required_pairs?
+    end
+
+    def remaining_players_complete_the_pairing?
+      Completion.new(hypothetical_remaining_players).ok?
+    end
+
+    def next_scoregroup_meets_required_pairs?
+      hypothetical_next_pairs.to_a.count == number_of_next_scoregroup_required_pairs
     end
 
     def number_of_next_scoregroup_required_pairs
