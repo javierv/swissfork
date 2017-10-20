@@ -67,22 +67,22 @@ module Swissfork
 
     # C.12
     def same_downfloats_as_previous_round
-      pairable_leftovers.select { |player| player.descended_in_the_previous_round? }
+      pairable_leftovers.select(&:descended_in_the_previous_round?)
     end
 
     # C.13
     def same_upfloats_as_previous_round
-      ascending_players.select { |player| player.ascended_in_the_previous_round? }
+      ascending_players.select(&:ascended_in_the_previous_round?)
     end
 
     # C.14
     def same_downfloats_as_two_rounds_ago
-      pairable_leftovers.select { |player| player.descended_two_rounds_ago? }
+      pairable_leftovers.select(&:descended_two_rounds_ago?)
     end
 
     # C.15
     def same_upfloats_as_two_rounds_ago
-      ascending_players.select { |player| player.ascended_two_rounds_ago? }
+      ascending_players.select(&:ascended_two_rounds_ago?)
     end
 
     def current_failing_criteria
