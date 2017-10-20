@@ -111,12 +111,8 @@ module Swissfork
       leftovers + next_scoregroup.players
     end
 
-    def hypothetical_next_pairs
-      Bracket.for(hypothetical_next_players).tap do |bracket|
-        if next_scoregroup.last?
-          bracket.downfloat_permit = ByePermit.new(hypothetical_next_players)
-        end
-      end.pairs
+    def number_of_hypothetical_next_pairs
+      Bracket.for(hypothetical_next_players).number_of_possible_pairs
     end
 
     def hypothetical_remaining_players
@@ -132,7 +128,7 @@ module Swissfork
     end
 
     def next_scoregroup_meets_required_pairs?
-      hypothetical_next_pairs.to_a.count == number_of_next_scoregroup_required_pairs
+      number_of_hypothetical_next_pairs == number_of_next_scoregroup_required_pairs
     end
 
     def number_of_next_scoregroup_required_pairs
