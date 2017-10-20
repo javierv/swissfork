@@ -101,6 +101,7 @@ module Swissfork
       return [] if players.empty?
       return remainder_pairs if number_of_required_pairs.zero?
       return [] if number_of_possible_pairs < number_of_required_pairs
+      return nil if all_downfloats_are_impossible?
 
       until(@definitive_pairs = current_exchange_pairs)
         if exchanger.limit_reached?
@@ -144,7 +145,7 @@ module Swissfork
     end
 
     def mark_established_downfloats_as_impossible
-      impossible_downfloats << definitive_unpaired_players
+      impossible_downfloats << definitive_unpaired_players.to_set
       clear_established_pairs
     end
 
@@ -158,12 +159,18 @@ module Swissfork
       @allowed_downfloats ||= allowed_homogeneous_downfloats
     end
 
+    def all_downfloats_are_impossible?
+      !number_of_required_downfloats.zero? &&
+        (allowed_downfloats - impossible_downfloats).empty?
+    end
+
     def allowed_homogeneous_downfloats
       downfloat_permit.allowed
     end
 
     def reset_impossible_downfloats
       clear_pairs
+      @players = players.sort
       @impossible_downfloats = nil
     end
 
@@ -217,7 +224,7 @@ module Swissfork
 
     def is_possible?(pair)
       !not_ideal_pairs.include?(established_pairs + [pair]) &&
-        !impossible_downfloats.include?(still_unpaired_players - pair.players) &&
+        !impossible_downfloats.include?((still_unpaired_players - pair.players).to_set) &&
         quality.can_downfloat?(unpaired_non_s1_players - [pair.s2_player])
     end
 
