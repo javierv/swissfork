@@ -364,6 +364,17 @@ module Swissfork
             scoregroup.pair_numbers.should == [[1, 3], [2, 5]]
             scoregroup.leftover_numbers.should == [4]
           end
+
+          context "minimizing those downfloats results in an impossible CLB" do
+            before(:each) do
+              players[8..11].each { |player| player.stub_opponents(players[8..11]) }
+            end
+
+            it "ignores the next scoregroup and downfloats the last player" do
+              scoregroup.pair_numbers.should == [[1, 3], [2, 4]]
+              scoregroup.leftover_numbers.should == [5]
+            end
+          end
         end
 
         context "next scoregroup can't be paired even with downfloats" do

@@ -77,6 +77,15 @@ module Swissfork
       bracket.leftovers.to_a
     end
 
+    def number_of_pairs_with(previous_scoregroup_leftovers)
+      adding(previous_scoregroup_leftovers) do
+        unless last?
+          bracket.number_of_required_downfloats = number_of_required_downfloats
+        end
+        bracket.number_of_possible_pairs
+      end
+    end
+
     def move_leftovers_to_next_scoregroup
       next_scoregroup.add_players(leftovers)
       remove_players(leftovers)
@@ -107,12 +116,8 @@ module Swissfork
        index + 1
     end
 
-    def hypothetical_next_players
-      leftovers + next_scoregroup.players
-    end
-
     def number_of_hypothetical_next_pairs
-      Bracket.for(hypothetical_next_players).number_of_possible_pairs
+      next_scoregroup.number_of_pairs_with(leftovers)
     end
 
     def hypothetical_remaining_players
@@ -151,7 +156,15 @@ module Swissfork
       round.scoregroups
     end
 
+    def adding(players, &block)
+      add_players(players)
+      result = block.call
+      remove_players(players)
+      result
+    end
+
     def reset
+      @number_of_next_scoregroup_required_pairs = nil
       @bracket = nil
     end
   end
