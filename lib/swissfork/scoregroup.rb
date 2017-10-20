@@ -125,15 +125,17 @@ module Swissfork
     end
 
     def next_scoregroup_pairing_is_ok?
-      remaining_players_complete_the_pairing? && next_scoregroup_meets_required_pairs?
+      remaining_players_complete_the_pairing? &&
+        downfloats_meet_next_scoregroup_required_pairs?
     end
 
     def remaining_players_complete_the_pairing?
       Completion.new(hypothetical_remaining_players).ok?
     end
 
-    def next_scoregroup_meets_required_pairs?
-      number_of_hypothetical_next_pairs == number_of_next_scoregroup_required_pairs
+    def downfloats_meet_next_scoregroup_required_pairs?
+      bracket.number_of_required_downfloats.zero? ||
+        number_of_hypothetical_next_pairs == number_of_next_scoregroup_required_pairs
     end
 
     def number_of_next_scoregroup_required_pairs
