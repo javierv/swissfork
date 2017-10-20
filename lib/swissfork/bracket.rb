@@ -182,16 +182,13 @@ module Swissfork
     def current_exchange_pairs
       clear_pairs
 
-      until(pairings_completed?)
+      until(best_pairs_obtained?)
+        mark_established_pairs_as_not_ideal
         establish_pairs
         return nil if established_pairs.empty?
-
-        if best_pairs_obtained?
-          return definitive_pairs
-        else
-          mark_established_pairs_as_not_ideal
-        end
       end
+
+      definitive_pairs
     end
 
     def establish_pairs
