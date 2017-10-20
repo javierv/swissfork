@@ -6,7 +6,7 @@ module Swissfork
   # condition which makes a downfloat valid or not. Subclasses
   # must be used instead.
   #
-  # Subclasses must implement the method permit_condition, which
+  # Subclasses must implement the method can_downfloat?, which
   # receives a group of players and returns true if they can
   # downfloat.
   class DownfloatPermit
@@ -14,7 +14,7 @@ module Swissfork
 
     def allowed
       @allowed ||= combinations.select do |downfloats|
-        permit_condition(downfloats)
+        can_downfloat?(downfloats)
       end.map { |downfloats| downfloats.to_set }.to_set
     end
 
@@ -25,7 +25,7 @@ module Swissfork
       @combinations ||= players.combination(number_of_downfloats)
     end
 
-    def permit_condition(downfloats)
+    def can_downfloat?(downfloats)
       raise "Implement in subclass"
     end
   end

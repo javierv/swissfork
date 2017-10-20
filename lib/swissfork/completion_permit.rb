@@ -8,7 +8,7 @@ module Swissfork
     initialize_with :players, :remaining_players, :number_of_downfloats
 
   private
-    def permit_condition(downfloats)
+    def can_downfloat?(downfloats)
       Completion.new(downfloats + remaining_players).ok?
     end
   end

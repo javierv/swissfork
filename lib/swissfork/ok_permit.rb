@@ -5,7 +5,7 @@ module Swissfork
   class OkPermit < DownfloatPermit
 
   private
-    def permit_condition(downfloats)
+    def can_downfloat?(downfloats)
       true
     end
   end
