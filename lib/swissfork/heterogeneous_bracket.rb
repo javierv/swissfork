@@ -1,5 +1,6 @@
 require "swissfork/bracket"
 require "swissfork/limbo_exchanger"
+require "swissfork/moved_down_permit"
 
 module Swissfork
   # Handles the pairing of a heterogeneous bracket.
@@ -35,13 +36,21 @@ module Swissfork
     end
 
     def number_of_moved_down_pairs_after_downfloats
-      number_of_moved_down_players - number_of_required_moved_down_downfloats
+      number_of_moved_down_players - minimum_number_of_moved_down_downfloats
     end
 
     def number_of_required_moved_down_downfloats
-      allowed_downfloats.map do |downfloats|
+      number_of_moved_down_players - number_of_moved_down_possible_pairs
+    end
+
+    def minimum_number_of_moved_down_downfloats
+      allowed_homogeneous_downfloats.map do |downfloats|
         (downfloats - resident_players).count
       end.min.to_i
+    end
+
+    def allowed_downfloats
+      @allowed_downfloats ||= MovedDownPermit.new(moved_down_players, number_of_required_moved_down_downfloats, allowed_homogeneous_downfloats).allowed
     end
 
     def number_of_required_remainder_pairs

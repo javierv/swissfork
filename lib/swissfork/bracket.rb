@@ -155,6 +155,10 @@ module Swissfork
     attr_writer :downfloat_permit
 
     def allowed_downfloats
+      @allowed_downfloats ||= allowed_homogeneous_downfloats
+    end
+
+    def allowed_homogeneous_downfloats
       downfloat_permit.allowed
     end
 
