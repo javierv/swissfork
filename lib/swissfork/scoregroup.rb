@@ -1,6 +1,8 @@
 require "simple_initialize"
 require "swissfork/bracket"
 require "swissfork/completion"
+require "swissfork/completion_permit"
+require "swissfork/bye_permit"
 
 module Swissfork
   # Holds information about a bracket and the rest of the
@@ -37,10 +39,11 @@ module Swissfork
 
     def pairs
       if last?
-        bracket.mark_byes_as_forbidden_downfloats
+        bracket.downfloat_permit = ByePermit.new(players)
       else
         bracket.number_of_required_downfloats = number_of_required_downfloats
-        bracket.forbidden_downfloats = forbidden_downfloats
+        bracket.downfloat_permit =
+          CompletionPermit.new(players, remaining_players, bracket.number_of_required_downfloats)
 
         until(bracket.pairs && next_scoregroup_pairing_is_ok?)
           # Criteria C.7
@@ -79,12 +82,6 @@ module Swissfork
       remove_players(leftovers)
     end
 
-    def forbidden_downfloats
-      @forbidden_downfloats ||= players.combination(bracket.number_of_required_downfloats).select do |players|
-        !Completion.new(remaining_players + players).ok?
-      end
-    end
-
     def last?
       self == scoregroups.last
     end
@@ -117,7 +114,7 @@ module Swissfork
     def hypothetical_next_pairs
       Bracket.for(hypothetical_next_players).tap do |bracket|
         if next_scoregroup.last?
-          bracket.mark_byes_as_forbidden_downfloats
+          bracket.downfloat_permit = ByePermit.new(hypothetical_next_players)
         end
       end.pairs
     end

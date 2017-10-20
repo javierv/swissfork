@@ -19,6 +19,7 @@ module Swissfork
     require "swissfork/heterogeneous_bracket"
     require "swissfork/homogeneous_bracket"
     require "swissfork/possible_pairs"
+    require "swissfork/ok_permit"
 
     include Comparable
     attr_reader :players
@@ -147,31 +148,19 @@ module Swissfork
       clear_established_pairs
     end
 
-    def forbidden_downfloats
-      @forbidden_downfloats ||= Set.new
+    def downfloat_permit
+      @downfloat_permit ||= OkPermit.new(players, number_of_required_downfloats)
     end
 
-    def forbidden_downfloats=(downfloats)
-      @forbidden_downfloats = Set.new(downfloats.map { |players| players.to_set })
-    end
+    attr_writer :downfloat_permit
 
-    def mark_byes_as_forbidden_downfloats
-      if players.count.odd?
-        # HACK: we use arrays of 1 element, because that's the format
-        # forbidden_downfloats expects.
-        self.forbidden_downfloats = players.combination(1).select do |players|
-          players.first.had_bye?
-        end
-      end
+    def allowed_downfloats
+      downfloat_permit.allowed
     end
 
     def reset_impossible_downfloats
       clear_pairs
       @impossible_downfloats = nil
-    end
-
-    def allowed_downfloats
-      @allowed_downfloats ||= players.combination(number_of_required_downfloats).map { |downfloats| downfloats.to_set }.to_set - forbidden_downfloats
     end
 
   private
