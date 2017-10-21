@@ -41,6 +41,36 @@ module Swissfork
           end
         end
       end
+
+      context "all players have the same colour preference" do
+        let(:players) { create_players(1..4) }
+
+        before(:each) do
+          players.each { |player| player.stub(points: 1) }
+          players.each { |player| player.stub_preference(:white) }
+        end
+
+        context "all players have the same preference degree" do
+          before(:each) do
+            players.each { |player| player.stub_degree(:strong) }
+          end
+
+          it "pairs giving priority to the higher players" do
+            bracket.pair_numbers.should == [[1, 3], [2, 4]]
+          end
+        end
+
+        context "the lower players have a stronger preference" do
+          before(:each) do
+            players[0..1].each { |player| player.stub_degree(:strong) }
+            players[2..3].each { |player| player.stub_degree(:absolute) }
+          end
+
+          it "pairs giving priority to the higher players" do
+            bracket.pair_numbers.should == [[3, 1], [4, 2]]
+          end
+        end
+      end
     end
   end
 end

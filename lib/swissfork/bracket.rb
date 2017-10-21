@@ -164,8 +164,16 @@ module Swissfork
 
     def reset_impossible_downfloats
       clear_pairs
-      @players = players.sort
+      reset_exchanger
       @impossible_downfloats = nil
+    end
+
+    def failing_criteria
+      @failing_criteria ||= []
+    end
+
+    def reset_failing_criteria
+      @failing_criteria = nil
     end
 
   private
@@ -305,7 +313,12 @@ module Swissfork
     end
 
     def best_possible_pairs?
-      quality.ok?
+      if quality.ok?
+        true
+      else
+        failing_criteria << quality.failing_criterion
+        false
+      end
     end
 
     def quality
