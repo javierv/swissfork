@@ -47,12 +47,32 @@ module Swissfork
       let(:player) { Player.new(2) }
       let(:compatible) { Player.new(1) }
       let(:rival) { Player.new(3) }
+
       before(:each) do
         player.stub_opponents([rival])
       end
 
-      it "isn't compatible with a previous opponents and compatible otherwise" do
+      it "isn't compatible with previous opponents and compatible otherwise" do
         player.compatible_players_in([rival, compatible]).should == [compatible]
+      end
+
+      context "same colour preference" do
+        let(:same_preference) { Player.new(4) }
+        let(:same_absolute_preference) { Player.new(5) }
+
+        before(:each) do
+          player.stub_preference(:white)
+          same_preference.stub_preference(:white)
+          same_absolute_preference.stub_preference(:white)
+
+          player.stub_degree(:absolute)
+          same_absolute_preference.stub_degree(:absolute)
+          same_preference.stub_degree(:strong)
+        end
+
+        it "isn't compatible if they've got the same absolute colour preference" do
+          player.compatible_players_in([same_preference, same_absolute_preference]).should == [same_preference]
+        end
       end
     end
 

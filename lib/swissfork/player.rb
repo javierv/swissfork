@@ -57,9 +57,11 @@ module Swissfork
     end
 
     def compatible_players_in(players)
-      # TODO: We might need to change this defintion when we add absolute
-      # color preferences. Or, if we're lucky, we might not.
-      players - (opponents + [self])
+      (players - (opponents + [self])).select do |player|
+        player.colour_preference != colour_preference ||
+        !preference_degree.absolute? ||
+        !player.preference_degree.absolute?
+      end
     end
 
     # FIXME: Currently a stub for tests.

@@ -67,7 +67,17 @@ module Swissfork
     end
 
     def enough_players_to_guarantee_pairing?
-      (players & opponents).count > players.map(&:opponents).map(&:count).max * 2
+      all_players.count > maximum_number_of_incompatible_players * 2
+    end
+
+    def all_players
+      players & opponents
+    end
+
+    def maximum_number_of_incompatible_players
+      list.values.map do |compatible_players|
+        opponents.count - compatible_players.count
+      end.max
     end
 
     def remove_from_list(removals)

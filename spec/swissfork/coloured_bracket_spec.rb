@@ -83,6 +83,17 @@ module Swissfork
             bracket.pair_numbers.should == [[1, 4], [3, 2]]
           end
         end
+
+        context "all players have an absolute colour preference" do
+          before(:each) do
+            players.each { |player| player.stub_degree(:absolute) }
+          end
+
+          it "downfloats all players" do
+            bracket.pair_numbers.should == []
+            bracket.leftover_numbers.should == [1, 2, 3, 4]
+          end
+        end
       end
     end
   end

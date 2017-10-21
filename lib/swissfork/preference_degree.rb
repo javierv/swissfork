@@ -18,6 +18,10 @@ module Swissfork
       degree == :strong
     end
 
+    def absolute?
+      degree == :absolute
+    end
+
   private
     def degrees
       [:absolute, :strong, :mild, :none]
