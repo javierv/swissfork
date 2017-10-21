@@ -59,9 +59,13 @@ module Swissfork
     def compatible_players_in(players)
       (players - (opponents + [self])).select do |player|
         player.colour_preference != colour_preference ||
-        !preference_degree.absolute? ||
-        !player.preference_degree.absolute?
+        !preference_degree.absolute? || !player.preference_degree.absolute? ||
+        topscorer? || player.topscorer?
       end
+    end
+
+    def topscorer?
+      false # TODO
     end
 
     # FIXME: Currently a stub for tests.

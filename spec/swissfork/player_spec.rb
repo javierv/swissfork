@@ -73,6 +73,27 @@ module Swissfork
         it "isn't compatible if they've got the same absolute colour preference" do
           player.compatible_players_in([same_preference, same_absolute_preference]).should == [same_preference]
         end
+
+        context "the player is a topscorer" do
+          before(:each) do
+            player.stub(topscorer?: true)
+          end
+
+          it "is compatible with all non-opponents" do
+            player.compatible_players_in([rival, same_absolute_preference]).should == [same_absolute_preference]
+          end
+        end
+
+        context "the potential opponents are top-scorers" do
+          before(:each) do
+            rival.stub(topscorer?: true)
+            same_absolute_preference.stub(topscorer?: true)
+          end
+
+          it "is compatible with all non-opponents" do
+            player.compatible_players_in([rival, same_absolute_preference]).should == [same_absolute_preference]
+          end
+        end
       end
     end
 

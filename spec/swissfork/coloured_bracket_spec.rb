@@ -89,9 +89,32 @@ module Swissfork
             players.each { |player| player.stub_degree(:absolute) }
           end
 
-          it "downfloats all players" do
-            bracket.pair_numbers.should == []
-            bracket.leftover_numbers.should == [1, 2, 3, 4]
+          context "none of them are topscorers" do
+            it "downfloats all players" do
+              bracket.pair_numbers.should == []
+              bracket.leftover_numbers.should == [1, 2, 3, 4]
+            end
+          end
+
+          context "all of them are topscorers" do
+            before(:each) do
+              players.each { |player| player.stub(topscorer?: true) }
+            end
+
+            it "pairs those players" do
+              bracket.pair_numbers.should == [[1, 3], [2, 4]]
+            end
+          end
+
+          context "two of them are topscorers" do
+            before(:each) do
+              players[0].stub(topscorer?: true)
+              players[2].stub(topscorer?: true)
+            end
+
+            it "avoids pairing non-topscorers" do
+              bracket.pair_numbers.should == [[1, 4], [2, 3]]
+            end
           end
         end
       end
