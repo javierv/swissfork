@@ -1,3 +1,5 @@
+require "simple_initialize"
+
 module Swissfork
   # Checks quality of pairs following the quality criteria
   # described in FIDE Dutch System, sections C.8 to C.19.
