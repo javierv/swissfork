@@ -84,6 +84,31 @@ module Swissfork
           end
         end
 
+        context "some of them have an absolute colour preference" do
+          before(:each) do
+            players[0].stub_degree(:absolute)
+            players[2].stub_degree(:absolute)
+            players[1].stub_degree(:mild)
+            players[3].stub_degree(:mild)
+          end
+
+          context "none of them are topscorers" do
+            it "avoids pairing players with same absolute preferences together" do
+              bracket.pair_numbers.should == [[1, 4], [3, 2]]
+            end
+          end
+
+          context "all of them are topscorers" do
+            before(:each) do
+              players.each { |player| player.stub(topscorer?: true) }
+            end
+
+            it "avoids pairing players with same absolute preferences together" do
+              bracket.pair_numbers.should == [[1, 4], [3, 2]]
+            end
+          end
+        end
+
         context "all players have an absolute colour preference" do
           before(:each) do
             players.each { |player| player.stub_degree(:absolute) }

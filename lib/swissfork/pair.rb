@@ -57,6 +57,11 @@ module Swissfork
         s2_player.preference_degree.strong?
     end
 
+    def same_absolute_preference?
+      same_colour_preference? && s1_player.preference_degree.absolute? &&
+        s2_player.preference_degree.absolute?
+    end
+
     def heterogeneous?
       s1_player.points != s2_player.points
     end

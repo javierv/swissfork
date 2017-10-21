@@ -56,6 +56,7 @@ module Swissfork
 
     def self.criteria
       [
+        :absolute_colour_preference_violation?,
         :colour_preference_violation?,
         :strong_colour_preference_violation?,
         :same_downfloats_as_previous_round?,
@@ -77,6 +78,11 @@ module Swissfork
 
     def allowed_failures
       @allowed_failures ||= Hash.new(0)
+    end
+
+    # C.8 and C.9 TODO: split.
+    def absolute_colour_preference_violation
+      pairs.select(&:same_absolute_preference?)
     end
 
     # C.10
