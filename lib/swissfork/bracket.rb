@@ -106,13 +106,7 @@ module Swissfork
       until(@definitive_pairs = current_exchange_pairs)
         if exchanger.limit_reached?
           reset_exchanger
-
-          if quality.worst_possible?
-            reset_quality
-            return nil
-          else
-            quality.be_more_permissive
-          end
+          quality.be_more_permissive
         else
           exchange_until_non_s1_players_can_downfloat
         end
@@ -316,10 +310,6 @@ module Swissfork
 
     def quality
       @quality ||= QualityCriteria.new(self)
-    end
-
-    def reset_quality
-      @quality = nil
     end
 
     def remainder_pairs

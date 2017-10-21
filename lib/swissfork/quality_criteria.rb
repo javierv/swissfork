@@ -12,10 +12,6 @@ module Swissfork
       criteria.none? { |condition| send(condition) }
     end
 
-    def worst_possible?
-      allowed_failures[criteria[0]] >= bracket.number_of_possible_pairs
-    end
-
     def be_more_permissive
       failing_criterion = current_failing_criterion
 
