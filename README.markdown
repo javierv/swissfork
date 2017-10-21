@@ -8,9 +8,8 @@ It's currently in early development stages. Current development is focused on im
 TODO
 ----
 
-1. Colour preferences.
-2. API to manage a whole tournament and not just a round.
-3. Import and export files coded in the FIDE Data Exchange Format.
-4. Pairings checker.
-5. Random Tournament Generator.
-6. Support more pairing algorithms.
+1. API to manage a whole tournament and not just a round.
+2. Import and export files coded in the FIDE Data Exchange Format.
+3. Pairings checker.
+4. Random Tournament Generator.
+5. Support more pairing algorithms.
