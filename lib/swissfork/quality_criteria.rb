@@ -114,10 +114,8 @@ module Swissfork
     end
 
     def exceed_same_downfloats_as_two_rounds_ago?(players)
-      players.reject do |player|
-        player.descended_two_rounds_ago? &&
-          !player.descended_in_the_previous_round?
-      end.count < number_of_downfloats_not_from_two_rounds_ago
+      players.reject(&:descended_two_rounds_ago?).count <
+        number_of_downfloats_not_from_two_rounds_ago
     end
 
     def number_of_downfloats_not_from_two_rounds_ago
