@@ -1,5 +1,6 @@
 require "spec_helper"
 require "swissfork/pair"
+require "swissfork/player"
 
 module Swissfork
   describe Pair do
@@ -39,8 +40,8 @@ module Swissfork
     end
 
     describe "#players" do
-      let(:higher_player) { double(:<=> => -1, inspect: "1") }
-      let(:lower_player) { double(:<=> => 1, inspect: "2") }
+      let(:higher_player) { Player.new(1) }
+      let(:lower_player) { Player.new(2) }
       let(:pair) { Pair.new(higher_player, lower_player) }
 
       context "different colour preference" do
@@ -75,6 +76,35 @@ module Swissfork
 
           it "gives the preference to the higher player" do
             pair.players.should == [lower_player, higher_player]
+          end
+        end
+
+        context "both players have an absolute preference" do
+          before(:each) do
+            higher_player.stub_degree(:absolute)
+            lower_player.stub_degree(:absolute)
+          end
+
+          context "both have the same colour difference" do
+            before(:each) do
+              higher_player.stub(colour_difference: 2)
+              lower_player.stub(colour_difference: 2)
+            end
+
+            it "gives the preference to the higher player" do
+              pair.players.should == [lower_player, higher_player]
+            end
+          end
+
+          context "the lower player has a wider difference" do
+            before(:each) do
+              higher_player.stub(colour_difference: 0)
+              lower_player.stub(colour_difference: 1)
+            end
+
+            it "gives the preference to the lower player" do
+              pair.players.should == [higher_player, lower_player]
+            end
           end
         end
 

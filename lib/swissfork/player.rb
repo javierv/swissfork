@@ -39,6 +39,10 @@ module Swissfork
       PreferenceDegree.new(:none) # TODO
     end
 
+    def colour_difference
+      0 # TODO
+    end
+
     def descended_two_rounds_ago?
       [:down, :bye].include?(floats[-2])
     end
@@ -62,6 +66,10 @@ module Swissfork
         !preference_degree.absolute? || !player.preference_degree.absolute? ||
         topscorer? || player.topscorer?
       end
+    end
+
+    def stronger_preference_than?(player)
+      ([preference_degree, colour_difference] <=> [player.preference_degree, player.colour_difference]) > 0
     end
 
     def topscorer?

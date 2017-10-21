@@ -11,7 +11,7 @@ module Swissfork
 
     def players
       if higher_player.colour_preference == lower_player.colour_preference &&
-        lower_player.preference_degree > higher_player.preference_degree
+        lower_player.stronger_preference_than?(higher_player)
         if lower_player.colour_preference == :black
           [higher_player, lower_player]
         else
