@@ -10,20 +10,10 @@ module Swissfork
     include Comparable
 
     def players
-      if higher_player.colour_preference == lower_player.colour_preference &&
-        lower_player.stronger_preference_than?(higher_player)
-        if lower_player.colour_preference == :black
-          [higher_player, lower_player]
-        else
-          [lower_player, higher_player]
-        end
+      if players_ordered_by_preference.first.colour_preference == :black
+        players_ordered_by_preference.reverse
       else
-        if higher_player.colour_preference == :black ||
-          higher_player.colour_preference == :none && lower_player.colour_preference == :white
-          [lower_player, higher_player]
-        else
-          [higher_player, lower_player]
-        end
+        players_ordered_by_preference
       end
     end
 
@@ -91,6 +81,17 @@ module Swissfork
 
     def both_have_high_difference?
       s1_player.colour_difference > 1 && s2_player.colour_difference > 1
+    end
+
+    def players_ordered_by_preference
+      if higher_player.colour_preference == lower_player.colour_preference &&
+        lower_player.stronger_preference_than?(higher_player)
+        [lower_player, higher_player]
+      elsif higher_player.colour_preference == :none
+        [lower_player, higher_player]
+      else
+        [higher_player, lower_player]
+      end
     end
   end
 end
