@@ -14,17 +14,18 @@ module Swissfork
       degrees.index(preference.degree) <=> degrees.index(degree)
     end
 
-    def strong?
-      degree == :strong
-    end
-
-    def absolute?
-      degree == :absolute
-    end
-
-  private
-    def degrees
+    def self.degrees
       [:absolute, :strong, :mild, :none]
+    end
+
+    degrees.each do |degree_symbol|
+      define_method "#{degree_symbol}?" do
+        degree == degree_symbol
+      end
+    end
+
+    def degrees
+      self.class.degrees
     end
   end
 end
