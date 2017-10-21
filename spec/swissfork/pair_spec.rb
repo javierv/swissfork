@@ -37,5 +37,98 @@ module Swissfork
         smaller_pair.should be < bigger_pair
       end
     end
+
+    describe "#players" do
+      let(:higher_player) { double(:<=> => -1, inspect: "1") }
+      let(:lower_player) { double(:<=> => 1, inspect: "2") }
+      let(:pair) { Pair.new(higher_player, lower_player) }
+
+      context "different colour preference" do
+        before(:each) do
+          higher_player.stub_preference(:black)
+          lower_player.stub_preference(:white)
+        end
+
+        context "the lower player has a stronger preference" do
+          before(:each) do
+            higher_player.stub_degree(:strong)
+            lower_player.stub_degree(:absolute)
+          end
+
+          it "respects both players preference" do
+            pair.players.should == [lower_player, higher_player]
+          end
+        end
+      end
+
+      context "both preferences are black" do
+        before(:each) do
+          higher_player.stub_preference(:black)
+          lower_player.stub_preference(:black)
+        end
+
+        context "same preference degree" do
+          before(:each) do
+            higher_player.stub_degree(:strong)
+            lower_player.stub_degree(:strong)
+          end
+
+          it "gives the preference to the higher player" do
+            pair.players.should == [lower_player, higher_player]
+          end
+        end
+
+        context "the lower player has a stronger preference" do
+          before(:each) do
+            higher_player.stub_degree(:strong)
+            lower_player.stub_degree(:absolute)
+          end
+
+          it "gives the preference to the lower player" do
+            pair.players.should == [higher_player, lower_player]
+          end
+        end
+      end
+
+      context "both preferences are white" do
+        before(:each) do
+          higher_player.stub_preference(:white)
+          lower_player.stub_preference(:white)
+        end
+
+        context "same preference degree" do
+          before(:each) do
+            higher_player.stub_degree(:strong)
+            lower_player.stub_degree(:strong)
+          end
+
+          it "gives the preference to the higher player" do
+            pair.players.should == [higher_player, lower_player]
+          end
+        end
+
+        context "the lower player has a stronger preference" do
+          before(:each) do
+            higher_player.stub_degree(:strong)
+            lower_player.stub_degree(:absolute)
+          end
+
+          it "gives the preference to the lower player" do
+            pair.players.should == [lower_player, higher_player]
+          end
+        end
+      end
+
+      context "the higher player doesn't have a colour preference" do
+        before(:each) do
+          higher_player.stub_preference(:none)
+          lower_player.stub_preference(:white)
+        end
+
+        it "respects the lower player preference" do
+          pair.players.should == [lower_player, higher_player]
+        end
+      end
+    end
   end
 end

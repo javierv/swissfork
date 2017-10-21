@@ -18,4 +18,9 @@ class Object
   def stub_preference(colour_preference)
     stub(colour_preference: colour_preference)
   end
+
+  def stub_degree(degree)
+    require "swissfork/preference_degree"
+    stub(preference_degree: Swissfork::PreferenceDegree.new(degree))
+  end
 end

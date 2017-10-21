@@ -34,6 +34,10 @@ module Swissfork
       nil # TODO
     end
 
+    def preference_degree
+      :none # TODO
+    end
+
     def descended_two_rounds_ago?
       [:down, :bye].include?(floats[-2])
     end

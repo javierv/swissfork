@@ -10,11 +10,20 @@ module Swissfork
     include Comparable
 
     def players
-      # TODO: add case when the lower player has got a stronger preference.
-      if higher_player.colour_preference == :black
-        [lower_player, higher_player]
+      if higher_player.colour_preference == lower_player.colour_preference &&
+        lower_player.preference_degree > higher_player.preference_degree
+        if lower_player.colour_preference == :black
+          [higher_player, lower_player]
+        else
+          [lower_player, higher_player]
+        end
       else
-        [higher_player, lower_player]
+        if higher_player.colour_preference == :black ||
+          higher_player.colour_preference == :none && lower_player.colour_preference == :white
+          [lower_player, higher_player]
+        else
+          [higher_player, lower_player]
+        end
       end
     end
 
