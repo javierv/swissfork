@@ -66,6 +66,34 @@ module Swissfork
         end
       end
 
+      context "same colour preference for all players" do
+        before(:each) do
+          players.each { |player| player.stub_preference(:white) }
+        end
+
+        context "with 20 players" do
+          let(:players) { create_players(1..20) }
+
+          it "pairs fast" do
+            Benchmark.realtime{ round.pair_numbers }.should be < 0.1
+          end
+        end
+
+        context "the preference is strong" do
+          before(:each) do
+            players.each { |player| player.stub_degree(:strong) }
+          end
+
+          context "with 20 players" do
+            let(:players) { create_players(1..20) }
+
+            it "pairs fast" do
+              Benchmark.realtime{ round.pair_numbers }.should be < 0.1
+            end
+          end
+        end
+      end
+
       context "downfloats from two rounds ago need to repeat" do
         context "with 15 players" do
           let(:players) { create_players(1..15) }

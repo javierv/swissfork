@@ -19,6 +19,7 @@ module Swissfork
     require "swissfork/heterogeneous_bracket"
     require "swissfork/homogeneous_bracket"
     require "swissfork/possible_pairs"
+    require "swissfork/colour_incompatibilities"
     require "swissfork/ok_permit"
 
     include Comparable
@@ -52,6 +53,16 @@ module Swissfork
       [number_of_pairs_after_downfloats, number_of_compatible_pairs].min
     end
     alias_method :max_pairs, :number_of_possible_pairs # FIDE nomenclature
+
+    def minimum_colour_violations
+      colour_incompatibilities.violations
+    end
+    alias_method :x1, :minimum_colour_violations # Old FIDE nomenclature
+
+    def minimum_strong_colour_violations
+      colour_incompatibilities.strong_violations
+    end
+    alias_method :z1, :minimum_strong_colour_violations # Old FIDE nomenclature
 
     def number_of_pairs_after_downfloats
       (players.count - number_of_required_downfloats) / 2
@@ -323,6 +334,10 @@ module Swissfork
 
     def quality
       @quality ||= QualityCriteria.new(self)
+    end
+
+    def colour_incompatibilities
+      ColourIncompatibilities.new(players, number_of_possible_pairs)
     end
 
     def remainder_pairs

@@ -78,7 +78,12 @@ module Swissfork
     end
 
     def allowed_failures
-      @allowed_failures ||= Hash.new(0)
+      @allowed_failures ||= Hash.new(0).tap do |allowed_failures|
+        allowed_failures[:colour_preference_violation?] =
+          bracket.minimum_colour_violations
+        allowed_failures[:strong_colour_preference_violation?] =
+          bracket.minimum_strong_colour_violations
+      end
     end
 
     # C.8
