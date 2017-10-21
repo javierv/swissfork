@@ -57,6 +57,7 @@ module Swissfork
     def self.criteria
       [
         :colour_preference_violation?,
+        :strong_colour_preference_violation?,
         :same_downfloats_as_previous_round?,
         :same_upfloats_as_previous_round?,
         :same_downfloats_as_two_rounds_ago?,
@@ -81,6 +82,11 @@ module Swissfork
     # C.10
     def colour_preference_violation
       pairs.select(&:same_colour_preference?)
+    end
+
+    # C.11
+    def strong_colour_preference_violation
+      pairs.select(&:same_strong_preference?)
     end
 
     # C.12

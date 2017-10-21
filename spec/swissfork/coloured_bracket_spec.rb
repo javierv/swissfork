@@ -70,6 +70,19 @@ module Swissfork
             bracket.pair_numbers.should == [[3, 1], [4, 2]]
           end
         end
+
+        context "the first players in S1 and S2 have a stronger preference" do
+          before(:each) do
+            players[0].stub_degree(:strong)
+            players[1].stub_degree(:mild)
+            players[2].stub_degree(:strong)
+            players[3].stub_degree(:mild)
+          end
+
+          it "pairs the first player in S1 with the second player in S2" do
+            bracket.pair_numbers.should == [[1, 4], [3, 2]]
+          end
+        end
       end
     end
   end

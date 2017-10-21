@@ -14,6 +14,10 @@ module Swissfork
       degrees.index(preference.degree) <=> degrees.index(degree)
     end
 
+    def strong?
+      degree == :strong
+    end
+
   private
     def degrees
       [:absolute, :strong, :mild, :none]

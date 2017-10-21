@@ -52,6 +52,11 @@ module Swissfork
         s1_player.colour_preference == s2_player.colour_preference
     end
 
+    def same_strong_preference?
+      same_colour_preference? && s1_player.preference_degree.strong? &&
+        s2_player.preference_degree.strong?
+    end
+
     def heterogeneous?
       s1_player.points != s2_player.points
     end

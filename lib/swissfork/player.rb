@@ -1,4 +1,5 @@
 require "simple_initialize"
+require "swissfork/preference_degree"
 
 module Swissfork
   # Contains data related to a player: name, elo.
@@ -35,7 +36,7 @@ module Swissfork
     end
 
     def preference_degree
-      :none # TODO
+      PreferenceDegree.new(:none) # TODO
     end
 
     def descended_two_rounds_ago?
