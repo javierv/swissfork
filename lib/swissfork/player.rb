@@ -43,6 +43,10 @@ module Swissfork
       0 # TODO
     end
 
+    def colours
+      [] # TODO
+    end
+
     def descended_two_rounds_ago?
       [:down, :bye].include?(floats[-2])
     end

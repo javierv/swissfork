@@ -159,6 +159,20 @@ module Swissfork
           pair.players.should == [lower_player, higher_player]
         end
       end
+
+      context "same preference and different colour history" do
+        before(:each) do
+          higher_player.stub_preference(:white)
+          lower_player.stub_preference(:white)
+
+          higher_player.stub(colours: [:black, :white, :white, :black])
+          lower_player.stub(colours: [:white, :black, :white, :black])
+        end
+
+        it "alternates colour to the most recent time they were different" do
+          pair.players.should == [lower_player, higher_player]
+        end
+      end
     end
   end
 end

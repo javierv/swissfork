@@ -84,14 +84,29 @@ module Swissfork
     end
 
     def players_ordered_by_preference
-      if higher_player.colour_preference == lower_player.colour_preference &&
-        lower_player.stronger_preference_than?(higher_player)
-        [lower_player, higher_player]
+      if higher_player.colour_preference == lower_player.colour_preference
+        if lower_player.stronger_preference_than?(higher_player)
+          [lower_player, higher_player]
+        elsif higher_player.colours == lower_player.colours
+          [higher_player, lower_player]
+        else
+          if last_different_colours[0] == higher_player.colour_preference
+            [lower_player, higher_player]
+          else
+            [higher_player, lower_player]
+          end
+        end
       elsif higher_player.colour_preference == :none
         [lower_player, higher_player]
       else
         [higher_player, lower_player]
       end
+    end
+
+    def last_different_colours
+      higher_player.colours.zip(lower_player.colours).select do |colours|
+        colours.uniq.count > 1
+      end.last
     end
   end
 end
