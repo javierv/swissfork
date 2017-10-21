@@ -211,11 +211,12 @@ module Swissfork
     end
 
     def pair_for(player)
-      opponents_for(player).map  { |opponent| Pair.new(player, opponent) }.each do |pair|
-        return pair if is_possible?(pair)
-      end
-
+      pairs_for(player).each { |pair| return pair if is_possible?(pair) }
       nil
+    end
+
+    def pairs_for(player)
+      opponents_for(player).map  { |opponent| Pair.new(player, opponent) }
     end
 
     def opponents_for(player)
