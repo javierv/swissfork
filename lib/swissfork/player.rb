@@ -30,6 +30,10 @@ module Swissfork
       floats.last == :up
     end
 
+    def colour_preference
+      nil # TODO
+    end
+
     def descended_two_rounds_ago?
       [:down, :bye].include?(floats[-2])
     end

@@ -4,13 +4,26 @@ module Swissfork
   # Contains all data related to a game.
   #
   # Currently it only contains which players played the game,
-  # but color and result information will be added in the future.
+  # but result information will be added in the future.
   class Pair
     initialize_with :s1_player, :s2_player
     include Comparable
 
     def players
-      [s1_player, s2_player]
+      # TODO: add case when the lower player has got a stronger preference.
+      if higher_player.colour_preference == :black
+        [lower_player, higher_player]
+      else
+        [higher_player, lower_player]
+      end
+    end
+
+    def higher_player
+      [s1_player, s2_player].sort.first
+    end
+
+    def lower_player
+      [s1_player, s2_player].sort.last
     end
 
     def hash
@@ -23,6 +36,11 @@ module Swissfork
 
     def numbers
       players.map(&:number)
+    end
+
+    def same_colour_preference?
+      s1_player.colour_preference && s2_player.colour_preference &&
+        s1_player.colour_preference == s2_player.colour_preference
     end
 
     def heterogeneous?
@@ -40,7 +58,7 @@ module Swissfork
     end
 
     def <=>(pair)
-      players.min <=> pair.players.min
+      [s1_player, s2_player].min <=> [pair.s1_player, pair.s2_player].min
     end
   end
 end

@@ -14,4 +14,8 @@ class Object
   def stub_opponents(opponents)
     stub(opponents: opponents - [self])
   end
+
+  def stub_preference(colour_preference)
+    stub(colour_preference: colour_preference)
+  end
 end

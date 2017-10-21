@@ -13,8 +13,7 @@ module Swissfork
     end
 
     def worst_possible?
-      # TODO: change when we add support for colours.
-      allowed_failures[criteria[0]] > number_of_required_downfloats + 1
+      allowed_failures[criteria[0]] >= bracket.number_of_possible_pairs
     end
 
     def be_more_permissive
@@ -46,6 +45,7 @@ module Swissfork
 
     def self.criteria
       [
+        :colour_preference_violation?,
         :same_downfloats_as_previous_round?,
         :same_upfloats_as_previous_round?,
         :same_downfloats_as_two_rounds_ago?,
@@ -65,6 +65,11 @@ module Swissfork
 
     def allowed_failures
       @allowed_failures ||= Hash.new(0)
+    end
+
+    # C.10
+    def colour_preference_violation
+      pairs.select(&:same_colour_preference?)
     end
 
     # C.12
