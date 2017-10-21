@@ -47,6 +47,14 @@ module Swissfork
       players.map(&:number)
     end
 
+    def same_absolute_high_difference?
+      same_absolute_preference? && both_have_high_difference?
+    end
+
+    def same_colour_three_times?
+      same_absolute_preference? && !both_have_high_difference?
+    end
+
     def same_colour_preference?
       s1_player.colour_preference && s2_player.colour_preference &&
         s1_player.colour_preference == s2_player.colour_preference
@@ -55,11 +63,6 @@ module Swissfork
     def same_strong_preference?
       same_colour_preference? && s1_player.preference_degree.strong? &&
         s2_player.preference_degree.strong?
-    end
-
-    def same_absolute_preference?
-      same_colour_preference? && s1_player.preference_degree.absolute? &&
-        s2_player.preference_degree.absolute?
     end
 
     def heterogeneous?
@@ -78,6 +81,16 @@ module Swissfork
 
     def <=>(pair)
       [s1_player, s2_player].min <=> [pair.s1_player, pair.s2_player].min
+    end
+
+  private
+    def same_absolute_preference?
+      same_colour_preference? && s1_player.preference_degree.absolute? &&
+        s2_player.preference_degree.absolute?
+    end
+
+    def both_have_high_difference?
+      s1_player.colour_difference > 1 && s2_player.colour_difference > 1
     end
   end
 end

@@ -129,6 +129,19 @@ module Swissfork
             it "pairs those players" do
               bracket.pair_numbers.should == [[1, 3], [2, 4]]
             end
+
+            context "the first players in S1 and S2 would get +3 colour difference" do
+              before(:each) do
+                players[0].stub(colour_difference: 2)
+                players[1].stub(colour_difference: 1)
+                players[2].stub(colour_difference: 2)
+                players[3].stub(colour_difference: 1)
+              end
+
+              it "avoids pairing them against each other" do
+                bracket.pair_numbers.should == [[1, 4], [3, 2]]
+              end
+            end
           end
 
           context "two of them are topscorers" do
