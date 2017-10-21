@@ -7,8 +7,8 @@ module Swissfork
   # In order to complete the pairing, they need to meet two
   # requirements:
   #
-  # 1. All players must be paired meeting criterias C1 and C3.
-  # 2. The player receiving the bye must meet criteria C2.
+  # 1. All players must be paired meeting criteria C1 and C3.
+  # 2. The player receiving the bye must meet criterion C2.
   class Completion
     initialize_with :players
 

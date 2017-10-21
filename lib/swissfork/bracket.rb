@@ -15,7 +15,7 @@ module Swissfork
   # them is using Bracket.for(players), which creates an object
   # from either HomogeneousBracket or HeterogeneousBracket.
   class Bracket
-    require "swissfork/quality_criterias"
+    require "swissfork/quality_criteria"
     require "swissfork/heterogeneous_bracket"
     require "swissfork/homogeneous_bracket"
     require "swissfork/possible_pairs"
@@ -315,7 +315,7 @@ module Swissfork
     end
 
     def quality
-      @quality ||= QualityCriterias.new(self)
+      @quality ||= QualityCriteria.new(self)
     end
 
     def reset_quality

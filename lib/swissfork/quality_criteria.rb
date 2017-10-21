@@ -1,32 +1,32 @@
 module Swissfork
-  # Checks quality of pairs following the quality criterias
+  # Checks quality of pairs following the quality criteria
   # described in FIDE Dutch System, sections C.8 to C.19.
   #
-  # Criterias C.5 to C.7 are implemented in the main algorithm.
-  class QualityCriterias
+  # Criteria C.5 to C.7 are implemented in the main algorithm.
+  class QualityCriteria
     initialize_with :bracket
 
     def ok?
-      criterias.none? { |condition| send(condition) }
+      criteria.none? { |condition| send(condition) }
     end
 
     def worst_possible?
       # TODO: change when we add support for colours.
-      allowed_failures[criterias[0]] > number_of_required_downfloats + 1
+      allowed_failures[criteria[0]] > number_of_required_downfloats + 1
     end
 
     def be_more_permissive
-      failing_criteria = current_failing_criteria
+      failing_criterion = current_failing_criterion
 
-      if failing_criteria != old_failing_criteria
-        if old_failing_criteria_is_less_important?
-          allowed_failures[old_failing_criteria] = 0
+      if failing_criterion != old_failing_criterion
+        if old_failing_criterion_is_less_important?
+          allowed_failures[old_failing_criterion] = 0
         end
 
-        self.old_failing_criteria = failing_criteria
+        self.old_failing_criterion = failing_criterion
       end
 
-      allowed_failures[failing_criteria] += 1
+      allowed_failures[failing_criterion] += 1
     end
 
     def can_downfloat?(leftovers)
@@ -40,9 +40,9 @@ module Swissfork
     end
 
   private
-    attr_writer :old_failing_criteria
+    attr_writer :old_failing_criterion
 
-    def self.criterias
+    def self.criteria
       [
         :same_downfloats_as_previous_round?,
         :same_upfloats_as_previous_round?,
@@ -51,13 +51,13 @@ module Swissfork
       ]
     end
 
-    def criterias
-      self.class.criterias
+    def criteria
+      self.class.criteria
     end
 
-    criterias.each do |criteria|
-      define_method criteria do
-        send(criteria.to_s.delete("?")).count > allowed_failures[criteria]
+    criteria.each do |criterion|
+      define_method criterion do
+        send(criterion.to_s.delete("?")).count > allowed_failures[criterion]
       end
     end
 
@@ -85,7 +85,7 @@ module Swissfork
       ascending_players.select(&:ascended_two_rounds_ago?)
     end
 
-    def current_failing_criteria
+    def current_failing_criterion
       if ok? # HACK: hypothetical quality check in Bracket prevents pairings at all.
         if allowed_failures[:same_downfloats_as_two_rounds_ago?] >= number_of_required_downfloats
           :same_downfloats_as_previous_round?
@@ -93,16 +93,16 @@ module Swissfork
           :same_downfloats_as_two_rounds_ago?
         end
       else
-        criterias.select { |condition| send(condition) }.last
+        criteria.select { |condition| send(condition) }.last
       end
     end
 
-    def old_failing_criteria
-      @old_failing_criteria ||= criterias.last
+    def old_failing_criterion
+      @old_failing_criterion ||= criteria.last
     end
 
-    def old_failing_criteria_is_less_important?
-      criterias.index(old_failing_criteria) > criterias.index(current_failing_criteria)
+    def old_failing_criterion_is_less_important?
+      criteria.index(old_failing_criterion) > criteria.index(current_failing_criterion)
     end
 
     def exceed_same_downfloats_as_previous_round?(players)

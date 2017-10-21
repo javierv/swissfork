@@ -9,7 +9,7 @@ module Swissfork
   # scoregroups we need to pair.
   #
   # Sometimes a bracket needs to know about other brackets;
-  # for example, in criterias C.4 (penultimate bracket) and
+  # for example, in criteria C.4 (penultimate bracket) and
   # C.7 (maximize pairs in the next bracket).
   class Scoregroup
     initialize_with :players, :round
@@ -46,7 +46,7 @@ module Swissfork
           CompletionPermit.new(players, remaining_players, bracket.number_of_required_downfloats)
 
         until(bracket.pairs && next_scoregroup_pairing_is_ok?)
-          # Criteria C.7
+          # Criterion C.7
           if bracket.pairs.to_a.empty?
             reduce_number_of_next_scoregroup_required_pairs
             bracket.reset_impossible_downfloats
