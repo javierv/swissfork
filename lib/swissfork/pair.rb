@@ -85,27 +85,45 @@ module Swissfork
 
     def players_ordered_by_preference
       @players_ordered_by_preference ||=
-        if higher_player.colour_preference == lower_player.colour_preference
-          if lower_player.stronger_preference_than?(higher_player)
-            [lower_player, higher_player]
-          elsif higher_player.colours == lower_player.colours
-            [higher_player, lower_player]
-          else
-            if last_different_colours[0] == higher_player.colour_preference
-              [lower_player, higher_player]
-            else
-              [higher_player, lower_player]
-            end
-          end
-        elsif higher_player.colour_preference == :none
-          [lower_player, higher_player]
+        if s1_player.colour_preference == s2_player.colour_preference
+          players_with_same_colour_ordered_by_preference
         else
-          [higher_player, lower_player]
+          players_with_different_colour_ordered_by_preference
         end
     end
 
+    def players_with_same_colour_ordered_by_preference
+      if s2_player.stronger_preference_than?(s1_player)
+        [s2_player, s1_player]
+      else
+        players_ordered_inverting_last_different_colours
+      end
+    end
+
+    def players_with_different_colour_ordered_by_preference
+      if s1_player.colour_preference == :none
+        [s2_player, s1_player]
+      else
+        [s1_player, s2_player]
+      end
+    end
+
+    def players_ordered_inverting_last_different_colours
+      if s1_player.colours == s2_player.colours
+        players_ordered_by_rank
+      elsif last_different_colours[0] == s1_player.colour_preference
+        [s2_player, s1_player]
+      else
+        [s1_player, s2_player]
+      end
+    end
+
+    def players_ordered_by_rank
+      [higher_player, lower_player]
+    end
+
     def last_different_colours
-      higher_player.colours.zip(lower_player.colours).select do |colours|
+      s1_player.colours.zip(s2_player.colours).select do |colours|
         colours.uniq.count > 1
       end.last
     end
