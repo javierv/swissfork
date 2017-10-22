@@ -36,7 +36,7 @@ module Swissfork
     end
 
     def preference_degree
-      PreferenceDegree.new(:none) # TODO
+      :none # TODO
     end
 
     def colour_difference
@@ -67,14 +67,15 @@ module Swissfork
 
     def compatible_players_in(players)
       (players - (opponents + [self])).select do |player|
-        !preference_degree.absolute? || !player.preference_degree.absolute? ||
+        preference_degree != :absolute || player.preference_degree != :absolute ||
         player.colour_preference != colour_preference ||
         topscorer? || player.topscorer?
       end
     end
 
     def stronger_preference_than?(player)
-      ([preference_degree, colour_difference] <=> [player.preference_degree, player.colour_difference]) > 0
+      ([PreferenceDegree.new(preference_degree), colour_difference] <=>
+       [PreferenceDegree.new(player.preference_degree), player.colour_difference]) > 0
     end
 
     def topscorer?

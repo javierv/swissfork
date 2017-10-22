@@ -20,7 +20,6 @@ class Object
   end
 
   def stub_degree(degree)
-    require "swissfork/preference_degree"
-    stub(preference_degree: Swissfork::PreferenceDegree.new(degree))
+    stub(preference_degree: degree)
   end
 end

@@ -25,7 +25,7 @@ module Swissfork
 
     def players_with_main_mild_preference
       players_with_main_preference.select do |player|
-        player.preference_degree.mild?
+        player.preference_degree == :mild
       end
     end
 

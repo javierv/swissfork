@@ -51,8 +51,8 @@ module Swissfork
     end
 
     def same_strong_preference?
-      same_colour_preference? && s1_player.preference_degree.strong? &&
-        s2_player.preference_degree.strong?
+      same_colour_preference? && s1_player.preference_degree == :strong &&
+        s2_player.preference_degree == :strong
     end
 
     def heterogeneous?
@@ -75,8 +75,8 @@ module Swissfork
 
   private
     def same_absolute_preference?
-      same_colour_preference? && s1_player.preference_degree.absolute? &&
-        s2_player.preference_degree.absolute?
+      same_colour_preference? && s1_player.preference_degree == :absolute &&
+        s2_player.preference_degree == :absolute
     end
 
     def both_have_high_difference?
