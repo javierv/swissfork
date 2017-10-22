@@ -73,6 +73,10 @@ module Swissfork
       limbo.map(&:number)
     end
 
+    def provisional_pairs
+      super + remainder_pairs.to_a
+    end
+
   private
     def exchanger
       @exchanger ||= LimboExchanger.new(s1, limbo)
@@ -89,10 +93,6 @@ module Swissfork
     def clear_established_pairs
       @remainder_bracket = nil
       super
-    end
-
-    def definitive_pairs
-      super + remainder_pairs.to_a
     end
 
     def remainder_pairs

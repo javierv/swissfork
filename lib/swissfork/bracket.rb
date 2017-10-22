@@ -122,6 +122,10 @@ module Swissfork
       pairable_players & provisional_leftovers
     end
 
+    def provisional_pairs
+      established_pairs
+    end
+
     def paired_players
       definitive_pairs.flat_map(&:players)
     end
@@ -174,6 +178,8 @@ module Swissfork
     end
 
   private
+    attr_reader :definitive_pairs
+
     def exchanger
       raise "Implement in subclass"
     end
@@ -205,7 +211,7 @@ module Swissfork
         return nil if established_pairs.empty?
       end
 
-      definitive_pairs
+      provisional_pairs
     end
 
     def establish_pairs
@@ -221,10 +227,6 @@ module Swissfork
 
     def best_pairs_obtained?
       pairings_completed? && best_possible_pairs?
-    end
-
-    def definitive_pairs
-      established_pairs
     end
 
     def pair_for(player)
