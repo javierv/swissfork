@@ -72,9 +72,7 @@ module Swissfork
     end
 
     def maximum_number_of_incompatible_players
-      list.values.map do |compatible_players|
-        opponents.count - compatible_players.count
-      end.max
+      opponents.count - list.values.map(&:count).min
     end
 
     def remove_from_list(removals)
