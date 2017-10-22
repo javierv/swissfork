@@ -151,7 +151,7 @@ module Swissfork
 
       context "the higher player doesn't have a colour preference" do
         before(:each) do
-          higher_player.stub_preference(:none)
+          higher_player.stub_preference(nil)
           lower_player.stub_preference(:white)
         end
 

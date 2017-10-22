@@ -103,7 +103,7 @@ module Swissfork
     end
 
     def players_with_different_colour_ordered_by_preference
-      if s1_player.colour_preference == :none
+      if s1_player.colour_preference.nil?
         [s2_player, s1_player]
       else
         [s1_player, s2_player]
