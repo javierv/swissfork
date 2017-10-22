@@ -36,7 +36,19 @@ module Swissfork
     end
 
     def preference_degree
-      :none # TODO
+      if colours.any?
+        if last_two_colours_were_the_same?
+          :absolute
+        else
+          case colour_difference.abs
+          when 0 then :mild
+          when 1 then :strong
+          else :absolute
+          end
+        end
+      else
+        :none
+      end
     end
 
     def colour_difference
@@ -89,6 +101,10 @@ module Swissfork
 
     def had_bye?
       # TODO.
+    end
+  private
+    def last_two_colours_were_the_same?
+      colours[-1] == colours[-2]
     end
   end
 end

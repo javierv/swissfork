@@ -169,5 +169,57 @@ module Swissfork
         end
       end
     end
+
+    describe "#preference_degree" do
+      context "no played games" do
+        before(:each) do
+          player.stub(colours: [nil, nil])
+        end
+
+        it "is none" do
+          player.preference_degree.should == :none
+        end
+      end
+
+      context "same games played with each colour" do
+        before(:each) do
+          player.stub(colours: [:white, :black])
+        end
+
+        it "is mild" do
+          player.preference_degree.should == :mild
+        end
+      end
+
+      context "one more game played with one colour" do
+        before(:each) do
+          player.stub(colours: [:black])
+        end
+
+        it "is strong" do
+          player.preference_degree.should == :strong
+        end
+      end
+
+      context "two more games played with one colour" do
+        before(:each) do
+          player.stub(colours: [:white, :white, :black, :white])
+        end
+
+        it "is absolute" do
+          player.preference_degree.should == :absolute
+        end
+      end
+
+      context "two games played in a row with the same colour" do
+        before(:each) do
+          player.stub(colours: [:white, :white, :black, :black])
+        end
+
+        it "is absolute" do
+          player.preference_degree.should == :absolute
+        end
+      end
+    end
   end
 end
