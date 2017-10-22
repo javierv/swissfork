@@ -3,9 +3,9 @@ require "swissfork/player"
 
 module Swissfork
   describe Player do
-    describe "#opponents" do
-      let(:player) { Player.new(1) }
+    let(:player) { Player.new(1) }
 
+    describe "#opponents" do
       context "new player" do
         it "doesn't have opponents" do
           player.opponents.should == []
@@ -44,8 +44,7 @@ module Swissfork
     end
 
     describe "#compatible_players_in" do
-      let(:player) { Player.new(2) }
-      let(:compatible) { Player.new(1) }
+      let(:compatible) { Player.new(2) }
       let(:rival) { Player.new(3) }
 
       before(:each) do
@@ -98,8 +97,6 @@ module Swissfork
     end
 
     describe "#descended_in_the_previous_round?" do
-      let(:player) { Player.new(1) }
-
       context "first round" do
         before(:each) { player.stub(floats: []) }
 
