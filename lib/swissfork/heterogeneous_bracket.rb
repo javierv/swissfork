@@ -77,6 +77,10 @@ module Swissfork
       super + remainder_pairs.to_a
     end
 
+    def resident_players
+      players - moved_down_players
+    end
+
   private
     def exchanger
       @exchanger ||= LimboExchanger.new(s1, limbo)
@@ -123,10 +127,6 @@ module Swissfork
 
     def number_of_players_in_limbo
       number_of_moved_down_players - number_of_moved_down_possible_pairs
-    end
-
-    def resident_players
-      players - moved_down_players
     end
   end
 end

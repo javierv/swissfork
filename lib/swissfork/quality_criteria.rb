@@ -83,6 +83,9 @@ module Swissfork
           bracket.minimum_colour_violations
         allowed_failures[:strong_colour_preference_violation?] =
           bracket.minimum_strong_colour_violations
+        # TODO: check.
+        allowed_failures[:same_downfloats_as_previous_round?] =
+          [number_of_required_downfloats - bracket.resident_players.reject(&:descended_in_the_previous_round?).count, 0].max
       end
     end
 
