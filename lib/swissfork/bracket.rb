@@ -245,7 +245,9 @@ module Swissfork
     def is_possible?(pair)
       !not_ideal_pairs.include?(established_pairs + [pair]) &&
         !impossible_downfloats.include?((still_unpaired_players - pair.players).to_set) &&
-        quality.can_downfloat?(unpaired_non_s1_players - [pair.s2_player])
+        quality.can_downfloat?(unpaired_non_s1_players - [pair.s2_player]) &&
+        !quality.violate_colours?(established_pairs + [pair])
+
     end
 
     def pairable_players

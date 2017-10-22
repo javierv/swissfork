@@ -41,6 +41,12 @@ module Swissfork
       end
     end
 
+    def violate_colours?(pairs)
+      # TODO: look for improvements.
+      pairs.select(&:same_colour_preference?).count > allowed_failures[:colour_preference_violation?] ||
+        pairs.select(&:same_strong_preference?).count > allowed_failures[:strong_colour_preference_violation?]
+    end
+
     def current_failing_criterion
       if ok?
         bracket.failing_criteria.sort_by do |criterion|

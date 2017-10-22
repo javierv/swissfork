@@ -40,6 +40,26 @@ module Swissfork
             bracket.pair_numbers.should == [[1, 6], [2, 7], [3, 8], [4, 10], [9, 5]]
           end
         end
+
+        context "several transpositions guarentee colour preference" do
+          before(:each) do
+            players[0].stub_preference(:white)
+            players[2].stub_preference(:white)
+            players[4].stub_preference(:white)
+            players[5].stub_preference(:white)
+            players[7].stub_preference(:white)
+
+            players[1].stub_preference(:black)
+            players[3].stub_preference(:black)
+            players[6].stub_preference(:black)
+            players[8].stub_preference(:black)
+            players[9].stub_preference(:black)
+          end
+
+          it "transposes players to guarantee colour preference" do
+            bracket.pair_numbers.should == [[1, 7], [6, 2], [3, 9], [8, 4], [5, 10]]
+          end
+        end
       end
 
       context "heterogeneous bracket" do
