@@ -170,9 +170,8 @@ module Swissfork
       bracket.pairable_provisional_leftovers
     end
 
-    # TODO: this isn't very elegant.
     def pairs
-      bracket.send(:established_pairs)
+      bracket.provisional_pairs
     end
 
     def number_of_required_downfloats

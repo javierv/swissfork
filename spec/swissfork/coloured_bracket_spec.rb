@@ -42,6 +42,42 @@ module Swissfork
         end
       end
 
+      context "heterogeneous bracket" do
+        let(:players) { create_players(1..11) }
+
+        before(:each) do
+          players[0..1].each { |player| player.stub(points: 2) }
+          players[2..10].each { |player| player.stub(points: 1) }
+          players[0..1].each { |player| player.stub_opponents(players[0..1]) }
+
+          players[0..10].each { |player| player.stub_degree(:strong) }
+        end
+
+        context "descended players have same preference as ascending players" do
+          before(:each) do
+            players[0..4].each { |player| player.stub_preference(:white) }
+            players[5..9].each { |player| player.stub_preference(:black) }
+          end
+
+          it "pairs them with lower players" do
+            bracket.pair_numbers.should == [[1, 6], [2, 7], [3, 8], [4, 9], [5, 10]]
+          end
+        end
+
+        context "one descended player has a mild colour preference" do
+          before(:each) do
+            players[0].stub_preference(:white)
+            players[0].stub_degree(:mild)
+            players[1..4].each { |player| player.stub_preference(:black) }
+            players[5..10].each { |player| player.stub_preference(:white) }
+          end
+
+          it "has a lower preference than other players" do
+            bracket.pair_numbers.should == [[6, 1], [7, 2], [8, 3], [9, 4], [10, 5]]
+          end
+        end
+      end
+
       context "all players have the same colour preference" do
         let(:players) { create_players(1..4) }
 
