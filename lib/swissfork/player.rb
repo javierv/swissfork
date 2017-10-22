@@ -32,7 +32,17 @@ module Swissfork
     end
 
     def colour_preference
-      nil # TODO
+      if colours.any?
+        if last_two_colours_were_the_same?
+          opposite_of_last_colour
+        elsif colour_difference > 0
+          :black
+        elsif colour_difference < 0
+          :white
+        else
+          opposite_of_last_colour
+        end
+      end
     end
 
     def preference_degree
@@ -105,6 +115,14 @@ module Swissfork
   private
     def last_two_colours_were_the_same?
       colours[-1] == colours[-2]
+    end
+
+    def opposite_of_last_colour
+      if colours.last == :white
+        :black
+      else
+        :white
+      end
     end
   end
 end

@@ -170,6 +170,60 @@ module Swissfork
       end
     end
 
+    describe "#colour_preference" do
+      context "no played games" do
+        before(:each) do
+          player.stub(colours: [nil, nil])
+        end
+
+        it "is nil" do
+          player.colour_preference.should be nil
+        end
+      end
+
+      context "same games played with each colour" do
+        before(:each) do
+          player.stub(colours: [nil, :white, :black])
+        end
+
+        it "is the opposite of the last played colour" do
+          player.colour_preference.should == :white
+        end
+      end
+
+      context "one more game played with one colour" do
+        before(:each) do
+          player.stub(colours: [:black])
+        end
+
+        it "is the colour played less times with" do
+          player.colour_preference.should == :white
+        end
+      end
+
+      context "two more games played with one colour" do
+        before(:each) do
+          player.stub(colours: [:white, :white, :black, :white])
+        end
+
+        it "is the colour played less times with" do
+          player.colour_preference.should == :black
+        end
+      end
+
+      context "two games played in a row with the same colour" do
+        before(:each) do
+          # The example is theoretically impossible, but it could happen if the
+          # referee makes a mistake.
+          player.stub(colours: [:black, :black, :white, :black, :black, :white, :white])
+        end
+
+        it "is is the opposite of the last colour" do
+          player.colour_preference.should == :black
+        end
+      end
+    end
+
     describe "#preference_degree" do
       context "no played games" do
         before(:each) do
