@@ -66,8 +66,8 @@ module Swissfork
 
     def compatible_players_in(players)
       (players - (opponents + [self])).select do |player|
-        player.colour_preference != colour_preference ||
         !preference_degree.absolute? || !player.preference_degree.absolute? ||
+        player.colour_preference != colour_preference ||
         topscorer? || player.topscorer?
       end
     end
