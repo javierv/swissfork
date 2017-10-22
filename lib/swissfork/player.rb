@@ -40,7 +40,8 @@ module Swissfork
     end
 
     def colour_difference
-      0 # TODO
+      colours.select { |colour| colour == :white }.count -
+      colours.select { |colour| colour == :black }.count
     end
 
     def colours

@@ -137,5 +137,37 @@ module Swissfork
         end
       end
     end
+
+    describe "#colour_difference" do
+      context "no played games" do
+        before(:each) do
+          player.stub(colours: [nil, nil, nil])
+        end
+
+        it "returns zero" do
+          player.colour_difference.should == 0
+        end
+      end
+
+      context "two played games with white and one with black" do
+        before(:each) do
+          player.stub(colours: [:white, :black, :white])
+        end
+
+        it "returns one" do
+          player.colour_difference.should == 1
+        end
+      end
+
+      context "three played games with black and one with white" do
+        before(:each) do
+          player.stub(colours: [nil, :black, :black, :white, :black])
+        end
+
+        it "returns minus two" do
+          player.colour_difference.should == -2
+        end
+      end
+    end
   end
 end
