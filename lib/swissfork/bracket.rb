@@ -109,21 +109,7 @@ module Swissfork
 
     def pairs
       return @definitive_pairs if instance_variable_defined?("@definitive_pairs")
-      return [] if players.empty?
-      return remainder_pairs if number_of_required_pairs.zero?
-      return [] if number_of_possible_pairs < number_of_required_pairs
-      return nil if all_downfloats_are_impossible?
-
-      until(@definitive_pairs = current_exchange_pairs)
-        if exchanger.limit_reached?
-          reset_exchanger
-          quality.be_more_permissive
-        else
-          exchange_until_non_s1_players_can_downfloat
-        end
-      end
-
-      @definitive_pairs
+      @definitive_pairs = calculate_pairs
     end
 
     def leftovers
@@ -190,6 +176,24 @@ module Swissfork
   private
     def exchanger
       raise "Implement in subclass"
+    end
+
+    def calculate_pairs
+      return [] if players.empty?
+      return remainder_pairs if number_of_required_pairs.zero?
+      return [] if number_of_possible_pairs < number_of_required_pairs
+      return nil if all_downfloats_are_impossible?
+
+      until(pairs = current_exchange_pairs)
+        if exchanger.limit_reached?
+          reset_exchanger
+          quality.be_more_permissive
+        else
+          exchange_until_non_s1_players_can_downfloat
+        end
+      end
+
+      pairs
     end
 
     def current_exchange_pairs
