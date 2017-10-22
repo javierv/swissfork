@@ -29,7 +29,7 @@ module Swissfork
     # Returns the number of players who will remain unpaired
     # after the best possible pairing
     def incompatibilities
-      return 0 if enough_players_to_guarantee_pairing?
+      return 0 if players.empty? || enough_players_to_guarantee_pairing?
 
       incompatibilities = 0
 
@@ -67,11 +67,8 @@ module Swissfork
     end
 
     def enough_players_to_guarantee_pairing?
-      all_players.count > maximum_number_of_incompatible_players * 2
-    end
-
-    def all_players
-      players & opponents
+      opponents.count >= players.count &&
+      opponents.count > maximum_number_of_incompatible_players * 2
     end
 
     def maximum_number_of_incompatible_players
