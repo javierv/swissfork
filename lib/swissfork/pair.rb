@@ -93,7 +93,9 @@ module Swissfork
     end
 
     def players_with_same_colour_ordered_by_preference
-      if s2_player.stronger_preference_than?(s1_player)
+      if s1_player.stronger_preference_than?(s2_player)
+        [s1_player, s2_player]
+      elsif s2_player.stronger_preference_than?(s1_player)
         [s2_player, s1_player]
       else
         players_ordered_inverting_last_different_colours

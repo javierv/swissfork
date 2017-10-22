@@ -172,6 +172,16 @@ module Swissfork
         it "alternates colour to the most recent time they were different" do
           pair.players.should == [lower_player, higher_player]
         end
+
+        context "the higher player has stronger preference" do
+          before(:each) do
+            higher_player.stub_degree(:strong)
+          end
+
+          it "gives priority to the higher player" do
+            pair.players.should == [higher_player, lower_player]
+          end
+        end
       end
     end
   end
