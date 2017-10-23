@@ -87,8 +87,7 @@ module Swissfork
     alias_method :n1, :number_of_players_in_s1 # FIDE nomenclature
 
     def s1
-      return [] if number_of_players_in_s1 < 1
-      players[0..number_of_players_in_s1-1].sort
+      players.first(number_of_players_in_s1).sort
     end
 
     def s2

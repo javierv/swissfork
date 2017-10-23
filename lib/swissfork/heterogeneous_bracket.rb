@@ -62,11 +62,7 @@ module Swissfork
     end
 
     def limbo
-      if number_of_players_in_limbo.zero?
-        []
-      else
-        (players - s1)[0..number_of_players_in_limbo-1].sort
-      end
+      (players - s1).first(number_of_players_in_limbo).sort
     end
 
     def limbo_numbers
