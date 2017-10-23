@@ -2,13 +2,13 @@ require "simple_initialize"
 require "swissfork/preference_degree"
 
 module Swissfork
-  # Contains data related to a player: name, elo.
+  # Contains information about the games a player has
+  # played, its opponents, and results. That information is
+  # used to calculate the player's colour preference and
+  # compatible opponents.
   #
-  # It also contains information about the games a player has
-  # played, its opponents, and results.
-  #
-  # Currently it's basically a stub with the minimum necessary
-  # to generate pairs.
+  # The player's personal information is handled by the
+  # Inscription class.
   class Player
     include Comparable
     initialize_with :number
