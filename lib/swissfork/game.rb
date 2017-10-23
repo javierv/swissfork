@@ -50,11 +50,11 @@ module Swissfork
 
     def points_received
       if won?
-        1
+        1.0
       elsif draw?
         0.5
       else
-        0
+        0.0
       end
     end
 

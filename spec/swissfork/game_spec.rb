@@ -127,6 +127,26 @@ module Swissfork
       end
     end
 
+    describe "#points_received" do
+      # Tests for specific results are in the results section
+      context "the player won" do
+        before(:each) { game.stub(won?: true) }
+
+        it "returns a floating number" do
+          game.points_received.should eql 1.0
+        end
+      end
+
+      context "the player lost" do
+        before(:each) { game.stub(won?: false) }
+        before(:each) { game.stub(draw?: false) }
+
+        it "returns a floating number" do
+          game.points_received.should eql 0.0
+        end
+      end
+    end
+
     describe "results" do
       context "black won" do
         before(:each) { game.stub(result: :black_won) }

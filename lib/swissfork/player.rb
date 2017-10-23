@@ -141,7 +141,7 @@ module Swissfork
     end
 
     def points_after(games)
-      games.map(&:points_received).reduce(0, :+)
+      games.map(&:points_received).reduce(0.0, :+)
     end
   end
 end
