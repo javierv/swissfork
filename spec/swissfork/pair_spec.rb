@@ -184,5 +184,26 @@ module Swissfork
         end
       end
     end
+
+    describe "#result=" do
+      let(:s1_player) { Player.new(1) }
+      let(:s2_player) { Player.new(2) }
+      let(:pair) { Pair.new(s1_player, s2_player) }
+
+      before(:each) do
+        pair.result = :white_won
+      end
+
+      it "assigns the result" do
+        pair.result.should == :white_won
+      end
+
+      it "adds a game to every player" do
+        s1_player.games[0].opponent.should == s2_player
+        s1_player.games[0].winner.should == s1_player
+        s2_player.games[0].opponent.should == s1_player
+        s2_player.games[0].winner.should == s1_player
+      end
+    end
   end
 end

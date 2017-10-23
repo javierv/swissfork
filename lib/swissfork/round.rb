@@ -28,6 +28,16 @@ module Swissfork
       (players - pairs.flat_map(&:players)).first
     end
 
+    def results
+      pairs.map(&:result)
+    end
+
+    def results=(results)
+      pairs.zip(results).each do |pair, result|
+        pair.result = result
+      end
+    end
+
   private
     def establish_pairs
       scoregroups.each do |scoregroup|

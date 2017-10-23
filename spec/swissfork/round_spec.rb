@@ -69,5 +69,27 @@ module Swissfork
         end
       end
     end
+
+    describe "#results" do
+      let(:players) { create_players(1..10) }
+      let(:round) { Round.new(players) }
+
+      context "no results yet" do
+        it "returns an array full of nil" do
+          round.results.should == [nil, nil, nil, nil, nil]
+        end
+      end
+
+      context "results have been set" do
+        before(:each) do
+          round.results = [:white_won, :black_won, :draw, :black_won, :white_won]
+        end
+
+        it "sets the results of each pair" do
+          round.pairs[0].result.should == :white_won
+          round.pairs[2].result.should == :draw
+        end
+      end
+    end
   end
 end

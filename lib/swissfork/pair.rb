@@ -1,4 +1,5 @@
 require "simple_initialize"
+require "swissfork/game"
 
 module Swissfork
   # Contains all data related to a game.
@@ -7,14 +8,20 @@ module Swissfork
   # but result information will be added in the future.
   class Pair
     initialize_with :s1_player, :s2_player
+    attr_reader :result
     include Comparable
 
     def players
-      if players_ordered_by_preference.first.colour_preference == :black
+      @players ||= if players_ordered_by_preference.first.colour_preference == :black
         players_ordered_by_preference.reverse
       else
         players_ordered_by_preference
       end
+    end
+
+    def result=(result)
+      players.each { |player| player.add_game(Game.new(player, self)) }
+      @result = result
     end
 
     def hash

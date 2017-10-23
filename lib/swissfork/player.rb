@@ -17,6 +17,10 @@ module Swissfork
       @games ||= []
     end
 
+    def add_game(game)
+      games << game
+    end
+
     def opponents
       games.map(&:opponent)
     end
