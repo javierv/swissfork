@@ -17,14 +17,6 @@ module Swissfork
       end
     end
 
-    def higher_player
-      [s1_player, s2_player].sort.first
-    end
-
-    def lower_player
-      [s1_player, s2_player].sort.last
-    end
-
     def hash
       numbers.hash
     end
@@ -123,6 +115,14 @@ module Swissfork
 
     def players_ordered_by_rank
       [higher_player, lower_player]
+    end
+
+    def higher_player
+      [s1_player, s2_player].sort.first
+    end
+
+    def lower_player
+      [s1_player, s2_player].sort.last
     end
 
     def last_different_colours
