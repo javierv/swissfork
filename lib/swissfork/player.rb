@@ -45,6 +45,14 @@ module Swissfork
       floats.last == :up
     end
 
+    def descended_two_rounds_ago?
+      [:down, :bye].include?(floats[-2])
+    end
+
+    def ascended_two_rounds_ago?
+      floats[-2] == :up
+    end
+
     def colour_preference
       if colours.any?
         if last_two_colours_were_the_same?
@@ -78,14 +86,6 @@ module Swissfork
     def colour_difference
       colours.select { |colour| colour == :white }.count -
       colours.select { |colour| colour == :black }.count
-    end
-
-    def descended_two_rounds_ago?
-      [:down, :bye].include?(floats[-2])
-    end
-
-    def ascended_two_rounds_ago?
-      floats[-2] == :up
     end
 
     def inspect
