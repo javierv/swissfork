@@ -11,16 +11,30 @@ module Swissfork
   # to generate pairs.
   class Player
     include Comparable
-
     initialize_with :number
-    attr_reader :opponents, :floats
+
+    def games
+      @games ||= []
+    end
 
     def opponents
-      @opponents ||= []
+      games.map(&:opponent)
     end
 
     def floats
-      @floats ||= []
+      games.map(&:float)
+    end
+
+    def colours
+      games.map(&:colour)
+    end
+
+    def points
+      games.reduce(0) { |total, game| total + game.points_received }
+    end
+
+    def had_bye?
+      games.any?(&:bye?)
     end
 
     def descended_in_the_previous_round?
@@ -66,10 +80,6 @@ module Swissfork
       colours.select { |colour| colour == :black }.count
     end
 
-    def colours
-      [] # TODO
-    end
-
     def descended_two_rounds_ago?
       [:down, :bye].include?(floats[-2])
     end
@@ -104,14 +114,6 @@ module Swissfork
       false # TODO
     end
 
-    # FIXME: Currently a stub for tests.
-    def points
-      0
-    end
-
-    def had_bye?
-      # TODO.
-    end
   private
     def last_two_colours_were_the_same?
       colours[-1] == colours[-2]

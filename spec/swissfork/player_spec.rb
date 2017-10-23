@@ -6,15 +6,19 @@ module Swissfork
     let(:player) { Player.new(1) }
 
     describe "#opponents" do
-      context "new player" do
+      context "no played games" do
+        before(:each) { player.stub(games: []) }
+
         it "doesn't have opponents" do
           player.opponents.should == []
         end
       end
 
-      context "adding opponents" do
+      context "played games" do
         before(:each) do
-          3.times { |n| player.opponents << Player.new(n + 2) }
+          3.times do |n|
+            player.games << double(player: player, opponent: Player.new(n + 2))
+          end
         end
 
         it "returns the added opponents" do
