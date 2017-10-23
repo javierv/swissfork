@@ -76,11 +76,22 @@ module Swissfork
         context "descended players have same preference as ascending players" do
           before(:each) do
             players[0..4].each { |player| player.stub_preference(:white) }
-            players[5..9].each { |player| player.stub_preference(:black) }
+            players[5..10].each { |player| player.stub_preference(:black) }
           end
 
           it "pairs them with lower players" do
             bracket.pair_numbers.should == [[1, 6], [2, 7], [3, 8], [4, 9], [5, 10]]
+          end
+
+          context "they're incompatible with lower players" do
+            before(:each) do
+              players[0..1].each { |player| player.stub_opponents(players[5..10]) }
+              players[5..10].each { |player| player.stub_opponents(players[0..1]) }
+            end
+
+            it "pairs them with the higher players" do
+              bracket.pair_numbers.should == [[1, 3], [2, 4], [5, 8], [9, 6], [10, 7]]
+            end
           end
         end
 

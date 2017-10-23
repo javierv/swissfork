@@ -42,9 +42,7 @@ module Swissfork
     end
 
     def violate_colours?(pairs)
-      # TODO: look for improvements.
-      pairs.select(&:same_colour_preference?).count > allowed_failures[:colour_preference_violation?] ||
-        pairs.select(&:same_strong_preference?).count > allowed_failures[:strong_colour_preference_violation?]
+      exceed_same_colour_preference?(pairs) || exceed_same_strong_preference?(pairs)
     end
 
     def current_failing_criterion
@@ -141,6 +139,20 @@ module Swissfork
 
     def old_failing_criterion_is_less_important?
       criteria.index(old_failing_criterion) > criteria.index(current_failing_criterion)
+    end
+
+    def exceed_same_colour_preference?(pairs)
+      if pairs.select(&:same_colour_preference?).count > allowed_failures[:colour_preference_violation?]
+        bracket.failing_criteria << :colour_preference_violation?
+        true
+      end
+    end
+
+    def exceed_same_strong_preference?(pairs)
+      if pairs.select(&:same_strong_preference?).count > allowed_failures[:strong_colour_preference_violation?]
+        bracket.failing_criteria << :strong_colour_preference_violation?
+        true
+      end
     end
 
     def exceed_same_downfloats_as_previous_round?(players)
