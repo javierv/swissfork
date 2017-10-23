@@ -12,7 +12,9 @@ module Swissfork
     include Comparable
 
     def players
-      @players ||= if players_ordered_by_preference.first.colour_preference == :black
+      @players ||= if no_players_have_colour_preference?
+        players_ordered_by_initial_colours
+      elsif players_ordered_by_preference.first.colour_preference == :black
         players_ordered_by_preference.reverse
       else
         players_ordered_by_preference
@@ -32,8 +34,14 @@ module Swissfork
       s2_player
     end
 
+    # Helper method to make tests easier to write
     def numbers
-      players.map(&:number)
+      # Hack to let tests having no colours use this method.
+      if no_players_have_colour_preference?
+        [s1_player, s2_player].map(&:number)
+      else
+        players.map(&:number)
+      end
     end
 
     def same_absolute_high_difference?
@@ -136,6 +144,18 @@ module Swissfork
       s1_player.colours.zip(s2_player.colours).select do |colours|
         colours.uniq.count > 1
       end.last
+    end
+
+    def no_players_have_colour_preference?
+      !s1_player.colour_preference && !s2_player.colour_preference
+    end
+
+    def players_ordered_by_initial_colours
+      if higher_player.number.odd?
+        [higher_player, lower_player] # TODO: it depends on the initial colour
+      else
+        [lower_player, higher_player]
+      end
     end
   end
 end

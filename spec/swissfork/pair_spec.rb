@@ -158,6 +158,29 @@ module Swissfork
         it "respects the lower player preference" do
           pair.players.should == [lower_player, higher_player]
         end
+
+        context "the lower player doesn't have a preference either" do
+          before(:each) do
+            lower_player.stub_preference(nil)
+          end
+
+          context "the higher player has an odd number" do
+            it "gives the higher player the initial colour" do
+              pair.players.should == [higher_player, lower_player]
+            end
+          end
+
+          context "the higher player has an even number" do
+            before(:each) do
+              higher_player.stub(number: 2)
+              lower_player.stub(number: 3)
+            end
+
+            it "gives the higher player the opposite of the initial colour" do
+              pair.players.should == [lower_player, higher_player]
+            end
+          end
+        end
       end
 
       context "same preference and different colour history" do
