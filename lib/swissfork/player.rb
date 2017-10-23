@@ -12,6 +12,7 @@ module Swissfork
   class Player
     include Comparable
     initialize_with :number
+    attr_accessor :inscription
 
     def games
       @games ||= []
@@ -120,6 +121,10 @@ module Swissfork
 
     def topscorer?
       false # TODO
+    end
+
+    def rating
+      inscription.rating
     end
 
   private

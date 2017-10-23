@@ -8,6 +8,7 @@ module Swissfork
   # public methods are public so they can be easily tested.
   class Round
     initialize_with :players
+    attr_accessor :number
 
     def scoregroups
       @scoregroups ||= player_groups.map { |players| Scoregroup.new(players, self) }.sort
