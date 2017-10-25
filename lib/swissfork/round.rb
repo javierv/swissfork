@@ -33,6 +33,8 @@ module Swissfork
     end
 
     def results=(results)
+      # TODO: raise exception if the results are not the same size
+      # as the pairs.
       pairs.zip(results).each do |pair, result|
         pair.result = result
       end
