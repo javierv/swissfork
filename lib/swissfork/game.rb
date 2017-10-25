@@ -42,9 +42,9 @@ module Swissfork
     end
 
     def winner
-      case result
-      when :white_won, :white_won_by_forfeit then white
-      when :black_won, :black_won_by_forfeit then black
+      case result.downcase
+      when :white_won, :white_won_by_forfeit, "1", "1i", "w", "wi" then white
+      when :black_won, :black_won_by_forfeit, "0", "0i", "b", "bi" then black
       end
     end
 
@@ -64,7 +64,11 @@ module Swissfork
 
   private
     def played_results
-      [:white_won, :black_won, :draw]
+      [:white_won, :draw, :black_won,
+       "1", "½", "0",
+       "W", "D", "B",
+       "w", "d", "b"
+      ]
     end
 
     def white
@@ -88,7 +92,7 @@ module Swissfork
     end
 
     def draw?
-      result == :draw
+      ([:draw] + %w(½ d D)).include?(result)
     end
   end
 end
