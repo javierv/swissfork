@@ -107,7 +107,7 @@ module Swissfork
           end
 
           it "pairs at a reasonable speed" do
-            Benchmark.realtime{ round.pair_numbers }.should be < 1.5
+            Benchmark.realtime{ round.pair_numbers }.should be < 1
             round.pair_numbers.should == [[11, 1], [12, 2], [3, 9], [4, 10], [5, 13], [6, 14], [7, 15], [8, 16]]
           end
         end

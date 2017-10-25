@@ -8,6 +8,16 @@ module Swissfork
   # but result information will be added in the future.
   class Pair
     initialize_with :s1_player, :s2_player
+
+    def self.for(s1_player, s2_player)
+      @pairs ||= {}
+      @pairs[[s1_player, s2_player].map(&:number).sort] ||= new(s1_player, s2_player)
+    end
+
+    def self.clear
+      @pairs = {}
+    end
+
     attr_reader :result
     include Comparable
 
@@ -38,7 +48,7 @@ module Swissfork
     def numbers
       # Hack to let tests having no colours use this method.
       @numbers ||= if no_players_have_colour_preference?
-        [s1_player, s2_player].map(&:number)
+        [s1_player, s2_player].map(&:number).sort
       else
         players.map(&:number)
       end

@@ -189,6 +189,8 @@ module Swissfork
       return [] if number_of_possible_pairs < number_of_required_pairs
       return nil if all_downfloats_are_impossible?
 
+      Pair.clear
+
       until(pairs = current_exchange_pairs)
         if exchanger.limit_reached?
           reset_exchanger
@@ -234,7 +236,7 @@ module Swissfork
     end
 
     def pairs_for(player)
-      opponents_for(player).map  { |opponent| Pair.new(player, opponent) }
+      opponents_for(player).map  { |opponent| Pair.for(player, opponent) }
     end
 
     def opponents_for(player)
