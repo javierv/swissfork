@@ -37,7 +37,7 @@ module Swissfork
     # Helper method to make tests easier to write
     def numbers
       # Hack to let tests having no colours use this method.
-      if no_players_have_colour_preference?
+      @numbers ||= if no_players_have_colour_preference?
         [s1_player, s2_player].map(&:number)
       else
         players.map(&:number)
@@ -53,8 +53,7 @@ module Swissfork
     end
 
     def same_colour_preference?
-      s1_player.colour_preference && s2_player.colour_preference &&
-        s1_player.colour_preference == s2_player.colour_preference
+      colour_preferences.any? && colour_preferences.uniq.count == 1
     end
 
     def same_strong_preference?
@@ -89,6 +88,10 @@ module Swissfork
     def both_have_high_difference?
       # TODO: use .abs; add test.
       s1_player.colour_difference > 1 && s2_player.colour_difference > 1
+    end
+
+    def colour_preferences
+      @colour_preferences ||= [s1_player, s2_player].map(&:colour_preference)
     end
 
     def players_ordered_by_preference

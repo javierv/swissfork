@@ -94,6 +94,25 @@ module Swissfork
         end
       end
 
+      context "colour preference guaranteed with transpositions" do
+        context "with 16 players" do
+          let(:players) { create_players(1..16) }
+
+          before(:each) do
+            players[0..1].each { |player| player.stub_preference(:black) }
+            players[2..7].each { |player| player.stub_preference(:white) }
+            players[8..9].each { |player| player.stub_preference(:black) }
+            players[10..12].each { |player| player.stub_preference(:white) }
+            players[13..15].each { |player| player.stub_preference(:black) }
+          end
+
+          it "pairs at a reasonable speed" do
+            Benchmark.realtime{ round.pair_numbers }.should be < 1.5
+            round.pair_numbers.should == [[11, 1], [12, 2], [3, 9], [4, 10], [5, 13], [6, 14], [7, 15], [8, 16]]
+          end
+        end
+      end
+
       context "downfloats from two rounds ago need to repeat" do
         context "with 15 players" do
           let(:players) { create_players(1..15) }
