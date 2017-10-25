@@ -23,6 +23,16 @@ module Swissfork
       rounds.last
     end
 
+    def pairs
+      current_round.pairs
+    end
+
+    def pair_numbers
+      # Hack because the helper method returns wrong colours during the
+      # first round.
+      pairs.map { |pair| pair.players.map(&:number) }
+    end
+
     def start_round
       # TODO: raise exception if there are no more rounds allowed and if the
       # current round isn't finished.
