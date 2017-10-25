@@ -71,7 +71,7 @@ module Swissfork
     end
 
     describe "#results" do
-      let(:players) { create_players(1..10) }
+      let(:players) { create_players(1..11) }
       let(:round) { Round.new(players) }
 
       context "no results yet" do
@@ -88,6 +88,10 @@ module Swissfork
         it "sets the results of each pair" do
           round.pairs[0].result.should == :white_won
           round.pairs[2].result.should == :draw
+        end
+
+        it "assigns the bye" do
+          players.last.games[0].bye?.should be true
         end
       end
     end

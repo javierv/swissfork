@@ -1,5 +1,6 @@
 require "simple_initialize"
 require "swissfork/scoregroup"
+require "swissfork/bye_game"
 
 module Swissfork
   # Generates the pairs of a whole round.
@@ -35,6 +36,8 @@ module Swissfork
       pairs.zip(results).each do |pair, result|
         pair.result = result
       end
+
+      bye.add_game(ByeGame.new(bye)) if bye
     end
 
   private
