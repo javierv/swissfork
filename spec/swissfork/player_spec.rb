@@ -17,12 +17,22 @@ module Swissfork
       context "played games" do
         before(:each) do
           3.times do |n|
-            player.games << double(player: player, opponent: Player.new(n + 2))
+            player.games << double(player: player, played?: true, opponent: Player.new(n + 2))
           end
         end
 
         it "returns the added opponents" do
           player.opponents.map(&:number).should == [2, 3, 4]
+        end
+
+        context "forfeit wins" do
+          before(:each) do
+            player.games << double(player: player, played?: false, opponent: Player.new(7))
+          end
+
+          it "doesn't count as an opponent" do
+            player.opponents.map(&:number).should == [2, 3, 4]
+          end
         end
       end
     end

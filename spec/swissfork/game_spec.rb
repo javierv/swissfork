@@ -223,6 +223,11 @@ module Swissfork
           game.played?.should be false
         end
 
+        it "doesn't add the opponent to opponents" do
+          player.add_game(game)
+          player.opponents.should == []
+        end
+
         it "makes the opponent the winner" do
           game.winner.should == opponent
         end

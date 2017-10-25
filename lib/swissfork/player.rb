@@ -23,7 +23,7 @@ module Swissfork
     end
 
     def opponents
-      games.map(&:opponent)
+      games.select(&:played?).map(&:opponent)
     end
 
     def floats
