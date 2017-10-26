@@ -4,6 +4,10 @@ require "swissfork/player"
 
 module Swissfork
   describe Pair do
+    def create_players(numbers)
+      numbers.map { |number| Player.new(number) }
+    end
+
     describe "==" do
       let(:s1_player) { double }
       let(:s2_player) { double }
@@ -31,11 +35,35 @@ module Swissfork
     end
 
     describe "<=>" do
-      let(:smaller_pair) { Pair.new(1, 5) }
-      let(:bigger_pair) { Pair.new(2, 3) }
+      let(:players) { create_players(1..5) }
+      let(:pair_with_first_player) { Pair.new(players[0], players[4]) }
+      let(:pair_with_second_player) { Pair.new(players[1], players[2]) }
 
-      it "the pair with the smallest player is smaller" do
-        smaller_pair.should be < bigger_pair
+      before(:each) { players.each { |player| player.stub(points: 3) } }
+
+      context "all players have the same points" do
+        it "the pair with the smallest player is smaller" do
+          pair_with_first_player.should be < pair_with_second_player
+        end
+      end
+
+      context "one player has more points, but the sum is smaller" do
+        before(:each) do
+          players[0].stub(points: 1)
+          players[4].stub(points: 4)
+        end
+
+        it "the pair with the player with more points is smaller" do
+          pair_with_first_player.should be < pair_with_second_player
+        end
+      end
+
+      context "one player has less points" do
+        before(:each) { players[0].stub(points: 2) }
+
+        it "the pair with more points is smaller" do
+          pair_with_second_player.should be < pair_with_first_player
+        end
       end
     end
 

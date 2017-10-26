@@ -88,7 +88,11 @@ module Swissfork
     end
 
     def <=>(pair)
-      [s1_player, s2_player].min <=> [pair.s1_player, pair.s2_player].min
+      [pair.points.max, pair.points.sum, [s1_player, s2_player].min] <=> [points.max, points.sum, [pair.s1_player, pair.s2_player].min]
+    end
+
+    def points
+      [s1_player, s2_player].map(&:points)
     end
 
   private

@@ -80,7 +80,7 @@ module Swissfork
 
           context "homogeneous group" do
             it "descends the last player from S1" do
-              round.pair_numbers.should == [[1, 4], [2, 6], [3, 5], [7, 9], [8, 10]]
+              round.pair_numbers.should == [[1, 4], [3, 5], [2, 6], [7, 9], [8, 10]]
             end
           end
 
@@ -141,7 +141,7 @@ module Swissfork
         end
 
         it "downfloats the unpairable player twice" do
-          round.pair_numbers.should == [[1, 8], [2, 3], [4, 6], [5, 7], [9, 10]]
+          round.pair_numbers.should == [[2, 3], [1, 8], [4, 6], [5, 7], [9, 10]]
         end
       end
 

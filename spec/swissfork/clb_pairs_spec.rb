@@ -117,7 +117,7 @@ module Swissfork
         end
 
         it "downfloats players from previous brackets" do
-          round.pair_numbers.should == [[1, 2], [3, 4], [5, 10], [6, 11], [7, 12], [8, 9]]
+          round.pair_numbers.should == [[1, 2], [3, 4], [5, 10], [6, 11], [8, 9], [7, 12]]
         end
       end
 
