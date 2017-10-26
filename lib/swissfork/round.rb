@@ -40,6 +40,11 @@ module Swissfork
       end
 
       bye.add_game(ByeGame.new(bye)) if bye
+      @finished = true
+    end
+
+    def finished?
+      @finished
     end
 
   private

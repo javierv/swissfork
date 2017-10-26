@@ -107,6 +107,25 @@ module Swissfork
           end
         end
 
+        context "it's the last round" do
+          before(:each) do
+            tournament.stub(last_round?: true)
+            tournament.non_paired_numbers = [1, { 2 => 0.5, 3 => 1 }, 4]
+            tournament.start_round
+            tournament.finish_round([:white_won, :black_won, :white_won, :black_won])
+          end
+
+          it "gives the unspecified players no points" do
+            tournament.players[0].points.should == 0
+            tournament.players[3].points.should == 0
+          end
+
+          it "gives the specificied players the specified points" do
+            tournament.players[1].points.should == 0.5
+            tournament.players[2].points.should == 1
+          end
+        end
+
         context "the tournament uses 0 as default points" do
           before(:each) do
             tournament.points_given_to_unpaired_players = 0

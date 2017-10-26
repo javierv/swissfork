@@ -95,13 +95,26 @@ module Swissfork
     end
 
     def points_given_to_unpaired_players
-      @points_given_to_unpaired_players ||= 0.5
+      @points_given_to_unpaired_players || default_points_given_to_unpaired_players
     end
     attr_writer :points_given_to_unpaired_players
 
   private
     def non_paired_players
       @non_paired_players = unpaired_points.keys.map { |number| players[number - 1] }
+    end
+
+    def default_points_given_to_unpaired_players
+      if last_round?
+        0
+      else
+        0.5
+      end
+    end
+
+    def last_round?
+      (rounds.count >= number_of_rounds - 1) &&
+        rounds[number_of_rounds - 2].finished?
     end
 
     def unpaired_points
