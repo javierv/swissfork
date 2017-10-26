@@ -47,8 +47,14 @@ module Swissfork
 
     def finish_round(results)
       current_round.results = results
-      non_paired_players.each { |player| player.add_game(UnpairedGame.new(player)) }
-      @non_paired_players = nil
+
+      non_paired_players.each do |player|
+        player.add_game(
+          UnpairedGame.new(player, points: unpaired_points[player.number])
+        )
+      end
+
+      @unpaired_points = nil
     end
 
     def assign_player_numbers
@@ -59,13 +65,47 @@ module Swissfork
       end
     end
 
+    # Players notifying they won't be paired before the start of the next
+    # round. It accepts an enumerable, and each element can be either an
+    # interger representing the number of the unpaired player, or a hash with
+    # the key representing the number of the unpaired player and the value
+    # representing how many points the player will get.
+    #
+    # Examples:
+    #
+    # #non_paired_numbers = [1, 2, 3]
+    # Players 1, 2, and 3 won't be paired and will be given the default points
+    # given to unpaired players.
+    #
+    # #non_paired_numbers = [1, { 2 => 0, 3 => 1 }, 4]
+    # Players 1 and 4 will be given the default points given to unpaired players,
+    # player 3 will be given one point and player 2 will be given no points.
     def non_paired_numbers=(numbers)
-      @non_paired_players = numbers.map { |number| players[number - 1] }
+      @unpaired_points = numbers.reduce({}) do |unpaired_points, number_or_numbers|
+        if number_or_numbers.is_a?(Hash)
+          number_or_numbers.each do |number, points|
+            unpaired_points[number] = points
+          end
+        else
+          unpaired_points[number_or_numbers] = points_given_to_unpaired_players
+        end
+
+        unpaired_points
+      end
     end
+
+    def points_given_to_unpaired_players
+      @points_given_to_unpaired_players ||= 0.5
+    end
+    attr_writer :points_given_to_unpaired_players
 
   private
     def non_paired_players
-      @non_paired_players ||= []
+      @non_paired_players = unpaired_points.keys.map { |number| players[number - 1] }
+    end
+
+    def unpaired_points
+      @unpaired_points ||= {}
     end
 
     def inscriptions

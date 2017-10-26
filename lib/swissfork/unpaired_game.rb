@@ -1,10 +1,12 @@
-require "simple_initialize"
-
 module Swissfork
   # Takes place when a player asks not to be paired
   # before a round begins
   class UnpairedGame
-    initialize_with :player
+    def initialize(player, points: default_points_received)
+      @player = player
+      @points_received = points.to_f
+    end
+    attr_reader :points_received
 
     def opponent
       nil
@@ -31,12 +33,13 @@ module Swissfork
       nil
     end
 
-    def points_received
-      0.5 # TODO: it depends on the tournament
-    end
-
     def played?
       false
+    end
+
+  private
+    def default_points_received
+      0.5
     end
   end
 end

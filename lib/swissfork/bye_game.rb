@@ -12,7 +12,8 @@ module Swissfork
       true
     end
 
-    def points_received
+  private
+    def default_points_received
       1.0 # TODO: it depends on the tournament
     end
   end

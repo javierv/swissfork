@@ -17,10 +17,6 @@ module Swissfork
       game.played?.should be false
     end
 
-    it "gives the points assigned by the tournament" do
-      game.points_received.should == 0.5
-    end
-
     it "doesn't assign a colour" do
       game.colour.should be nil
     end
@@ -29,6 +25,20 @@ module Swissfork
       lambda { game.opponent }.should_not raise_error
       lambda { game.winner }.should_not raise_error
       lambda { game.pair }.should_not raise_error
+    end
+
+    describe "#points_received" do
+      it "gives the points assigned by the tournament" do
+        game.points_received.should == 0.5
+      end
+
+      context "points specified in the initialize method" do
+        let(:game) { UnpairedGame.new(double, points: 1) }
+
+        it "gives it the ponts assigned manually" do
+          game.points_received.should be 1.0
+        end
+      end
     end
   end
 end
