@@ -94,6 +94,12 @@ module Swissfork
           players.last.games[0].bye?.should be true
         end
       end
+
+      context "results aren't the same size as the round pairs" do
+        it "raises an exception" do
+          lambda { round.results = [:white_won] }.should raise_error(IndexError)
+        end
+      end
     end
   end
 end
