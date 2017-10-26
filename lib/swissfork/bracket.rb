@@ -240,7 +240,14 @@ module Swissfork
     end
 
     def opponents_for(player)
-      player.compatible_players_in(s2) & still_unpaired_players
+      (player.compatible_players_in(s2) & still_unpaired_players).select do |opponent|
+        # TODO: main preference isn't 100% reliable
+        if minimum_colour_violations > 0 && player.colour_preference == colour_incompatibilities.minoritary_preference
+          opponent.colour_preference == colour_incompatibilities.main_preference
+        else
+          true
+        end
+      end
     end
 
     def is_possible?(pair)
@@ -248,7 +255,6 @@ module Swissfork
         !impossible_downfloats.include?((still_unpaired_players - pair.players).to_set) &&
         quality.can_downfloat?(unpaired_non_s1_players - [pair.s2_player]) &&
         !quality.violate_colours?(established_pairs + [pair])
-
     end
 
     def pairable_players
@@ -346,7 +352,7 @@ module Swissfork
     end
 
     def colour_incompatibilities
-      ColourIncompatibilities.new(players, number_of_possible_pairs)
+      @colour_incompatibilities ||= ColourIncompatibilities.new(players, number_of_possible_pairs)
     end
 
     def remainder_pairs

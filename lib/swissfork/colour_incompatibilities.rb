@@ -14,13 +14,25 @@ module Swissfork
       [violations - players_with_main_mild_preference.count, 0].max
     end
 
+    def main_preference
+      @main_preference ||= if players_with_black_preference.count > players_with_white_preference.count
+        :black
+      else
+        :white
+      end
+    end
+
+    def minoritary_preference
+      if main_preference == :black
+        :white
+      else
+        :black
+      end
+    end
+
   private
     def players_with_main_preference
-      if players_with_black_preference.count > players_with_white_preference.count
-        players_with_black_preference
-      else
-        players_with_white_preference
-      end
+      send("players_with_#{main_preference}_preference")
     end
 
     def players_with_main_mild_preference
@@ -30,11 +42,7 @@ module Swissfork
     end
 
     def players_with_minoritary_preference
-      if players_with_black_preference.count > players_with_white_preference.count
-        players_with_white_preference
-      else
-        players_with_black_preference
-      end
+      send("players_with_#{minoritary_preference}_preference")
     end
 
     def players_with_no_preference

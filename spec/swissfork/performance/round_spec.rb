@@ -95,20 +95,53 @@ module Swissfork
       end
 
       context "colour preference guaranteed with transpositions" do
-        context "with 16 players" do
-          let(:players) { create_players(1..16) }
+        context "with 32 players" do
+          let(:players) { create_players(1..32) }
 
           before(:each) do
-            players[0..1].each { |player| player.stub_preference(:black) }
-            players[2..7].each { |player| player.stub_preference(:white) }
+            players[0..15].each { |player| player.stub_preference(:white) }
             players[8..9].each { |player| player.stub_preference(:black) }
-            players[10..12].each { |player| player.stub_preference(:white) }
-            players[13..15].each { |player| player.stub_preference(:black) }
+            players[16..23].each { |player| player.stub_preference(:white) }
+            players[24..31].each { |player| player.stub_preference(:black) }
+            players[26..28].each { |player| player.stub_preference(:white) }
+            players[0..31].each { |player| player.stub_degree(:mild) }
           end
 
-          it "pairs at a reasonable speed" do
-            Benchmark.realtime{ round.pair_numbers }.should be < 1
-            round.pair_numbers.should == [[11, 1], [12, 2], [3, 9], [4, 10], [5, 13], [6, 14], [7, 15], [8, 16]]
+          it "pairs fast" do
+            Benchmark.realtime{ round.pair_numbers }.should be < 0.2
+            round.pair_numbers.should == [[1, 17], [2, 18], [3, 19], [4, 20], [5, 21], [6, 22], [7, 23], [8, 24], [27, 9], [28, 10], [11, 25], [12, 26], [13, 29], [14, 30], [15, 31], [16, 32]]
+          end
+        end
+
+        context "complex case with 26 players" do
+          let(:players) { create_players(1..26) }
+
+          before(:each) do
+            players[0].stub_preference(:black)
+            players[1].stub_preference(:white)
+            players[2..3].each { |player| player.stub_preference(:black) }
+            players[4].stub_preference(:white)
+            players[5..10].each { |player| player.stub_preference(:black) }
+            players[11].stub_preference(:white)
+            players[12].stub_preference(:black)
+
+            players[13].stub_preference(:white)
+            players[14].stub_preference(:black)
+            players[15].stub_preference(nil)
+            players[16].stub_preference(:black)
+            players[17].stub_preference(:white)
+            players[18].stub_preference(:black)
+            players[19].stub_preference(:white)
+            players[20..21].each { |player| player.stub_preference(:black) }
+            players[22..23].each { |player| player.stub_preference(:white) }
+            players[24..25].each { |player| player.stub_preference(:black) }
+
+            players[0..31].each { |player| player.stub_degree(:mild) }
+          end
+
+          it "pairs fast" do
+            Benchmark.realtime{ round.pair_numbers }.should be < 0.1
+            round.pair_numbers.should == [[14, 1], [2, 15], [16, 3], [17, 4], [5, 19], [18, 6], [20, 7], [21, 8], [22, 9], [23, 10], [24, 11], [12, 25], [26, 13]]
           end
         end
       end
