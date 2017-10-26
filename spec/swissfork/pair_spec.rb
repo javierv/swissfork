@@ -208,6 +208,61 @@ module Swissfork
       end
     end
 
+    describe "#same_strong_preference" do
+      let(:s1_player) { double }
+      let(:s2_player) { double }
+      let(:pair) { Pair.new(s1_player, s2_player) }
+
+      context "different colour preference" do
+        before(:each) do
+          pair.stub(same_colour_preference?: false)
+        end
+
+        it "returns false" do
+          pair.same_strong_preference?.should be false
+        end
+      end
+
+      context "same colour preference" do
+        before(:each) do
+          pair.stub(same_colour_preference?: true)
+        end
+
+        context "both players have strong preference" do
+          before(:each) do
+            s1_player.stub_degree(:strong)
+            s2_player.stub_degree(:strong)
+          end
+
+          it "returns true" do
+            pair.same_strong_preference?.should be true
+          end
+        end
+
+        context "one player has mild preference" do
+          before(:each) do
+            s1_player.stub_degree(:mild)
+            s2_player.stub_degree(:strong)
+          end
+
+          it "returns false" do
+            pair.same_strong_preference?.should be false
+          end
+        end
+
+        context "one player has absolute preference" do
+          before(:each) do
+            s1_player.stub_degree(:absolute)
+            s2_player.stub_degree(:strong)
+          end
+
+          it "returns true" do
+            pair.same_strong_preference?.should be true
+          end
+        end
+      end
+    end
+
     describe "#result=" do
       let(:s1_player) { Player.new(1) }
       let(:s2_player) { Player.new(2) }
