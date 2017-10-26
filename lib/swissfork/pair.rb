@@ -140,10 +140,14 @@ module Swissfork
     def players_ordered_inverting_last_different_colours
       if s1_player.colours == s2_player.colours
         players_ordered_by_rank
-      elsif last_different_colours[0] == s1_player.colour_preference
-        [s2_player, s1_player]
+      elsif last_different_colours
+        if last_different_colours[0] == s1_player.colour_preference
+          [s2_player, s1_player]
+        else
+          [s1_player, s2_player]
+        end
       else
-        [s1_player, s2_player]
+        [higher_player, lower_player]
       end
     end
 
@@ -160,8 +164,8 @@ module Swissfork
     end
 
     def last_different_colours
-      s1_player.colours.zip(s2_player.colours).select do |colours|
-        colours.uniq.count > 1
+      s1_player.colours.compact.zip(s2_player.colours.compact).select do |colours|
+        colours.compact.uniq.count > 1
       end.last
     end
 

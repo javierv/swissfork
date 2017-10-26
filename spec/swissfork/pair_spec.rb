@@ -224,6 +224,28 @@ module Swissfork
           pair.players.should == [lower_player, higher_player]
         end
 
+        context "the last different time happened before one got a bye" do
+          before(:each) do
+            higher_player.stub(colours: [nil, :black, :white, :black, :white])
+            lower_player.stub(colours: [:white, :black, :black, nil, :white])
+          end
+
+          it "alternates colour to the most recent time they were different" do
+            pair.players.should == [lower_player, higher_player]
+          end
+        end
+
+        context "the colour history is the same if we reorder the byes" do
+          before(:each) do
+            higher_player.stub(colours: [:white, :black, :white, :black, :white, :black])
+            lower_player.stub(colours: [nil, :white, :black, :white, :black, nil])
+          end
+
+          it "gives priority to the higher player" do
+            pair.players.should == [higher_player, lower_player]
+          end
+        end
+
         context "the higher player has stronger preference" do
           before(:each) do
             higher_player.stub_degree(:strong)
