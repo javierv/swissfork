@@ -237,22 +237,34 @@ module Swissfork
       end
 
       context "same games played with each colour" do
-        before(:each) do
-          player.stub(colours: [nil, :white, :black])
-        end
+        before(:each) { player.stub(colours: [nil, :white, :black]) }
 
         it "is the opposite of the last played colour" do
           player.colour_preference.should == :white
         end
+
+        context "didn't play in the last round" do
+          before(:each) { player.stub(colours: [:black, :white, nil]) }
+
+          it "is the opposite of the last played colour" do
+            player.colour_preference.should == :black
+          end
+        end
       end
 
       context "one more game played with one colour" do
-        before(:each) do
-          player.stub(colours: [:black])
-        end
+        before(:each) { player.stub(colours: [:black]) }
 
         it "is the colour played less times with" do
           player.colour_preference.should == :white
+        end
+
+        context "didn't play in the last two games" do
+          before(:each) { player.stub(colours: [:white, :white, :black, nil, nil]) }
+
+          it "is the colour played less times with" do
+            player.colour_preference.should == :black
+          end
         end
       end
 

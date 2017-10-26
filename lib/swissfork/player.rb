@@ -129,11 +129,11 @@ module Swissfork
 
   private
     def last_two_colours_were_the_same?
-      colours[-1] == colours[-2]
+      colours.compact[-1] == colours.compact[-2]
     end
 
     def opposite_of_last_colour
-      if colours.last == :white
+      if colours.compact.last == :white
         :black
       else
         :white
