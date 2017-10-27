@@ -19,6 +19,7 @@ module Swissfork
     end
 
     def add_game(game)
+      @colours = nil
       games << game
     end
 
@@ -31,7 +32,7 @@ module Swissfork
     end
 
     def colours
-      games.map(&:colour)
+      @colours ||= games.map(&:colour)
     end
 
     def points
