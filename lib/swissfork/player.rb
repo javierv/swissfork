@@ -19,7 +19,7 @@ module Swissfork
     end
 
     def add_game(game)
-      @colours = nil
+      empty_colours_cache
       games << game
     end
 
@@ -64,7 +64,7 @@ module Swissfork
     end
 
     def colour_preference
-      if colours.any?
+      @colour_preference ||= if colours.any?
         if last_two_colours_were_the_same?
           opposite_of_last_colour
         elsif colour_difference > 0
@@ -82,7 +82,7 @@ module Swissfork
     end
 
     def preference_degree
-      if colours.any?
+      @preference_degree ||= if colours.any?
         if last_two_colours_were_the_same?
           :absolute
         else
@@ -142,6 +142,12 @@ module Swissfork
 
     def points_after(games)
       games.map(&:points_received).reduce(0.0, :+)
+    end
+
+    def empty_colours_cache
+      @colours = nil
+      @colour_preference = nil
+      @preference_degree = nil
     end
   end
 end
