@@ -23,7 +23,10 @@ module Swissfork
     end
 
     def result=(result)
-      players.each { |player| player.add_game(Game.new(player, self)) }
+      players.each do |player|
+        points_before_playing[player.number] = player.points
+        player.add_game(Game.new(player, self))
+      end
       @result = result
     end
 
@@ -33,6 +36,10 @@ module Swissfork
 
     def last
       s2_player
+    end
+
+    def points_before_playing
+      @points_before_playing ||= {}
     end
 
     # Helper method to make tests easier to write

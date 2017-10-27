@@ -60,24 +60,6 @@ module Swissfork
       end
     end
 
-    describe "#points_before" do
-      let(:game_1) { double(points_received: 1) }
-      let(:game_2) { double(points_received: 1) }
-      let(:game_3) { double(points_received: 0) }
-      let(:game_4) { double(points_received: 0.5) }
-
-      before(:each) do
-        player.games.push game_1, game_2, game_3, game_4
-      end
-
-      it "returns the sum of the played games before that game" do
-        player.points_before(game_1).should == 0
-        player.points_before(game_2).should == 1
-        player.points_before(game_3).should == 2
-        player.points_before(game_4).should == 2
-      end
-    end
-
     describe "#<=>" do
       context "players with different points" do
         let(:player) { Player.new(2).tap { |player| player.stub(points: 1) } }

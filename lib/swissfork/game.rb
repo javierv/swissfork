@@ -24,13 +24,10 @@ module Swissfork
     end
 
     def float
-      opponent_game = opponent.games.detect { |game| game.pair == pair }
-
       if played?
-        if player.points_before(self) < opponent.points_before(opponent_game)
-          :up
-        elsif player.points_before(self) > opponent.points_before(opponent_game)
-          :down
+        case pair.points_before_playing[player.number] <=> pair.points_before_playing[opponent.number]
+        when -1 then :up
+        when 1 then :down
         end
       elsif bye?
         :bye

@@ -61,8 +61,7 @@ module Swissfork
 
         context "both players had the same points" do
           before(:each) do
-            player.stub(points_before: 1)
-            opponent.stub(points_before: 1)
+            pair.stub(points_before_playing: { 1 => 1, 2 => 1 })
           end
 
           it "returns nil" do
@@ -72,8 +71,7 @@ module Swissfork
 
         context "the opponent had more points" do
           before(:each) do
-            player.stub(points_before: 1)
-            opponent.stub(points_before: 2)
+            pair.stub(points_before_playing: { 1 => 1, 2 => 2 })
           end
 
           it "counts as upfloat" do
@@ -83,8 +81,7 @@ module Swissfork
 
         context "the opponent had less points" do
           before(:each) do
-            player.stub(points_before: 2)
-            opponent.stub(points_before: 1)
+            pair.stub(points_before_playing: { 1 => 2, 2 => 1 })
           end
 
           it "counts as downfloat" do

@@ -36,11 +36,7 @@ module Swissfork
     end
 
     def points
-      points_after(games)
-    end
-
-    def points_before(game)
-      points_after(games.first(games.index(game)))
+      games.map(&:points_received).reduce(0.0, :+)
     end
 
     def had_bye?
@@ -138,10 +134,6 @@ module Swissfork
       else
         :white
       end
-    end
-
-    def points_after(games)
-      games.map(&:points_received).reduce(0.0, :+)
     end
 
     def empty_colours_cache
