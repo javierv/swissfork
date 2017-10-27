@@ -101,61 +101,7 @@ module Swissfork
 
     def players_ordered_by_preference
       @players_ordered_by_preference ||=
-        if s1_player.colour_preference == s2_player.colour_preference
-          players_with_same_colour_ordered_by_preference
-        else
-          players_with_different_colour_ordered_by_preference
-        end
-    end
-
-    def players_with_same_colour_ordered_by_preference
-      if s1_player.stronger_preference_than?(s2_player)
-        [s1_player, s2_player]
-      elsif s2_player.stronger_preference_than?(s1_player)
-        [s2_player, s1_player]
-      else
-        players_ordered_inverting_last_different_colours
-      end
-    end
-
-    def players_with_different_colour_ordered_by_preference
-      if s1_player.colour_preference.nil?
-        [s2_player, s1_player]
-      else
-        [s1_player, s2_player]
-      end
-    end
-
-    def players_ordered_inverting_last_different_colours
-      if s1_player.colours == s2_player.colours
-        players_ordered_by_rank
-      elsif last_different_colours
-        if last_different_colours[0] == s1_player.colour_preference
-          [s2_player, s1_player]
-        else
-          [s1_player, s2_player]
-        end
-      else
-        [higher_player, lower_player]
-      end
-    end
-
-    def players_ordered_by_rank
-      [higher_player, lower_player]
-    end
-
-    def higher_player
-      [s1_player, s2_player].sort.first
-    end
-
-    def lower_player
-      [s1_player, s2_player].sort.last
-    end
-
-    def last_different_colours
-      s1_player.colours.compact.zip(s2_player.colours.compact).select do |colours|
-        colours.compact.uniq.count > 1
-      end.last
+        [s1_player, s2_player].sort_by(&:preference_priority)
     end
 
     def no_players_have_colour_preference?
@@ -163,6 +109,8 @@ module Swissfork
     end
 
     def players_ordered_by_initial_colours
+      higher_player, lower_player = [s1_player, s2_player].sort
+
       if higher_player.number.odd?
         [higher_player, lower_player] # TODO: it depends on the initial colour
       else

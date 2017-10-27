@@ -1,5 +1,5 @@
 require "simple_initialize"
-require "swissfork/preference_degree"
+require "swissfork/preference_priority"
 
 module Swissfork
   # Contains information about the games a player has
@@ -76,6 +76,10 @@ module Swissfork
       end
     end
 
+    def preference_priority
+      PreferencePriority.new(self)
+    end
+
     def preference_degree
       if colours.any?
         if last_two_colours_were_the_same?
@@ -112,11 +116,6 @@ module Swissfork
         player.colour_preference != colour_preference ||
         topscorer? || player.topscorer?
       end
-    end
-
-    def stronger_preference_than?(player)
-      ([PreferenceDegree.new(preference_degree), colour_difference.abs] <=>
-       [PreferenceDegree.new(player.preference_degree), player.colour_difference.abs]) > 0
     end
 
     def topscorer?
