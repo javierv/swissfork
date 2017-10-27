@@ -70,7 +70,7 @@ module Swissfork
     describe "#players" do
       let(:higher_player) { Player.new(1) }
       let(:lower_player) { Player.new(2) }
-      let(:pair) { Pair.new(higher_player, lower_player) }
+      let(:pair) { Pair.new(lower_player, higher_player) }
 
       context "different colour preference" do
         before(:each) do
@@ -202,6 +202,28 @@ module Swissfork
             before(:each) do
               higher_player.stub(number: 2)
               lower_player.stub(number: 3)
+            end
+
+            it "gives the higher player the opposite of the initial colour" do
+              pair.players.should == [lower_player, higher_player]
+            end
+          end
+
+          context "both players have an odd number" do
+            before(:each) do
+              higher_player.stub(number: 1)
+              lower_player.stub(number: 3)
+            end
+
+            it "gives the higher player the initial colour" do
+              pair.players.should == [higher_player, lower_player]
+            end
+          end
+
+          context "both players have an even number" do
+            before(:each) do
+              higher_player.stub(number: 2)
+              lower_player.stub(number: 4)
             end
 
             it "gives the higher player the opposite of the initial colour" do
