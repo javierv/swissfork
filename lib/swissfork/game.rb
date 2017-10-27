@@ -49,7 +49,7 @@ module Swissfork
     end
 
     def points_received
-      if won?
+      @points_received ||= if won?
         1.0
       elsif draw?
         0.5
