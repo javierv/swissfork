@@ -10,7 +10,7 @@ module Swissfork
     initialize_with :player, :pair
 
     def opponent
-      (players - [player]).first
+      @opponent ||= (players - [player]).first
     end
 
     def colour
@@ -56,7 +56,7 @@ module Swissfork
     end
 
     def played?
-      played_results.include?(result)
+      @played ||= played_results.include?(result)
     end
 
   private
