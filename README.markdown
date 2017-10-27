@@ -10,6 +10,7 @@ TODO
 
 1. Import and export files coded in the FIDE Data Exchange Format.
 2. Pairings checker.
-3. Refine the API.
-4. Random Tournament Generator.
-5. Support more pairing algorithms.
+3. Tie-break systems and standings.
+4. Refine the API.
+5. Random Tournament Generator.
+6. Support more pairing algorithms.
