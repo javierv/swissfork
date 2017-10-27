@@ -115,8 +115,8 @@ module Swissfork
     end
 
     def stronger_preference_than?(player)
-      ([PreferenceDegree.new(preference_degree), colour_difference] <=>
-       [PreferenceDegree.new(player.preference_degree), player.colour_difference]) > 0
+      ([PreferenceDegree.new(preference_degree), colour_difference.abs] <=>
+       [PreferenceDegree.new(player.preference_degree), player.colour_difference.abs]) > 0
     end
 
     def topscorer?

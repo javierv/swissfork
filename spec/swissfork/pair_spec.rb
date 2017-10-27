@@ -115,8 +115,8 @@ module Swissfork
 
           context "both have the same colour difference" do
             before(:each) do
-              higher_player.stub(colour_difference: 2)
-              lower_player.stub(colour_difference: 2)
+              higher_player.stub(colour_difference: -2)
+              lower_player.stub(colour_difference: -2)
             end
 
             it "gives the preference to the higher player" do
@@ -127,10 +127,10 @@ module Swissfork
           context "the lower player has a wider difference" do
             before(:each) do
               higher_player.stub(colour_difference: 0)
-              lower_player.stub(colour_difference: 1)
+              lower_player.stub(colour_difference: -1)
             end
 
-            it "gives the preference to the lower player" do
+            it "gives the preference to the wider difference" do
               pair.players.should == [higher_player, lower_player]
             end
           end
@@ -162,6 +162,46 @@ module Swissfork
 
           it "gives the preference to the higher player" do
             pair.players.should == [higher_player, lower_player]
+          end
+        end
+
+        context "the lower player has a stronger preference" do
+          before(:each) do
+            higher_player.stub_degree(:strong)
+            lower_player.stub_degree(:absolute)
+          end
+
+          it "gives the preference to the lower player" do
+            pair.players.should == [lower_player, higher_player]
+          end
+        end
+
+        context "both players have an absolute preference" do
+          before(:each) do
+            higher_player.stub_degree(:absolute)
+            lower_player.stub_degree(:absolute)
+          end
+
+          context "both have the same colour difference" do
+            before(:each) do
+              higher_player.stub(colour_difference: 2)
+              lower_player.stub(colour_difference: 2)
+            end
+
+            it "gives the preference to the higher player" do
+              pair.players.should == [higher_player, lower_player]
+            end
+          end
+
+          context "the lower player has a wider difference" do
+            before(:each) do
+              higher_player.stub(colour_difference: 0)
+              lower_player.stub(colour_difference: 1)
+            end
+
+            it "gives the preference to the wider difference" do
+              pair.players.should == [lower_player, higher_player]
+            end
           end
         end
 
