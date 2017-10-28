@@ -146,5 +146,75 @@ module Swissfork
         end
       end
     end
+
+    describe "topscorers management" do
+      let(:players) { create_players(1..10) }
+
+      before(:each) do
+        tournament.stub(players: players)
+        players[0..1].each { |player| player.stub(points: 6) }
+        players[2..3].each { |player| player.stub(points: 5) }
+        players[4..5].each { |player| player.stub(points: 4) }
+        players[6..7].each { |player| player.stub(points: 3) }
+        players[8..9].each { |player| player.stub(points: 2) }
+      end
+
+      describe "#topscorers" do
+        context "not the last round" do
+          before(:each) do
+            7.times { tournament.rounds << double(finished?: true) }
+          end
+
+          it "returns an empty array" do
+            tournament.topscorers.should == []
+          end
+        end
+
+        context "last round" do
+          before(:each) do
+            8.times { tournament.rounds << double(finished?: true) }
+          end
+
+          it "returns the topscorers" do
+            tournament.topscorers.should == players[0..3]
+          end
+        end
+      end
+
+      describe "absolute preference pairing" do
+        before(:each) do
+          players[0..1].each { |player| player.stub_preference(:white) }
+          players[2..3].each { |player| player.stub_preference(:black) }
+          players[4..5].each { |player| player.stub_preference(:white) }
+          players[6..7].each { |player| player.stub_preference(:black) }
+          players[8..9].each { |player| player.stub_preference(:white) }
+
+          players[0..7].each { |player| player.stub_degree(:absolute) }
+          players[8..9].each { |player| player.stub_degree(:mild) }
+        end
+
+        context "not the last round" do
+          before(:each) do
+            7.times { tournament.rounds << double(finished?: true) }
+            tournament.start_round
+          end
+
+          it "doesn't pair players with same absolute preference together" do
+            tournament.pair_numbers.should == [[1, 3], [2, 4], [5, 7], [6, 8], [9, 10]]
+          end
+        end
+
+        context "last round" do
+          before(:each) do
+            8.times { tournament.rounds << double(finished?: true) }
+            tournament.start_round
+          end
+
+          it "pairs topscorers with same absolute preference together" do
+            tournament.pair_numbers.should == [[1, 2], [4, 3], [5, 7], [6, 8], [9, 10]]
+          end
+        end
+      end
+    end
   end
 end

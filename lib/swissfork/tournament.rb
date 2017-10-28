@@ -42,6 +42,8 @@ module Swissfork
       # TODO: raise exception if there are no more rounds allowed and if the
       # current round isn't finished.
       assign_player_numbers unless players
+      set_topscorers
+
       rounds << Round.new(players - non_paired_players).tap { |round| round.number = rounds.count + 1 }
     end
 
@@ -99,6 +101,14 @@ module Swissfork
     end
     attr_writer :points_given_to_unpaired_players
 
+    def topscorers
+      if last_round?
+        players.select { |player| player.points > (rounds.count / 2.0) }
+      else
+        []
+      end
+    end
+
   private
     def non_paired_players
       @non_paired_players = unpaired_points.keys.map { |number| players[number - 1] }
@@ -110,6 +120,10 @@ module Swissfork
       else
         0.5
       end
+    end
+
+    def set_topscorers
+      topscorers.each { |player| player.topscorer = true }
     end
 
     def last_round?

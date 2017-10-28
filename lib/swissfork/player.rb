@@ -116,8 +116,9 @@ module Swissfork
     end
 
     def topscorer?
-      false # TODO
+      @topscorer
     end
+    attr_writer :topscorer
 
     def rating
       inscription.rating
