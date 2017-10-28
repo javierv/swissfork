@@ -21,11 +21,11 @@ module Swissfork
       players
     end
 
-  private
     def provisional_leftovers
       still_unpaired_players
     end
 
+  private
     def exchanger
       @exchanger ||= Exchanger.new(s1, s2)
     end

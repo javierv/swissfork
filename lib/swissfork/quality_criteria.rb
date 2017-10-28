@@ -115,7 +115,7 @@ module Swissfork
 
     # C.12
     def same_downfloats_as_previous_round
-      pairable_leftovers.select(&:descended_in_the_previous_round?)
+      leftovers.select(&:descended_in_the_previous_round?)
     end
 
     # C.13
@@ -125,7 +125,7 @@ module Swissfork
 
     # C.14
     def same_downfloats_as_two_rounds_ago
-      pairable_leftovers.select(&:descended_two_rounds_ago?)
+      leftovers.select(&:descended_two_rounds_ago?)
     end
 
     # C.15
@@ -187,8 +187,8 @@ module Swissfork
       pairs.select(&:heterogeneous?)
     end
 
-    def pairable_leftovers
-      bracket.pairable_provisional_leftovers
+    def leftovers
+      bracket.provisional_leftovers
     end
 
     def pairs

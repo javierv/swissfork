@@ -73,6 +73,10 @@ module Swissfork
       super + remainder_pairs.to_a
     end
 
+    def provisional_leftovers
+      still_unpaired_players & moved_down_players
+    end
+
     def resident_players
       players - moved_down_players
     end
@@ -115,10 +119,6 @@ module Swissfork
 
     def remainder_players
       still_unpaired_players - moved_down_players
-    end
-
-    def provisional_leftovers
-      still_unpaired_players & moved_down_players
     end
 
     def number_of_players_in_limbo

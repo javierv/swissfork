@@ -116,9 +116,9 @@ module Swissfork
     end
 
     # Here we consider the leftovers after we've completed
-    # the pairing but we need to check for its quality.
-    def pairable_provisional_leftovers
-      pairable_players & provisional_leftovers
+    # the pairing but before checking its quality.
+    def provisional_leftovers
+      raise "Implement in subclass"
     end
 
     def provisional_pairs
@@ -251,10 +251,6 @@ module Swissfork
         !impossible_downfloats.include?((still_unpaired_players - pair.players).to_set) &&
         quality.can_downfloat?(unpaired_non_s1_players - [pair.s2_player]) &&
         !quality.violate_colours?(established_pairs + [pair])
-    end
-
-    def pairable_players
-      players.select { |player| player.compatible_players_in(players).any? }
     end
 
     def unpaired_non_s1_players
