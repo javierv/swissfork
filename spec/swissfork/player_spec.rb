@@ -279,8 +279,8 @@ module Swissfork
           player.stub(colours: [nil, nil])
         end
 
-        it "is none" do
-          player.preference_degree.should == :none
+        it "is nil" do
+          player.preference_degree.should be nil
         end
       end
 

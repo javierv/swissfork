@@ -43,7 +43,7 @@ module Swissfork
     end
 
     def degree
-      [:absolute, :strong, :mild, :none].index(player.preference_degree)
+      [:absolute, :strong, :mild, nil].index(player.preference_degree)
     end
 
     def last_different_colour_preference(preference)

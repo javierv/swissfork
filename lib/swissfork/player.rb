@@ -93,8 +93,6 @@ module Swissfork
           else :absolute
           end
         end
-      else
-        :none
       end
     end
 
