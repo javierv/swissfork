@@ -28,12 +28,11 @@ module Swissfork
 
   private
     def incompatibilities
-      return 0 if players.empty?
+      return 0 if players.empty? || enough_players_to_guarantee_pairing?
 
-      incompatibilities = 0
+      incompatibilities = obvious_incompatibilities
 
       until(players_in_a_combination > list.keys.count || enough_players_to_guarantee_pairing?)
-
         list.keys.combination(players_in_a_combination).each do |players|
           opponents = list.values_at(*players).reduce(&:+).uniq
 
@@ -95,6 +94,34 @@ module Swissfork
 
     def reset_players_in_a_combination
       @players_in_a_combination = 0
+    end
+
+    # Finds players with no opponents, or players with the
+    # same possible opponents.
+    #
+    # For example, if it finds player 1 is only compatible
+    # with player 5, player 2 is only compatible with
+    # player 5, and player 3 is also compatible just with
+    # player 5, it removes all four players from the list and
+    # adds two incompatibilities.
+    def obvious_incompatibilities
+      repetition_list.reduce(0) do |incompatibilities, (opponents, count)|
+        if count >= opponents.count
+          incompatibilities += count - opponents.count
+          remove_from_list(list.keys.select { |player| list[player] == opponents} + opponents)
+        end
+
+        incompatibilities
+      end
+    end
+
+    # Hash with the following format:
+    # array_of_opponents => number_of_players_having_those_opponents_as_compatible
+    def repetition_list
+      @repetition_list ||= list.values.inject(Hash.new(0)) do |repetition_list, opponents|
+        repetition_list[opponents] += 1
+        repetition_list
+      end
     end
   end
 end
