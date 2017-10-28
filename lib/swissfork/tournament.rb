@@ -12,6 +12,10 @@ module Swissfork
       "Championship" # TODO
     end
 
+    def add_inscriptions(inscriptions)
+      inscriptions.each { |inscription| add_inscription(inscription) }
+    end
+
     def add_inscription(inscription)
       inscriptions.push(inscription)
     end

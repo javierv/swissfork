@@ -12,7 +12,7 @@ module Swissfork
     end
 
     before(:each) do
-      inscriptions.each { |inscription| tournament.add_inscription(inscription) }
+      tournament.add_inscriptions(inscriptions)
       tournament.start
     end
 
