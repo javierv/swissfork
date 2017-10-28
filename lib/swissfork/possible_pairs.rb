@@ -67,7 +67,7 @@ module Swissfork
 
     def enough_players_to_guarantee_pairing?
       opponents.count >= players.count &&
-      minimum_number_of_compatible_players * 2 > (opponents - removals_list).count
+      minimum_number_of_compatible_players >= (opponents - removals_list).count / 2
     end
 
     def minimum_number_of_compatible_players
