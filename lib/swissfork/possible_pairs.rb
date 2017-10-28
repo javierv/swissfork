@@ -26,14 +26,14 @@ module Swissfork
       end
     end
 
-    # Returns the number of players who will remain unpaired
-    # after the best possible pairing
+  private
     def incompatibilities
-      return 0 if players.empty? || enough_players_to_guarantee_pairing?
+      return 0 if players.empty?
 
       incompatibilities = 0
 
-      until(players_in_a_combination > list.keys.count)
+      until(players_in_a_combination > list.keys.count || enough_players_to_guarantee_pairing?)
+
         list.keys.combination(players_in_a_combination).each do |players|
           opponents = list.values_at(*players).reduce(&:+).uniq
 
@@ -68,7 +68,7 @@ module Swissfork
 
     def enough_players_to_guarantee_pairing?
       opponents.count >= players.count &&
-      minimum_number_of_compatible_players * 2 > opponents.count
+      minimum_number_of_compatible_players * 2 > (opponents - removals_list).count
     end
 
     def minimum_number_of_compatible_players
@@ -78,6 +78,11 @@ module Swissfork
     def remove_from_list(removals)
       removals.each { |player| list.delete(player) }
       list.each { |person, rivals| list[person] = rivals - removals }
+      removals_list.push(*removals)
+    end
+
+    def removals_list
+      @removals_list ||= []
     end
 
     def players_in_a_combination
@@ -89,7 +94,7 @@ module Swissfork
     end
 
     def reset_players_in_a_combination
-      @players_in_a_combination = nil
+      @players_in_a_combination = 0
     end
   end
 end

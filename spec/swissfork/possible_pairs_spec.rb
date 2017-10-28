@@ -14,8 +14,16 @@ module Swissfork
       let(:players) { create_players(1..10) }
 
       context "no incompatibilities" do
-        it "returns 0" do
-          pairs.incompatibilities.should == 0
+        it "returns half of the players" do
+          pairs.count.should == 5
+        end
+
+        context "odd number of players" do
+          let(:players) { create_players(1..9) }
+
+          it "returns half of the players, rounding down" do
+            pairs.count.should == 4
+          end
         end
       end
 
@@ -25,8 +33,8 @@ module Swissfork
           players[2..8].each { |player| player.stub_opponents(players[0..1]) }
         end
 
-        it "returns 2" do
-          pairs.incompatibilities.should == 2
+        it "leaves two players unpaired" do
+          pairs.count.should == 4
         end
       end
 
@@ -36,8 +44,8 @@ module Swissfork
           players[2..7].each { |player| player.stub_opponents(players[0..1]) }
         end
 
-        it "returns 0" do
-          pairs.incompatibilities.should == 0
+        it "shows no incompatibilities" do
+          pairs.count.should == 5
         end
 
         context "and another players' possible opponents is one of those ones" do
@@ -52,8 +60,8 @@ module Swissfork
             players[3..7].each { |player| player.stub_opponents(players[0..2]) }
           end
 
-          it "returns 2" do
-            pairs.incompatibilities.should == 2
+          it "can't pair all players" do
+            pairs.count.should == 4
           end
         end
 
@@ -71,8 +79,8 @@ module Swissfork
             players[4..6].each { |player| player.stub_opponents(players[0..3]) }
           end
 
-          it "returns 2" do
-            pairs.incompatibilities.should == 2
+          it "can't pair all players" do
+            pairs.count.should == 4
           end
         end
       end
@@ -83,8 +91,8 @@ module Swissfork
           players[4..7].each { |player| player.stub_opponents(players[0..3]) }
         end
 
-        it "returns 2" do
-          pairs.incompatibilities.should == 2
+        it "can't pair two players" do
+          pairs.count.should == 4
         end
       end
 
@@ -109,8 +117,8 @@ module Swissfork
           players[9].stub_opponents([players[1]] + players[4..5])
         end
 
-        it "returns 2" do
-          pairs.incompatibilities.should == 2
+        it "can't pair two players" do
+          pairs.count.should == 4
         end
       end
 
@@ -120,29 +128,8 @@ module Swissfork
           players[3..9].each { |player| player.stub_opponents(players[0..2]) }
         end
 
-        it "returns 2" do
-          pairs.incompatibilities.should == 2
-        end
-      end
-    end
-
-    describe "#count" do
-      let(:players) { create_players(1..7) }
-
-      context "all players can be paired" do
-        it "returns half of the total number of players, rounding down" do
-          pairs.count.should == 3
-        end
-      end
-
-      context "some players can't be paired" do
-        before(:each) do
-          players[0..1].each { |player| player.stub_opponents(players[0..6]) }
-          players[2..6].each { |player| player.stub_opponents(players[0..1]) }
-        end
-
-        it "returns half of the number of pairable players, rounding down" do
-          pairs.count.should == 2
+        it "can't pair two players" do
+          pairs.count.should == 4
         end
       end
     end

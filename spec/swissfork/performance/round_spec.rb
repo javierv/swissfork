@@ -236,6 +236,22 @@ module Swissfork
         end
       end
 
+      context "bracket with an unpairable player" do
+        let(:players) { create_players(1..27) }
+
+        context "one of the players can't be paired" do
+          before(:each) do
+            players[0].stub(opponents: players[1..26])
+            players[1..26].each { |player| player.stub(opponents: [players[0]]) }
+          end
+
+          it "pairs fast" do
+            Benchmark.realtime{ round.pair_numbers }.should be < 0.1
+            round.pair_numbers.should == [[2, 15], [3, 16], [4, 17], [5, 18], [6, 19], [7, 20], [8, 21], [9, 22], [10, 23], [11, 24], [12, 25], [13, 26], [14, 27]]
+          end
+        end
+      end
+
       context "all players in the last bracket had byes" do
         let(:players) { create_players(1..11) }
 
