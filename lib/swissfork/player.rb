@@ -106,7 +106,6 @@ module Swissfork
     end
 
     def <=>(other_player)
-      # Comparing the arrays results in better performance.
       [other_player.points, number] <=> [points, other_player.number]
     end
 
