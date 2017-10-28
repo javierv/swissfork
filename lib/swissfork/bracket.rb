@@ -238,13 +238,11 @@ module Swissfork
     end
 
     def opponents_for(player)
-      (player.compatible_players_in(s2) & still_unpaired_players).select do |opponent|
+      (player.compatible_players_in(s2) & still_unpaired_players).reject do |opponent|
         # TODO: main preference isn't 100% reliable
-        if minimum_colour_violations > 0 && player.colour_preference == colour_incompatibilities.minoritary_preference
-          opponent.colour_preference == colour_incompatibilities.main_preference
-        else
-          true
-        end
+        minimum_colour_violations > 0 &&
+          player.colour_preference == colour_incompatibilities.minoritary_preference &&
+          opponent.colour_preference != colour_incompatibilities.main_preference
       end
     end
 
