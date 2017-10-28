@@ -159,7 +159,7 @@ module Swissfork
 
     def new_players
       late_entries.map.with_index do |inscription, index|
-        Player.new(index + players.count).tap do |player|
+        Player.new(index + players.count + 1).tap do |player|
           player.inscription = inscription
           rounds.count.times { player.add_game(UnpairedGame.new(player)) }
         end

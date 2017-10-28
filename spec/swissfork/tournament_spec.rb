@@ -248,6 +248,10 @@ module Swissfork
         tournament.players.map(&:number).should == [1, 2, 3, 4, 5, 6]
       end
 
+      it "assigns new ids to new players" do
+        tournament.players.map(&:id).should == [1, 5, 2, 3, 4, 6]
+      end
+
       it "pairs the new entries" do
         tournament.pairs.map { |pair| pair.players.map(&:name) }.should ==
           [["José Capablanca", "Paul Morphy"],

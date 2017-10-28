@@ -148,7 +148,7 @@ module Swissfork
     end
 
     def compatible?(player)
-      !opponents.include?(player) && player.number != number && (
+      !opponents.include?(player) && player.id != id && (
         preference_degree != :absolute || player.preference_degree != :absolute ||
         player.colour_preference != colour_preference ||
         topscorer? || player.topscorer?
