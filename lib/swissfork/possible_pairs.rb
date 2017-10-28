@@ -57,7 +57,6 @@ module Swissfork
       incompatibilities + list.values.select { |rivals| rivals.empty? }.count
     end
 
-  private
     def list
       @list ||= players.reduce({}) do |list, player|
         list[player] = player.compatible_players_in(opponents)
