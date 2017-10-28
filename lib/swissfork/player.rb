@@ -11,8 +11,13 @@ module Swissfork
   # Inscription class.
   class Player
     include Comparable
-    initialize_with :number
+    initialize_with :id
     attr_accessor :inscription
+
+    def number
+      @number ||= id
+    end
+    attr_writer :number
 
     def games
       @games ||= []
@@ -122,6 +127,10 @@ module Swissfork
 
     def rating
       inscription.rating
+    end
+
+    def name
+      inscription.name
     end
 
   private

@@ -12,12 +12,25 @@ module Swissfork
       "Championship" # TODO
     end
 
+    def inscriptions
+      @inscriptions ||= []
+    end
+
     def add_inscriptions(inscriptions)
       inscriptions.each { |inscription| add_inscription(inscription) }
     end
 
     def add_inscription(inscription)
       inscriptions.push(inscription)
+    end
+
+    def add_late_entry(inscription)
+      add_inscription(inscription)
+      late_entries << inscription
+    end
+
+    def add_late_entries(inscriptions)
+      inscriptions.each { |inscription| add_late_entry(inscription) }
     end
 
     def rounds
@@ -47,6 +60,7 @@ module Swissfork
       # current round isn't finished.
       assign_player_numbers unless players
       set_topscorers
+      incorporate_late_entries
 
       rounds << Round.new(players - non_paired_players).tap { |round| round.number = rounds.count + 1 }
     end
@@ -61,14 +75,6 @@ module Swissfork
       end
 
       @unpaired_points = nil
-    end
-
-    def assign_player_numbers
-      @players = inscriptions.sort.map.with_index do |inscription, index|
-        Player.new(index + 1).tap do |player|
-          player.inscription = inscription
-        end
-      end
     end
 
     # Players notifying they won't be paired before the start of the next
@@ -139,8 +145,41 @@ module Swissfork
       @unpaired_points ||= {}
     end
 
-    def inscriptions
-      @inscriptions ||= []
+    def late_entries
+      @late_entries ||= []
+    end
+
+    def incorporate_late_entries
+      if late_entries.any?
+        players.push(*new_players)
+        reassign_numbers
+        @late_entries = nil
+      end
+    end
+
+    def new_players
+      late_entries.map.with_index do |inscription, index|
+        Player.new(index + players.count).tap do |player|
+          player.inscription = inscription
+          rounds.count.times { player.add_game(UnpairedGame.new(player)) }
+        end
+      end
+    end
+
+    def assign_player_numbers
+      @players = inscriptions.sort.map.with_index do |inscription, index|
+        Player.new(index + 1).tap do |player|
+          player.inscription = inscription
+        end
+      end
+    end
+
+    def reassign_numbers
+      players.sort_by(&:inscription).each.with_index do |player, index|
+        player.number = index + 1
+      end
+
+      players.sort_by!(&:number)
     end
   end
 end

@@ -24,7 +24,7 @@ module Swissfork
 
     def result=(result)
       players.each do |player|
-        points_before_playing[player.number] = player.points
+        points_before_playing[player.id] = player.points
         player.add_game(Game.new(player, self))
       end
       @result = result
@@ -45,7 +45,7 @@ module Swissfork
     # Helper method to make tests easier to write
     def numbers
       # Hack to let tests having no colours use this method.
-      @numbers ||= if no_players_have_colour_preference?
+      if no_players_have_colour_preference?
         [s1_player, s2_player].map(&:number)
       else
         players.map(&:number)

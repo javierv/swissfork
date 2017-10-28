@@ -4,9 +4,13 @@ require "swissfork/inscription"
 
 module Swissfork
   describe Tournament do
+    def late_entry(number)
+      Inscription.new(tournament.inscriptions.sort[number - 2].rating, tournament.inscriptions.sort[number - 2].name + "a")
+    end
+
     let(:tournament) { Tournament.new(8) }
     let(:inscriptions) do
-      Array.new(78) { [rand(1500..2400), rand(1..100000).to_s] }.map do |rating, name|
+      Array.new(71) { [rand(1500..2400), rand(1..100000).to_s] }.map do |rating, name|
         Inscription.new(rating, name)
       end
     end
@@ -18,56 +22,41 @@ module Swissfork
 
     it "pairs every round correctly" do
       # First round
-      tournament.non_paired_numbers = [32, 41, 48, 56, 57, 66, 68]
       tournament.start_round
 
-      # Hack because the original tournament used a different criteria
-      # than section E.5 to pair players without colour preferences.
-      tournament.players[32].stub_preference(:black)
-      tournament.players[73].stub_preference(:white)
-      tournament.players[33].stub_preference(:white)
-      tournament.players[74].stub_preference(:black)
-      tournament.players[34].stub_preference(:black)
-      tournament.players[75].stub_preference(:white)
-      tournament.players[35].stub_preference(:white)
-      tournament.players[76].stub_preference(:black)
-
-      tournament.pair_numbers.should == [[1, 37], [38, 2], [3, 39], [40, 4], [5, 42], [43, 6], [7, 44], [45, 8], [9, 46], [47, 10], [11, 49], [50, 12], [13, 51], [52, 14], [15, 53], [54, 16], [17, 55], [58, 18], [19, 59], [60, 20], [21, 61], [62, 22], [23, 63], [64, 24], [25, 65], [67, 26], [27, 69], [70, 28], [29, 71], [72, 30], [31, 73], [74, 33], [34, 75], [76, 35], [36, 77]]
-      tournament.current_round.bye.number.should == 78
+      tournament.pair_numbers.should == [[1, 36], [37, 2], [3, 38], [39, 4], [5, 40], [41, 6], [7, 42], [43, 8], [9, 44], [45, 10], [11, 46], [47, 12], [13, 48], [49, 14], [15, 50], [51, 16], [17, 52], [53, 18], [19, 54], [55, 20], [21, 56], [57, 22], [23, 58], [59, 24], [25, 60], [61, 26], [27, 62], [63, 28], [29, 64], [65, 30], [31, 66], [67, 32], [33, 68], [69, 34], [35, 70]]
+      tournament.current_round.bye.number.should == 71
 
       tournament.finish_round(%w(
         1 1 1 ½ 0 ½ 1 1 1 ½ 1 0 1 ½ 1 0 1 0 1 1 1 0 1 0 1 0 1 0 1 0 1 0 0 0 1
       ))
 
       # Second round
-      tournament.non_paired_numbers = [34, 36, 41, 51]
+      [32, 47, 55, 56, 65, 67].each do |number| # Numbers they got assigned
+        tournament.add_late_entry(late_entry(number))
+      end
+      tournament.non_paired_numbers = [34, 36, 50]
       tournament.start_round
 
-      tournament.players[32].unstub(:colour_preference)
-      tournament.players[73].unstub(:colour_preference)
-      tournament.players[33].unstub(:colour_preference)
-      tournament.players[74].unstub(:colour_preference)
-      tournament.players[34].unstub(:colour_preference)
-      tournament.players[75].unstub(:colour_preference)
-      tournament.players[35].unstub(:colour_preference)
-      tournament.players[76].unstub(:colour_preference)
-
+      # Hack because the original tournament used a different criteria
+      # than section E.5 to pair players without colour preferences.
       tournament.players[31].stub_preference(:white)
-      tournament.players[56].stub_preference(:black)
+      tournament.players[55].stub_preference(:black)
 
-      tournament.pair_numbers.should == [[24, 1], [25, 3], [26, 7], [27, 9], [28, 11], [12, 29], [30, 13], [33, 15], [16, 31], [35, 17], [18, 38], [42, 19], [75, 21], [22, 45], [78, 23], [4, 60], [6, 47], [10, 48], [14, 56], [32, 57], [66, 40], [68, 43], [2, 52], [61, 5], [8, 62], [20, 63], [37, 64], [39, 65], [44, 67], [46, 69], [49, 70], [71, 50], [53, 72], [73, 54], [55, 74], [77, 58], [59, 76]]
+      tournament.pair_numbers.should == [[24, 1], [25, 3], [26, 7], [27, 9], [28, 11], [12, 29], [30, 13], [33, 15], [16, 31], [35, 17], [18, 38], [41, 19], [74, 21], [22, 44], [77, 23], [4, 59], [6, 46], [10, 47], [14, 55], [32, 56], [65, 40], [67, 42], [2, 51], [60, 5], [8, 61], [20, 62], [37, 63], [39, 64], [43, 66], [45, 68], [48, 69], [70, 49], [52, 71], [72, 53], [54, 73], [76, 57], [58, 75]]
       tournament.current_round.bye.should be nil
 
       tournament.finish_round(%w(
         0 0 0 0 ½ 0 0 1 1 0 1 ½ ½ 1 0 1 1 1 1 1 0 0 1 0 1 1 1 1 1 1 0i 0 1 1 1 0 1
       ))
 
+      tournament.players[31].unstub(:colour_preference)
+      tournament.players[55].unstub(:colour_preference)
+
       # Third round
+      tournament.add_late_entry(late_entry(41))
       tournament.non_paired_numbers = [28, 33, 35, 59, 63, 67, 69, 78]
       tournament.start_round
-
-      tournament.players[31].unstub(:colour_preference)
-      tournament.players[56].unstub(:colour_preference)
 
       tournament.pair_numbers.should == [[1, 16], [3, 17], [7, 18], [9, 22], [13, 23], [29, 6], [4, 32], [40, 10], [11, 36], [43, 14], [19, 75], [21, 42], [39, 2], [5, 44], [38, 8], [41, 12], [15, 46], [45, 20], [50, 24], [53, 25], [55, 26], [58, 27], [60, 30], [31, 70], [73, 37], [56, 34], [48, 66], [51, 68], [57, 52], [49, 47], [54, 71], [72, 61], [62, 74], [64, 76], [65, 77]]
       tournament.current_round.bye.should be nil

@@ -25,7 +25,7 @@ module Swissfork
 
     def float
       if played?
-        case pair.points_before_playing[player.number] <=> pair.points_before_playing[opponent.number]
+        case pair.points_before_playing[player.id] <=> pair.points_before_playing[opponent.id]
         when -1 then :up
         when 1 then :down
         end

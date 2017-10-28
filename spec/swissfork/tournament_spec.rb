@@ -216,5 +216,48 @@ module Swissfork
         end
       end
     end
+
+    describe "late entries" do
+      let(:inscriptions) do
+        [ Inscription.new(2990, "Paul Morphy"),
+          Inscription.new(2980, "José Capablanca"),
+          Inscription.new(2970, "Alexander Alekhine"),
+          Inscription.new(2960, "Mikhail Tal") ]
+      end
+
+      let(:late_entries) do
+        [ Inscription.new(2985, "Emanuel Lasker"),
+          Inscription.new(2950, "Tigran Petrosian") ]
+      end
+
+      before(:each) do
+        tournament.add_inscriptions(inscriptions)
+
+        tournament.start_round
+        tournament.finish_round([:draw, :draw])
+
+        tournament.add_late_entries(late_entries)
+        tournament.start_round
+      end
+
+      it "reorders the players" do
+        tournament.players.map(&:rating).should == [2990, 2985, 2980, 2970, 2960, 2950]
+      end
+
+      it "reassigns the numbers" do
+        tournament.players.map(&:number).should == [1, 2, 3, 4, 5, 6]
+      end
+
+      it "pairs the new entries" do
+        tournament.pairs.map { |pair| pair.players.map(&:name) }.should ==
+          [["José Capablanca", "Paul Morphy"],
+           ["Emanuel Lasker", "Mikhail Tal"],
+           ["Alexander Alekhine", "Tigran Petrosian"]]
+      end
+
+      it "reassigns the numbers in the previous rounds" do
+        tournament.rounds.first.pair_numbers.should == [[1, 4], [5, 3]]
+      end
+    end
   end
 end
