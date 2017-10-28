@@ -1,5 +1,6 @@
 require "simple_initialize"
 require "swissfork/preference_priority"
+require "set"
 
 module Swissfork
   # Contains information about the games a player has
@@ -25,11 +26,12 @@ module Swissfork
 
     def add_game(game)
       empty_colours_cache
+      empty_opponents_cache
       games << game
     end
 
     def opponents
-      games.select(&:played?).map(&:opponent)
+      @opponents ||= Set.new(games.select(&:played?).map(&:opponent))
     end
 
     def floats
@@ -110,11 +112,7 @@ module Swissfork
     end
 
     def compatible_players_in(players)
-      (players - (opponents + [self])).select do |player|
-        preference_degree != :absolute || player.preference_degree != :absolute ||
-        player.colour_preference != colour_preference ||
-        topscorer? || player.topscorer?
-      end
+      players.select { |player| compatibilities[player] }
     end
 
     def topscorer?
@@ -143,10 +141,29 @@ module Swissfork
       end
     end
 
+    def compatibilities
+      @compatibilities ||= Hash.new do |compatibilities, player|
+        compatibilities[player] = compatible?(player)
+      end
+    end
+
+    def compatible?(player)
+      !opponents.include?(player) && player.number != number && (
+        preference_degree != :absolute || player.preference_degree != :absolute ||
+        player.colour_preference != colour_preference ||
+        topscorer? || player.topscorer?
+      )
+    end
+
     def empty_colours_cache
       @colours = nil
       @colour_preference = nil
       @preference_degree = nil
+    end
+
+    def empty_opponents_cache
+      @compatibilities = nil
+      @opponents = nil
     end
   end
 end

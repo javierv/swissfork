@@ -222,7 +222,7 @@ module Swissfork
 
         it "doesn't add the opponent to opponents" do
           player.add_game(game)
-          player.opponents.should == []
+          player.opponents.should be_empty
         end
 
         it "makes the opponent the winner" do

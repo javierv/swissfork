@@ -10,7 +10,7 @@ module Swissfork
         before(:each) { player.stub(games: []) }
 
         it "doesn't have opponents" do
-          player.opponents.should == []
+          player.opponents.should be_empty
         end
       end
 

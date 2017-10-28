@@ -10,9 +10,10 @@ end
 
 # TODO: put in in a module,
 # the same way #stub is available.
+require "set"
 class Object
   def stub_opponents(opponents)
-    stub(opponents: opponents - [self])
+    stub(opponents: opponents.to_set - [self])
   end
 
   def stub_preference(colour_preference)
