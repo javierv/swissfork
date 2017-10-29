@@ -98,8 +98,7 @@ module Swissfork
     end
 
     def both_have_high_difference?
-      # TODO: use .abs; add test.
-      s1_player.colour_difference > 1 && s2_player.colour_difference > 1
+      s1_player.colour_difference.abs > 1 && s2_player.colour_difference.abs > 1
     end
 
     def colour_preferences
