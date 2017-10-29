@@ -1,4 +1,5 @@
 require "simple_initialize"
+require "set"
 
 module Swissfork
   # Given a list of players to pair, it calculates how many pairs
@@ -15,11 +16,19 @@ module Swissfork
     initialize_with :players
 
     def count
-      (players.count - incompatibilities) / 2
+      @count ||= (players.count - incompatibilities) / 2
     end
 
     def enough_players_to_guarantee_pairing?
       minimum_number_of_compatible_players >= list.keys.count / 2
+    end
+
+    def self.for(players)
+      possible_pairs[players.to_set] ||= new(players)
+    end
+
+    def self.possible_pairs
+      @possible_pairs ||= {}
     end
 
   private

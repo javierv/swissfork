@@ -17,7 +17,7 @@ module Swissfork
     end
 
     def all_players_can_be_paired?
-      (players.count - PossiblePairs.new(players).count * 2) < 2
+      (players.count - PossiblePairs.for(players).count * 2) < 2
     end
 
     def bye_can_be_selected?
