@@ -1,6 +1,8 @@
+require "simple_initialize"
+
 module Swissfork
-  # Given a list of players to pair and possible opponents,
-  # it calculates how many pairs can be generated.
+  # Given a list of players to pair, it calculates how many pairs
+  # can be generated.
   #
   # For example, if we've got players 1, 2, 3, 4, and 2 has
   # played against 3 and 4, and 3 and 4 have also played between
@@ -10,20 +12,14 @@ module Swissfork
   # possible opponent (number 1) can't play against more than one
   # player.
   class PossiblePairs
-    def initialize(players, opponents = players)
-      @players = players
-      @opponents = opponents
-    end
-
-    attr_reader :players, :opponents
+    initialize_with :players
 
     def count
-      if players == opponents
-        (players.count - incompatibilities) / 2
-      else
-        # Heterogeneous bracket. TODO: check if we can refactor it.
-        players.count - incompatibilities
-      end
+      (players.count - incompatibilities) / 2
+    end
+
+    def enough_players_to_guarantee_pairing?
+      minimum_number_of_compatible_players >= list.keys.count / 2
     end
 
   private
@@ -59,14 +55,13 @@ module Swissfork
 
     def list
       @list ||= players.reduce({}) do |list, player|
-        list[player] = player.compatible_players_in(opponents)
+        list[player] = opponents_for(player)
         list
       end
     end
 
-    def enough_players_to_guarantee_pairing?
-      opponents.count >= players.count &&
-      minimum_number_of_compatible_players >= (opponents - removals_list).count / 2
+    def opponents_for(player)
+      player.compatible_players_in(players)
     end
 
     def minimum_number_of_compatible_players

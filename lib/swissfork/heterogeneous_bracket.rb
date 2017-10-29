@@ -1,6 +1,7 @@
 require "swissfork/bracket"
 require "swissfork/limbo_exchanger"
 require "swissfork/moved_down_permit"
+require "swissfork/moved_down_possible_pairs"
 
 module Swissfork
   # Handles the pairing of a heterogeneous bracket.
@@ -28,7 +29,7 @@ module Swissfork
     alias_method :m1, :number_of_moved_down_possible_pairs # FIDE nomenclature
 
     def number_of_moved_down_compatible_pairs
-      @number_of_moved_down_compatible_pairs ||= PossiblePairs.new(moved_down_players, resident_players).count
+      @number_of_moved_down_compatible_pairs ||= MovedDownPossiblePairs.new(moved_down_players, resident_players).count
     end
 
     def number_of_required_total_pairs

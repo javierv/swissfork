@@ -133,5 +133,37 @@ module Swissfork
         end
       end
     end
+
+    describe "#enough_players_to_guarantee_pairing" do
+      let(:players) { create_players(1..11) }
+
+      context "no incompatibilities" do
+        it "returns true" do
+          pairs.enough_players_to_guarantee_pairing?.should be true
+        end
+      end
+
+      context "one player can play against half of the players, rounding down" do
+        before(:each) do
+          players[0].stub_opponents(players[0..5])
+          players[1..5].each { |player| player.stub_opponents([players[0]]) }
+        end
+
+        it "returns true" do
+          pairs.enough_players_to_guarantee_pairing?.should be true
+        end
+      end
+
+      context "one player can play against less than half of the players" do
+        before(:each) do
+          players[0].stub_opponents(players[0..6])
+          players[1..6].each { |player| player.stub_opponents([players[0]]) }
+        end
+
+        it "returns false" do
+          pairs.enough_players_to_guarantee_pairing?.should be false
+        end
+      end
+    end
   end
 end
