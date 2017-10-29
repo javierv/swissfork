@@ -1,6 +1,5 @@
 require "spec_helper"
-require "swissfork/tournament"
-require "swissfork/inscription"
+require "swissfork"
 
 module Swissfork
   describe Tournament do
