@@ -28,7 +28,9 @@ module Swissfork
 
       incompatibilities = obvious_incompatibilities
 
-      until(players_in_a_combination > list.keys.count || enough_players_to_guarantee_pairing?)
+      until(players_in_a_combination >= list.keys.count || enough_players_to_guarantee_pairing?)
+        increase_players_in_a_combination
+
         list.keys.combination(players_in_a_combination).each do |players|
           opponents = list.values_at(*players).reduce(&:+).uniq
 
@@ -46,8 +48,6 @@ module Swissfork
             break
           end
         end
-
-        increase_players_in_a_combination
       end
 
       incompatibilities + list.values.select { |rivals| rivals.empty? }.count
@@ -65,7 +65,7 @@ module Swissfork
     end
 
     def minimum_number_of_compatible_players
-      list.values.map(&:count).min
+      list.values.map(&:count).min.to_i
     end
 
     def remove_from_list(removals)
@@ -79,7 +79,7 @@ module Swissfork
     end
 
     def players_in_a_combination
-      @players_in_a_combination ||= 1
+      @players_in_a_combination ||= minimum_number_of_compatible_players
     end
 
     def increase_players_in_a_combination
@@ -87,7 +87,7 @@ module Swissfork
     end
 
     def reset_players_in_a_combination
-      @players_in_a_combination = 0
+      @players_in_a_combination = nil
     end
 
     # Finds players with no opponents, or players with the
