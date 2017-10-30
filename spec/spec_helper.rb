@@ -1,12 +1,4 @@
-RSpec.configure do |config|
-  config.expect_with :rspec do |c|
-    c.syntax = [:expect, :should]
-  end
-
-  config.mock_with :rspec do |c|
-    c.syntax = [:expect, :should]
-  end
-end
+require "syntax_spec_helper"
 
 # TODO: put in in a module,
 # the same way #stub is available.

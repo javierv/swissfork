@@ -1,4 +1,4 @@
-require "spec_helper"
+require "syntax_spec_helper"
 require "swissfork"
 
 module Swissfork
@@ -39,8 +39,8 @@ module Swissfork
 
       # Hack because the original tournament used a different criteria
       # than section E.5 to pair players without colour preferences.
-      tournament.players[31].stub_preference(:white)
-      tournament.players[55].stub_preference(:black)
+      tournament.players[31].stub(colour_preference: :white)
+      tournament.players[55].stub(colour_preference: :black)
 
       tournament.pair_numbers.should == [[24, 1], [25, 3], [26, 7], [27, 9], [28, 11], [12, 29], [30, 13], [33, 15], [16, 31], [35, 17], [18, 38], [41, 19], [74, 21], [22, 44], [77, 23], [4, 59], [6, 46], [10, 47], [14, 55], [32, 56], [65, 40], [67, 42], [2, 51], [60, 5], [8, 61], [20, 62], [37, 63], [39, 64], [43, 66], [45, 68], [48, 69], [70, 49], [52, 71], [72, 53], [54, 73], [76, 57], [58, 75]]
       tournament.current_round.bye.should be nil
