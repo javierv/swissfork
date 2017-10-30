@@ -19,7 +19,8 @@ module Swissfork
     end
 
     def enough_players_to_guarantee_pairing?
-      minimum_number_of_compatible_players >= list.keys.count / 2
+      number_of_players_with_absolute_preference <= players.count / 2 &&
+       players.count / 2.0 > players.map(&:opponents).map(&:count).max
     end
 
   private
@@ -38,10 +39,6 @@ module Swissfork
 
     def opponents_for(player)
       player.compatible_players_in(players)
-    end
-
-    def minimum_number_of_compatible_players
-      list.values.map(&:count).min.to_i
     end
 
     def remove_from_list(removals)
@@ -113,6 +110,16 @@ module Swissfork
       @repetition_list ||= list.values.inject(Hash.new(0)) do |repetition_list, opponents|
         repetition_list[opponents] += 1
         repetition_list
+      end
+    end
+
+    def number_of_players_with_absolute_preference
+      players_with_absolute_preference.group_by(&:colour_preference).values.map(&:count).max.to_i
+    end
+
+    def players_with_absolute_preference
+      players.select do |player|
+        player.preference_degree == :absolute && !player.topscorer?
       end
     end
   end

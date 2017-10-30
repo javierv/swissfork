@@ -13,7 +13,7 @@ module Swissfork
     end
 
     def enough_players_to_guarantee_pairing?
-      minimum_number_of_compatible_players >= list.keys.count
+      minimum_number_of_compatible_players >= players.count
     end
 
     def opponents_ordered_by_opponents_count
@@ -25,6 +25,10 @@ module Swissfork
     end
 
   private
+    def minimum_number_of_compatible_players
+      list.values.map(&:count).min.to_i
+    end
+
     def opponents_for(player)
       player.compatible_players_in(opponents)
     end

@@ -164,6 +164,60 @@ module Swissfork
           pairs.enough_players_to_guarantee_pairing?.should be false
         end
       end
+
+      context "there are players with absolute preference" do
+        let(:players) { create_players(1..4) }
+
+        context "all players have an absolute preference" do
+          before(:each) do
+            players.each { |player| player.stub_degree(:absolute) }
+          end
+
+          context "with the same colour" do
+            before(:each) do
+              players.each { |player| player.stub_preference(:white) }
+            end
+
+            it "returns false" do
+              pairs.enough_players_to_guarantee_pairing?.should be false
+            end
+          end
+
+          context "with different colour" do
+            before(:each) do
+              players[0..1].each { |player| player.stub_preference(:white) }
+              players[2..3].each { |player| player.stub_preference(:black) }
+            end
+
+            it "returns true" do
+              pairs.enough_players_to_guarantee_pairing?.should be true
+            end
+          end
+        end
+      end
+
+      context "two players" do
+        let(:players) { create_players(1..2) }
+
+        context "they've played against each other" do
+          before(:each) do
+            players[0].stub_opponents([players[1]])
+            players[1].stub_opponents([players[0]])
+          end
+
+          it "returns false" do
+            pairs.enough_players_to_guarantee_pairing?.should be false
+          end
+        end
+
+        context "they're topscorers" do
+          before(:each) { players[0].stub(topscorer?: true) }
+
+          it "returns true" do
+            pairs.enough_players_to_guarantee_pairing?.should be true
+          end
+        end
+      end
     end
   end
 end
