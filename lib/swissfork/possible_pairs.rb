@@ -35,31 +35,7 @@ module Swissfork
     def incompatibilities
       return 0 if players.empty? || enough_players_to_guarantee_pairing?
 
-      incompatibilities = obvious_incompatibilities
-
-      until(players_in_a_combination >= list.keys.count || enough_players_to_guarantee_pairing?)
-        increase_players_in_a_combination
-
-        list.keys.combination(players_in_a_combination).each do |players|
-          opponents = list.values_at(*players).reduce(&:+).uniq
-
-          if opponents.count < players_in_a_combination
-            remove_from_list(players + opponents)
-
-            incompatibilities += players_in_a_combination - opponents.count
-            reset_players_in_a_combination
-            break
-          elsif players_in_a_combination.odd? && (opponents - players).empty?
-            remove_from_list(players + opponents)
-
-            incompatibilities += 1
-            reset_players_in_a_combination
-            break
-          end
-        end
-      end
-
-      incompatibilities + list.values.select { |rivals| rivals.empty? }.count
+      obvious_incompatibilities + incompatibilities_by_least_compatible_pairing
     end
 
     def list
@@ -80,23 +56,20 @@ module Swissfork
     def remove_from_list(removals)
       removals.each { |player| list.delete(player) }
       list.each { |person, rivals| list[person] = rivals - removals }
-      removals_list.push(*removals)
     end
 
-    def removals_list
-      @removals_list ||= []
+    def opponent_with_less_opponents_for(player)
+      opponents_ordered_by_opponents_count.each do |opponent|
+        return opponent if list[player].include?(opponent)
+      end
     end
 
-    def players_in_a_combination
-      @players_in_a_combination ||= minimum_number_of_compatible_players
+    def players_ordered_by_opponents_count
+      list.keys.sort_by { |player| list[player].count }
     end
 
-    def increase_players_in_a_combination
-      @players_in_a_combination = players_in_a_combination + 1
-    end
-
-    def reset_players_in_a_combination
-      @players_in_a_combination = nil
+    def opponents_ordered_by_opponents_count
+      players_ordered_by_opponents_count
     end
 
     # Finds players with no opponents, or players with the
@@ -116,6 +89,26 @@ module Swissfork
 
         incompatibilities
       end
+    end
+
+    # Returns the number of incompatibilities found by pairing
+    # the players with the lest possible opponents with their
+    # opponents with the least possible opponents.
+    def incompatibilities_by_least_compatible_pairing
+      incompatibilities = 0
+
+      until enough_players_to_guarantee_pairing?
+        player = players_ordered_by_opponents_count.first
+
+        if list[player].empty?
+          incompatibilities += 1
+          remove_from_list([player])
+        else
+          remove_from_list([player, opponent_with_less_opponents_for(player)])
+        end
+      end
+
+      incompatibilities
     end
 
     # Hash with the following format:
