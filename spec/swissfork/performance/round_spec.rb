@@ -27,40 +27,35 @@ module Swissfork
           end
         end
 
-        context "30 players" do
-          let(:players) { create_players(1..30) }
-
-          context "no obvious downfloat" do
-            before(:each) do
-              players[0..14].each { |player| player.stub(points: 1) }
-              players[7..14].each { |player| player.stub(floats: [:down]) }
-            end
-
-            it "performs like O(n^2)" do
-              Benchmark.realtime{ round.pair_numbers }.should be < 0.03
-              round.pair_numbers.should == [[1, 9], [2, 10], [3, 11], [4, 12], [5, 13], [6, 14], [8, 15], [7, 16], [17, 24], [18, 25], [19, 26], [20, 27], [21, 28], [22, 29], [23, 30]]
-            end
-          end
-        end
-
         context "50 players" do
           let(:players) { create_players(1..50) }
 
-          context "no obvious downfloat" do
-            before(:each) do
-              players[0..24].each { |player| player.stub(points: 1) }
-              players[12..24].each { |player| player.stub(floats: [:down]) }
-            end
+          before(:each) do
+            players[0..24].each { |player| player.stub(points: 1) }
+            players[12..24].each { |player| player.stub(floats: [:down]) }
+          end
 
-            it "performs like O(n^2)" do
-              Benchmark.realtime{ round.pair_numbers }.should be < 0.06
-              round.pair_numbers.should == [
-                [1, 14], [2, 15], [3, 16], [4, 17], [5, 18], [6, 19], [7, 20],
-                [8, 21], [9, 22], [10, 23], [11, 24], [13, 25], [12, 26],
-                [27, 39], [28, 40], [29, 41], [30, 42], [31, 43], [32, 44],
-                [33, 45], [34, 46], [35, 47], [36, 48], [37, 49], [38, 50]
-              ]
-            end
+          it "performs like O(n^2)" do
+            Benchmark.realtime{ round.pair_numbers }.should be < 0.06
+            round.pair_numbers.should == [
+              [1, 14], [2, 15], [3, 16], [4, 17], [5, 18], [6, 19], [7, 20],
+              [8, 21], [9, 22], [10, 23], [11, 24], [13, 25], [12, 26],
+              [27, 39], [28, 40], [29, 41], [30, 42], [31, 43], [32, 44],
+              [33, 45], [34, 46], [35, 47], [36, 48], [37, 49], [38, 50]
+            ]
+          end
+        end
+
+        context "150 players" do
+          let(:players) { create_players(1..150) }
+
+          before(:each) do
+            players[0..74].each { |player| player.stub(points: 1) }
+            players[37..74].each { |player| player.stub(floats: [:down]) }
+          end
+
+          it "is very fast" do
+            Benchmark.realtime{ round.pair_numbers }.should be < 0.4
           end
         end
       end
