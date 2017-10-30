@@ -15,12 +15,18 @@ module Swissfork
     initialize_with :players, :number_of_downfloats
 
     def allowed
-      @allowed ||= downfloat_combinations.map { |downfloats| downfloats.to_set }.to_set
+      @allowed ||= downfloat_combinations.select do |downfloats|
+        PossiblePairs.new(players - downfloats).count >= number_of_pairs
+      end.map { |downfloats| downfloats.to_set }.to_set
     end
 
   private
     def downfloat_combinations
       combinations.select { |downfloats| can_downfloat?(downfloats) }
+    end
+
+    def number_of_pairs
+      (players.count - number_of_downfloats) / 2
     end
 
     def combinations
