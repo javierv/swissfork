@@ -16,3 +16,21 @@ class Object
     stub(preference_degree: degree)
   end
 end
+
+class Array
+  def each_stub(methods)
+    each { |player| player.stub(methods) }
+  end
+
+  def each_stub_opponents(opponents)
+    each { |player| player.stub_opponents(opponents) }
+  end
+
+  def each_stub_preference(colour_preference)
+    each { |player| player.stub_preference(colour_preference) }
+  end
+
+  def each_stub_degree(degree)
+    each { |player| player.stub_degree(degree) }
+  end
+end

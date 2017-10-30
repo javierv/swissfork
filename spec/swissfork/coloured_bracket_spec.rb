@@ -14,12 +14,12 @@ module Swissfork
       let(:players) { create_players(1..10) }
 
       context "homogeneous bracket" do
-        before(:each) { players.each { |player| player.stub(points: 1) }}
+        before(:each) { players.each_stub(points: 1) }
 
         context "default exchange is OK" do
           before(:each) do
-            players[0..4].each { |player| player.stub_preference(:white) }
-            players[5..9].each { |player| player.stub_preference(:black) }
+            players[0..4].each_stub_preference(:white)
+            players[5..9].each_stub_preference(:black)
           end
 
           it "pairs players normally" do
@@ -29,9 +29,9 @@ module Swissfork
 
         context "transpositions guarantee colour preferences" do
           before(:each) do
-            players[0..3].each { |player| player.stub_preference(:white) }
+            players[0..3].each_stub_preference(:white)
             players[4].stub_preference(:black)
-            players[5..7].each { |player| player.stub_preference(:black) }
+            players[5..7].each_stub_preference(:black)
             players[8].stub_preference(:white)
             players[9].stub_preference(:black)
           end
@@ -66,17 +66,17 @@ module Swissfork
         let(:players) { create_players(1..11) }
 
         before(:each) do
-          players[0..1].each { |player| player.stub(points: 2) }
-          players[2..10].each { |player| player.stub(points: 1) }
-          players[0..1].each { |player| player.stub_opponents(players[0..1]) }
+          players[0..1].each_stub(points: 2)
+          players[2..10].each_stub(points: 1)
+          players[0..1].each_stub_opponents(players[0..1])
 
-          players[0..10].each { |player| player.stub_degree(:strong) }
+          players[0..10].each_stub_degree(:strong)
         end
 
         context "descended players have same preference as ascending players" do
           before(:each) do
-            players[0..4].each { |player| player.stub_preference(:white) }
-            players[5..10].each { |player| player.stub_preference(:black) }
+            players[0..4].each_stub_preference(:white)
+            players[5..10].each_stub_preference(:black)
           end
 
           it "pairs them with lower players" do
@@ -85,8 +85,8 @@ module Swissfork
 
           context "they're incompatible with lower players" do
             before(:each) do
-              players[0..1].each { |player| player.stub_opponents(players[5..10]) }
-              players[5..10].each { |player| player.stub_opponents(players[0..1]) }
+              players[0..1].each_stub_opponents(players[5..10])
+              players[5..10].each_stub_opponents(players[0..1])
             end
 
             it "pairs them with the higher players" do
@@ -99,8 +99,8 @@ module Swissfork
           before(:each) do
             players[0].stub_preference(:white)
             players[0].stub_degree(:mild)
-            players[1..4].each { |player| player.stub_preference(:black) }
-            players[5..10].each { |player| player.stub_preference(:white) }
+            players[1..4].each_stub_preference(:black)
+            players[5..10].each_stub_preference(:white)
           end
 
           it "has a lower preference than other players" do
@@ -113,13 +113,13 @@ module Swissfork
         let(:players) { create_players(1..4) }
 
         before(:each) do
-          players.each { |player| player.stub(points: 1) }
-          players.each { |player| player.stub_preference(:white) }
+          players.each_stub(points: 1)
+          players.each_stub_preference(:white)
         end
 
         context "all players have the same preference degree" do
           before(:each) do
-            players.each { |player| player.stub_degree(:strong) }
+            players.each_stub_degree(:strong)
           end
 
           it "pairs giving priority to the higher players" do
@@ -129,8 +129,8 @@ module Swissfork
 
         context "the lower players have a stronger preference" do
           before(:each) do
-            players[0..1].each { |player| player.stub_degree(:strong) }
-            players[2..3].each { |player| player.stub_degree(:absolute) }
+            players[0..1].each_stub_degree(:strong)
+            players[2..3].each_stub_degree(:absolute)
           end
 
           it "pairs giving priority to the higher players" do
@@ -167,7 +167,7 @@ module Swissfork
 
           context "all of them are topscorers" do
             before(:each) do
-              players.each { |player| player.stub(topscorer?: true) }
+              players.each_stub(topscorer?: true)
             end
 
             it "avoids pairing players with same absolute preferences together" do
@@ -178,7 +178,7 @@ module Swissfork
 
         context "all players have an absolute colour preference" do
           before(:each) do
-            players.each { |player| player.stub_degree(:absolute) }
+            players.each_stub_degree(:absolute)
           end
 
           context "none of them are topscorers" do
@@ -190,7 +190,7 @@ module Swissfork
 
           context "all of them are topscorers" do
             before(:each) do
-              players.each { |player| player.stub(topscorer?: true) }
+              players.each_stub(topscorer?: true)
             end
 
             it "pairs those players" do

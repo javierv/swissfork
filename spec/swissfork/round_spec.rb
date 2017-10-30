@@ -61,7 +61,7 @@ module Swissfork
         let(:players) { create_players(1..20) }
 
         before(:each) do
-          players[0..9].each { |player| player.stub(points: 1) }
+          players[0..9].each_stub(points: 1)
         end
 
         it "returns the combination of each brackets pairs" do

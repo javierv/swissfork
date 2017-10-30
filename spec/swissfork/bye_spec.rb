@@ -53,13 +53,13 @@ module Swissfork
 
       context "penultimate bracket has an even number of players" do
         before(:each) do
-          players[0..5].each { |player| player.stub(points: 1) }
-          players[6..10].each { |player| player.stub(points: 0) }
+          players[0..5].each_stub(points: 1)
+          players[6..10].each_stub(points: 0)
         end
 
         context "all players in the last bracket had byes" do
           before(:each) do
-            players[6..10].each { |player| player.stub(had_bye?: true) }
+            players[6..10].each_stub(had_bye?: true)
           end
 
           it "gives the bye to a player from the previous bracket" do
@@ -70,7 +70,7 @@ module Swissfork
           context "last player in the PPB played against last bracket players" do
             before(:each) do
               players[5].stub_opponents(players[6..10])
-              players[6..10].each { |player| player.stub_opponents([players[5]]) }
+              players[6..10].each_stub_opponents([players[5]])
             end
 
             it "gives the bye to that player anyway" do
@@ -81,7 +81,7 @@ module Swissfork
 
           context "the last players in the PPB had a bye" do
             before(:each) do
-              players[2..5].each { |player| player.stub(had_bye?: true) }
+              players[2..5].each_stub(had_bye?: true)
             end
 
             it "gives the bye to a different player" do
@@ -93,11 +93,11 @@ module Swissfork
 
         context "all players in the last two brackets had byes" do
           before(:each) do
-            players[0..3].each { |player| player.stub(points: 2) }
-            players[4..7].each { |player| player.stub(points: 1) }
-            players[8..10].each { |player| player.stub(points: 0) }
+            players[0..3].each_stub(points: 2)
+            players[4..7].each_stub(points: 1)
+            players[8..10].each_stub(points: 0)
 
-            players[4..10].each { |player| player.stub(had_bye?: true) }
+            players[4..10].each_stub(had_bye?: true)
           end
 
           it "a player from a previous bracket gets the bye" do
@@ -108,7 +108,7 @@ module Swissfork
 
         context "all players in the last bracket have downfloated" do
           before(:each) do
-            players[6..10].each { |player| player.stub(floats: [:down]) }
+            players[6..10].each_stub(floats: [:down])
           end
 
           it "gives the bye to the last player in the last bracket" do
@@ -131,13 +131,13 @@ module Swissfork
 
       context "penultimate bracket has an odd number of players" do
         before(:each) do
-          players[0..6].each { |player| player.stub(points: 1) }
-          players[7..10].each { |player| player.stub(points: 0) }
+          players[0..6].each_stub(points: 1)
+          players[7..10].each_stub(points: 0)
         end
 
         context "all players in the last bracket had byes" do
           before(:each) do
-            players[7..10].each { |player| player.stub(had_bye?: true) }
+            players[7..10].each_stub(had_bye?: true)
           end
 
           it "gives the bye to a player from the previous bracket" do
@@ -147,7 +147,7 @@ module Swissfork
 
           context "the last players in the PPB had also a bye" do
             before(:each) do
-              players[2..6].each { |player| player.stub(had_bye?: true) }
+              players[2..6].each_stub(had_bye?: true)
             end
 
             it "gives the bye to a different player" do
@@ -159,7 +159,7 @@ module Swissfork
 
         context "all players in the last bracket have downfloated" do
           before(:each) do
-            players[7..10].each { |player| player.stub(floats: [:down]) }
+            players[7..10].each_stub(floats: [:down])
           end
 
           it "gives the bye to the last player in the last bracket" do

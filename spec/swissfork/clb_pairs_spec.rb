@@ -14,8 +14,8 @@ module Swissfork
       let(:players) { create_players(1..10) }
 
       before(:each) do
-        players[0..7].each { |player| player.stub(points: 1) }
-        players[8..9].each { |player| player.stub(points: 0) }
+        players[0..7].each_stub(points: 1)
+        players[8..9].each_stub(points: 0)
       end
 
       context "last players from the PPB complete the pairing" do
@@ -57,9 +57,9 @@ module Swissfork
 
       context "no players from the PPB complete the pairing" do
         before(:each) do
-          players[0..1].each { |player| player.stub(points: 2) }
-          players[2..7].each { |player| player.stub_opponents([players[8], players[9]]) }
-          players[8..9].each { |player| player.stub_opponents(players[2..9]) }
+          players[0..1].each_stub(points: 2)
+          players[2..7].each_stub_opponents([players[8], players[9]])
+          players[8..9].each_stub_opponents(players[2..9])
         end
 
         it "redoes the pairing of the last paired bracket" do
@@ -68,7 +68,7 @@ module Swissfork
 
         context "the last bracket has some pairable players" do
           before(:each) do
-            players[6..7].each { |player| player.stub(points: 0) }
+            players[6..7].each_stub(points: 0)
           end
 
           it "pairs those players against each other" do
@@ -78,9 +78,9 @@ module Swissfork
 
         context "the last paired bracket has more players than downfloaters" do
           before(:each) do
-            players[2..3].each { |player| player.stub(points: 2) }
-            players[2..3].each { |player| player.stub_opponents([]) }
-            players[8..9].each { |player| player.stub_opponents(players[4..9]) }
+            players[2..3].each_stub(points: 2)
+            players[2..3].each_stub_opponents([])
+            players[8..9].each_stub_opponents(players[4..9])
           end
 
           it "downfloats only the needed players" do
@@ -93,8 +93,8 @@ module Swissfork
         let(:players) { create_players(1..11) }
 
         before(:each) do
-          players[0..8].each { |player| player.stub(points: 1) }
-          players[9..10].each { |player| player.stub(points: 0) }
+          players[0..8].each_stub(points: 1)
+          players[9..10].each_stub(points: 0)
           players[9].stub_opponents([players[10]])
           players[10].stub_opponents([players[9]])
         end
@@ -108,12 +108,12 @@ module Swissfork
         let(:players) { create_players(1..12) }
 
         before(:each) do
-          players[0..1].each { |player| player.stub(points: 3) }
-          players[2..5].each { |player| player.stub(points: 2) }
-          players[6..9].each { |player| player.stub(points: 1) }
-          players[9..11].each { |player| player.stub(points: 0) }
-          players[7..8].each { |player| player.stub_opponents(players[9..11]) }
-          players[9..11].each { |player| player.stub_opponents(players[7..11]) }
+          players[0..1].each_stub(points: 3)
+          players[2..5].each_stub(points: 2)
+          players[6..9].each_stub(points: 1)
+          players[9..11].each_stub(points: 0)
+          players[7..8].each_stub_opponents(players[9..11])
+          players[9..11].each_stub_opponents(players[7..11])
         end
 
         it "downfloats players from previous brackets" do
@@ -126,11 +126,11 @@ module Swissfork
 
         before(:each) do
           players[0].stub(points: 3)
-          players[1..3].each { |player| player.stub(points: 2) }
-          players[4..5].each { |player| player.stub(points: 1) }
-          players[6..7].each { |player| player.stub(points: 0) }
-          players[4..5].each { |player| player.stub_opponents(players[6..7]) }
-          players[6..7].each { |player| player.stub_opponents(players[4..7]) }
+          players[1..3].each_stub(points: 2)
+          players[4..5].each_stub(points: 1)
+          players[6..7].each_stub(points: 0)
+          players[4..5].each_stub_opponents(players[6..7])
+          players[6..7].each_stub_opponents(players[4..7])
         end
 
         it "pairs the MDP and downfloats players from the remainder" do
@@ -144,13 +144,13 @@ module Swissfork
         before(:each) do
           # The first two brackets will be merged as one; its pairing is the
           # one we're testing.
-          players[0..1].each { |player| player.stub(points: 3) }
-          players[2..5].each { |player| player.stub(points: 2) }
-          players[6..9].each { |player| player.stub(points: 1) }
+          players[0..1].each_stub(points: 3)
+          players[2..5].each_stub(points: 2)
+          players[6..9].each_stub(points: 1)
 
-          players[0..1].each { |player| player.stub_opponents(players[0..1]) }
+          players[0..1].each_stub_opponents(players[0..1])
           players[5].stub_opponents(players[6..9])
-          players[6..9].each { |player| player.stub_opponents([players[5]] + players[6..9]) }
+          players[6..9].each_stub_opponents([players[5]] + players[6..9])
         end
 
         it "maximizes number of pairs, then number of MDP pairs" do

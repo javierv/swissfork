@@ -17,8 +17,8 @@ module Swissfork
           let(:players) { create_players(1..18) }
 
           before(:each) do
-            players[0..8].each { |player| player.stub(points: 1) }
-            players[4..8].each { |player| player.stub(floats: [:down]) }
+            players[0..8].each_stub(points: 1)
+            players[4..8].each_stub(floats: [:down])
           end
 
           it "is very fast" do
@@ -31,8 +31,8 @@ module Swissfork
           let(:players) { create_players(1..50) }
 
           before(:each) do
-            players[0..24].each { |player| player.stub(points: 1) }
-            players[12..24].each { |player| player.stub(floats: [:down]) }
+            players[0..24].each_stub(points: 1)
+            players[12..24].each_stub(floats: [:down])
           end
 
           it "performs like O(n^2)" do
@@ -50,8 +50,8 @@ module Swissfork
           let(:players) { create_players(1..150) }
 
           before(:each) do
-            players[0..74].each { |player| player.stub(points: 1) }
-            players[37..74].each { |player| player.stub(floats: [:down]) }
+            players[0..74].each_stub(points: 1)
+            players[37..74].each_stub(floats: [:down])
           end
 
           it "is very fast" do
@@ -62,7 +62,7 @@ module Swissfork
 
       context "same colour preference for all players" do
         before(:each) do
-          players.each { |player| player.stub_preference(:white) }
+          players.each_stub_preference(:white)
         end
 
         context "with 20 players" do
@@ -75,7 +75,7 @@ module Swissfork
 
         context "the preference is strong" do
           before(:each) do
-            players.each { |player| player.stub_degree(:strong) }
+            players.each_stub_degree(:strong)
           end
 
           context "with 20 players" do
@@ -93,12 +93,12 @@ module Swissfork
           let(:players) { create_players(1..32) }
 
           before(:each) do
-            players[0..15].each { |player| player.stub_preference(:white) }
-            players[8..9].each { |player| player.stub_preference(:black) }
-            players[16..23].each { |player| player.stub_preference(:white) }
-            players[24..31].each { |player| player.stub_preference(:black) }
-            players[26..28].each { |player| player.stub_preference(:white) }
-            players[0..31].each { |player| player.stub_degree(:mild) }
+            players[0..15].each_stub_preference(:white)
+            players[8..9].each_stub_preference(:black)
+            players[16..23].each_stub_preference(:white)
+            players[24..31].each_stub_preference(:black)
+            players[26..28].each_stub_preference(:white)
+            players[0..31].each_stub_degree(:mild)
           end
 
           it "pairs fast" do
@@ -113,9 +113,9 @@ module Swissfork
           before(:each) do
             players[0].stub_preference(:black)
             players[1].stub_preference(:white)
-            players[2..3].each { |player| player.stub_preference(:black) }
+            players[2..3].each_stub_preference(:black)
             players[4].stub_preference(:white)
-            players[5..10].each { |player| player.stub_preference(:black) }
+            players[5..10].each_stub_preference(:black)
             players[11].stub_preference(:white)
             players[12].stub_preference(:black)
 
@@ -126,11 +126,11 @@ module Swissfork
             players[17].stub_preference(:white)
             players[18].stub_preference(:black)
             players[19].stub_preference(:white)
-            players[20..21].each { |player| player.stub_preference(:black) }
-            players[22..23].each { |player| player.stub_preference(:white) }
-            players[24..25].each { |player| player.stub_preference(:black) }
+            players[20..21].each_stub_preference(:black)
+            players[22..23].each_stub_preference(:white)
+            players[24..25].each_stub_preference(:black)
 
-            players[0..31].each { |player| player.stub_degree(:mild) }
+            players[0..31].each_stub_degree(:mild)
           end
 
           it "pairs fast" do
@@ -145,7 +145,7 @@ module Swissfork
           let(:players) { create_players(1..15) }
 
           before(:each) do
-            players[0..13].each { |player| player.stub(floats: [:down]) }
+            players[0..13].each_stub(floats: [:down])
             players[14].stub(floats: [:down, nil])
           end
 
@@ -163,14 +163,14 @@ module Swissfork
           let(:players) { create_players(1..16) }
 
           before(:each) do
-            players[0..11].each { |player| player.stub(points: 1) }
-            players[12..15].each { |player| player.stub(points: 0) }
+            players[0..11].each_stub(points: 1)
+            players[12..15].each_stub(points: 0)
           end
 
           context "the last 4 players in the first group can't downfloat" do
             before(:each) do
-              players[8..11].each { |player| player.stub_opponents(players[12..15]) }
-              players[12..15].each { |player| player.stub_opponents(players[8..15]) }
+              players[8..11].each_stub_opponents(players[12..15])
+              players[12..15].each_stub_opponents(players[8..15])
             end
 
             it "pairs fast" do
@@ -182,8 +182,8 @@ module Swissfork
 
           context "the last 6 players in the first group can't downfloat" do
             before(:each) do
-              players[6..11].each { |player| player.stub_opponents(players[12..15]) }
-              players[12..15].each { |player| player.stub_opponents(players[6..15]) }
+              players[6..11].each_stub_opponents(players[12..15])
+              players[12..15].each_stub_opponents(players[6..15])
             end
 
             it "pairs fast" do
@@ -197,10 +197,10 @@ module Swissfork
           let(:players) { create_players(1..20) }
 
           before(:each) do
-            players[0..15].each { |player| player.stub(points: 1) }
-            players[16..19].each { |player| player.stub(points: 0) }
-            players[9..15].each { |player| player.stub_opponents(players[16..19]) }
-            players[16..19].each { |player| player.stub_opponents(players[9..19]) }
+            players[0..15].each_stub(points: 1)
+            players[16..19].each_stub(points: 0)
+            players[9..15].each_stub_opponents(players[16..19])
+            players[16..19].each_stub_opponents(players[9..19])
           end
 
           it "pairs fast" do
@@ -215,12 +215,12 @@ module Swissfork
           let(:players) { create_players(1..20) }
 
           before(:each) do
-            players[0..5].each { |player| player.stub(points: 3) }
-            players[6..11].each { |player| player.stub(points: 2) }
-            players[12..15].each { |player| player.stub(points: 1) }
-            players[16..19].each { |player| player.stub(points: 0) }
-            players[13..15].each { |player| player.stub_opponents(players[16..19]) }
-            players[16..19].each { |player| player.stub_opponents(players[13..19]) }
+            players[0..5].each_stub(points: 3)
+            players[6..11].each_stub(points: 2)
+            players[12..15].each_stub(points: 1)
+            players[16..19].each_stub(points: 0)
+            players[13..15].each_stub_opponents(players[16..19])
+            players[16..19].each_stub_opponents(players[13..19])
           end
 
           it "pairs fast" do
@@ -236,7 +236,7 @@ module Swissfork
         context "one of the players can't be paired" do
           before(:each) do
             players[0].stub(opponents: players[1..26])
-            players[1..26].each { |player| player.stub(opponents: [players[0]]) }
+            players[1..26].each_stub(opponents: [players[0]])
           end
 
           it "is very fast" do
@@ -250,9 +250,9 @@ module Swissfork
         let(:players) { create_players(1..11) }
 
         before(:each) do
-          players[0..7].each { |player| player.stub(points: 1) }
-          players[8..10].each { |player| player.stub(points: 0) }
-          players[8..10].each { |player| player.stub(had_bye?: true) }
+          players[0..7].each_stub(points: 1)
+          players[8..10].each_stub(points: 0)
+          players[8..10].each_stub(had_bye?: true)
         end
 
         it "is very fast" do
@@ -263,7 +263,7 @@ module Swissfork
 
         context "the players in the last bracket can't be paired" do
           before(:each) do
-            players[8..10].each { |player| player.stub_opponents(players[8..10]) }
+            players[8..10].each_stub_opponents(players[8..10])
           end
 
           it "is very fast" do

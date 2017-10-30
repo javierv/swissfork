@@ -14,7 +14,7 @@ module Swissfork
       let(:players) { create_players(1..6) }
 
       before(:each) do
-        players.each { |player| player.stub(points: 1) }
+        players.each_stub(points: 1)
       end
 
       context "players with the same points" do
@@ -35,7 +35,7 @@ module Swissfork
 
       context "at least half of the players have different number of points" do
         before(:each) do
-          players[0..2].each { |player| player.stub(points: 1.5) }
+          players[0..2].each_stub(points: 1.5)
         end
 
         it "returns false" do
@@ -66,7 +66,7 @@ module Swissfork
       let(:players) { create_players(1..6) }
 
       before(:each) do
-        players.each { |player| player.stub(points: 1) }
+        players.each_stub(points: 1)
       end
 
       context "homogeneous bracket" do
@@ -112,7 +112,7 @@ module Swissfork
       context "even number of players" do
         let(:players) { create_players(1..6) }
         before(:each) do
-          players.each { |player| player.stub(points: 1) }
+          players.each_stub(points: 1)
         end
 
         context "homogeneous bracket" do
@@ -123,7 +123,7 @@ module Swissfork
 
         context "heterogeneous bracket" do
           before(:each) do
-            players[0..1].each { |player| player.stub(points: 1.5) }
+            players[0..1].each_stub(points: 1.5)
           end
 
           it "returns the descended players" do
@@ -154,7 +154,7 @@ module Swissfork
         let(:players) { create_players(1..6) }
 
         before(:each) do
-          players.each { |player| player.stub(points: 1) }
+          players.each_stub(points: 1)
         end
 
         context "homogeneous bracket" do
@@ -165,7 +165,7 @@ module Swissfork
 
         context "heterogeneous bracket" do
           before(:each) do
-            players[0..1].each { |player| player.stub(points: 1.5) }
+            players[0..1].each_stub(points: 1.5)
           end
 
           it "returns all players but the descended ones" do
@@ -198,7 +198,7 @@ module Swissfork
 
       context "heterogeneous bracket" do
         before(:each) do
-          s1_players[0..2].each { |player| player.stub(points: 2) }
+          s1_players[0..2].each_stub(points: 2)
           bracket.stub(number_of_moved_down_possible_pairs: 2)
         end
 
@@ -218,7 +218,7 @@ module Swissfork
       context "even number of players" do
         let(:players) { create_players(1..10) }
         before(:each) do
-          players.each { |player| player.stub_opponents([]) }
+          players.each_stub_opponents([])
         end
 
         context "no previous opponents" do
@@ -313,7 +313,7 @@ module Swissfork
         context "one player from S1 has played against everyone in S2" do
           before(:each) do
             players[0].stub_opponents(players[5..9])
-            players[5..9].each { |player| player.stub_opponents([players[0]]) }
+            players[5..9].each_stub_opponents([players[0]])
           end
 
           it "pairs the players with another player from S1" do
@@ -327,7 +327,7 @@ module Swissfork
             players[1].stub_opponents(players[0..2] + players[4..9])
             players[2].stub_opponents([players[1]])
             players[3].stub_opponents([players[0]])
-            players[4..9].each { |player| player.stub_opponents([players[0], players[1]]) }
+            players[4..9].each_stub_opponents([players[0], players[1]])
           end
 
           it "pairs those two players with players from S1" do
@@ -338,7 +338,7 @@ module Swissfork
         context "one of the players can't be paired" do
           before(:each) do
             players[0].stub_opponents(players[1..9])
-            players[1..9].each { |player| player.stub_opponents([players[0]]) }
+            players[1..9].each_stub_opponents([players[0]])
           end
 
           it "doesn't pair that player" do
@@ -352,8 +352,8 @@ module Swissfork
 
         context "two players can only play against one opponent" do
           before(:each) do
-            players[0..1].each { |player| player.stub_opponents(players[0..8]) }
-            players[2..8].each { |player| player.stub_opponents([players[0], players[1]]) }
+            players[0..1].each_stub_opponents(players[0..8])
+            players[2..8].each_stub_opponents([players[0], players[1]])
           end
 
           it "pairs the higher of those two players" do
@@ -378,9 +378,9 @@ module Swissfork
 
         context "four players can only play against one opponent" do
           before(:each) do
-            players[0..3].each { |player| player.stub_opponents(players[0..5] + players[7..9]) }
-            players[4..5].each { |player| player.stub_opponents(players[0..3]) }
-            players[7..9].each { |player| player.stub_opponents(players[0..3]) }
+            players[0..3].each_stub_opponents(players[0..5] + players[7..9])
+            players[4..5].each_stub_opponents(players[0..3])
+            players[7..9].each_stub_opponents(players[0..3])
           end
 
           it "downfloats four players" do
@@ -390,7 +390,7 @@ module Swissfork
 
           context "two of those players and the last one have already downfloated" do
             before(:each) do
-              players[0..1].each { |player| player.stub(floats: [:down]) }
+              players[0..1].each_stub(floats: [:down])
               players[9].stub(floats: [:down])
             end
 
@@ -427,7 +427,7 @@ module Swissfork
       context "odd number of players" do
         let(:players) { create_players(1..11) }
         before(:each) do
-          players.each { |player| player.stub_opponents([]) }
+          players.each_stub_opponents([])
         end
 
         context "no previous opponents" do
@@ -450,7 +450,7 @@ module Swissfork
         context "all players downfloated; the first one did so 2 rounds ago" do
           before(:each) do
             players[0].stub(floats: [:down, nil])
-            players[1..10].each { |player| player.stub(floats: [nil, :down]) }
+            players[1..10].each_stub(floats: [nil, :down])
           end
 
           it "downfloats that player and pairs the rest in order" do

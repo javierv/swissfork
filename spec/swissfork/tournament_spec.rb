@@ -152,11 +152,11 @@ module Swissfork
 
       before(:each) do
         tournament.stub(players: players)
-        players[0..1].each { |player| player.stub(points: 6) }
-        players[2..3].each { |player| player.stub(points: 5) }
-        players[4..5].each { |player| player.stub(points: 4) }
-        players[6..7].each { |player| player.stub(points: 3) }
-        players[8..9].each { |player| player.stub(points: 2) }
+        players[0..1].each_stub(points: 6)
+        players[2..3].each_stub(points: 5)
+        players[4..5].each_stub(points: 4)
+        players[6..7].each_stub(points: 3)
+        players[8..9].each_stub(points: 2)
       end
 
       describe "#topscorers" do
@@ -183,14 +183,14 @@ module Swissfork
 
       describe "absolute preference pairing" do
         before(:each) do
-          players[0..1].each { |player| player.stub_preference(:white) }
-          players[2..3].each { |player| player.stub_preference(:black) }
-          players[4..5].each { |player| player.stub_preference(:white) }
-          players[6..7].each { |player| player.stub_preference(:black) }
-          players[8..9].each { |player| player.stub_preference(:white) }
+          players[0..1].each_stub_preference(:white)
+          players[2..3].each_stub_preference(:black)
+          players[4..5].each_stub_preference(:white)
+          players[6..7].each_stub_preference(:black)
+          players[8..9].each_stub_preference(:white)
 
-          players[0..7].each { |player| player.stub_degree(:absolute) }
-          players[8..9].each { |player| player.stub_degree(:mild) }
+          players[0..7].each_stub_degree(:absolute)
+          players[8..9].each_stub_degree(:mild)
         end
 
         context "not the last round" do

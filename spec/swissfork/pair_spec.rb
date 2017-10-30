@@ -39,7 +39,7 @@ module Swissfork
       let(:pair_with_first_player) { Pair.new(players[0], players[4]) }
       let(:pair_with_second_player) { Pair.new(players[1], players[2]) }
 
-      before(:each) { players.each { |player| player.stub(points: 3) } }
+      before(:each) { players.each_stub(points: 3) }
 
       context "all players have the same points" do
         it "the pair with the smallest player is smaller" do

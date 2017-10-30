@@ -16,7 +16,7 @@ module Swissfork
 
         context "all players had byes" do
           before(:each) do
-            players[0..5].each { |player| player.stub(had_bye?: true) }
+            players[0..5].each_stub(had_bye?: true)
           end
 
           it "returns true" do
@@ -30,7 +30,7 @@ module Swissfork
 
         context "not all players had byes" do
           before(:each) do
-            players[0..5].each { |player| player.stub(had_bye?: true) }
+            players[0..5].each_stub(had_bye?: true)
           end
 
           context "no pairing incompatibilities" do
@@ -42,7 +42,7 @@ module Swissfork
           context "pairing incompatibilities" do
             before(:each) do
               players[0].stub_opponents(players[1..5])
-              players[1..5].each { |player| player.stub_opponents([players[0]]) }
+              players[1..5].each_stub_opponents([players[0]])
             end
 
             it "returns false" do
@@ -53,7 +53,7 @@ module Swissfork
 
         context "all players had byes" do
           before(:each) do
-            players[0..6].each { |player| player.stub(had_bye?: true) }
+            players[0..6].each_stub(had_bye?: true)
           end
 
           it "returns true" do
@@ -75,7 +75,7 @@ module Swissfork
       context "existing opponents still make the players pairable" do
         before(:each) do
           players[11].stub_opponents(players[6..10])
-          players[6..10].each { |player| player.stub_opponents([players[11]]) }
+          players[6..10].each_stub_opponents([players[11]])
         end
 
         it "returns true" do
@@ -85,7 +85,7 @@ module Swissfork
 
       context "completely unpairable players" do
         before(:each) do
-          players[0..11].each { |player| player.stub_opponents(players[0..11]) }
+          players[0..11].each_stub_opponents(players[0..11])
         end
 
         it "returns false" do
@@ -96,7 +96,7 @@ module Swissfork
       context "one player can't be paired at all" do
         before(:each) do
           players[11].stub_opponents(players[0..10])
-          players[0..10].each { |player| player.stub_opponents([players[11]]) }
+          players[0..10].each_stub_opponents([players[11]])
         end
 
         it "returns false" do
@@ -106,8 +106,8 @@ module Swissfork
 
       context "two players have the same possible opponent" do
         before(:each) do
-          players[10..11].each { |player| player.stub_opponents(players[1..11]) }
-          players[1..9].each { |player| player.stub_opponents(players[10..11]) }
+          players[10..11].each_stub_opponents(players[1..11])
+          players[1..9].each_stub_opponents(players[10..11])
         end
 
         it "returns false" do

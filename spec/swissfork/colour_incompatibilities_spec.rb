@@ -15,8 +15,8 @@ module Swissfork
 
       context "no incompatibilities" do
         before(:each) do
-          players[0..4].each { |player| player.stub_preference(:white) }
-          players[5..9].each { |player| player.stub_preference(:black) }
+          players[0..4].each_stub_preference(:white)
+          players[5..9].each_stub_preference(:black)
         end
 
         it "returns zero" do
@@ -26,8 +26,8 @@ module Swissfork
 
       context "two more players have one colour priority" do
         before(:each) do
-          players[0..5].each { |player| player.stub_preference(:white) }
-          players[6..9].each { |player| player.stub_preference(:black) }
+          players[0..5].each_stub_preference(:white)
+          players[6..9].each_stub_preference(:black)
         end
 
         it "returns one" do
