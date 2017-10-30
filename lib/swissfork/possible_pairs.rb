@@ -82,33 +82,38 @@ module Swissfork
     # adds two incompatibilities.
     def obvious_incompatibilities
       repetition_list.reduce(0) do |incompatibilities, (opponents, count)|
-        if count >= opponents.count
-          incompatibilities += count - opponents.count
-          remove_from_list(list.keys.select { |player| list[player] == opponents} + opponents)
-        end
-
-        incompatibilities
+        incompatibilities + opponent_incompatibilities(opponents, count).to_i
       end
     end
 
     # Returns the number of incompatibilities found by pairing
-    # the players with the lest possible opponents with their
+    # the players with the least possible opponents with their
     # opponents with the least possible opponents.
     def incompatibilities_by_least_compatible_pairing
-      incompatibilities = 0
+      players_ordered_by_opponents_count.reduce(0) do |incompatibilities, player|
+        incompatibilities + incompatibilities_for(player).to_i
+      end
+    end
 
-      until enough_players_to_guarantee_pairing?
-        player = players_ordered_by_opponents_count.first
+    def opponent_incompatibilities(opponents, count)
+      if count >= opponents.count
+        remove_from_list(list.keys.select { |player| list[player] == opponents} + opponents)
+        count - opponents.count
+      end
+    end
 
+    def incompatibilities_for(player)
+      # These methods have an obvious flaw: they return a value *and* they
+      # change the list object.
+      if list.key?(player)
         if list[player].empty?
-          incompatibilities += 1
           remove_from_list([player])
+          1
         else
           remove_from_list([player, opponent_with_less_opponents_for(player)])
+          0
         end
       end
-
-      incompatibilities
     end
 
     # Hash with the following format:
