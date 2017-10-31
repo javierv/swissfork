@@ -70,7 +70,7 @@ module Swissfork
     # adds two incompatibilities.
     def obvious_incompatibilities
       repetition_list.reduce(0) do |incompatibilities, (opponents, count)|
-        incompatibilities + opponent_incompatibilities(opponents, count).to_i
+        incompatibilities + opponent_incompatibilities(opponents, count)
       end
     end
 
@@ -87,6 +87,8 @@ module Swissfork
       if count >= opponents.count
         remove_from_list(list.keys.select { |player| list[player] == opponents} + opponents)
         count - opponents.count
+      else
+        0
       end
     end
 
