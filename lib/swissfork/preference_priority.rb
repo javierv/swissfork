@@ -21,6 +21,7 @@ module Swissfork
       end
     end
 
+  protected
     def strength
       [colour_index, degree, -1 * difference.abs]
     end
