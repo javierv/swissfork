@@ -344,7 +344,7 @@ module Swissfork
     end
 
     def colour_incompatibilities
-      @colour_incompatibilities ||= ColourIncompatibilities.new(players, number_of_possible_pairs)
+      @colour_incompatibilities ||= ColourIncompatibilities.new(players, number_of_required_total_pairs)
     end
 
     def remainder_pairs

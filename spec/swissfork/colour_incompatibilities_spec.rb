@@ -9,9 +9,9 @@ module Swissfork
     end
 
     describe "#violations" do
-      let(:incompatibilities) { ColourIncompatibilities.new(players, number_of_possible_pairs) }
+      let(:incompatibilities) { ColourIncompatibilities.new(players, number_of_required_pairs) }
       let(:players) { create_players(1..10) }
-      let(:number_of_possible_pairs) { 5 }
+      let(:number_of_required_pairs) { 5 }
 
       context "no incompatibilities" do
         before(:each) do
@@ -35,7 +35,7 @@ module Swissfork
         end
 
         context "not all pairings are possible" do
-          let(:number_of_possible_pairs) { 4 }
+          let(:number_of_required_pairs) { 4 }
 
           it "returns zero" do
             incompatibilities.violations.should == 0

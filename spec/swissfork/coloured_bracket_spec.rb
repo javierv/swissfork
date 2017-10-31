@@ -10,6 +10,41 @@ module Swissfork
 
     let(:bracket) { Bracket.for(players) }
 
+    describe "#minimum_colour_violations" do
+      let(:players) { create_players(1..10) }
+
+      context "more players prefer one colour" do
+        before(:each) do
+          players[0..5].each_stub_preference(:white)
+          players[6..9].each_stub_preference(:black)
+        end
+
+        it "calculates colour violations normally" do
+          bracket.minimum_colour_violations.should == 1
+        end
+
+        context "downfloats required" do
+          before(:each) do
+            bracket.number_of_required_downfloats = 2
+          end
+
+          it "doesn't count the downfloats as violations" do
+            bracket.minimum_colour_violations.should == 0
+          end
+        end
+
+        context "required pairs is set manually (for remainders)" do
+          before(:each) do
+            bracket.number_of_required_pairs = 4
+          end
+
+          it "doesn't count the downfloats as violations" do
+            bracket.minimum_colour_violations.should == 0
+          end
+        end
+      end
+    end
+
     describe "#pairs with colours" do
       let(:players) { create_players(1..10) }
 
