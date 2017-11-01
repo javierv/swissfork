@@ -95,6 +95,43 @@ module Swissfork
             bracket.pair_numbers.should == [[1, 7], [6, 2], [3, 9], [8, 4], [5, 10]]
           end
         end
+
+        context "can't guarantee all colour_preferences" do
+          before(:each) do
+            players[0..3].each_stub_preference(:white)
+            players[4..9].each_stub_preference(:black)
+          end
+
+          it "makes one player repeat colour" do
+            bracket.pair_numbers.should == [[1, 6], [2, 7], [3, 8], [4, 9], [10, 5]]
+          end
+        end
+
+        context "one player has no colour preference" do
+          before(:each) do
+            players[0..3].each_stub_preference(:white)
+            players[4..9].each_stub_preference(:black)
+            players[5].stub_preference(nil)
+          end
+
+          it "pairs that player with someone with minoritary preference" do
+            bracket.pair_numbers.should == [[1, 7], [2, 8], [3, 9], [4, 10], [6, 5]]
+          end
+        end
+
+        context "several players don't have colour preference" do
+          let(:players) { create_players(1..10) }
+
+          before(:each) do
+            players[0..2].each_stub_preference(:white)
+            players[3..6].each_stub_preference(:black)
+            players[7..9].each_stub_preference(nil)
+          end
+
+          it "pairs players with any colour preference with the ones with no preference" do
+            bracket.pair_numbers.should == [[1, 6], [2, 7], [3, 8], [9, 4], [10, 5]]
+          end
+        end
       end
 
       context "heterogeneous bracket" do
