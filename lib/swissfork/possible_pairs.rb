@@ -119,8 +119,12 @@ module Swissfork
 
     def remove_obvious_incompatibles
       obvious_incompatible_opponents.each do |opponents|
-        remove_from_list(list.keys.select { |player| list[player] == opponents} + opponents)
+        remove_from_list(players_having_opponents(opponents) + opponents)
       end
+    end
+
+    def players_having_opponents(opponents)
+      list.keys.select { |player| list[player] == opponents}
     end
 
     def obvious_incompatible_opponents
