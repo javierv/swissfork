@@ -27,9 +27,7 @@ module Swissfork
     def incompatibilities
       return 0 if players.empty? || enough_players_to_guarantee_pairing?
 
-      incompatibilities = obvious_incompatibilities
-      remove_obvious_incompatibles
-      incompatibilities + incompatibilities_by_least_compatible_pairing
+      incompatibilities_by_least_compatible_pairing
     end
 
     def list
@@ -62,35 +60,12 @@ module Swissfork
       players_ordered_by_opponents_count
     end
 
-    # Finds players with no opponents, or players with the
-    # same possible opponents.
-    #
-    # For example, if it finds player 1 is only compatible
-    # with player 5, player 2 is only compatible with
-    # player 5, and player 3 is also compatible just with
-    # player 5, it adds two incompatibilities and marks
-    # player 5 as incompatible.
-    def obvious_incompatibilities
-      repetition_list.reduce(0) do |incompatibilities, (opponents, count)|
-        incompatibilities + opponent_incompatibilities(opponents, count)
-      end
-    end
-
     # Returns the number of incompatibilities found by pairing
     # the players with the least possible opponents with their
     # opponents with the least possible opponents.
     def incompatibilities_by_least_compatible_pairing
       players_ordered_by_opponents_count.reduce(0) do |incompatibilities, player|
         incompatibilities + incompatibilities_for(player).to_i
-      end
-    end
-
-    def opponent_incompatibilities(opponents, count)
-      if count > opponents.count
-        obvious_incompatible_opponents << opponents
-        count - opponents.count
-      else
-        0
       end
     end
 
@@ -106,29 +81,6 @@ module Swissfork
           0
         end
       end
-    end
-
-    # Hash with the following format:
-    # array_of_opponents => number_of_players_having_those_opponents_as_compatible
-    def repetition_list
-      list.values.inject(Hash.new(0)) do |repetition_list, opponents|
-        repetition_list[opponents] += 1
-        repetition_list
-      end
-    end
-
-    def remove_obvious_incompatibles
-      obvious_incompatible_opponents.each do |opponents|
-        remove_from_list(players_having_opponents(opponents) + opponents)
-      end
-    end
-
-    def players_having_opponents(opponents)
-      list.keys.select { |player| list[player] == opponents}
-    end
-
-    def obvious_incompatible_opponents
-      @obvious_incompatible_opponents ||= []
     end
 
     def number_of_players_with_absolute_preference
