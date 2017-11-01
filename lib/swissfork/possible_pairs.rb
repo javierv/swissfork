@@ -27,7 +27,9 @@ module Swissfork
     def incompatibilities
       return 0 if players.empty? || enough_players_to_guarantee_pairing?
 
-      obvious_incompatibilities + incompatibilities_by_least_compatible_pairing
+      incompatibilities = obvious_incompatibilities
+      remove_obvious_incompatibles
+      incompatibilities + incompatibilities_by_least_compatible_pairing
     end
 
     def list
@@ -66,8 +68,8 @@ module Swissfork
     # For example, if it finds player 1 is only compatible
     # with player 5, player 2 is only compatible with
     # player 5, and player 3 is also compatible just with
-    # player 5, it removes all four players from the list and
-    # adds two incompatibilities.
+    # player 5, it adds two incompatibilities and marks
+    # player 5 as incompatible.
     def obvious_incompatibilities
       repetition_list.reduce(0) do |incompatibilities, (opponents, count)|
         incompatibilities + opponent_incompatibilities(opponents, count)
@@ -84,8 +86,8 @@ module Swissfork
     end
 
     def opponent_incompatibilities(opponents, count)
-      if count >= opponents.count
-        remove_from_list(list.keys.select { |player| list[player] == opponents} + opponents)
+      if count > opponents.count
+        obvious_incompatible_opponents << opponents
         count - opponents.count
       else
         0
@@ -109,10 +111,20 @@ module Swissfork
     # Hash with the following format:
     # array_of_opponents => number_of_players_having_those_opponents_as_compatible
     def repetition_list
-      @repetition_list ||= list.values.inject(Hash.new(0)) do |repetition_list, opponents|
+      list.values.inject(Hash.new(0)) do |repetition_list, opponents|
         repetition_list[opponents] += 1
         repetition_list
       end
+    end
+
+    def remove_obvious_incompatibles
+      obvious_incompatible_opponents.each do |opponents|
+        remove_from_list(list.keys.select { |player| list[player] == opponents} + opponents)
+      end
+    end
+
+    def obvious_incompatible_opponents
+      @obvious_incompatible_opponents ||= []
     end
 
     def number_of_players_with_absolute_preference

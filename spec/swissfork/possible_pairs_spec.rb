@@ -53,10 +53,29 @@ module Swissfork
             players[2].stub_opponents(players[0..8])
 
             players[3..7].each_stub_opponents(players[0..2])
+            players[8].stub_opponents([players[0]])
           end
 
           it "can't pair all players" do
             pairs.count.should == 4
+          end
+
+          context "the order of the players is different" do
+            before(:each) do
+              # 1 => 10
+              # 2 => 9, 10
+              # 3 => 9, 10
+              players[0].stub_opponents(players[0..8])
+              players[1].stub_opponents(players[0..7])
+              players[2].stub_opponents(players[0..7])
+
+              players[3..7].each_stub_opponents(players[0..2])
+              players[8].stub_opponents([players[2]])
+            end
+
+            it "returns the same result" do
+              pairs.count.should == 4
+            end
           end
         end
 
