@@ -61,7 +61,8 @@ module Swissfork
     end
 
     def same_colour_preference?
-      colour_preferences.any? && colour_preferences.uniq.count == 1
+      s1_player.colour_preference &&
+        s1_player.colour_preference == s2_player.colour_preference
     end
 
     def same_strong_preference?
@@ -100,10 +101,6 @@ module Swissfork
 
     def both_have_high_difference?
       s1_player.colour_difference.abs > 1 && s2_player.colour_difference.abs > 1
-    end
-
-    def colour_preferences
-      @colour_preferences ||= [s1_player, s2_player].map(&:colour_preference)
     end
 
     def players_ordered_by_preference
