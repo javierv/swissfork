@@ -15,22 +15,28 @@ module Swissfork
     end
 
     def main_preference
-      @main_preference ||= if players_with_black_preference.count > players_with_white_preference.count
-        :black
-      else
-        :white
-      end
+      @main_preference ||=
+        if colour_difference > 0
+          :white
+        elsif colour_difference < 0
+          :black
+        else
+          :white # TODO: make it nil.
+        end
     end
 
     def minoritary_preference
-      if main_preference == :black
-        :white
-      else
-        :black
+      case main_preference
+      when :black then :white
+      when :white then :black
       end
     end
 
   private
+    def colour_difference
+      players_with_white_preference.count - players_with_black_preference.count
+    end
+
     def players_with_main_preference
       send("players_with_#{main_preference}_preference")
     end
