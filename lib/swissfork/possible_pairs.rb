@@ -46,8 +46,14 @@ module Swissfork
       nil
     end
 
+    def reset
+      @compatibility_list = nil
+    end
+
   private
     def incompatibilities
+      reset
+
       if players.empty? || enough_players_to_guarantee_pairing?
         0
       else

@@ -60,5 +60,10 @@ module Swissfork
     def possible_pairs
       @possible_pairs ||= PossiblePairs.new(players)
     end
+
+    def reset
+      super
+      possible_pairs.reset
+    end
   end
 end
