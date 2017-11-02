@@ -1,13 +1,8 @@
-require "spec_helper"
+require "create_players_helper"
 require "swissfork/scoregroup"
-require "swissfork/player"
 
 module Swissfork
   describe Scoregroup do
-    def create_players(numbers)
-      numbers.map { |number| Player.new(number) }
-    end
-
     describe "#add_player" do
       let(:players) { create_players(1..6) }
       let(:scoregroup) { Scoregroup.new(players, nil) }

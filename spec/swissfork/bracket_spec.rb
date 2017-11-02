@@ -1,13 +1,8 @@
-require "spec_helper"
+require "create_players_helper"
 require "swissfork/bracket"
-require "swissfork/player"
 
 module Swissfork
   describe Bracket do
-    def create_players(numbers)
-      numbers.map { |number| Player.new(number) }
-    end
-
     let(:bracket) { Bracket.for(players) }
 
     describe "#homogeneous?" do

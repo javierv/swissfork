@@ -1,13 +1,8 @@
-require "spec_helper"
+require "create_players_helper"
 require "swissfork/possible_pairs"
-require "swissfork/player"
 
 module Swissfork
   describe PossiblePairs do
-    def create_players(numbers)
-      numbers.map { |number| Player.new(number) }
-    end
-
     let(:pairs) { PossiblePairs.new(players) }
 
     describe "#count" do

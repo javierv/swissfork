@@ -44,12 +44,7 @@ module Swissfork
 
     # Helper method to make tests easier to write
     def numbers
-      # Hack to let tests having no colours use this method.
-      if no_players_have_colour_preference?
-        [s1_player, s2_player].map(&:number)
-      else
-        players.map(&:number)
-      end
+      players.map(&:number)
     end
 
     def same_absolute_high_difference?
@@ -115,8 +110,8 @@ module Swissfork
     def players_ordered_by_initial_colours
       higher_player, lower_player = [s1_player, s2_player].sort
 
-      if higher_player.number.odd?
-        [higher_player, lower_player] # TODO: it depends on the initial colour
+      if higher_player.prefers_white_by_default?
+        [higher_player, lower_player]
       else
         [lower_player, higher_player]
       end

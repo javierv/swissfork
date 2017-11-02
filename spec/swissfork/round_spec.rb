@@ -1,13 +1,8 @@
-require "spec_helper"
+require "create_players_helper"
 require "swissfork/round"
-require "swissfork/player"
 
 module Swissfork
   describe Round do
-    def create_players(numbers)
-      numbers.map { |number| Player.new(number) }
-    end
-
     describe "#scoregroups" do
       context "players with the same points" do
         let(:players) { create_players(1..6) }

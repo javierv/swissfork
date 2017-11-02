@@ -1,13 +1,8 @@
-require "spec_helper"
+require "create_players_helper"
 require "swissfork/completion"
-require "swissfork/player"
 
 module Swissfork
   describe Completion do
-    def create_players(numbers)
-      numbers.map { |number| Player.new(number) }
-    end
-
     let(:completion) { Completion.new(players) }
 
     describe "#bye_can_be_selected?" do
