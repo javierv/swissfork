@@ -33,7 +33,7 @@ module Swissfork
     end
 
     def number_of_required_total_pairs
-      @number_of_required_total_pairs ||= number_of_possible_pairs
+      number_of_possible_pairs
     end
 
     def number_of_moved_down_pairs_after_downfloats

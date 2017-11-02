@@ -2,7 +2,7 @@ require "set"
 require "swissfork/pair"
 require "swissfork/exchanger"
 require "swissfork/quality_criteria"
-require "swissfork/possible_pairs"
+require "swissfork/best_quality_calculator"
 require "swissfork/colour_incompatibilities"
 require "swissfork/ok_permit"
 
@@ -50,7 +50,7 @@ module Swissfork
     end
 
     def number_of_possible_pairs
-      [number_of_pairs_after_downfloats, number_of_compatible_pairs].min
+      quality_calculator.possible_pairs
     end
     alias_method :max_pairs, :number_of_possible_pairs # FIDE nomenclature
 
@@ -64,17 +64,12 @@ module Swissfork
     end
     alias_method :z1, :minimum_strong_colour_violations # Old FIDE nomenclature
 
-    def number_of_pairs_after_downfloats
-      (players.count - number_of_required_downfloats) / 2
-    end
-
     def number_of_required_downfloats
-      @number_of_required_downfloats ||=
-        players.count - number_of_compatible_pairs * 2
+      quality_calculator.required_downfloats
     end
 
     def number_of_required_downfloats=(number)
-      @number_of_required_downfloats = [number, players.count - number_of_possible_pairs * 2].max
+      quality_calculator.required_downfloats = number
     end
 
     def number_of_required_pairs
@@ -178,7 +173,6 @@ module Swissfork
     def calculate_pairs
       return [] if players.empty?
       return remainder_pairs if number_of_required_pairs.zero?
-      return [] if number_of_possible_pairs < number_of_required_pairs
       return nil if all_downfloats_are_impossible?
 
       until(pairs = current_exchange_pairs)
@@ -318,10 +312,6 @@ module Swissfork
       players.select { |player| player.points > points }
     end
 
-    def number_of_compatible_pairs
-      @number_of_compatible_pairs ||= PossiblePairs.new(players).count
-    end
-
     def quality
       @quality ||= QualityCriteria.new(self)
     end
@@ -332,6 +322,10 @@ module Swissfork
 
     def remainder_pairs
       []
+    end
+
+    def quality_calculator
+      @quality_calculator ||= BestQualityCalculator.new(players)
     end
   end
 end

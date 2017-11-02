@@ -39,24 +39,6 @@ module Swissfork
       end
     end
 
-    describe "#number_of_pairs_after_downfloats" do
-      context "even number of players" do
-        let(:players) { create_players(1..6) }
-
-        it "returns half of the number of players" do
-          bracket.number_of_pairs_after_downfloats.should == 3
-        end
-      end
-
-      context "odd number of players" do
-        let(:players) { create_players(1..7) }
-
-        it "returns half of the number of players rounded downwards" do
-          bracket.number_of_pairs_after_downfloats.should == 3
-        end
-      end
-    end
-
     describe "#points" do
       let(:players) { create_players(1..6) }
 
