@@ -7,7 +7,7 @@ module Swissfork
     initialize_with :players, :number_of_possible_pairs
 
     def violations
-      [number_of_possible_pairs - players_with_minoritary_preference.count - players_with_no_preference.count, 0].max
+      [number_of_possible_pairs - players_with_preference(minoritary_preference).count - players_with_no_preference.count, 0].max
     end
 
     def strong_violations
@@ -34,31 +34,21 @@ module Swissfork
 
   private
     def colour_difference
-      players_with_white_preference.count - players_with_black_preference.count
-    end
-
-    def players_with_main_preference
-      send("players_with_#{main_preference}_preference")
+      players_with_preference(:white).count - players_with_preference(:black).count
     end
 
     def players_with_main_mild_preference
-      players_with_main_preference.select do |player|
+      players_with_preference(main_preference).select do |player|
         player.preference_degree == :mild
       end
-    end
-
-    def players_with_minoritary_preference
-      send("players_with_#{minoritary_preference}_preference")
     end
 
     def players_with_no_preference
       players.reject(&:colour_preference)
     end
 
-    [:white, :black].each do |colour|
-      define_method "players_with_#{colour}_preference" do
-        players.select { |player| player.colour_preference == colour }
-      end
+    def players_with_preference(colour)
+      players.select { |player| player.colour_preference == colour }
     end
   end
 end
