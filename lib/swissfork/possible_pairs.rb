@@ -48,9 +48,11 @@ module Swissfork
 
   private
     def incompatibilities
-      return 0 if players.empty? || enough_players_to_guarantee_pairing?
-
-      incompatibilities_by_least_compatible_pairing
+      if players.empty? || enough_players_to_guarantee_pairing?
+        0
+      else
+        incompatibilities_by_least_compatible_pairing
+      end
     end
 
     def opponents_for(player)
