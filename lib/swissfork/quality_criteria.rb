@@ -9,7 +9,12 @@ module Swissfork
     initialize_with :bracket
 
     def ok?
-      criteria.none? { |condition| send(condition) }
+      if criteria.none? { |condition| send(condition) }
+        true
+      else
+        failing_criteria << failing_criterion
+        false
+      end
     end
 
     def failing_criterion
@@ -27,7 +32,7 @@ module Swissfork
         self.old_failing_criterion = relevant_criterion
       end
 
-      bracket.reset_failing_criteria
+      @failing_criteria = nil
       allowed_failures[relevant_criterion] += 1
     end
 
@@ -47,7 +52,7 @@ module Swissfork
 
     def current_failing_criterion
       if ok?
-        bracket.failing_criteria.sort_by do |criterion|
+        failing_criteria.sort_by do |criterion|
           criteria.index(criterion)
         end.last
       else
@@ -143,28 +148,28 @@ module Swissfork
 
     def exceed_same_colour_preference?(pairs)
       if pairs.select(&:same_colour_preference?).count > allowed_failures[:colour_preference_violation?]
-        bracket.failing_criteria << :colour_preference_violation?
+        failing_criteria << :colour_preference_violation?
         true
       end
     end
 
     def exceed_same_strong_preference?(pairs)
       if pairs.select(&:same_strong_preference?).count > allowed_failures[:strong_colour_preference_violation?]
-        bracket.failing_criteria << :strong_colour_preference_violation?
+        failing_criteria << :strong_colour_preference_violation?
         true
       end
     end
 
     def exceed_same_downfloats_as_previous_round?(players)
       if players.reject(&:descended_in_the_previous_round?).count < number_of_downfloats_not_from_the_previous_round
-        bracket.failing_criteria << :same_downfloats_as_previous_round?
+        failing_criteria << :same_downfloats_as_previous_round?
         true
       end
     end
 
     def exceed_same_downfloats_as_two_rounds_ago?(players)
       if players.reject(&:descended_two_rounds_ago?).count < number_of_downfloats_not_from_two_rounds_ago
-        bracket.failing_criteria << :same_downfloats_as_two_rounds_ago?
+        failing_criteria << :same_downfloats_as_two_rounds_ago?
         true
       end
     end
@@ -201,6 +206,10 @@ module Swissfork
 
     def allowed_downfloats
       bracket.allowed_downfloats
+    end
+
+    def failing_criteria
+      @failing_criteria ||= []
     end
   end
 end

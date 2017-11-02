@@ -168,14 +168,6 @@ module Swissfork
       @impossible_downfloats = nil
     end
 
-    def failing_criteria
-      @failing_criteria ||= []
-    end
-
-    def reset_failing_criteria
-      @failing_criteria = nil
-    end
-
   private
     attr_reader :definitive_pairs
 
@@ -225,7 +217,7 @@ module Swissfork
     end
 
     def best_pairs_obtained?
-      pairings_completed? && best_possible_pairs?
+      pairings_completed? && quality.ok?
     end
 
     def pair_for(player)
@@ -328,15 +320,6 @@ module Swissfork
 
     def number_of_compatible_pairs
       @number_of_compatible_pairs ||= PossiblePairs.new(players).count
-    end
-
-    def best_possible_pairs?
-      if quality.ok?
-        true
-      else
-        failing_criteria << quality.failing_criterion
-        false
-      end
     end
 
     def quality
