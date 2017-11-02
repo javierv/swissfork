@@ -32,16 +32,6 @@ module Swissfork
             bracket.minimum_colour_violations.should == 0
           end
         end
-
-        context "required pairs is set manually (for remainders)" do
-          before(:each) do
-            bracket.number_of_required_pairs = 4
-          end
-
-          it "doesn't count the downfloats as violations" do
-            bracket.minimum_colour_violations.should == 0
-          end
-        end
       end
     end
 
