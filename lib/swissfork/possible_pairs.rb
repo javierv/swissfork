@@ -24,21 +24,23 @@ module Swissfork
     end
 
   protected
-    def list
-      @list ||= players.reduce({}) do |list, player|
-        list[player] = opponents_for(player)
-        list
+    def compatibility_list
+      @compatibility_list ||= players.reduce({}) do |compatibility_list, player|
+        compatibility_list[player] = opponents_for(player)
+        compatibility_list
       end
     end
 
     def remove_from_list(removals)
-      removals.each { |player| list.delete(player) }
-      list.each { |person, rivals| list[person] = rivals - removals }
+      removals.each { |player| compatibility_list.delete(player) }
+      compatibility_list.each do |person, rivals|
+        compatibility_list[person] = rivals - removals
+      end
     end
 
     def opponent_with_less_opponents_for(player)
       opponents_ordered_by_opponents_count.each do |opponent|
-        return opponent if list[player].include?(opponent)
+        return opponent if compatibility_list[player].include?(opponent)
       end
 
       nil
@@ -56,7 +58,7 @@ module Swissfork
     end
 
     def players_ordered_by_opponents_count
-      list.keys.sort_by { |player| list[player].count }
+      compatibility_list.keys.sort_by { |player| compatibility_list[player].count }
     end
 
     def opponents_ordered_by_opponents_count
@@ -77,7 +79,7 @@ module Swissfork
     end
 
     def incompatibilities_for(player)
-      if list[player].empty?
+      if compatibility_list[player].empty?
         1
       else
         0

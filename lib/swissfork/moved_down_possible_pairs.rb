@@ -18,7 +18,7 @@ module Swissfork
 
     def opponents_ordered_by_opponents_count
       opponents.sort_by do |opponent|
-        list.values.select do |players|
+        compatibility_list.values.select do |players|
           players.include?(opponent)
         end.count
       end
@@ -26,7 +26,7 @@ module Swissfork
 
   private
     def minimum_number_of_compatible_players
-      list.values.map(&:count).min.to_i
+      compatibility_list.values.map(&:count).min.to_i
     end
 
     def opponents_for(player)

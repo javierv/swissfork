@@ -8,7 +8,7 @@ module Swissfork
 
   private
     def minimum_number_of_compatible_players
-      list.values.map(&:count).min.to_i
+      compatibility_list.values.map(&:count).min.to_i
     end
 
     def opponents_for(player)
@@ -52,8 +52,8 @@ module Swissfork
     end
 
     def players_with_incompatible_colour
-      possible_pairs.list.select do |player, opponents|
-        !opponents.empty? && list[player].empty?
+      possible_pairs.compatibility_list.select do |player, opponents|
+        !opponents.empty? && compatibility_list[player].empty?
       end.map { |player, opponents| player }
     end
 
