@@ -1,6 +1,10 @@
+require "set"
 require "swissfork/pair"
 require "swissfork/exchanger"
-require "set"
+require "swissfork/quality_criteria"
+require "swissfork/possible_pairs"
+require "swissfork/colour_incompatibilities"
+require "swissfork/ok_permit"
 
 module Swissfork
   # Handles the main pairing logic.
@@ -15,12 +19,8 @@ module Swissfork
   # them is using Bracket.for(players), which creates an object
   # from either HomogeneousBracket or HeterogeneousBracket.
   class Bracket
-    require "swissfork/quality_criteria"
     require "swissfork/heterogeneous_bracket"
     require "swissfork/homogeneous_bracket"
-    require "swissfork/possible_pairs"
-    require "swissfork/colour_incompatibilities"
-    require "swissfork/ok_permit"
 
     include Comparable
     attr_reader :players
