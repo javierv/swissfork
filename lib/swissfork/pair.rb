@@ -80,7 +80,7 @@ module Swissfork
     end
 
     def eql?(pair)
-      ([pair.s1_player, pair.s2_player] - [s1_player, s2_player]).empty?
+      ([pair.s1_player, pair.s2_player] - unordered_players).empty?
     end
 
     def ==(pair)
@@ -88,12 +88,12 @@ module Swissfork
     end
 
     def <=>(pair)
-      [pair.points.max, pair.points.sum, [s1_player, s2_player].min] <=> [points.max, points.sum, [pair.s1_player, pair.s2_player].min]
+      [pair.points.max, pair.points.sum, unordered_players.min] <=> [points.max, points.sum, [pair.s1_player, pair.s2_player].min]
     end
 
   protected
     def points
-      [s1_player, s2_player].map(&:points)
+      unordered_players.map(&:points)
     end
 
   private
@@ -108,7 +108,7 @@ module Swissfork
 
     def players_ordered_by_preference
       @players_ordered_by_preference ||=
-        [s1_player, s2_player].sort_by(&:preference_priority)
+        unordered_players.sort_by(&:preference_priority)
     end
 
     def no_players_have_colour_preference?
@@ -116,13 +116,17 @@ module Swissfork
     end
 
     def players_ordered_by_initial_colours
-      higher_player, lower_player = [s1_player, s2_player].sort
+      higher_player, lower_player = unordered_players.sort
 
       if higher_player.prefers_white_by_default?
         [higher_player, lower_player]
       else
         [lower_player, higher_player]
       end
+    end
+
+    def unordered_players
+      [s1_player, s2_player]
     end
   end
 end
