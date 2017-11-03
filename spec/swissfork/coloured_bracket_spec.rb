@@ -147,7 +147,7 @@ module Swissfork
 
           context "they're incompatible with lower players" do
             before(:each) do
-              players[0..1].each_stub_opponents(players[5..10])
+              players[0..1].each_stub_opponents(players[0..1] + players[5..10])
               players[5..10].each_stub_opponents(players[0..1])
             end
 
