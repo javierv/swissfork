@@ -8,11 +8,11 @@ module Swissfork
       numbers.map { |number| Player.new(number) }
     end
 
-    describe "#violations" do
-      let(:incompatibilities) { ColourIncompatibilities.new(players, number_of_required_pairs) }
-      let(:players) { create_players(1..10) }
-      let(:number_of_required_pairs) { 5 }
+    let(:incompatibilities) { ColourIncompatibilities.new(players, number_of_required_pairs) }
+    let(:players) { create_players(1..10) }
+    let(:number_of_required_pairs) { 5 }
 
+    describe "#violations" do
       context "no incompatibilities" do
         before(:each) do
           players[0..4].each_stub_preference(:white)
@@ -47,6 +47,30 @@ module Swissfork
 
           it "returns zero" do
             incompatibilities.violations.should == 0
+          end
+        end
+      end
+    end
+
+    describe "#main_preference" do
+      context "all players prefer the same colour" do
+        context "all prefer white" do
+          before(:each) do
+            players.each_stub_preference(:white)
+          end
+
+          it "returns the colour everybody prefers" do
+            incompatibilities.main_preference.should == :white
+          end
+        end
+
+        context "all prefer black" do
+          before(:each) do
+            players.each_stub_preference(:black)
+          end
+
+          it "returns the colour everybody prefers" do
+            incompatibilities.main_preference.should == :black
           end
         end
       end

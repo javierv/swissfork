@@ -1,4 +1,5 @@
 require "simple_initialize"
+require "swissfork/colour_possible_pairs"
 
 module Swissfork
   # Given a list of players, it calculates how many pairs
@@ -34,7 +35,10 @@ module Swissfork
 
   private
     def colour_difference
-      players_with_preference(:white).count - players_with_preference(:black).count
+      [number_of_compatible_players_with_preference(:white),
+       players_with_preference(:white).count] <=>
+      [number_of_compatible_players_with_preference(:black),
+       players_with_preference(:black).count]
     end
 
     def players_with_main_mild_preference
@@ -49,6 +53,11 @@ module Swissfork
 
     def players_with_preference(colour)
       players.select { |player| player.colour_preference == colour }
+    end
+
+    def number_of_compatible_players_with_preference(colour)
+      players_with_preference(colour).count -
+        ColourPossiblePairs.new(players).colour_incompatibilities_for(colour)
     end
   end
 end

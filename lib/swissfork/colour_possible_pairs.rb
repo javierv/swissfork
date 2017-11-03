@@ -6,6 +6,18 @@ module Swissfork
       minimum_number_of_compatible_players >= players.count / 2
     end
 
+    def colour_incompatibilities_for(colour)
+      reset
+      incompatibilities = 0
+
+      until players_with_incompatible_colour_with_preference(colour).empty?
+        remove_with_possible_opponent(players_with_incompatible_colour_with_preference(colour).first)
+        incompatibilities += 2
+      end
+
+      incompatibilities
+    end
+
   private
     def minimum_number_of_compatible_players
       compatibility_list.values.map(&:count).min.to_i
@@ -64,6 +76,12 @@ module Swissfork
     def reset
       super
       possible_pairs.reset
+    end
+
+    def players_with_incompatible_colour_with_preference(colour)
+      players_with_incompatible_colour.select do |player|
+        player.colour_preference == colour
+      end
     end
   end
 end
