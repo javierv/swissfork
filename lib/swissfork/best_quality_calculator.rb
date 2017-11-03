@@ -1,5 +1,6 @@
 require "simple_initialize"
 require "swissfork/possible_pairs"
+require "swissfork/colour_possible_pairs"
 require "swissfork/colour_incompatibilities"
 require "swissfork/ok_permit"
 
@@ -39,7 +40,7 @@ module Swissfork
 
     # Criterion C.10
     def colour_violations
-      colour_incompatibilities.violations
+      @colour_violations ||= [possible_pairs - ColourPossiblePairs.new(players).count, 0].max
     end
 
     # Criterion C.11

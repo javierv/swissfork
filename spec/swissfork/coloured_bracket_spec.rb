@@ -33,6 +33,21 @@ module Swissfork
           end
         end
       end
+
+      context "a player can only be paired with players with the same colour" do
+        context "with 10 players" do
+          before(:each) do
+            players[0..4].each_stub_preference(:white)
+            players[5..9].each_stub_preference(:black)
+            players[0].stub_opponents(players[5..9])
+            players[5..9].each_stub_opponents([players[0]])
+          end
+
+          it "makes two pairs incompatible" do
+            bracket.minimum_colour_violations.should == 2
+          end
+        end
+      end
     end
 
     describe "#pairs with colours" do

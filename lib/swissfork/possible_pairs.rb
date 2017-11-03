@@ -23,22 +23,12 @@ module Swissfork
        players.count / 2.0 > players.map(&:opponents).map(&:count).max
     end
 
-  private
-    def incompatibilities
-      return 0 if players.empty? || enough_players_to_guarantee_pairing?
-
-      incompatibilities_by_least_compatible_pairing
-    end
-
+  protected
     def list
       @list ||= players.reduce({}) do |list, player|
         list[player] = opponents_for(player)
         list
       end
-    end
-
-    def opponents_for(player)
-      player.compatible_players_in(players)
     end
 
     def remove_from_list(removals)
@@ -50,6 +40,19 @@ module Swissfork
       opponents_ordered_by_opponents_count.each do |opponent|
         return opponent if list[player].include?(opponent)
       end
+
+      nil
+    end
+
+  private
+    def incompatibilities
+      return 0 if players.empty? || enough_players_to_guarantee_pairing?
+
+      incompatibilities_by_least_compatible_pairing
+    end
+
+    def opponents_for(player)
+      player.compatible_players_in(players)
     end
 
     def players_ordered_by_opponents_count
@@ -64,22 +67,22 @@ module Swissfork
     # the players with the least possible opponents with their
     # opponents with the least possible opponents.
     def incompatibilities_by_least_compatible_pairing
-      players_ordered_by_opponents_count.reduce(0) do |incompatibilities, player|
-        incompatibilities + incompatibilities_for(player).to_i
+      incompatibilities = 0
+
+      until players_ordered_by_opponents_count.empty?
+        incompatibilities += incompatibilities_for(players_ordered_by_opponents_count.first)
       end
+
+      incompatibilities
     end
 
     def incompatibilities_for(player)
-      # These methods have an obvious flaw: they return a value *and* they
-      # change the list object.
-      if list.key?(player)
-        if list[player].empty?
-          remove_from_list([player])
-          1
-        else
-          remove_from_list([player, opponent_with_less_opponents_for(player)])
-          0
-        end
+      if list[player].empty?
+        1
+      else
+        0
+      end.tap do
+        remove_from_list([player, opponent_with_less_opponents_for(player)])
       end
     end
 
