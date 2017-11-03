@@ -1,5 +1,6 @@
 require "simple_initialize"
 require "swissfork/possible_pairs"
+require "swissfork/colour_incompatibilities"
 require "swissfork/ok_permit"
 
 module Swissfork
@@ -36,10 +37,31 @@ module Swissfork
       downfloat_permit.allowed
     end
 
+    # Criterion C.10
+    def colour_violations
+      colour_incompatibilities.violations
+    end
+
+    # Criterion C.11
+    def strong_colour_violations
+      colour_incompatibilities.strong_violations
+    end
+
+    def incompatible_colours?(player, opponent)
+      # TODO: fix when we improve the colour violations calcs.
+      colour_violations > 0 &&
+          player.colour_preference == colour_incompatibilities.minoritary_preference &&
+          opponent.colour_preference != colour_incompatibilities.main_preference
+    end
+
   private
     # Criterion C.5
     def compatible_pairs
       @compatible_pairs ||= PossiblePairs.new(players).count
+    end
+
+    def colour_incompatibilities
+      @colour_incompatibilities ||= ColourIncompatibilities.new(players, possible_pairs)
     end
   end
 end

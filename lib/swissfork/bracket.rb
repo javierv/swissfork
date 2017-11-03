@@ -3,7 +3,6 @@ require "swissfork/pair"
 require "swissfork/exchanger"
 require "swissfork/quality_criteria"
 require "swissfork/best_quality_calculator"
-require "swissfork/colour_incompatibilities"
 
 module Swissfork
   # Handles the main pairing logic.
@@ -54,12 +53,12 @@ module Swissfork
     alias_method :max_pairs, :number_of_possible_pairs # FIDE nomenclature
 
     def minimum_colour_violations
-      colour_incompatibilities.violations
+      quality_calculator.colour_violations
     end
     alias_method :x1, :minimum_colour_violations # Old FIDE nomenclature
 
     def minimum_strong_colour_violations
-      colour_incompatibilities.strong_violations
+      quality_calculator.strong_colour_violations
     end
     alias_method :z1, :minimum_strong_colour_violations # Old FIDE nomenclature
 
@@ -218,10 +217,7 @@ module Swissfork
 
     def opponents_for(player)
       (player.compatible_players_in(s2) & still_unpaired_players).reject do |opponent|
-        # TODO: main preference isn't 100% reliable
-        minimum_colour_violations > 0 &&
-          player.colour_preference == colour_incompatibilities.minoritary_preference &&
-          opponent.colour_preference != colour_incompatibilities.main_preference
+        quality_calculator.incompatible_colours?(player, opponent)
       end
     end
 
@@ -307,10 +303,6 @@ module Swissfork
 
     def quality
       @quality ||= QualityCriteria.new(self)
-    end
-
-    def colour_incompatibilities
-      @colour_incompatibilities ||= ColourIncompatibilities.new(players, number_of_required_total_pairs)
     end
 
     def remainder_pairs

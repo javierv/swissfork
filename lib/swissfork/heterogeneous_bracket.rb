@@ -25,10 +25,6 @@ module Swissfork
     end
     alias_method :m1, :number_of_moved_down_possible_pairs # FIDE nomenclature
 
-    def number_of_required_total_pairs
-      number_of_possible_pairs
-    end
-
     def number_of_required_remainder_pairs
       quality_calculator.required_remainder_pairs
     end
