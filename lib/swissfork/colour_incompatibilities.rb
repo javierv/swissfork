@@ -36,7 +36,7 @@ module Swissfork
           total_violations - minoritary_violations
         end
       else
-        total_violations / 2 # TODO
+        total_violations / 2
       end
     end
 

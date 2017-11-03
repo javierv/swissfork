@@ -41,7 +41,7 @@ module Swissfork
     end
 
     def exchange(first_players, second_players)
-      players.dup.tap do |new_players|
+      exchanged_players = players.dup.tap do |new_players|
         first_players.each.with_index do |first_player, index|
           second_player = second_players[index]
 
@@ -52,6 +52,8 @@ module Swissfork
             second_player, first_player
         end
       end
+
+      exchanged_players[0..s1.count - 1].sort + exchanged_players[s1.count..-1].sort
     end
 
     def differences

@@ -100,15 +100,26 @@ module Swissfork
 
         context "opponent incompatibilities force colour violations" do
           before(:each) do
-            players.each_stub(points: 1)
             players[0..4].each_stub_preference(:white)
             players[5..9].each_stub_preference(:black)
+
             players[0..3].each_stub_opponents(players[5..9])
             players[5..9].each_stub_opponents(players[0..3])
           end
 
           it "repeats colours" do
             bracket.pair_numbers.should == [[1, 3], [2, 4], [5, 8], [9, 6], [10, 7]]
+          end
+
+          context "same colour incompatibilities for each colour" do
+            before(:each) do
+              players[0..3].each_stub_opponents(players[6..9])
+              players[6..9].each_stub_opponents(players[0..3])
+            end
+
+            it "repeats colours" do
+              bracket.pair_numbers.should == [[1, 4], [2, 5], [3, 6], [9, 7], [10, 8]]
+            end
           end
         end
       end

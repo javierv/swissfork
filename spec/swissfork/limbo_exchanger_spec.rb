@@ -1,12 +1,8 @@
-require "spec_helper"
+require "create_players_helper"
 require "swissfork/limbo_exchanger"
 
 module Swissfork
   describe LimboExchanger do
-    def create_players(numbers)
-      numbers.map { |number| double(number: number, inspect: number) }
-    end
-
     describe "#limit_reached?" do
       let(:exchanger) { LimboExchanger.new(s1_players, s2_players) }
 
