@@ -3,6 +3,7 @@ require "swissfork/pair"
 require "swissfork/exchanger"
 require "swissfork/quality_criteria"
 require "swissfork/best_quality_calculator"
+require "swissfork/quality_checker"
 
 module Swissfork
   # Handles the main pairing logic.
@@ -155,6 +156,10 @@ module Swissfork
       @impossible_downfloats = nil
     end
 
+    def quality_calculator
+      @quality_calculator ||= BestQualityCalculator.new(players)
+    end
+
   private
     attr_reader :definitive_pairs
 
@@ -222,14 +227,12 @@ module Swissfork
     end
 
     def is_possible?(pair)
-      !not_ideal_pairs.include?(established_pairs + [pair]) &&
-        !impossible_downfloats.include?((still_unpaired_players - pair.players).to_set) &&
-        quality.can_downfloat?(unpaired_non_s1_players - [pair.s2_player]) &&
-        !quality.violate_colours?(established_pairs + [pair])
-    end
+      hypothetical_pairs = established_pairs + [pair]
+      hypothetical_leftovers = still_unpaired_players - pair.players
 
-    def unpaired_non_s1_players
-      non_s1_players & still_unpaired_players
+      !not_ideal_pairs.include?(hypothetical_pairs) &&
+        !impossible_downfloats.include?(hypothetical_leftovers.to_set) &&
+        QualityChecker.new(hypothetical_pairs, hypothetical_leftovers & non_s1_players, quality_calculator).colours_and_downfloats_are_ok?
     end
 
     def non_s1_players
@@ -282,7 +285,11 @@ module Swissfork
     def exchange_until_non_s1_players_can_downfloat
       begin
         exchange
-      end until(exchanger.limit_reached? || quality.can_downfloat?(non_s1_players))
+      end until(exchanger.limit_reached? || non_s1_players_can_downfloat?)
+    end
+
+    def non_s1_players_can_downfloat?
+      QualityChecker.new([], non_s1_players, quality_calculator).can_downfloat?
     end
 
     def still_unpaired_players
@@ -307,10 +314,6 @@ module Swissfork
 
     def remainder_pairs
       []
-    end
-
-    def quality_calculator
-      @quality_calculator ||= BestQualityCalculator.new(players)
     end
   end
 end

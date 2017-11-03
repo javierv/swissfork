@@ -1,15 +1,14 @@
 require "simple_initialize"
 
 module Swissfork
-  # Checks quality of pairs following the quality criteria
-  # described in FIDE Dutch System, sections C.8 to C.19.
-  #
-  # Criteria C.5 to C.7 are implemented in the main algorithm.
+  # Stores which quality criterion failed and
+  # modifies the allowed failures when no candidate
+  # meeting the allowed failures can be found
   class QualityCriteria
     initialize_with :bracket
 
     def ok?
-      if criteria.none? { |condition| send(condition) }
+      if quality_checker.ok?
         true
       else
         failing_criteria << failing_criterion
@@ -18,7 +17,7 @@ module Swissfork
     end
 
     def failing_criterion
-      criteria.select { |condition| send(condition) }.last
+      quality_checker.failing_criterion(criteria)
     end
 
     def be_more_permissive
@@ -32,22 +31,13 @@ module Swissfork
         self.old_failing_criterion = relevant_criterion
       end
 
-      @failing_criteria = nil
+      quality_calculator.reset_failing_criteria
       allowed_failures[relevant_criterion] += 1
     end
 
-    def can_downfloat?(leftovers)
-      return true if number_of_required_downfloats.zero?
-
-      leftovers.combination(number_of_required_downfloats).any? do |players|
-        allowed_downfloats.include?(players.to_set) &&
-          !exceed_same_downfloats_as_previous_round?(players) &&
-          !exceed_same_downfloats_as_two_rounds_ago?(players)
-      end
-    end
-
-    def violate_colours?(pairs)
-      exceed_same_colour_preference?(pairs) || exceed_same_strong_preference?(pairs)
+  private
+    def failing_criteria
+      quality_calculator.failing_criteria
     end
 
     def current_failing_criterion
@@ -56,78 +46,8 @@ module Swissfork
           criteria.index(criterion)
         end.last
       else
-        criteria.select { |condition| send(condition) }.last
+        failing_criterion
       end
-    end
-
-  private
-    attr_accessor :old_failing_criterion
-
-    def self.criteria
-      [
-        :high_difference_violation?,
-        :same_colour_three_times?,
-        :colour_preference_violation?,
-        :strong_colour_preference_violation?,
-        :same_downfloats_as_previous_round?,
-        :same_upfloats_as_previous_round?,
-        :same_downfloats_as_two_rounds_ago?,
-        :same_upfloats_as_two_rounds_ago?
-      ]
-    end
-
-    def criteria
-      self.class.criteria
-    end
-
-    criteria.each do |criterion|
-      define_method criterion do
-        send(criterion.to_s.delete("?")).count > allowed_failures[criterion]
-      end
-    end
-
-    def allowed_failures
-      @allowed_failures ||= Hash.new(0).merge(quality_calculator.violations)
-    end
-
-    # C.8
-    def high_difference_violation
-      pairs.select(&:same_absolute_high_difference?)
-    end
-
-    # C.9
-    def same_colour_three_times
-      pairs.select(&:same_colour_three_times?)
-    end
-
-    # C.10
-    def colour_preference_violation
-      pairs.select(&:same_colour_preference?)
-    end
-
-    # C.11
-    def strong_colour_preference_violation
-      pairs.select(&:same_strong_preference?)
-    end
-
-    # C.12
-    def same_downfloats_as_previous_round
-      leftovers.select(&:descended_in_the_previous_round?)
-    end
-
-    # C.13
-    def same_upfloats_as_previous_round
-      ascending_players.select(&:ascended_in_the_previous_round?)
-    end
-
-    # C.14
-    def same_downfloats_as_two_rounds_ago
-      leftovers.select(&:descended_two_rounds_ago?)
-    end
-
-    # C.15
-    def same_upfloats_as_two_rounds_ago
-      ascending_players.select(&:ascended_two_rounds_ago?)
     end
 
     def old_failing_criterion_is_less_important?
@@ -138,64 +58,23 @@ module Swissfork
       end
     end
 
-    def exceed_same_colour_preference?(pairs)
-      if pairs.select(&:same_colour_preference?).count > allowed_failures[:colour_preference_violation?]
-        failing_criteria << :colour_preference_violation?
-        true
-      end
+    attr_accessor :old_failing_criterion
+
+    def allowed_failures
+      quality_calculator.allowed_failures
     end
 
-    def exceed_same_strong_preference?(pairs)
-      if pairs.select(&:same_strong_preference?).count > allowed_failures[:strong_colour_preference_violation?]
-        failing_criteria << :strong_colour_preference_violation?
-        true
-      end
+    def quality_checker
+      QualityChecker.new(bracket.provisional_pairs, bracket.provisional_leftovers,
+                         quality_calculator)
     end
 
-    def exceed_same_downfloats_as_previous_round?(players)
-      if players.select(&:descended_in_the_previous_round?).count > allowed_failures[:same_downfloats_as_previous_round?]
-        failing_criteria << :same_downfloats_as_previous_round?
-        true
-      end
-    end
-
-    def exceed_same_downfloats_as_two_rounds_ago?(players)
-      if players.select(&:descended_two_rounds_ago?).count > allowed_failures[:same_downfloats_as_two_rounds_ago?]
-        failing_criteria << :same_downfloats_as_two_rounds_ago?
-        true
-      end
-    end
-
-    def ascending_players
-      heterogeneous_pairs.map(&:last)
-    end
-
-    def heterogeneous_pairs
-      pairs.select(&:heterogeneous?)
-    end
-
-    def leftovers
-      bracket.provisional_leftovers
-    end
-
-    def pairs
-      bracket.provisional_pairs
-    end
-
-    def number_of_required_downfloats
-      bracket.number_of_required_downfloats
-    end
-
-    def allowed_downfloats
-      bracket.allowed_downfloats
-    end
-
-    def failing_criteria
-      @failing_criteria ||= []
+    def criteria
+      QualityChecker.criteria
     end
 
     def quality_calculator
-      bracket.send(:quality_calculator) # TODO: change the way to access it.
+      bracket.quality_calculator
     end
   end
 end

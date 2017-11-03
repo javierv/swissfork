@@ -54,12 +54,20 @@ module Swissfork
           opponent.colour_preference != colour_incompatibilities.main_preference
     end
 
-    def violations
-      {
+    def allowed_failures
+      @allowed_failures ||= {
         colour_preference_violation?: colour_violations,
         strong_colour_preference_violation?: strong_colour_violations,
         same_downfloats_as_previous_round?: same_downfloats_as_previous_round_violations
-      }
+      }.tap { |failures| failures.default = 0 }
+    end
+
+    def failing_criteria
+      @failing_criteria ||= []
+    end
+
+    def reset_failing_criteria
+      @failing_criteria = nil
     end
 
   private
