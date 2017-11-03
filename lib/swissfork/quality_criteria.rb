@@ -61,7 +61,7 @@ module Swissfork
     end
 
   private
-    attr_writer :old_failing_criterion
+    attr_accessor :old_failing_criterion
 
     def self.criteria
       [
@@ -130,12 +130,12 @@ module Swissfork
       ascending_players.select(&:ascended_two_rounds_ago?)
     end
 
-    def old_failing_criterion
-      @old_failing_criterion ||= criteria.last
-    end
-
     def old_failing_criterion_is_less_important?
-      criteria.index(old_failing_criterion) > criteria.index(current_failing_criterion)
+      if old_failing_criterion
+        criteria.index(old_failing_criterion) > criteria.index(current_failing_criterion)
+      else
+        true
+      end
     end
 
     def exceed_same_colour_preference?(pairs)
