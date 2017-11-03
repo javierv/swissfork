@@ -91,6 +91,11 @@ module Swissfork
       [pair.points.max, pair.points.sum, unordered_players.min] <=> [points.max, points.sum, [pair.s1_player, pair.s2_player].min]
     end
 
+    def respects_minoritary_preference?(minoritary_preference)
+      !minoritary_preference ||
+        colour_preferences.to_set != [minoritary_preference, nil].to_set
+    end
+
   protected
     def points
       unordered_players.map(&:points)
@@ -109,6 +114,10 @@ module Swissfork
     def players_ordered_by_preference
       @players_ordered_by_preference ||=
         unordered_players.sort_by(&:preference_priority)
+    end
+
+    def colour_preferences
+      unordered_players.map(&:colour_preference)
     end
 
     def no_players_have_colour_preference?

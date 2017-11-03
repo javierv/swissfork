@@ -216,9 +216,7 @@ module Swissfork
     end
 
     def opponents_for(player)
-      (player.compatible_players_in(s2) & still_unpaired_players).reject do |opponent|
-        quality_calculator.incompatible_colours?(player, opponent)
-      end
+      player.compatible_players_in(s2) & still_unpaired_players
     end
 
     def is_possible?(pair)
@@ -227,6 +225,7 @@ module Swissfork
 
       !not_ideal_pairs.include?(hypothetical_pairs) &&
         !impossible_downfloats.include?(hypothetical_leftovers.to_set) &&
+        !quality_calculator.incompatible_colours?(pair) &&
         QualityChecker.new(hypothetical_pairs, hypothetical_leftovers & non_s1_players, quality_calculator).colours_and_downfloats_are_ok?
     end
 

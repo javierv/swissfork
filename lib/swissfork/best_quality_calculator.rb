@@ -49,11 +49,9 @@ module Swissfork
       colour_incompatibilities.strong_violations
     end
 
-    def incompatible_colours?(player, opponent)
-      colour_violations > 0 && colour_incompatibilities.main_preference &&
-        # TODO: move to a different class and add tests; right now the first part
-        # of the condition is always false
-        (!player.colour_preference && opponent.colour_preference == colour_incompatibilities.minoritary_preference || !opponent.colour_preference && player.colour_preference == colour_incompatibilities.minoritary_preference)
+    def incompatible_colours?(pair)
+      colour_violations > 0 &&
+        !pair.respects_minoritary_preference?(minoritary_preference)
     end
 
     def colour_violations_for(colour)
@@ -95,6 +93,10 @@ module Swissfork
     # TODO: add tests.
     def same_downfloats_as_previous_round_violations
       [required_downfloats - resident_players.reject(&:descended_in_the_previous_round?).count, 0].max
+    end
+
+    def minoritary_preference
+      colour_incompatibilities.minoritary_preference
     end
   end
 end

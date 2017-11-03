@@ -131,6 +131,39 @@ module Swissfork
         end
       end
     end
+
+    context "players with no colour preference" do
+      context "one player in S1" do
+        let(:players) { create_players(1..20) }
+
+        before(:each) do
+          players[0].stub_preference(nil)
+          players[1..9].each_stub_preference(:white)
+          players[10..17].each_stub_preference(:black)
+          players[18..19].each_stub_preference(:white)
+        end
+
+        it "quickly discards pairs against players with the minoritary preference" do
+          Benchmark.realtime{ round.pair_numbers }.should be < 0.1
+          round.pair_numbers.should == [[19, 1], [2, 11], [3, 12], [4, 13], [5, 14], [6, 15], [7, 16], [8, 17], [9, 18], [10, 20]]
+        end
+      end
+
+      context "one player in S2" do
+        let(:players) { create_players(1..20) }
+
+        before(:each) do
+          players[0..7].each_stub_preference(:white)
+          players[8..19].each_stub_preference(:black)
+          players[10].stub_preference(nil)
+        end
+
+        it "quickly discards the first players in S1 against that player" do
+          Benchmark.realtime{ round.pair_numbers }.should be < 0.1
+          round.pair_numbers.should == [[1, 12], [2, 13], [3, 14], [4, 15], [5, 16], [6, 17], [7, 18], [8, 19], [11, 9], [20, 10]]
+        end
+      end
+    end
   end
 end
 
