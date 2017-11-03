@@ -15,10 +15,6 @@ module Swissfork
       players[number_of_players_in_s1..-1]
     end
 
-    def resident_players
-      players
-    end
-
     def provisional_leftovers
       still_unpaired_players
     end

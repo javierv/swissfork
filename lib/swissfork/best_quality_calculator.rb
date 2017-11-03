@@ -54,6 +54,14 @@ module Swissfork
           opponent.colour_preference != colour_incompatibilities.main_preference
     end
 
+    def violations
+      {
+        colour_preference_violation?: colour_violations,
+        strong_colour_preference_violation?: strong_colour_violations,
+        same_downfloats_as_previous_round?: same_downfloats_as_previous_round_violations
+      }
+    end
+
   private
     # Criterion C.5
     def compatible_pairs
@@ -62,6 +70,15 @@ module Swissfork
 
     def colour_incompatibilities
       @colour_incompatibilities ||= ColourIncompatibilities.new(players, possible_pairs)
+    end
+
+    def resident_players
+      players
+    end
+
+    # TODO: add tests.
+    def same_downfloats_as_previous_round_violations
+      [required_downfloats - resident_players.reject(&:descended_in_the_previous_round?).count, 0].max
     end
   end
 end

@@ -87,15 +87,7 @@ module Swissfork
     end
 
     def allowed_failures
-      @allowed_failures ||= Hash.new(0).tap do |allowed_failures|
-        allowed_failures[:colour_preference_violation?] =
-          bracket.minimum_colour_violations
-        allowed_failures[:strong_colour_preference_violation?] =
-          bracket.minimum_strong_colour_violations
-        # TODO: check.
-        allowed_failures[:same_downfloats_as_previous_round?] =
-          [number_of_required_downfloats - bracket.resident_players.reject(&:descended_in_the_previous_round?).count, 0].max
-      end
+      @allowed_failures ||= Hash.new(0).merge(quality_calculator.violations)
     end
 
     # C.8
@@ -210,6 +202,10 @@ module Swissfork
 
     def failing_criteria
       @failing_criteria ||= []
+    end
+
+    def quality_calculator
+      bracket.send(:quality_calculator) # TODO: change the way to access it.
     end
   end
 end
