@@ -148,14 +148,14 @@ module Swissfork
         context "all individual exchanges done" do
           before(:each) { 4.times { exchanger.next_exchange }}
 
-          # Exchanging 2 players here doesn't make sense here because
+          # Exchanging 2 players doesn't make sense here because
           # the pairings available would be the same pairings as we
           # would get by exchanging no players at all.
           #
           # In theory, it would make sense if two players were required
           # to downfloat, but in that case, brackets now would set S1
           # to only one player.
-          it "returns false" do
+          it "returns true" do
             exchanger.limit_reached?.should be true
           end
         end
