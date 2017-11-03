@@ -91,6 +91,47 @@ module Swissfork
           end
         end
       end
+
+      context "opponent incompatibilities force colour violations" do
+        context "with 14 players" do
+          let(:players) { create_players(1..14) }
+
+          before(:each) do
+            players[0..6].each_stub_preference(:white)
+            players[7..13].each_stub_preference(:black)
+            players[0].stub_opponents(players[7..13])
+            players[7..13].each_stub_opponents([players[0]])
+          end
+
+          it "pairs fast" do
+            Benchmark.realtime{ round.pair_numbers }.should be < 0.1
+            round.pair_numbers.should == [
+              [1, 7], [2, 9], [3, 10], [4, 11], [5, 12], [6, 13], [14, 8]
+            ]
+          end
+
+          context "heterogeneous bracket" do
+            before(:each) do
+              players[0..2].each_stub(points: 2)
+              players[3..13].each_stub(points: 1)
+
+              players[2].stub_preference(:black)
+
+              players[0..1].each_stub_opponents(players[0..2] + players[7..13])
+              players[2].stub_opponents(players[0..6])
+              players[3..6].each_stub_opponents([players[2]])
+              players[7..13].each_stub_opponents(players[0..1])
+            end
+
+            it "pairs fast" do
+              Benchmark.realtime{ round.pair_numbers }.should be < 0.1
+              round.pair_numbers.should == [
+                [1, 4], [2, 5], [8, 3], [6, 11], [7, 12], [13, 9], [14, 10]
+              ]
+            end
+          end
+        end
+      end
     end
   end
 end

@@ -8,10 +8,14 @@ module Swissfork
     initialize_with :players, :number_of_possible_pairs
 
     def violations
+      return 0 unless main_preference
+
       [number_of_possible_pairs - players_with_preference(minoritary_preference).count - players_with_no_preference.count, 0].max
     end
 
     def strong_violations
+      return 0 unless main_preference
+
       [violations - players_with_main_mild_preference.count, 0].max
     end
 
@@ -21,9 +25,23 @@ module Swissfork
           :white
         elsif colour_difference < 0
           :black
-        else
-          :white # TODO: make it nil.
         end
+    end
+
+    def violations_for(colour, total_violations)
+      if minoritary_preference
+        if colour == minoritary_preference
+          minoritary_violations
+        else
+          total_violations - minoritary_violations
+        end
+      else
+        total_violations / 2 # TODO
+      end
+    end
+
+    def minoritary_violations
+      ColourPossiblePairs.new(players).colour_incompatibilities_for(minoritary_preference) / 2
     end
 
     def minoritary_preference

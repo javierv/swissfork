@@ -34,16 +34,6 @@ module Swissfork
       required_total_pairs - moved_down_possible_pairs
     end
 
-    # TODO: check conditions for heterogeneous brackets.
-    def colour_violations
-      colour_incompatibilities.violations
-    end
-
-    # TODO: check conditions for heterogeneous brackets.
-    def incompatible_colours?(player, opponent)
-      false
-    end
-
   private
     def minimum_number_of_moved_down_downfloats
       allowed_homogeneous_downfloats.map do |downfloats|

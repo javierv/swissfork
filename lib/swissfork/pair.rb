@@ -60,6 +60,14 @@ module Swissfork
         s1_player.colour_preference == s2_player.colour_preference
     end
 
+    def same_white_colour_preference?
+      same_colour_preference? && s1_player.colour_preference == :white
+    end
+
+    def same_black_colour_preference?
+      same_colour_preference? && s1_player.colour_preference == :black
+    end
+
     def same_strong_preference?
       same_colour_preference? && (
         s1_player.preference_degree == :strong && [:strong, :absolute].include?(s2_player.preference_degree) ||

@@ -8,14 +8,7 @@ module Swissfork
 
     def colour_incompatibilities_for(colour)
       reset
-      incompatibilities = 0
-
-      until players_with_incompatible_colour_with_preference(colour).empty?
-        remove_with_possible_opponent(players_with_incompatible_colour_with_preference(colour).first)
-        incompatibilities += 2
-      end
-
-      incompatibilities
+      current_colour_incompatibilities(colour)
     end
 
   private
@@ -32,7 +25,7 @@ module Swissfork
 
     def incompatibilities_for(player)
       if players_with_incompatible_colour.count > players.count % 2
-        colour_incompatibilities
+        current_colour_incompatibilities
       else
         super(player)
       end
@@ -40,11 +33,14 @@ module Swissfork
 
     # Checks players who can only play against players with the
     # same colour preference.
-    def colour_incompatibilities
+    #
+    # If no colour is specified, returns the total number of
+    # incompatibilities.
+    def current_colour_incompatibilities(colour = nil)
       incompatibilities = 0
 
-      until players_with_incompatible_colour.empty?
-        remove_with_possible_opponent(players_with_incompatible_colour.first)
+      until players_with_incompatible_colour_with_preference(colour).empty?
+        remove_with_possible_opponent(players_with_incompatible_colour_with_preference(colour).first)
         incompatibilities += 2
       end
 
@@ -69,6 +65,16 @@ module Swissfork
       end.map { |player, opponents| player }
     end
 
+    def players_with_incompatible_colour_with_preference(colour)
+      if colour
+        players_with_incompatible_colour.select do |player|
+          player.colour_preference == colour
+        end
+      else
+        players_with_incompatible_colour
+      end
+    end
+
     def possible_pairs
       @possible_pairs ||= PossiblePairs.new(players)
     end
@@ -76,12 +82,6 @@ module Swissfork
     def reset
       super
       possible_pairs.reset
-    end
-
-    def players_with_incompatible_colour_with_preference(colour)
-      players_with_incompatible_colour.select do |player|
-        player.colour_preference == colour
-      end
     end
   end
 end

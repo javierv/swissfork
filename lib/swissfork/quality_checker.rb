@@ -45,6 +45,8 @@ module Swissfork
         :high_difference_violation?,
         :same_colour_three_times?,
         :colour_preference_violation?,
+        :white_colour_preference_violation?,
+        :black_colour_preference_violation?,
         :strong_colour_preference_violation?,
         :same_downfloats_as_previous_round?,
         :same_upfloats_as_previous_round?,
@@ -77,6 +79,16 @@ module Swissfork
     # C.10
     def colour_preference_violation
       pairs.select(&:same_colour_preference?)
+    end
+
+    # C.10 specific to one colour.
+    def white_colour_preference_violation
+      pairs.select(&:same_white_colour_preference?)
+    end
+
+    # C.10 specific to one colour.
+    def black_colour_preference_violation
+      pairs.select(&:same_black_colour_preference?)
     end
 
     # C.11
@@ -126,6 +138,8 @@ module Swissfork
 
     def colours_failing_criterion
       failing_criterion([:colour_preference_violation?,
+                         :white_colour_preference_violation?,
+                         :black_colour_preference_violation?,
                          :strong_colour_preference_violation?])
     end
 

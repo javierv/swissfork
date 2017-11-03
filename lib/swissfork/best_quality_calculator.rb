@@ -49,17 +49,23 @@ module Swissfork
     end
 
     def incompatible_colours?(player, opponent)
-      # TODO: fix when we improve the colour violations calcs.
-      colour_violations > 0 &&
-          player.colour_preference == colour_incompatibilities.minoritary_preference &&
-          opponent.colour_preference != colour_incompatibilities.main_preference
+      colour_violations > 0 && colour_incompatibilities.main_preference &&
+        # TODO: move to a different class and add tests; right now the first part
+        # of the condition is always false
+        (!player.colour_preference && opponent.colour_preference == colour_incompatibilities.minoritary_preference || !opponent.colour_preference && player.colour_preference == colour_incompatibilities.minoritary_preference)
+    end
+
+    def colour_violations_for(colour)
+      colour_incompatibilities.violations_for(colour, colour_violations)
     end
 
     def allowed_failures
       @allowed_failures ||= {
         colour_preference_violation?: colour_violations,
         strong_colour_preference_violation?: strong_colour_violations,
-        same_downfloats_as_previous_round?: same_downfloats_as_previous_round_violations
+        same_downfloats_as_previous_round?: same_downfloats_as_previous_round_violations,
+        white_colour_preference_violation?: colour_violations_for(:white),
+        black_colour_preference_violation?: colour_violations_for(:black),
       }.tap { |failures| failures.default = 0 }
     end
 

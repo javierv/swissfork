@@ -137,6 +137,20 @@ module Swissfork
             bracket.pair_numbers.should == [[1, 6], [2, 7], [3, 8], [9, 4], [10, 5]]
           end
         end
+
+        context "opponent incompatibilities force colour violations" do
+          before(:each) do
+            players.each_stub(points: 1)
+            players[0..4].each_stub_preference(:white)
+            players[5..9].each_stub_preference(:black)
+            players[0..3].each_stub_opponents(players[5..9])
+            players[5..9].each_stub_opponents(players[0..3])
+          end
+
+          it "repeats colours" do
+            bracket.pair_numbers.should == [[1, 3], [2, 4], [5, 8], [9, 6], [10, 7]]
+          end
+        end
       end
 
       context "heterogeneous bracket" do
