@@ -1,7 +1,6 @@
 require "swissfork/bracket"
 require "swissfork/limbo_exchanger"
-require "swissfork/moved_down_permit"
-require "swissfork/moved_down_possible_pairs"
+require "swissfork/moved_down_best_quality_calculator"
 
 module Swissfork
   # Handles the pairing of a heterogeneous bracket.
@@ -11,7 +10,7 @@ module Swissfork
   # either a homogeneous or a heterogeneous bracket.
   class HeterogeneousBracket < Bracket
     def number_of_moved_down_players
-      @number_of_moved_down_players ||= moved_down_players.count
+      moved_down_players.count
     end
     alias_method :m0, :number_of_moved_down_players # FIDE nomenclature
 
@@ -22,40 +21,16 @@ module Swissfork
     end
 
     def number_of_moved_down_possible_pairs
-      @number_of_moved_down_possible_pairs ||=
-        [number_of_moved_down_compatible_pairs, number_of_required_total_pairs,
-         number_of_moved_down_pairs_after_downfloats].min
+      quality_calculator.moved_down_possible_pairs
     end
     alias_method :m1, :number_of_moved_down_possible_pairs # FIDE nomenclature
-
-    def number_of_moved_down_compatible_pairs
-      @number_of_moved_down_compatible_pairs ||= MovedDownPossiblePairs.new(moved_down_players, resident_players).count
-    end
 
     def number_of_required_total_pairs
       number_of_possible_pairs
     end
 
-    def number_of_moved_down_pairs_after_downfloats
-      number_of_moved_down_players - minimum_number_of_moved_down_downfloats
-    end
-
-    def number_of_required_moved_down_downfloats
-      number_of_moved_down_players - number_of_moved_down_possible_pairs
-    end
-
-    def minimum_number_of_moved_down_downfloats
-      allowed_homogeneous_downfloats.map do |downfloats|
-        (downfloats - resident_players).count
-      end.min.to_i
-    end
-
-    def allowed_downfloats
-      @allowed_downfloats ||= MovedDownPermit.new(moved_down_players, number_of_required_moved_down_downfloats, allowed_homogeneous_downfloats).allowed
-    end
-
     def number_of_required_remainder_pairs
-      number_of_required_total_pairs - number_of_moved_down_possible_pairs
+      quality_calculator.required_remainder_pairs
     end
 
     def s2
@@ -124,6 +99,10 @@ module Swissfork
 
     def number_of_players_in_limbo
       number_of_moved_down_players - number_of_moved_down_possible_pairs
+    end
+
+    def quality_calculator
+      @quality_calculator ||= MovedDownBestQualityCalculator.new(moved_down_players, resident_players)
     end
   end
 end

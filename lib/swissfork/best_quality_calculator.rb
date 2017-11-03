@@ -1,5 +1,6 @@
 require "simple_initialize"
 require "swissfork/possible_pairs"
+require "swissfork/ok_permit"
 
 module Swissfork
   # Checks what's the best possible quality which can be obtained
@@ -23,6 +24,16 @@ module Swissfork
 
     def pairs_after_downfloats
       (players.count - required_downfloats) / 2
+    end
+
+    def downfloat_permit
+      @downfloat_permit ||= OkPermit.new(players, required_downfloats)
+    end
+
+    attr_writer :downfloat_permit
+
+    def allowed_downfloats
+      downfloat_permit.allowed
     end
 
   private

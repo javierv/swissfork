@@ -4,7 +4,6 @@ require "swissfork/exchanger"
 require "swissfork/quality_criteria"
 require "swissfork/best_quality_calculator"
 require "swissfork/colour_incompatibilities"
-require "swissfork/ok_permit"
 
 module Swissfork
   # Handles the main pairing logic.
@@ -138,23 +137,17 @@ module Swissfork
       clear_established_pairs
     end
 
-    def downfloat_permit
-      @downfloat_permit ||= OkPermit.new(players, number_of_required_downfloats)
+    def downfloat_permit=(permit)
+      quality_calculator.downfloat_permit = permit
     end
 
-    attr_writer :downfloat_permit
-
     def allowed_downfloats
-      @allowed_downfloats ||= allowed_homogeneous_downfloats
+      @allowed_downfloats ||= quality_calculator.allowed_downfloats
     end
 
     def all_downfloats_are_impossible?
       !number_of_required_downfloats.zero? &&
         (allowed_downfloats - impossible_downfloats).empty?
-    end
-
-    def allowed_homogeneous_downfloats
-      downfloat_permit.allowed
     end
 
     def reset_impossible_downfloats
