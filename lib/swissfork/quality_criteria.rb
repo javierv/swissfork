@@ -153,27 +153,17 @@ module Swissfork
     end
 
     def exceed_same_downfloats_as_previous_round?(players)
-      if players.reject(&:descended_in_the_previous_round?).count < number_of_downfloats_not_from_the_previous_round
+      if players.select(&:descended_in_the_previous_round?).count > allowed_failures[:same_downfloats_as_previous_round?]
         failing_criteria << :same_downfloats_as_previous_round?
         true
       end
     end
 
     def exceed_same_downfloats_as_two_rounds_ago?(players)
-      if players.reject(&:descended_two_rounds_ago?).count < number_of_downfloats_not_from_two_rounds_ago
+      if players.select(&:descended_two_rounds_ago?).count > allowed_failures[:same_downfloats_as_two_rounds_ago?]
         failing_criteria << :same_downfloats_as_two_rounds_ago?
         true
       end
-    end
-
-    def number_of_downfloats_not_from_two_rounds_ago
-      number_of_required_downfloats -
-        allowed_failures[:same_downfloats_as_two_rounds_ago?]
-    end
-
-    def number_of_downfloats_not_from_the_previous_round
-      number_of_required_downfloats -
-        allowed_failures[:same_downfloats_as_previous_round?]
     end
 
     def ascending_players
