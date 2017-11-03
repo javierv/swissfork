@@ -42,6 +42,7 @@ module Swissfork
     def colour_violations
       @colour_violations ||= [possible_pairs - ColourPossiblePairs.new(players).count, 0].max
     end
+    alias_method :x1, :colour_violations # Old FIDE nomenclature
 
     # Criterion C.11
     def strong_colour_violations

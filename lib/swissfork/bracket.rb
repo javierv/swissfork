@@ -53,11 +53,6 @@ module Swissfork
     end
     alias_method :max_pairs, :number_of_possible_pairs # FIDE nomenclature
 
-    def minimum_colour_violations
-      quality_calculator.colour_violations
-    end
-    alias_method :x1, :minimum_colour_violations # Old FIDE nomenclature
-
     def minimum_strong_colour_violations
       quality_calculator.strong_colour_violations
     end
