@@ -1,6 +1,5 @@
 require "simple_initialize"
 require "swissfork/possible_pairs"
-require "swissfork/colour_possible_pairs"
 require "swissfork/colour_incompatibilities"
 require "swissfork/ok_permit"
 
@@ -40,7 +39,7 @@ module Swissfork
 
     # Criterion C.10
     def colour_violations
-      @colour_violations ||= [possible_pairs - ColourPossiblePairs.new(players).count, 0].max
+      colour_incompatibilities.violations
     end
     alias_method :x1, :colour_violations # Old FIDE nomenclature
 
@@ -55,7 +54,7 @@ module Swissfork
     end
 
     def colour_violations_for(colour)
-      colour_incompatibilities.violations_for(colour, colour_violations)
+      colour_incompatibilities.violations_for(colour)
     end
 
     def allowed_failures
