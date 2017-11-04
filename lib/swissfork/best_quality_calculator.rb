@@ -47,6 +47,7 @@ module Swissfork
     def strong_colour_violations
       colour_incompatibilities.strong_violations
     end
+    alias_method :z1, :strong_colour_violations # Old FIDE nomenclature
 
     def incompatible_colours?(pair)
       colour_violations > 0 &&

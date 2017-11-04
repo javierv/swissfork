@@ -52,6 +52,49 @@ module Swissfork
       end
     end
 
+    describe "#strong_violations" do
+      context "no incompatibilities" do
+        before(:each) do
+          players[0..4].each_stub_preference(:white)
+          players[5..9].each_stub_preference(:black)
+        end
+
+        it "returns zero" do
+          incompatibilities.strong_violations.should == 0
+        end
+      end
+
+      context "two more players have one colour priority" do
+        before(:each) do
+          players[0..5].each_stub_preference(:white)
+          players[6..9].each_stub_preference(:black)
+        end
+
+        it "returns the number of violations" do
+          incompatibilities.strong_violations.should == 1
+        end
+
+        context "one player has a mild preference" do
+          before(:each) { players[5].stub_degree(:mild) }
+
+          it "returns zero" do
+            incompatibilities.strong_violations.should == 0
+          end
+
+          context "that player can't be paired with players with the same colour" do
+            before(:each) do
+              players[5].stub_opponents(players[0..4])
+              players[0..4].each_stub_opponents([players[5]])
+            end
+
+            it "needs to violate one strong preference" do
+              incompatibilities.strong_violations.should == 1
+            end
+          end
+        end
+      end
+    end
+
     describe "#main_preference" do
       context "all players prefer the same colour" do
         context "all prefer white" do

@@ -1,5 +1,6 @@
 require "simple_initialize"
 require "swissfork/colour_possible_pairs"
+require "swissfork/strong_colour_possible_pairs"
 
 module Swissfork
   # Given a list of players, it calculates how many pairs
@@ -13,9 +14,8 @@ module Swissfork
     end
 
     def strong_violations
-      return 0 unless main_preference
-
-      [violations - players_with_main_mild_preference.count, 0].max
+      @strong_violations ||=
+        [number_of_possible_pairs - StrongColourPossiblePairs.new(players).count, 0].max
     end
 
     def main_preference

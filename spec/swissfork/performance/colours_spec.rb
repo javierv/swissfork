@@ -37,6 +37,24 @@ module Swissfork
           end
         end
       end
+
+      context "some preferences are mild, and have played against each other" do
+        context "with 20 players" do
+          let(:players) { create_players(1..20) }
+
+          before(:each) do
+            players[0..4].each_stub_degree(:mild)
+            players[5..19].each_stub_degree(:strong)
+            players[0..1].each_stub_opponents(players[2..19])
+            players[2..19].each_stub_opponents(players[0..1])
+          end
+
+          it "is very fast" do
+            Benchmark.realtime{ round.pair_numbers }.should be < 0.1
+            round.pair_numbers.should == [[1, 2], [12, 3], [13, 4], [14, 5], [6, 15], [7, 16], [8, 17], [9, 18], [10, 19], [11, 20]]
+          end
+        end
+      end
     end
 
     context "colour preference guaranteed with transpositions" do
