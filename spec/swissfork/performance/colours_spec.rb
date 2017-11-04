@@ -181,7 +181,36 @@ module Swissfork
           round.pair_numbers.should == [[1, 12], [2, 13], [3, 14], [4, 15], [5, 16], [6, 17], [7, 18], [8, 19], [11, 9], [20, 10]]
         end
       end
+
+      context "it's possible to have no colour violations" do
+        let(:players) { create_players(1..20) }
+
+        before(:each) do
+          players[0..7].each_stub_preference(:white)
+          (players[8..9] + players[12..19]).each_stub_preference(:black)
+          players[10..11].each_stub_preference(nil)
+        end
+
+        it "quickly discards pairs against a player with minoritary preference" do
+          Benchmark.realtime{ round.pair_numbers }.should be < 0.1
+          round.pair_numbers.should == [[1, 13], [2, 14], [3, 15], [4, 16], [5, 17], [6, 18], [7, 19], [8, 20], [11, 9], [12, 10]]
+        end
+      end
+
+      context "four players in S2; one can be paired against minoritary preference" do
+        let(:players) { create_players(1..20) }
+
+        before(:each) do
+          players[0..6].each_stub_preference(:white)
+          (players[7..9] + players[14..19]).each_stub_preference(:black)
+          players[10..13].each_stub_preference(nil)
+        end
+
+        it "quickly discards the second pair against a player with minoritary preference" do
+          Benchmark.realtime{ round.pair_numbers }.should be < 0.1
+          round.pair_numbers.should == [[1, 11], [2, 15], [3, 16], [4, 17], [5, 18], [6, 19], [7, 20], [12, 8], [13, 9], [14, 10]]
+        end
+      end
     end
   end
 end
-

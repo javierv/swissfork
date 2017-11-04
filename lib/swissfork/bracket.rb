@@ -219,7 +219,6 @@ module Swissfork
 
       !not_ideal_pairs.include?(hypothetical_pairs) &&
         !impossible_downfloats.include?(hypothetical_leftovers.to_set) &&
-        !quality_calculator.incompatible_colours?(pair) &&
         QualityChecker.new(hypothetical_pairs, hypothetical_leftovers & non_s1_players, quality_calculator).colours_and_downfloats_are_ok?
     end
 

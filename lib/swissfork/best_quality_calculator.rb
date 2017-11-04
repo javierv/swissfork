@@ -49,9 +49,8 @@ module Swissfork
     end
     alias_method :z1, :strong_colour_violations # Old FIDE nomenclature
 
-    def incompatible_colours?(pair)
-      colour_violations > 0 &&
-        !pair.respects_minoritary_preference?(minoritary_preference)
+    def no_preference_violations_for(colour)
+      colour_incompatibilities.no_preference_violations_for(colour)
     end
 
     def colour_violations_for(colour)
@@ -61,10 +60,12 @@ module Swissfork
     def allowed_failures
       @allowed_failures ||= {
         colour_preference_violation?: colour_violations,
-        strong_colour_preference_violation?: strong_colour_violations,
-        same_downfloats_as_previous_round?: same_downfloats_as_previous_round_violations,
         white_colour_preference_violation?: colour_violations_for(:white),
         black_colour_preference_violation?: colour_violations_for(:black),
+        white_preference_playing_players_with_no_preference?: no_preference_violations_for(:white),
+        black_preference_playing_players_with_no_preference?: no_preference_violations_for(:black),
+        strong_colour_preference_violation?: strong_colour_violations,
+        same_downfloats_as_previous_round?: same_downfloats_as_previous_round_violations,
       }.tap { |failures| failures.default = 0 }
     end
 

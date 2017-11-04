@@ -91,9 +91,8 @@ module Swissfork
       [pair.points.max, pair.points.sum, unordered_players.min] <=> [points.max, points.sum, [pair.s1_player, pair.s2_player].min]
     end
 
-    def respects_minoritary_preference?(minoritary_preference)
-      !minoritary_preference ||
-        colour_preferences.to_set != [minoritary_preference, nil].to_set
+    def no_preference_against_colour?(colour)
+      colour_preferences.to_set == [colour, nil].to_set
     end
 
   protected

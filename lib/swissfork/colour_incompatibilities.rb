@@ -27,6 +27,8 @@ module Swissfork
         end
     end
 
+    # Number of pairs with players having the same colour preference
+    # for a specific colour
     def violations_for(colour)
       if minoritary_preference
         if colour == minoritary_preference
@@ -36,6 +38,21 @@ module Swissfork
         end
       else
         violations / 2
+      end
+    end
+
+    # Number of players with players having no colour preference
+    # against players with a specific colour preference
+    def no_preference_violations_for(colour)
+      if main_preference
+        if colour == main_preference
+          [[((number_of_compatible_players_with_no_preference + colour_difference.abs) / 2.0).ceil, number_of_compatible_players_with_no_preference].min, 0].max
+        else
+          [[((number_of_compatible_players_with_no_preference - colour_difference.abs) / 2.0).ceil, number_of_compatible_players_with_no_preference].min, 0].max
+        end
+      else
+        [number_of_compatible_players_with_preference(colour),
+         (number_of_compatible_players_with_no_preference / 2.0).ceil].min
       end
     end
 
@@ -52,16 +69,27 @@ module Swissfork
 
   private
     def colour_difference
-      [number_of_compatible_players_with_preference(:white),
-       players_with_preference(:white).count] <=>
-      [number_of_compatible_players_with_preference(:black),
-       players_with_preference(:black).count]
+      if compatible_players_difference.zero?
+        players_with_preference(:white).count - players_with_preference(:black).count
+      else
+        compatible_players_difference
+      end
+    end
+
+    def compatible_players_difference
+      @compatible_players_difference ||=
+        number_of_compatible_players_with_preference(:white) -
+        number_of_compatible_players_with_preference(:black)
     end
 
     def players_with_main_mild_preference
       players_with_preference(main_preference).select do |player|
         player.preference_degree == :mild
       end
+    end
+
+    def players_with_no_preference
+      players.reject(&:colour_preference)
     end
 
     def players_with_preference(colour)
@@ -71,6 +99,13 @@ module Swissfork
     def number_of_compatible_players_with_preference(colour)
       players_with_preference(colour).count -
         ColourPossiblePairs.new(players).colour_incompatibilities_for(colour)
+    end
+
+    # TODO: add the "compatible" part.
+    # I guess some players would be compatible against one colour
+    # but not against the other colour...
+    def number_of_compatible_players_with_no_preference
+      players_with_no_preference.count
     end
   end
 end

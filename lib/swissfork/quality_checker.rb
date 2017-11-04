@@ -41,12 +41,16 @@ module Swissfork
     end
 
     def self.criteria
+      # TODO: some of these criteria are redundant if we're
+      # checking the quality after finishing the pairing.
       [
         :high_difference_violation?,
         :same_colour_three_times?,
         :colour_preference_violation?,
         :white_colour_preference_violation?,
         :black_colour_preference_violation?,
+        :white_preference_playing_players_with_no_preference?,
+        :black_preference_playing_players_with_no_preference?,
         :strong_colour_preference_violation?,
         :same_downfloats_as_previous_round?,
         :same_upfloats_as_previous_round?,
@@ -89,6 +93,16 @@ module Swissfork
     # C.10 specific to one colour.
     def black_colour_preference_violation
       pairs.select(&:same_black_colour_preference?)
+    end
+
+    # A way to check pairs will fulfil C.10 in advance
+    def white_preference_playing_players_with_no_preference
+      pairs.select { |pair| pair.no_preference_against_colour?(:white) }
+    end
+
+    # A way to check pairs will fulfil C.10 in advance
+    def black_preference_playing_players_with_no_preference
+      pairs.select { |pair| pair.no_preference_against_colour?(:black) }
     end
 
     # C.11
@@ -140,6 +154,8 @@ module Swissfork
       failing_criterion([:colour_preference_violation?,
                          :white_colour_preference_violation?,
                          :black_colour_preference_violation?,
+                         :white_preference_playing_players_with_no_preference?,
+                         :black_preference_playing_players_with_no_preference?,
                          :strong_colour_preference_violation?])
     end
 
