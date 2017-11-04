@@ -202,8 +202,7 @@ module Swissfork
     end
 
     def pair_for(player)
-      pairs_for(player).each { |pair| return pair if is_possible?(pair) }
-      nil
+      pairs_for(player).find { |pair| is_possible?(pair) }
     end
 
     def pairs_for(player)

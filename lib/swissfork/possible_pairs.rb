@@ -39,11 +39,9 @@ module Swissfork
     end
 
     def opponent_with_less_opponents_for(player)
-      opponents_ordered_by_opponents_count.each do |opponent|
-        return opponent if compatibility_list[player].include?(opponent)
+      opponents_ordered_by_opponents_count.find do |opponent|
+        compatibility_list[player].include?(opponent)
       end
-
-      nil
     end
 
     def reset
