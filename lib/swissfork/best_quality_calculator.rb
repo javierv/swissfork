@@ -1,6 +1,7 @@
 require "simple_initialize"
 require "swissfork/possible_pairs"
 require "swissfork/colour_incompatibilities"
+require "swissfork/no_preference_incompatibilities"
 require "swissfork/ok_permit"
 
 module Swissfork
@@ -50,7 +51,7 @@ module Swissfork
     alias_method :z1, :strong_colour_violations # Old FIDE nomenclature
 
     def no_preference_violations_for(colour)
-      colour_incompatibilities.no_preference_violations_for(colour)
+      no_preference_incompatibilities.violations_for(colour)
     end
 
     def colour_violations_for(colour)
@@ -85,6 +86,10 @@ module Swissfork
 
     def colour_incompatibilities
       @colour_incompatibilities ||= ColourIncompatibilities.new(players, possible_pairs)
+    end
+
+    def no_preference_incompatibilities
+      @no_preference_incompatibilities ||= NoPreferenceIncompatibilities.new(players)
     end
 
     def resident_players
