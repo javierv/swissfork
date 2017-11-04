@@ -44,15 +44,10 @@ module Swissfork
     # Number of players with players having no colour preference
     # against players with a specific colour preference
     def no_preference_violations_for(colour)
-      if main_preference
-        if colour == main_preference
-          [[((number_of_compatible_players_with_no_preference + colour_difference.abs) / 2.0).ceil, number_of_compatible_players_with_no_preference].min, 0].max
-        else
-          [[((number_of_compatible_players_with_no_preference - colour_difference.abs) / 2.0).ceil, number_of_compatible_players_with_no_preference].min, 0].max
-        end
-      else
-        [number_of_compatible_players_with_preference(colour),
-         (number_of_compatible_players_with_no_preference / 2.0).ceil].min
+      case main_preference
+      when nil then no_preference_violations_with_no_main_preference_for(colour)
+      when colour then no_preference_violations_for_main_preference
+      else no_preference_violations_for_minoritary_preference
       end
     end
 
@@ -106,6 +101,33 @@ module Swissfork
     # but not against the other colour...
     def number_of_compatible_players_with_no_preference
       players_with_no_preference.count
+    end
+
+    def no_preference_violations_for_main_preference
+      [0,
+       [number_of_compatible_players_with_no_preference,
+        number_of_compatible_players_with_no_preference_for_main_preference].min
+      ].max
+    end
+
+    def no_preference_violations_for_minoritary_preference
+      [0,
+       [number_of_compatible_players_with_no_preference,
+        number_of_compatible_players_with_no_preference_for_minoritary_preference].min
+      ].max
+    end
+
+    def no_preference_violations_with_no_main_preference_for(colour)
+      [number_of_compatible_players_with_preference(colour),
+       (number_of_compatible_players_with_no_preference / 2.0).ceil].min
+    end
+
+    def number_of_compatible_players_with_no_preference_for_main_preference
+      ((number_of_compatible_players_with_no_preference + colour_difference.abs) / 2.0).ceil
+    end
+
+    def number_of_compatible_players_with_no_preference_for_minoritary_preference
+      ((number_of_compatible_players_with_no_preference - colour_difference.abs) / 2.0).ceil
     end
   end
 end
