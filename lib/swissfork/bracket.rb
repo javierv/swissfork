@@ -177,7 +177,7 @@ module Swissfork
     def current_exchange_pairs
       clear_pairs
 
-      until(best_pairs_obtained?)
+      until best_pairs_obtained?
         mark_established_pairs_as_not_ideal
         establish_pairs
         return nil if established_pairs.empty?
@@ -272,7 +272,7 @@ module Swissfork
     def exchange_until_non_s1_players_can_downfloat
       begin
         exchange
-      end until(exchanger.limit_reached? || non_s1_players_can_downfloat?)
+      end until exchanger.limit_reached? || non_s1_players_can_downfloat?
     end
 
     def non_s1_players_can_downfloat?

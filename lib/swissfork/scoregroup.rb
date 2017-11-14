@@ -45,7 +45,7 @@ module Swissfork
         bracket.downfloat_permit =
           CompletionPermit.new(players, remaining_players, bracket.number_of_required_downfloats)
 
-        until(bracket.pairs && next_scoregroup_pairing_is_ok?)
+        until bracket.pairs && next_scoregroup_pairing_is_ok?
           # Criterion C.7
           if bracket.pairs.to_a.empty?
             reduce_number_of_next_scoregroup_required_pairs
