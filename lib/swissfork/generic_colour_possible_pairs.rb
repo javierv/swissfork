@@ -60,7 +60,7 @@ module Swissfork
     def players_with_incompatible_colour
       possible_pairs.compatibility_list.select do |player, opponents|
         !opponents.empty? && compatibility_list[player].empty?
-      end.map { |player, opponents| player }
+      end.keys
     end
 
     def players_with_incompatible_colour_with_preference(colour)
