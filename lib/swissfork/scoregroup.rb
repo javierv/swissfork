@@ -62,11 +62,7 @@ module Swissfork
     def number_of_required_downfloats
       required_mdps = Completion.new(remaining_players).number_of_required_mdps
 
-      if((players.count - required_mdps).odd?)
-        required_mdps + 1
-      else
-        required_mdps
-      end
+      required_mdps + ((players.count - required_mdps) % 2)
     end
 
     def bracket
