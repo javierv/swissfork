@@ -177,14 +177,15 @@ module Swissfork
     def current_exchange_pairs
       clear_pairs
 
-      until best_pairs_obtained?
+      loop do
+        establish_pairs
+
+        return nil if established_pairs.empty?
+        return provisional_pairs if best_pairs_obtained?
+
         not_ideal_pairs << established_pairs
         clear_established_pairs
-        establish_pairs
-        return nil if established_pairs.empty?
       end
-
-      provisional_pairs
     end
 
     def establish_pairs
