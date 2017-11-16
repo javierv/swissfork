@@ -178,7 +178,8 @@ module Swissfork
       clear_pairs
 
       until best_pairs_obtained?
-        mark_established_pairs_as_not_ideal
+        not_ideal_pairs << established_pairs
+        clear_established_pairs
         establish_pairs
         return nil if established_pairs.empty?
       end
@@ -187,12 +188,16 @@ module Swissfork
     end
 
     def establish_pairs
-      s1.each do |player|
-        pair = pair_for(player)
+      index = 0
+      until established_pairs.count == number_of_required_pairs || index < 0
+        pair = pair_for(players[index])
         if pair
           established_pairs << pair
+          index += 1
         else
-          return established_pairs
+          not_ideal_pairs << established_pairs.dup
+          established_pairs.pop
+          index -= 1
         end
       end
     end
@@ -248,11 +253,6 @@ module Swissfork
 
     def impossible_downfloats
       @impossible_downfloats ||= Set.new
-    end
-
-    def mark_established_pairs_as_not_ideal
-      not_ideal_pairs << established_pairs
-      clear_established_pairs
     end
 
     def clear_pairs

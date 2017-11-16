@@ -188,5 +188,35 @@ module Swissfork
         end
       end
     end
+
+    context "the last player in S1 can only play against the first player in S2" do
+      let(:players) { create_players(1..16) }
+
+      before(:each) do
+        (players[0..15] - players[7..8]).each_stub_opponents([players[7]])
+        players[7].stub_opponents(players[0..15] - players[7..8])
+      end
+
+      it "isn't too slow" do
+        # TODO: with 20 players, it's still very slow.
+        Benchmark.realtime{ round.pair_numbers }.should be < 2
+        round.pair_numbers.should == [[1, 10], [2, 11], [3, 12], [4, 13], [5, 14], [6, 15], [7, 16], [8, 9]]
+      end
+    end
+
+    context "the last player in S1 can only play against the first player in S1" do
+      let(:players) { create_players(1..14) }
+
+      before(:each) do
+        players[1..13].each_stub_opponents([players[6]])
+        players[6].stub_opponents(players[1..13])
+      end
+
+      it "isn't too slow" do
+        # TODO: with 16 players, it's still very slow.
+        Benchmark.realtime{ round.pair_numbers }.should be < 2
+        round.pair_numbers.should == [[1, 7], [2, 9], [3, 10], [4, 11], [5, 12], [6, 13], [8, 14]]
+      end
+    end
   end
 end
