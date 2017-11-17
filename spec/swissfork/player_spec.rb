@@ -80,7 +80,7 @@ module Swissfork
       end
     end
 
-    describe "#compatible_players_in" do
+    describe "#compatible_opponents_in" do
       let(:compatible) { Player.new(2) }
       let(:rival) { Player.new(3) }
 
@@ -89,7 +89,7 @@ module Swissfork
       end
 
       it "isn't compatible with previous opponents and compatible otherwise" do
-        player.compatible_players_in([rival, compatible]).should == [compatible]
+        player.compatible_opponents_in([rival, compatible]).should == [compatible]
       end
 
       context "same colour preference" do
@@ -107,7 +107,7 @@ module Swissfork
         end
 
         it "isn't compatible if they've got the same absolute colour preference" do
-          player.compatible_players_in([same_preference, same_absolute_preference]).should == [same_preference]
+          player.compatible_opponents_in([same_preference, same_absolute_preference]).should == [same_preference]
         end
 
         context "the player is a topscorer" do
@@ -116,7 +116,7 @@ module Swissfork
           end
 
           it "is compatible with all non-opponents" do
-            player.compatible_players_in([rival, same_absolute_preference]).should == [same_absolute_preference]
+            player.compatible_opponents_in([rival, same_absolute_preference]).should == [same_absolute_preference]
           end
         end
 
@@ -127,7 +127,7 @@ module Swissfork
           end
 
           it "is compatible with all non-opponents" do
-            player.compatible_players_in([rival, same_absolute_preference]).should == [same_absolute_preference]
+            player.compatible_opponents_in([rival, same_absolute_preference]).should == [same_absolute_preference]
           end
         end
       end

@@ -30,7 +30,7 @@ module Swissfork
     end
 
     def opponents_for(player)
-      player.compatible_players_in(opponents)
+      player.compatible_opponents_in(opponents)
     end
   end
 end

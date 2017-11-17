@@ -111,7 +111,7 @@ module Swissfork
       [other_player.points, number] <=> [points, other_player.number]
     end
 
-    def compatible_players_in(players)
+    def compatible_opponents_in(players)
       players.select { |player| compatibilities[player] }
     end
 

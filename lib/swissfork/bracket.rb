@@ -218,7 +218,7 @@ module Swissfork
     end
 
     def opponents_for(player)
-      player.compatible_players_in(s2) & still_unpaired_players
+      player.compatible_opponents_in(s2) & still_unpaired_players
     end
 
     def is_possible?(pair)

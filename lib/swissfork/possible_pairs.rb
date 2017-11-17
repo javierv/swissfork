@@ -60,7 +60,7 @@ module Swissfork
     end
 
     def opponents_for(player)
-      player.compatible_players_in(players)
+      player.compatible_opponents_in(players)
     end
 
     def players_ordered_by_opponents_count
