@@ -124,7 +124,7 @@ module Swissfork
 
     def mark_established_downfloats_as_impossible
       impossible_downfloats << definitive_unpaired_players.to_set
-      clear_established_pairs
+      clear_definitive_pairs
     end
 
     def downfloat_permit=(permit)
@@ -141,7 +141,7 @@ module Swissfork
     end
 
     def reset_impossible_downfloats
-      clear_pairs
+      clear_definitive_pairs
       reset_exchanger
       @impossible_downfloats = nil
     end
@@ -175,7 +175,8 @@ module Swissfork
     end
 
     def current_exchange_pairs
-      clear_pairs
+      clear_not_ideal_pairs
+      clear_established_pairs
 
       loop do
         establish_pairs
@@ -242,23 +243,24 @@ module Swissfork
 
     def clear_established_pairs
       @established_pairs = nil
-
-      if instance_variable_defined?("@definitive_pairs")
-        remove_instance_variable("@definitive_pairs")
-      end
     end
 
     def not_ideal_pairs
       @not_ideal_pairs ||= Set.new
     end
 
+    def clear_not_ideal_pairs
+      @not_ideal_pairs = nil
+    end
+
     def impossible_downfloats
       @impossible_downfloats ||= Set.new
     end
 
-    def clear_pairs
-      @not_ideal_pairs = nil
-      clear_established_pairs
+    def clear_definitive_pairs
+      if instance_variable_defined?("@definitive_pairs")
+        remove_instance_variable("@definitive_pairs")
+      end
     end
 
     def next_exchange
