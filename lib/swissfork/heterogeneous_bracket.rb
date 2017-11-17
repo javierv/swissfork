@@ -66,7 +66,7 @@ module Swissfork
       super + s2
     end
 
-    def pairings_completed?
+    def best_pairs_obtained?
       super && remainder_pairs.to_a.count == number_of_required_remainder_pairs
     end
 

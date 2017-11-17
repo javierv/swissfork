@@ -190,7 +190,7 @@ module Swissfork
 
     def establish_pairs
       index = 0
-      until established_pairs.count == number_of_required_pairs || index < 0
+      until pairings_completed? || index < 0
         pair = pair_for(players[index])
         if pair
           established_pairs << pair
@@ -204,7 +204,7 @@ module Swissfork
     end
 
     def best_pairs_obtained?
-      pairings_completed? && quality.ok?
+      quality.ok?
     end
 
     def pair_for(player)
