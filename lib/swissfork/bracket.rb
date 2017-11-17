@@ -3,6 +3,7 @@ require "swissfork/pair"
 require "swissfork/exchanger"
 require "swissfork/quality_criteria"
 require "swissfork/best_quality_calculator"
+require "swissfork/possible_pairs"
 require "swissfork/quality_checker"
 
 module Swissfork
@@ -226,6 +227,7 @@ module Swissfork
 
       !not_ideal_pairs.include?(hypothetical_pairs) &&
         !impossible_downfloats.include?(hypothetical_leftovers.to_set) &&
+        number_of_required_pairs <= hypothetical_pairs.count + PossiblePairs.new(hypothetical_leftovers).count &&
         QualityChecker.new(hypothetical_pairs, hypothetical_leftovers & non_s1_players, quality_calculator).colours_and_downfloats_are_ok?
     end
 

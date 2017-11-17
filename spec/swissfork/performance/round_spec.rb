@@ -190,32 +190,30 @@ module Swissfork
     end
 
     context "the last player in S1 can only play against the first player in S2" do
-      let(:players) { create_players(1..16) }
+      let(:players) { create_players(1..20) }
 
       before(:each) do
-        (players[0..15] - players[7..8]).each_stub_opponents([players[7]])
-        players[7].stub_opponents(players[0..15] - players[7..8])
+        (players[0..19] - players[9..10]).each_stub_opponents([players[9]])
+        players[9].stub_opponents(players[0..19] - players[9..10])
       end
 
-      it "isn't too slow" do
-        # TODO: with 20 players, it's still very slow.
-        Benchmark.realtime{ round.pair_numbers }.should be < 2
-        round.pair_numbers.should == [[1, 10], [2, 11], [3, 12], [4, 13], [5, 14], [6, 15], [7, 16], [8, 9]]
+      it "pairs fast" do
+        Benchmark.realtime{ round.pair_numbers }.should be < 0.1
+        round.pair_numbers.should == [[1, 12], [2, 13], [3, 14], [4, 15], [5, 16], [6, 17], [7, 18], [8, 19], [9, 20], [10, 11]]
       end
     end
 
     context "the last player in S1 can only play against the first player in S1" do
-      let(:players) { create_players(1..14) }
+      let(:players) { create_players(1..20) }
 
       before(:each) do
-        players[1..13].each_stub_opponents([players[6]])
-        players[6].stub_opponents(players[1..13])
+        players[1..19].each_stub_opponents([players[9]])
+        players[9].stub_opponents(players[1..19])
       end
 
       it "isn't too slow" do
-        # TODO: with 16 players, it's still very slow.
         Benchmark.realtime{ round.pair_numbers }.should be < 2
-        round.pair_numbers.should == [[1, 7], [2, 9], [3, 10], [4, 11], [5, 12], [6, 13], [8, 14]]
+        round.pair_numbers.should == [[1, 10], [2, 12], [3, 13], [4, 14], [5, 15], [6, 16], [7, 17], [8, 18], [9, 19], [11, 20]]
       end
     end
   end
