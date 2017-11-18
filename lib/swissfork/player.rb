@@ -158,13 +158,14 @@ module Swissfork
     end
 
     def compatibilities
-      @compatibilities ||= {}.tap do |compatibilities|
-        compatibility_criteria.each do |criterion|
-          compatibilities[criterion] = Hash.new do |compatibility, player|
-            compatibility[player] = send("#{criterion}_compatible?", player)
+      @compatibilities ||= compatibility_criteria.map do |criterion|
+        [
+          criterion,
+          Hash.new do |compatibilities, player|
+            compatibilities[player] = send("#{criterion}_compatible?", player)
           end
-        end
-      end
+        ]
+      end.to_h
     end
 
     def opponent_compatible?(player)
