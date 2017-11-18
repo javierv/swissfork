@@ -1,5 +1,6 @@
 require "simple_initialize"
 require "swissfork/preference_priority"
+require "swissfork/player_compatibility"
 require "set"
 
 module Swissfork
@@ -162,30 +163,11 @@ module Swissfork
         [
           criterion,
           Hash.new do |compatibilities, player|
-            compatibilities[player] = send("#{criterion}_compatible?", player)
+            compatibilities[player] = compatible?(player) &&
+              PlayerCompatibility.new(self, player).send("#{criterion}?")
           end
         ]
       end.to_h
-    end
-
-    def opponent_compatible?(player)
-      compatible?(player) && (
-        preference_degree != :absolute || player.preference_degree != :absolute ||
-        player.colour_preference != colour_preference ||
-        topscorer? || player.topscorer?
-      )
-    end
-
-    def colour_compatible?(player)
-      compatible?(player) &&
-        (!colour_preference || player.colour_preference != colour_preference)
-    end
-
-    def strong_colour_compatible?(player)
-      compatible?(player) && (
-        !colour_preference || player.colour_preference != colour_preference ||
-        player.preference_degree == :mild || preference_degree == :mild
-      )
     end
 
     def compatible?(player)
