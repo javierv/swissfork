@@ -26,7 +26,7 @@ module Swissfork
     attr_reader :players
 
     def self.for(players)
-      if new(players).homogeneous?
+      if players.map(&:points).uniq.one?
         HomogeneousBracket.new(players)
       else
         HeterogeneousBracket.new(players)
@@ -43,10 +43,6 @@ module Swissfork
 
     def <=>(bracket)
       bracket.points <=> points
-    end
-
-    def homogeneous?
-      all_players_have_the_same_points?
     end
 
     def number_of_possible_pairs
@@ -290,10 +286,6 @@ module Swissfork
 
     def definitive_unpaired_players
       players - paired_players
-    end
-
-    def all_players_have_the_same_points?
-      players.map(&:points).uniq.one?
     end
 
     def moved_down_players

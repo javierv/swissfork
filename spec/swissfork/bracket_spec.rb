@@ -5,7 +5,7 @@ module Swissfork
   describe Bracket do
     let(:bracket) { Bracket.for(players) }
 
-    describe "#homogeneous?" do
+    describe ".for" do
       let(:players) { create_players(1..6) }
 
       before(:each) do
@@ -13,8 +13,8 @@ module Swissfork
       end
 
       context "players with the same points" do
-        it "returns true" do
-          bracket.homogeneous?.should be true
+        it "is homogeneous" do
+          bracket.class.name.should == "Swissfork::HomogeneousBracket"
         end
       end
 
@@ -23,8 +23,8 @@ module Swissfork
           players.first.stub(points: 1.5)
         end
 
-        it "returns false" do
-          bracket.homogeneous?.should be false
+        it "is heterogeneous" do
+          bracket.class.name.should == "Swissfork::HeterogeneousBracket"
         end
       end
 
@@ -33,8 +33,8 @@ module Swissfork
           players[0..2].each_stub(points: 1.5)
         end
 
-        it "returns false" do
-          bracket.homogeneous?.should be false
+        it "is heterogeneous" do
+          bracket.class.name.should == "Swissfork::HeterogeneousBracket"
         end
       end
     end
