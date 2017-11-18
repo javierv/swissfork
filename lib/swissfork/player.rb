@@ -101,6 +101,10 @@ module Swissfork
         end
     end
 
+    def absolute_preference?
+      preference_degree == :absolute && !topscorer?
+    end
+
     def colour_difference
       colours.select { |colour| colour == :white }.count -
         colours.select { |colour| colour == :black }.count

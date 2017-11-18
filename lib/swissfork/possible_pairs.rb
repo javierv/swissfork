@@ -94,13 +94,7 @@ module Swissfork
     end
 
     def number_of_players_with_absolute_preference
-      players_with_absolute_preference.group_by(&:colour_preference).values.map(&:count).max.to_i
-    end
-
-    def players_with_absolute_preference
-      players.select do |player|
-        player.preference_degree == :absolute && !player.topscorer?
-      end
+      players.select(&:absolute_preference?).group_by(&:colour_preference).values.map(&:count).max.to_i
     end
   end
 end
