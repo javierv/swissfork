@@ -7,11 +7,7 @@ module Swissfork
 
   private
     def opponents_for(player)
-      super(player).select do |opponent|
-        !player.colour_preference || !opponent.colour_preference ||
-          player.colour_preference != opponent.colour_preference ||
-          player.preference_degree == :mild || opponent.preference_degree == :mild
-      end
+      player.compatible_strong_colours_in(players)
     end
   end
 end

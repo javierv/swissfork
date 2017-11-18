@@ -119,6 +119,10 @@ module Swissfork
       players.select { |player| compatibilities[:colour][player] }
     end
 
+    def compatible_strong_colours_in(players)
+      players.select { |player| compatibilities[:strong_colour][player] }
+    end
+
     def topscorer?
       @topscorer
     end
@@ -151,7 +155,7 @@ module Swissfork
 
     def compatibilities
       @compatibilities ||= {}.tap do |compatibilities|
-        [:opponent, :colour].each do |criterion|
+        [:opponent, :colour, :strong_colour].each do |criterion|
           compatibilities[criterion] = Hash.new do |compatibility, player|
             compatibility[player] = send("#{criterion}_compatible?", player)
           end
@@ -160,7 +164,7 @@ module Swissfork
     end
 
     def opponent_compatible?(player)
-      !opponents.include?(player) && player.id != id && (
+      compatible?(player) && (
         preference_degree != :absolute || player.preference_degree != :absolute ||
         player.colour_preference != colour_preference ||
         topscorer? || player.topscorer?
@@ -168,8 +172,19 @@ module Swissfork
     end
 
     def colour_compatible?(player)
-      !opponents.include?(player) && player.id != id &&
+      compatible?(player) &&
         (!colour_preference || player.colour_preference != colour_preference)
+    end
+
+    def strong_colour_compatible?(player)
+      compatible?(player) && (
+        !colour_preference || player.colour_preference != colour_preference ||
+        player.preference_degree == :mild || preference_degree == :mild
+      )
+    end
+
+    def compatible?(player)
+      !opponents.include?(player) && player.id != id
     end
 
     def empty_colours_cache
