@@ -3,9 +3,6 @@ require "swissfork/game"
 
 module Swissfork
   # Contains all data related to a game.
-  #
-  # Currently it only contains which players played the game,
-  # but result information will be added in the future.
   class Pair
     initialize_with :s1_player, :s2_player
 
