@@ -8,7 +8,7 @@ module Swissfork
     attr_reader :players
 
     def opponent?
-      !absolute_preferences? || different_preference? || topscorers?
+      !same_absolute_preference? || topscorers?
     end
 
     def colour?
@@ -17,6 +17,38 @@ module Swissfork
 
     def strong_colour?
       different_preference? || degrees.include?(:mild)
+    end
+
+    def same_absolute_high_difference?
+      same_absolute_preference? && high_differences?
+    end
+
+    def same_colour_three_times?
+      same_absolute_preference? && !high_differences?
+    end
+
+    def same_preference?
+      preferences.all? && preferences.uniq.one?
+    end
+
+    def white_preferences?
+      preferences == [:white, :white]
+    end
+
+    def black_preferences?
+      preferences == [:black, :black]
+    end
+
+    def same_strong_preference?
+      strong_preferences? && same_preference?
+    end
+
+    def no_preference_against_colour?(colour)
+      preferences.to_set == [colour, nil].to_set
+    end
+
+    def no_preferences?
+      preferences.none?
     end
 
   private
@@ -28,12 +60,12 @@ module Swissfork
       !same_preference?
     end
 
-    def same_preference?
-      preferences.all? && preferences.uniq.one?
-    end
-
     def topscorers?
       players.map(&:topscorer?).any?
+    end
+
+    def strong_preferences?
+      (degrees - [:absolute, :strong]).empty?
     end
 
     def absolute_preferences?
@@ -42,6 +74,18 @@ module Swissfork
 
     def preferences
       players.map(&:colour_preference)
+    end
+
+    def same_absolute_preference?
+      absolute_preferences? && same_preference?
+    end
+
+    def colour_differences
+      players.map(&:colour_difference)
+    end
+
+    def high_differences?
+      colour_differences.all? { |difference| difference.abs > 1 }
     end
   end
 end

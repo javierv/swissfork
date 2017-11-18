@@ -1,5 +1,7 @@
 require "simple_initialize"
 require "swissfork/game"
+require "swissfork/player_compatibility"
+require "forwardable"
 
 module Swissfork
   # Contains all data related to a game.
@@ -9,8 +11,18 @@ module Swissfork
     attr_reader :result
     include Comparable
 
+    extend Forwardable
+    def_delegators :player_compatibility,
+      :same_absolute_high_difference?,
+      :same_colour_three_times?,
+      :same_preference?,
+      :white_preferences?,
+      :black_preferences?,
+      :same_strong_preference?,
+      :no_preference_against_colour?
+
     def players
-      @players ||= if no_players_have_colour_preference?
+      @players ||= if player_compatibility.no_preferences?
         players_ordered_by_initial_colours
       elsif players_ordered_by_preference.first.colour_preference == :black
         players_ordered_by_preference.reverse
@@ -44,34 +56,6 @@ module Swissfork
       players.map(&:number)
     end
 
-    def same_absolute_high_difference?
-      same_absolute_preference? && both_have_high_difference?
-    end
-
-    def same_colour_three_times?
-      same_absolute_preference? && !both_have_high_difference?
-    end
-
-    def same_colour_preference?
-      s1_player.colour_preference &&
-        s1_player.colour_preference == s2_player.colour_preference
-    end
-
-    def same_white_colour_preference?
-      same_colour_preference? && s1_player.colour_preference == :white
-    end
-
-    def same_black_colour_preference?
-      same_colour_preference? && s1_player.colour_preference == :black
-    end
-
-    def same_strong_preference?
-      same_colour_preference? && (
-        s1_player.preference_degree == :strong && [:strong, :absolute].include?(s2_player.preference_degree) ||
-        [:strong, :absolute].include?(s1_player.preference_degree) && s2_player.preference_degree == :strong
-      )
-    end
-
     def heterogeneous?
       s1_player.points != s2_player.points
     end
@@ -88,10 +72,6 @@ module Swissfork
       [pair.points.max, pair.points.sum, unordered_players.min] <=> [points.max, points.sum, pair.unordered_players.min]
     end
 
-    def no_preference_against_colour?(colour)
-      colour_preferences.to_set == [colour, nil].to_set
-    end
-
   protected
     def points
       unordered_players.map(&:points)
@@ -102,26 +82,9 @@ module Swissfork
     end
 
   private
-    def same_absolute_preference?
-      same_colour_preference? && s1_player.preference_degree == :absolute &&
-        s2_player.preference_degree == :absolute
-    end
-
-    def both_have_high_difference?
-      s1_player.colour_difference.abs > 1 && s2_player.colour_difference.abs > 1
-    end
-
     def players_ordered_by_preference
       @players_ordered_by_preference ||=
         unordered_players.sort_by(&:preference_priority)
-    end
-
-    def colour_preferences
-      unordered_players.map(&:colour_preference)
-    end
-
-    def no_players_have_colour_preference?
-      !s1_player.colour_preference && !s2_player.colour_preference
     end
 
     def players_ordered_by_initial_colours
@@ -132,6 +95,10 @@ module Swissfork
       else
         [lower_player, higher_player]
       end
+    end
+
+    def player_compatibility
+      PlayerCompatibility.new(*unordered_players)
     end
   end
 end

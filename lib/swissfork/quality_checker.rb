@@ -82,17 +82,17 @@ module Swissfork
 
     # C.10
     def colour_preference_violation
-      pairs.select(&:same_colour_preference?)
+      pairs.select(&:same_preference?)
     end
 
     # C.10 specific to one colour.
     def white_colour_preference_violation
-      pairs.select(&:same_white_colour_preference?)
+      pairs.select(&:white_preferences?)
     end
 
     # C.10 specific to one colour.
     def black_colour_preference_violation
-      pairs.select(&:same_black_colour_preference?)
+      pairs.select(&:black_preferences?)
     end
 
     # A way to check pairs will fulfil C.10 in advance
