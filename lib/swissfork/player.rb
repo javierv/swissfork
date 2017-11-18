@@ -111,16 +111,16 @@ module Swissfork
       [other_player.points, number] <=> [points, other_player.number]
     end
 
-    def compatible_opponents_in(players)
-      players.select { |player| compatibilities[:opponent][player] }
+    def self.compatibility_criteria
+      [:opponent, :colour, :strong_colour]
     end
 
-    def compatible_colours_in(players)
-      players.select { |player| compatibilities[:colour][player] }
-    end
-
-    def compatible_strong_colours_in(players)
-      players.select { |player| compatibilities[:strong_colour][player] }
+    # These methods use a ruby Hash cache to reduce the amount of
+    # time dedicated to calculate compatibilities between players
+    compatibility_criteria.each do |criterion|
+      define_method "compatible_#{criterion}s_in" do |players|
+        players.select { |player| compatibilities[criterion][player] }
+      end
     end
 
     def topscorer?
@@ -153,9 +153,13 @@ module Swissfork
       end
     end
 
+    def compatibility_criteria
+      self.class.compatibility_criteria
+    end
+
     def compatibilities
       @compatibilities ||= {}.tap do |compatibilities|
-        [:opponent, :colour, :strong_colour].each do |criterion|
+        compatibility_criteria.each do |criterion|
           compatibilities[criterion] = Hash.new do |compatibility, player|
             compatibility[player] = send("#{criterion}_compatible?", player)
           end
