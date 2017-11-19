@@ -23,7 +23,7 @@ module Swissfork
     def bye_can_be_selected?
       return true if players.count.even?
 
-      players.select { |player| !player.had_bye? }.any? do |player|
+      players.reject(&:had_bye?).any? do |player|
         Completion.new(players - [player]).all_players_can_be_paired?
       end
     end
