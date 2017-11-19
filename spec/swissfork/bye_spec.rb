@@ -10,7 +10,7 @@ module Swissfork
         let(:players) { create_players(1..10) }
 
         it "returns nil" do
-          round.bye.should == nil
+          round.bye.should be nil
         end
       end
 
