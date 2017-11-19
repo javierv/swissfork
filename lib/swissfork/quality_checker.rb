@@ -32,11 +32,7 @@ module Swissfork
 
       unpaired_players.combination(number_of_required_downfloats).any? do |players|
         allowed_downfloats.include?(players.to_set) &&
-          with_unpaired_players(players) do
-          !(downfloats_failing_criterion.tap do |criterion|
-            quality_calculator.failing_criteria << criterion if criterion
-          end)
-        end
+          fulfil_downfloat_criteria?(players)
       end
     end
 
@@ -173,6 +169,14 @@ module Swissfork
 
     def allowed_failures
       quality_calculator.allowed_failures
+    end
+
+    def fulfil_downfloat_criteria?(players)
+      with_unpaired_players(players) do
+        !(downfloats_failing_criterion.tap do |criterion|
+          quality_calculator.failing_criteria << criterion if criterion
+        end)
+      end
     end
 
     def with_unpaired_players(leftovers, &block)
