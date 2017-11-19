@@ -43,19 +43,19 @@ module Swissfork
     def self.criteria
       # TODO: some of these criteria are redundant if we're
       # checking the quality after finishing the pairing.
-      [
-        :high_difference_violation?,
-        :same_colour_three_times?,
-        :colour_preference_violation?,
-        :white_colour_preference_violation?,
-        :black_colour_preference_violation?,
-        :white_preference_playing_players_with_no_preference?,
-        :black_preference_playing_players_with_no_preference?,
-        :strong_colour_preference_violation?,
-        :same_downfloats_as_previous_round?,
-        :same_upfloats_as_previous_round?,
-        :same_downfloats_as_two_rounds_ago?,
-        :same_upfloats_as_two_rounds_ago?
+      %i[
+        high_difference_violation?
+        same_colour_three_times?
+        colour_preference_violation?
+        white_colour_preference_violation?
+        black_colour_preference_violation?
+        white_preference_playing_players_with_no_preference?
+        black_preference_playing_players_with_no_preference?
+        strong_colour_preference_violation?
+        same_downfloats_as_previous_round?
+        same_upfloats_as_previous_round?
+        same_downfloats_as_two_rounds_ago?
+        same_upfloats_as_two_rounds_ago?
       ]
     end
 
@@ -140,8 +140,8 @@ module Swissfork
 
     def downfloats_failing_criterion
       failing_criterion(
-        [:same_downfloats_as_previous_round?,
-         :same_downfloats_as_two_rounds_ago?])
+        %i[same_downfloats_as_previous_round? same_downfloats_as_two_rounds_ago?]
+      )
     end
 
     def violate_colours?
@@ -151,12 +151,14 @@ module Swissfork
     end
 
     def colours_failing_criterion
-      failing_criterion([:colour_preference_violation?,
-                         :white_colour_preference_violation?,
-                         :black_colour_preference_violation?,
-                         :white_preference_playing_players_with_no_preference?,
-                         :black_preference_playing_players_with_no_preference?,
-                         :strong_colour_preference_violation?])
+      failing_criterion(%i[
+        colour_preference_violation?
+        white_colour_preference_violation?
+        black_colour_preference_violation?
+        white_preference_playing_players_with_no_preference?
+        black_preference_playing_players_with_no_preference?
+        strong_colour_preference_violation?
+      ])
     end
 
     def allowed_downfloats

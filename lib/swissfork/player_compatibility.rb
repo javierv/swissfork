@@ -32,11 +32,11 @@ module Swissfork
     end
 
     def white_preferences?
-      preferences == [:white, :white]
+      preferences == %i[white white]
     end
 
     def black_preferences?
-      preferences == [:black, :black]
+      preferences == %i[black black]
     end
 
     def same_strong_preference?
@@ -65,11 +65,11 @@ module Swissfork
     end
 
     def strong_preferences?
-      (degrees - [:absolute, :strong]).empty?
+      (degrees - %i[absolute strong]).empty?
     end
 
     def absolute_preferences?
-      degrees == [:absolute, :absolute]
+      degrees == %i[absolute absolute]
     end
 
     def preferences

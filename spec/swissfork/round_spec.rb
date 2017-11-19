@@ -77,7 +77,7 @@ module Swissfork
 
       context "results have been set" do
         before(:each) do
-          round.results = [:white_won, :black_won, :draw, :black_won, :white_won]
+          round.results = %i[white_won black_won draw black_won white_won]
         end
 
         it "sets the results of each pair" do

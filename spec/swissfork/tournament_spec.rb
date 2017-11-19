@@ -60,7 +60,7 @@ module Swissfork
 
         context "players were excluded in a previous round" do
           before(:each) do
-            tournament.finish_round([:white_won, :black_won, :white_won, :black_won])
+            tournament.finish_round(%i[white_won black_won white_won black_won])
           end
 
           it "adds an unpaired game to the excluded players" do
@@ -93,7 +93,7 @@ module Swissfork
           before(:each) do
             tournament.non_paired_numbers = [1, { 2 => 0, 3 => 1 }, 4]
             tournament.start_round
-            tournament.finish_round([:white_won, :black_won, :white_won, :black_won])
+            tournament.finish_round(%i[white_won black_won white_won black_won])
           end
 
           it "gives the unspecified players the default points" do
@@ -112,7 +112,7 @@ module Swissfork
             tournament.stub(last_round?: true)
             tournament.non_paired_numbers = [1, { 2 => 0.5, 3 => 1 }, 4]
             tournament.start_round
-            tournament.finish_round([:white_won, :black_won, :white_won, :black_won])
+            tournament.finish_round(%i[white_won black_won white_won black_won])
           end
 
           it "gives the unspecified players no points" do
@@ -131,7 +131,7 @@ module Swissfork
             tournament.points_given_to_unpaired_players = 0
             tournament.non_paired_numbers = [1, { 2 => 0.5, 3 => 1 }, 4]
             tournament.start_round
-            tournament.finish_round([:white_won, :black_won, :white_won, :black_won])
+            tournament.finish_round(%i[white_won black_won white_won black_won])
           end
 
           it "gives the unspecified players the default points" do
@@ -234,7 +234,7 @@ module Swissfork
         tournament.add_inscriptions(inscriptions)
 
         tournament.start_round
-        tournament.finish_round([:draw, :draw])
+        tournament.finish_round(%i[draw draw])
 
         tournament.add_late_entries(late_entries)
         tournament.start_round

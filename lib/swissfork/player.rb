@@ -52,7 +52,7 @@ module Swissfork
     end
 
     def descended_in_the_previous_round?
-      [:down, :bye].include?(floats.last)
+      %i[down bye].include?(floats.last)
     end
 
     def ascended_in_the_previous_round?
@@ -60,7 +60,7 @@ module Swissfork
     end
 
     def descended_two_rounds_ago?
-      [:down, :bye].include?(floats[-2])
+      %i[down bye].include?(floats[-2])
     end
 
     def ascended_two_rounds_ago?
@@ -113,7 +113,7 @@ module Swissfork
     end
 
     def self.compatibility_criteria
-      [:opponent, :colour, :strong_colour]
+      %i[opponent colour strong_colour]
     end
 
     # These methods use a ruby Hash cache to reduce the amount of
