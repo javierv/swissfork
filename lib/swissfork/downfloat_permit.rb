@@ -35,7 +35,7 @@ module Swissfork
       @combinations ||= players.combination(number_of_downfloats)
     end
 
-    def can_downfloat?(downfloats)
+    def can_downfloat?(_downfloats)
       raise "Implement in subclass"
     end
   end
