@@ -17,7 +17,7 @@ module Swissfork
     def allowed
       @allowed ||= downfloat_combinations.select do |downfloats|
         PossiblePairs.new(players - downfloats).count >= number_of_pairs
-      end.map { |downfloats| downfloats.to_set }.to_set
+      end.map(&:to_set).to_set
     end
 
   private
