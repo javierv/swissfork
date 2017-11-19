@@ -25,9 +25,8 @@ module Swissfork
 
   protected
     def compatibility_list
-      @compatibility_list ||= players.reduce({}) do |compatibility_list, player|
-        compatibility_list[player] = opponents_for(player)
-        compatibility_list
+      @compatibility_list ||= players.each_with_object({}) do |player, list|
+        list[player] = opponents_for(player)
       end
     end
 

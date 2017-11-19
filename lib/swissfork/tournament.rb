@@ -93,7 +93,7 @@ module Swissfork
     # Players 1 and 4 will be given the default points given to unpaired players,
     # player 3 will be given one point and player 2 will be given no points.
     def non_paired_numbers=(numbers)
-      @unpaired_points = numbers.reduce({}) do |unpaired_points, number_or_numbers|
+      @unpaired_points = numbers.each_with_object({}) do |number_or_numbers, unpaired_points|
         if number_or_numbers.is_a?(Hash)
           number_or_numbers.each do |number, points|
             unpaired_points[number] = points
@@ -101,8 +101,6 @@ module Swissfork
         else
           unpaired_points[number_or_numbers] = points_given_to_unpaired_players
         end
-
-        unpaired_points
       end
     end
 
