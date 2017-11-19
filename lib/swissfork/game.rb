@@ -89,7 +89,7 @@ module Swissfork
     end
 
     def draw?
-      ([:draw] + %w(½ d D)).include?(result)
+      ([:draw] + %w[½ d D]).include?(result)
     end
   end
 end
