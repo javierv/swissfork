@@ -17,7 +17,7 @@ module Swissfork
         end
 
         it "is very fast" do
-          Benchmark.realtime{ round.pair_numbers }.should be < 0.02
+          Benchmark.realtime { round.pair_numbers }.should be < 0.02
           round.pair_numbers.should == [[1, 6], [2, 7], [3, 8], [5, 9], [4, 10], [11, 15], [12, 16], [13, 17], [14, 18]]
         end
       end
@@ -31,7 +31,7 @@ module Swissfork
         end
 
         it "performs like O(n^2)" do
-          Benchmark.realtime{ round.pair_numbers }.should be < 0.06
+          Benchmark.realtime { round.pair_numbers }.should be < 0.06
           round.pair_numbers.should == [
             [1, 14], [2, 15], [3, 16], [4, 17], [5, 18], [6, 19], [7, 20],
             [8, 21], [9, 22], [10, 23], [11, 24], [13, 25], [12, 26],
@@ -50,7 +50,7 @@ module Swissfork
         end
 
         it "is very fast" do
-          Benchmark.realtime{ round.pair_numbers }.should be < 0.4
+          Benchmark.realtime { round.pair_numbers }.should be < 0.4
         end
       end
     end
@@ -65,7 +65,7 @@ module Swissfork
         end
 
         it "performs at a reasonable speed" do
-          Benchmark.realtime{ round.pair_numbers }.should be < 1
+          Benchmark.realtime { round.pair_numbers }.should be < 1
           round.pair_numbers.should == [
             [1, 8], [2, 9], [3, 10], [4, 11], [5, 12], [6, 13], [7, 14]
           ]
@@ -89,7 +89,7 @@ module Swissfork
           end
 
           it "pairs fast" do
-            Benchmark.realtime{ round.pair_numbers }.should be < 0.2
+            Benchmark.realtime { round.pair_numbers }.should be < 0.2
             round.pair_numbers.should == [[1, 9], [2, 10], [3, 11], [4, 12],
                                           [5, 13], [6, 14], [7, 15], [8, 16]]
           end
@@ -102,7 +102,7 @@ module Swissfork
           end
 
           it "pairs fast" do
-            Benchmark.realtime{ round.pair_numbers }.should be < 0.2
+            Benchmark.realtime { round.pair_numbers }.should be < 0.2
             round.pair_numbers.should == [[1, 9], [2, 10], [7, 11], [8, 12], [3, 13], [4, 14], [5, 15], [6, 16]]
           end
         end
@@ -119,7 +119,7 @@ module Swissfork
         end
 
         it "pairs fast" do
-          Benchmark.realtime{ round.pair_numbers }.should be < 0.4
+          Benchmark.realtime { round.pair_numbers }.should be < 0.4
           round.pair_numbers.should == [[1, 11], [2, 12], [3, 13], [4, 14], [5, 15], [10, 16], [6, 17], [7, 18], [8, 19], [9, 20]]
         end
       end
@@ -139,7 +139,7 @@ module Swissfork
         end
 
         it "pairs fast" do
-          Benchmark.realtime{ round.pair_numbers }.should be < 0.3
+          Benchmark.realtime { round.pair_numbers }.should be < 0.3
           round.pair_numbers.should == [[1, 4], [2, 5], [3, 6], [7, 8], [9, 14], [10, 17], [11, 18], [12, 19], [15, 16], [13, 20]]
         end
       end
@@ -155,7 +155,7 @@ module Swissfork
         end
 
         it "is very fast" do
-          Benchmark.realtime{ round.pair_numbers }.should be < 0.1
+          Benchmark.realtime { round.pair_numbers }.should be < 0.1
           round.pair_numbers.should == [[2, 15], [3, 16], [4, 17], [5, 18], [6, 19], [7, 20], [8, 21], [9, 22], [10, 23], [11, 24], [12, 25], [13, 26], [14, 27]]
         end
       end
@@ -171,7 +171,7 @@ module Swissfork
       end
 
       it "is very fast" do
-        Benchmark.realtime{ round.pair_numbers }.should be < 0.1
+        Benchmark.realtime { round.pair_numbers }.should be < 0.1
         round.bye.number.should == 8
         round.pair_numbers.should == [[1, 4], [2, 5], [3, 6], [7, 9], [10, 11]]
       end
@@ -182,7 +182,7 @@ module Swissfork
         end
 
         it "is very fast" do
-          Benchmark.realtime{ round.pair_numbers }.should be < 0.1
+          Benchmark.realtime { round.pair_numbers }.should be < 0.1
           round.bye.number.should == 8
           round.pair_numbers.should == [[1, 3], [2, 4], [5, 9], [6, 10], [7, 11]]
         end
@@ -198,7 +198,7 @@ module Swissfork
       end
 
       it "pairs fast" do
-        Benchmark.realtime{ round.pair_numbers }.should be < 0.1
+        Benchmark.realtime { round.pair_numbers }.should be < 0.1
         round.pair_numbers.should == [[1, 12], [2, 13], [3, 14], [4, 15], [5, 16], [6, 17], [7, 18], [8, 19], [9, 20], [10, 11]]
       end
     end
@@ -212,7 +212,7 @@ module Swissfork
       end
 
       it "isn't too slow" do
-        Benchmark.realtime{ round.pair_numbers }.should be < 2
+        Benchmark.realtime { round.pair_numbers }.should be < 2
         round.pair_numbers.should == [[1, 10], [2, 12], [3, 13], [4, 14], [5, 15], [6, 16], [7, 17], [8, 18], [9, 19], [11, 20]]
       end
     end

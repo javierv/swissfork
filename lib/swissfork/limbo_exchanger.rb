@@ -13,4 +13,3 @@ module Swissfork
     end
   end
 end
-

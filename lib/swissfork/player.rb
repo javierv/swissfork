@@ -68,17 +68,18 @@ module Swissfork
     end
 
     def colour_preference
-      @colour_preference ||= if colours.any?
-        if last_two_colours_were_the_same?
-          opposite_of_last_colour
-        elsif colour_difference > 0
-          :black
-        elsif colour_difference < 0
-          :white
-        else
-          opposite_of_last_colour
+      @colour_preference ||=
+        if colours.any?
+          if last_two_colours_were_the_same?
+            opposite_of_last_colour
+          elsif colour_difference > 0
+            :black
+          elsif colour_difference < 0
+            :white
+          else
+            opposite_of_last_colour
+          end
         end
-      end
     end
 
     def preference_priority
@@ -86,22 +87,23 @@ module Swissfork
     end
 
     def preference_degree
-      @preference_degree ||= if colours.any?
-        if last_two_colours_were_the_same?
-          :absolute
-        else
-          case colour_difference.abs
-          when 0 then :mild
-          when 1 then :strong
-          else :absolute
+      @preference_degree ||=
+        if colours.any?
+          if last_two_colours_were_the_same?
+            :absolute
+          else
+            case colour_difference.abs
+            when 0 then :mild
+            when 1 then :strong
+            else :absolute
+            end
           end
         end
-      end
     end
 
     def colour_difference
       colours.select { |colour| colour == :white }.count -
-      colours.select { |colour| colour == :black }.count
+        colours.select { |colour| colour == :black }.count
     end
 
     def inspect
@@ -163,7 +165,8 @@ module Swissfork
         [
           criterion,
           Hash.new do |compatibilities, player|
-            compatibilities[player] = compatible?(player) &&
+            compatibilities[player] =
+              compatible?(player) &&
               PlayerCompatibility.new(self, player).send("#{criterion}?")
           end
         ]

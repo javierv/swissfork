@@ -219,15 +219,19 @@ module Swissfork
 
     describe "late entries" do
       let(:inscriptions) do
-        [ Inscription.new(2990, "Paul Morphy"),
+        [
+          Inscription.new(2990, "Paul Morphy"),
           Inscription.new(2980, "José Capablanca"),
           Inscription.new(2970, "Alexander Alekhine"),
-          Inscription.new(2960, "Mikhail Tal") ]
+          Inscription.new(2960, "Mikhail Tal")
+        ]
       end
 
       let(:late_entries) do
-        [ Inscription.new(2985, "Emanuel Lasker"),
-          Inscription.new(2950, "Tigran Petrosian") ]
+        [
+          Inscription.new(2985, "Emanuel Lasker"),
+          Inscription.new(2950, "Tigran Petrosian")
+        ]
       end
 
       before(:each) do

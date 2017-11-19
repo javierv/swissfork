@@ -214,7 +214,7 @@ module Swissfork
     end
 
     def pairs_for(player)
-      opponents_for(player).map  { |opponent| Pair.new(player, opponent) }
+      opponents_for(player).map { |opponent| Pair.new(player, opponent) }
     end
 
     def opponents_for(player)

@@ -30,7 +30,7 @@ module Swissfork
     end
 
     def s2
-      players[number_of_players_in_s1+number_of_players_in_limbo..-1]
+      players[number_of_players_in_s1 + number_of_players_in_limbo..-1]
     end
 
     def limbo

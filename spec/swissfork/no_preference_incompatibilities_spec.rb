@@ -12,7 +12,6 @@ module Swissfork
     let(:players) { create_players(1..10) }
     let(:number_of_required_pairs) { 5 }
 
-
     describe "#violations_for" do
       context "no players with no preference" do
         before(:each) { players.each_stub_preference(:white) }

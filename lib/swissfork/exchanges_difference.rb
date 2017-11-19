@@ -12,7 +12,7 @@ module Swissfork
 
     def <=>(other_difference)
       [difference, other_difference.s1_numbers.sort.reverse, s2_numbers.sort] <=>
-      [other_difference.difference, s1_numbers.sort.reverse, other_difference.s2_numbers.sort]
+        [other_difference.difference, s1_numbers.sort.reverse, other_difference.s2_numbers.sort]
     end
 
     def difference

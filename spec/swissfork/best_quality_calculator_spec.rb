@@ -62,6 +62,5 @@ module Swissfork
         end
       end
     end
-
   end
 end

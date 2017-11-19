@@ -46,13 +46,14 @@ module Swissfork
     end
 
     def points_received
-      @points_received ||= if won?
-        1.0
-      elsif draw?
-        0.5
-      else
-        0.0
-      end
+      @points_received ||=
+        if won?
+          1.0
+        elsif draw?
+          0.5
+        else
+          0.0
+        end
     end
 
     def played?
@@ -61,10 +62,11 @@ module Swissfork
 
   private
     def played_results
-      [:white_won, :draw, :black_won,
-       "1", "½", "0",
-       "W", "D", "B",
-       "w", "d", "b"
+      [
+        :white_won, :draw, :black_won,
+        "1", "½", "0",
+        "W", "D", "B",
+        "w", "d", "b"
       ]
     end
 

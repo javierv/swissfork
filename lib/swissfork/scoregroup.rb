@@ -109,7 +109,7 @@ module Swissfork
     end
 
     def next_scoregroup_index
-       index + 1
+      index + 1
     end
 
     def number_of_hypothetical_next_pairs
@@ -147,7 +147,7 @@ module Swissfork
     end
 
     def remaining_scoregroups
-      scoregroups[index+1..-1]
+      scoregroups[index + 1..-1]
     end
 
     def scoregroups

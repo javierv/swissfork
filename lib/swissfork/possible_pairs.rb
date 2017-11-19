@@ -20,7 +20,7 @@ module Swissfork
 
     def enough_players_to_guarantee_pairing?
       number_of_players_with_absolute_preference <= players.count / 2 &&
-       players.count / 2.0 > players.map(&:opponents).map(&:count).max
+        players.count / 2.0 > players.map(&:opponents).map(&:count).max
     end
 
   protected

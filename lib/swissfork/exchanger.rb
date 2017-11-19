@@ -72,7 +72,6 @@ module Swissfork
 
     def differences_with_n_players(n)
       s1.combination(n).to_a.product(s2.combination(n).to_a).map do |players|
-
         ExchangesDifference.new(*players)
       end.sort
     end
@@ -105,8 +104,10 @@ module Swissfork
     end
 
     def maximum_number_of_players_in_a_exchange
-      [s1.count, s2.count,
-       [s2.count - s1.count, s1.count / 2].max
+      [
+        s1.count,
+        s2.count,
+        [s2.count - s1.count, s1.count / 2].max
       ].min
     end
   end

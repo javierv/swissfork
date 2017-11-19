@@ -151,14 +151,16 @@ module Swissfork
     end
 
     def colours_failing_criterion
-      failing_criterion(%i[
-        colour_preference_violation?
-        white_colour_preference_violation?
-        black_colour_preference_violation?
-        white_preference_playing_players_with_no_preference?
-        black_preference_playing_players_with_no_preference?
-        strong_colour_preference_violation?
-      ])
+      failing_criterion(
+        %i[
+          colour_preference_violation?
+          white_colour_preference_violation?
+          black_colour_preference_violation?
+          white_preference_playing_players_with_no_preference?
+          black_preference_playing_players_with_no_preference?
+          strong_colour_preference_violation?
+        ]
+      )
     end
 
     def allowed_downfloats

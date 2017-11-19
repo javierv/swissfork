@@ -99,7 +99,7 @@ module Swissfork
 
       # Seventh round
       tournament.non_paired_numbers = [
-        { 5 => 0, 14 => 0, 49 => 0, 64 => 1, 67 => 0, 74 =>0}
+        { 5 => 0, 14 => 0, 49 => 0, 64 => 1, 67 => 0, 74 => 0 }
       ]
       tournament.start_round
 

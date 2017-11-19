@@ -22,13 +22,14 @@ module Swissfork
       :no_preference_against_colour?
 
     def players
-      @players ||= if player_compatibility.no_preferences?
-        players_ordered_by_initial_colours
-      elsif players_ordered_by_preference.first.colour_preference == :black
-        players_ordered_by_preference.reverse
-      else
-        players_ordered_by_preference
-      end
+      @players ||=
+        if player_compatibility.no_preferences?
+          players_ordered_by_initial_colours
+        elsif players_ordered_by_preference.first.colour_preference == :black
+          players_ordered_by_preference.reverse
+        else
+          players_ordered_by_preference
+        end
     end
 
     def result=(result)

@@ -50,18 +50,19 @@ module Swissfork
 
           it "the one with the smaller difference is smaller" do
             ExchangesDifference.new(s1_player, smaller_s2_player).should be <
-            ExchangesDifference.new(s1_player, bigger_s2_player)
+              ExchangesDifference.new(s1_player, bigger_s2_player)
           end
         end
 
         context "same differences between players" do
           let(:smaller_s1_player) { [player_with_number(1)] }
           let(:bigger_s1_player) { [player_with_number(2)] }
-          let(:smaller_s2_player) {  [player_with_number(3)] }
+          let(:smaller_s2_player) { [player_with_number(3)] }
           let(:bigger_s2_player) { [player_with_number(4)] }
 
           it "the one with the bigger s1 player is smaller" do
-            ExchangesDifference.new(bigger_s1_player, bigger_s2_player).should be < ExchangesDifference.new(smaller_s1_player, smaller_s2_player)
+            ExchangesDifference.new(bigger_s1_player, bigger_s2_player).should be <
+              ExchangesDifference.new(smaller_s1_player, smaller_s2_player)
           end
         end
       end
@@ -74,7 +75,7 @@ module Swissfork
 
           it "the one with the smaller difference is smaller" do
             ExchangesDifference.new(s1_players, smaller_s2_players).should be <
-            ExchangesDifference.new(s1_players, bigger_s2_players)
+              ExchangesDifference.new(s1_players, bigger_s2_players)
           end
         end
 
@@ -85,7 +86,7 @@ module Swissfork
 
           it "the one with the biggest S1 player is smaller" do
             ExchangesDifference.new(bigger_s1_players, s2_players).should be <
-            ExchangesDifference.new(smaller_s1_players, s2_players)
+              ExchangesDifference.new(smaller_s1_players, s2_players)
           end
         end
 
@@ -96,7 +97,7 @@ module Swissfork
 
           it "the one with the smallest S2 player is smaller" do
             ExchangesDifference.new(s1_players, smaller_s2_players).should be <
-            ExchangesDifference.new(s1_players, bigger_s2_players)
+              ExchangesDifference.new(s1_players, bigger_s2_players)
           end
         end
 
@@ -108,7 +109,7 @@ module Swissfork
 
           it "the one with the biggest S1 player is smaller" do
             ExchangesDifference.new(bigger_s1_players, bigger_s2_players).should be <
-            ExchangesDifference.new(smaller_s1_players, smaller_s2_players)
+              ExchangesDifference.new(smaller_s1_players, smaller_s2_players)
           end
         end
 
@@ -120,7 +121,7 @@ module Swissfork
 
           it "the one with the bigger S1 players is smaller" do
             ExchangesDifference.new(bigger_s1_players, bigger_s2_players).should be <
-            ExchangesDifference.new(smaller_s1_players, smaller_s2_players)
+              ExchangesDifference.new(smaller_s1_players, smaller_s2_players)
           end
         end
       end

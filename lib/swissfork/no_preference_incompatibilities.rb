@@ -25,16 +25,18 @@ module Swissfork
     end
 
     def violations_for_main_preference
-      [0,
-       [number_of_no_preference_players,
-        number_of_compatible_players_for_main_preference].min
+      [
+        0,
+        [number_of_no_preference_players,
+         number_of_compatible_players_for_main_preference].min
       ].max
     end
 
     def violations_for_minoritary_preference
-      [0,
-       [number_of_no_preference_players,
-        number_of_compatible_players_for_minoritary_preference].min
+      [
+        0,
+        [number_of_no_preference_players,
+         number_of_compatible_players_for_minoritary_preference].min
       ].max
     end
 

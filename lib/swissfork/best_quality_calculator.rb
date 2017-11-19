@@ -66,7 +66,7 @@ module Swissfork
         white_preference_playing_players_with_no_preference?: no_preference_violations_for(:white),
         black_preference_playing_players_with_no_preference?: no_preference_violations_for(:black),
         strong_colour_preference_violation?: strong_colour_violations,
-        same_downfloats_as_previous_round?: same_downfloats_as_previous_round_violations,
+        same_downfloats_as_previous_round?: same_downfloats_as_previous_round_violations
       }.tap { |failures| failures.default = 0 }
     end
 
