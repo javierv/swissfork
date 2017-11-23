@@ -42,9 +42,7 @@ module Swissfork
 
     def current_failing_criterion
       if ok?
-        failing_criteria.sort_by do |criterion|
-          criteria.index(criterion)
-        end.last
+        failing_criteria.sort_by { |criterion| criteria.index(criterion) }.last
       else
         failing_criterion
       end
