@@ -105,7 +105,7 @@ module Swissfork
     end
 
     def points_given_to_unpaired_players
-      @points_given_to_unpaired_players || default_points_given_to_unpaired_players
+      @points_given_to_unpaired_players ||= default_points_given_to_unpaired_players
     end
     attr_writer :points_given_to_unpaired_players
 
