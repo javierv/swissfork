@@ -271,9 +271,10 @@ module Swissfork
     end
 
     def exchange_until_non_s1_players_can_downfloat
-      begin
+      loop do
         exchange
-      end until exchanger.limit_reached? || non_s1_players_can_downfloat?
+        break if exchanger.limit_reached? || non_s1_players_can_downfloat?
+      end
     end
 
     def non_s1_players_can_downfloat?
