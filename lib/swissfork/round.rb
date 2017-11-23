@@ -10,6 +10,8 @@ module Swissfork
   class Round
     initialize_with :players
     attr_accessor :number
+    attr_reader :finished
+    alias_method :finished?, :finished
 
     def scoregroups
       @scoregroups ||= player_groups.map { |players| Scoregroup.new(players, self) }.sort
@@ -43,10 +45,6 @@ module Swissfork
 
       bye.add_game(ByeGame.new(bye)) if bye
       @finished = true
-    end
-
-    def finished?
-      @finished
     end
 
   private

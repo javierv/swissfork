@@ -14,7 +14,9 @@ module Swissfork
   class Player
     include Comparable
     initialize_with :id
-    attr_accessor :inscription
+    attr_accessor :inscription, :topscorer
+    alias_method :topscorer?, :topscorer
+
 
     def number
       @number ||= id
@@ -129,11 +131,6 @@ module Swissfork
         players.select { |player| compatibilities[criterion][player] }
       end
     end
-
-    def topscorer?
-      @topscorer
-    end
-    attr_writer :topscorer
 
     def rating
       inscription.rating
