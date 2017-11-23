@@ -3,3 +3,4 @@ Gemfile.lock
 *.pdf
 test_tournaments/
 coverage/
+tags
