@@ -98,9 +98,7 @@ module Swissfork
     end
 
     def assign_in_bracket_sequence_numbers
-      players.each.with_index do |player, index|
-        player.define_singleton_method(:bsn) { index + 1 }
-      end
+      players.each.with_index { |player, index| player.bsn = index + 1 }
     end
 
     def maximum_number_of_players_in_a_exchange

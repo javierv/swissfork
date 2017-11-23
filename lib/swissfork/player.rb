@@ -14,7 +14,7 @@ module Swissfork
   class Player
     include Comparable
     initialize_with :id
-    attr_accessor :inscription, :topscorer
+    attr_accessor :inscription, :topscorer, :bsn
     alias_method :topscorer?, :topscorer
 
 
