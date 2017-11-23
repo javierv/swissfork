@@ -22,7 +22,7 @@ module Swissfork
         end
 
         it "returns the added opponents" do
-          player.opponents.map(&:number).should == [2, 3, 4]
+          player.opponents.map(&:number).should eq [2, 3, 4]
         end
 
         context "forfeit wins" do
@@ -31,7 +31,7 @@ module Swissfork
           end
 
           it "doesn't count as an opponent" do
-            player.opponents.map(&:number).should == [2, 3, 4]
+            player.opponents.map(&:number).should eq [2, 3, 4]
           end
         end
       end
@@ -42,7 +42,7 @@ module Swissfork
         before(:each) { player.stub(games: []) }
 
         it "returns zero" do
-          player.points.should == 0
+          player.points.should eq 0
         end
       end
 
@@ -55,7 +55,7 @@ module Swissfork
         end
 
         it "returns the sum of the played games" do
-          player.points.should == 2.5
+          player.points.should eq 2.5
         end
       end
     end
@@ -89,7 +89,7 @@ module Swissfork
       end
 
       it "isn't compatible with previous opponents and compatible otherwise" do
-        player.compatible_opponents_in([rival, compatible]).should == [compatible]
+        player.compatible_opponents_in([rival, compatible]).should eq [compatible]
       end
 
       context "same colour preference" do
@@ -107,7 +107,7 @@ module Swissfork
         end
 
         it "isn't compatible if they've got the same absolute colour preference" do
-          player.compatible_opponents_in([same_preference, same_absolute_preference]).should == [same_preference]
+          player.compatible_opponents_in([same_preference, same_absolute_preference]).should eq [same_preference]
         end
 
         context "the player is a topscorer" do
@@ -116,7 +116,7 @@ module Swissfork
           end
 
           it "is compatible with all non-opponents" do
-            player.compatible_opponents_in([rival, same_absolute_preference]).should == [same_absolute_preference]
+            player.compatible_opponents_in([rival, same_absolute_preference]).should eq [same_absolute_preference]
           end
         end
 
@@ -127,7 +127,7 @@ module Swissfork
           end
 
           it "is compatible with all non-opponents" do
-            player.compatible_opponents_in([rival, same_absolute_preference]).should == [same_absolute_preference]
+            player.compatible_opponents_in([rival, same_absolute_preference]).should eq [same_absolute_preference]
           end
         end
       end
@@ -182,7 +182,7 @@ module Swissfork
         end
 
         it "returns zero" do
-          player.colour_difference.should == 0
+          player.colour_difference.should eq 0
         end
       end
 
@@ -192,7 +192,7 @@ module Swissfork
         end
 
         it "returns one" do
-          player.colour_difference.should == 1
+          player.colour_difference.should eq 1
         end
       end
 
@@ -202,7 +202,7 @@ module Swissfork
         end
 
         it "returns minus two" do
-          player.colour_difference.should == -2
+          player.colour_difference.should eq(-2)
         end
       end
     end
@@ -222,14 +222,14 @@ module Swissfork
         before(:each) { player.stub(colours: [nil, :white, :black]) }
 
         it "is the opposite of the last played colour" do
-          player.colour_preference.should == :white
+          player.colour_preference.should eq :white
         end
 
         context "didn't play in the last round" do
           before(:each) { player.stub(colours: [:black, :white, nil]) }
 
           it "is the opposite of the last played colour" do
-            player.colour_preference.should == :black
+            player.colour_preference.should eq :black
           end
         end
       end
@@ -238,14 +238,14 @@ module Swissfork
         before(:each) { player.stub(colours: [:black]) }
 
         it "is the colour played less times with" do
-          player.colour_preference.should == :white
+          player.colour_preference.should eq :white
         end
 
         context "didn't play in the last two games" do
           before(:each) { player.stub(colours: [:white, :white, :black, nil, nil]) }
 
           it "is the colour played less times with" do
-            player.colour_preference.should == :black
+            player.colour_preference.should eq :black
           end
         end
       end
@@ -256,7 +256,7 @@ module Swissfork
         end
 
         it "is the colour played less times with" do
-          player.colour_preference.should == :black
+          player.colour_preference.should eq :black
         end
       end
 
@@ -268,7 +268,7 @@ module Swissfork
         end
 
         it "is is the opposite of the last colour" do
-          player.colour_preference.should == :black
+          player.colour_preference.should eq :black
         end
       end
     end
@@ -290,7 +290,7 @@ module Swissfork
         end
 
         it "is mild" do
-          player.preference_degree.should == :mild
+          player.preference_degree.should eq :mild
         end
       end
 
@@ -300,7 +300,7 @@ module Swissfork
         end
 
         it "is strong" do
-          player.preference_degree.should == :strong
+          player.preference_degree.should eq :strong
         end
       end
 
@@ -310,7 +310,7 @@ module Swissfork
         end
 
         it "is absolute" do
-          player.preference_degree.should == :absolute
+          player.preference_degree.should eq :absolute
         end
       end
 
@@ -320,7 +320,7 @@ module Swissfork
         end
 
         it "is absolute" do
-          player.preference_degree.should == :absolute
+          player.preference_degree.should eq :absolute
         end
       end
     end

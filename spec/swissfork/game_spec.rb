@@ -16,13 +16,13 @@ module Swissfork
         let(:pair) { white_pair }
 
         it "returns the opponent" do
-          game.opponent.number.should == 3
+          game.opponent.number.should eq 3
         end
       end
 
       context "played with black" do
         it "returns the opponent" do
-          game.opponent.number.should == 2
+          game.opponent.number.should eq 2
         end
       end
     end
@@ -35,13 +35,13 @@ module Swissfork
           let(:pair) { white_pair }
 
           it "returns white" do
-            game.colour.should == :white
+            game.colour.should eq :white
           end
         end
 
         context "played with black" do
           it "returns black" do
-            game.colour.should == :black
+            game.colour.should eq :black
           end
         end
       end
@@ -75,7 +75,7 @@ module Swissfork
           end
 
           it "counts as upfloat" do
-            game.float.should == :up
+            game.float.should eq :up
           end
         end
 
@@ -85,7 +85,7 @@ module Swissfork
           end
 
           it "counts as downfloat" do
-            game.float.should == :down
+            game.float.should eq :down
           end
         end
       end
@@ -105,7 +105,7 @@ module Swissfork
           before(:each) { game.stub(bye?: true) }
 
           it "counts as a bye" do
-            game.float.should == :bye
+            game.float.should eq :bye
           end
         end
       end
@@ -153,11 +153,11 @@ module Swissfork
         end
 
         it "makes the player the winner" do
-          game.winner.should == player
+          game.winner.should eq player
         end
 
         it "gives the player the points the winner gets" do
-          game.points_received.should == 1
+          game.points_received.should eq 1
         end
       end
 
@@ -169,11 +169,11 @@ module Swissfork
         end
 
         it "makes the opponent the winner" do
-          game.winner.should == opponent
+          game.winner.should eq opponent
         end
 
         it "gives the player the points the loser gets" do
-          game.points_received.should == 0
+          game.points_received.should eq 0
         end
       end
 
@@ -189,7 +189,7 @@ module Swissfork
         end
 
         it "gives the player the points given to a draw" do
-          game.points_received.should == 0.5
+          game.points_received.should eq 0.5
         end
       end
 
@@ -201,11 +201,11 @@ module Swissfork
         end
 
         it "makes the player the winner" do
-          game.winner.should == player
+          game.winner.should eq player
         end
 
         it "gives the player the points the winner gets" do
-          game.points_received.should == 1
+          game.points_received.should eq 1
         end
 
         it "counts as a bye" do
@@ -226,11 +226,11 @@ module Swissfork
         end
 
         it "makes the opponent the winner" do
-          game.winner.should == opponent
+          game.winner.should eq opponent
         end
 
         it "gives the player the points the loser gets" do
-          game.points_received.should == 0
+          game.points_received.should eq 0
         end
 
         it "doesn't count as a bye" do

@@ -14,7 +14,7 @@ module Swissfork
         end
 
         it "pairs the moved down player on the second bracket" do
-          round.pair_numbers.should == [[1, 3], [2, 4], [5, 6], [7, 9], [8, 10]]
+          round.pair_numbers.should eq [[1, 3], [2, 4], [5, 6], [7, 9], [8, 10]]
         end
 
         context "the last player can't descend" do
@@ -24,7 +24,7 @@ module Swissfork
           end
 
           it "descends the second to last player" do
-            round.pair_numbers.should == [[1, 3], [2, 5], [4, 6], [7, 9], [8, 10]]
+            round.pair_numbers.should eq [[1, 3], [2, 5], [4, 6], [7, 9], [8, 10]]
           end
         end
 
@@ -34,7 +34,7 @@ module Swissfork
           end
 
           it "descends the second to last player" do
-            round.pair_numbers.should == [[1, 3], [2, 5], [4, 6], [7, 9], [8, 10]]
+            round.pair_numbers.should eq [[1, 3], [2, 5], [4, 6], [7, 9], [8, 10]]
           end
         end
 
@@ -44,7 +44,7 @@ module Swissfork
           end
 
           it "ascends the second player" do
-            round.pair_numbers.should == [[1, 3], [2, 4], [5, 7], [6, 9], [8, 10]]
+            round.pair_numbers.should eq [[1, 3], [2, 4], [5, 7], [6, 9], [8, 10]]
           end
         end
 
@@ -54,7 +54,7 @@ module Swissfork
           end
 
           it "descends the second to last player" do
-            round.pair_numbers.should == [[1, 3], [2, 5], [4, 6], [7, 9], [8, 10]]
+            round.pair_numbers.should eq [[1, 3], [2, 5], [4, 6], [7, 9], [8, 10]]
           end
         end
 
@@ -64,7 +64,7 @@ module Swissfork
           end
 
           it "ascends the second player" do
-            round.pair_numbers.should == [[1, 3], [2, 4], [5, 7], [6, 9], [8, 10]]
+            round.pair_numbers.should eq [[1, 3], [2, 4], [5, 7], [6, 9], [8, 10]]
           end
         end
 
@@ -75,7 +75,7 @@ module Swissfork
 
           context "homogeneous group" do
             it "descends the last player from S1" do
-              round.pair_numbers.should == [[1, 4], [3, 5], [2, 6], [7, 9], [8, 10]]
+              round.pair_numbers.should eq [[1, 4], [3, 5], [2, 6], [7, 9], [8, 10]]
             end
           end
 
@@ -87,7 +87,7 @@ module Swissfork
             end
 
             it "descends the last player from S2" do
-              round.pair_numbers.should == [[1, 3], [2, 4], [5, 6], [7, 9], [8, 10]]
+              round.pair_numbers.should eq [[1, 3], [2, 4], [5, 6], [7, 9], [8, 10]]
             end
           end
         end
@@ -104,7 +104,7 @@ module Swissfork
         end
 
         it "descends all players to the next bracket" do
-          round.pair_numbers.should == [[1, 3], [2, 4], [5, 8], [6, 9], [7, 10]]
+          round.pair_numbers.should eq [[1, 3], [2, 4], [5, 8], [6, 9], [7, 10]]
         end
       end
 
@@ -120,7 +120,7 @@ module Swissfork
         end
 
         it "descends the unpairable players to the next bracket" do
-          round.pair_numbers.should == [[1, 2], [3, 5], [4, 6], [7, 9], [8, 10]]
+          round.pair_numbers.should eq [[1, 2], [3, 5], [4, 6], [7, 9], [8, 10]]
         end
       end
 
@@ -136,7 +136,7 @@ module Swissfork
         end
 
         it "downfloats the unpairable player twice" do
-          round.pair_numbers.should == [[2, 3], [1, 8], [4, 6], [5, 7], [9, 10]]
+          round.pair_numbers.should eq [[2, 3], [1, 8], [4, 6], [5, 7], [9, 10]]
         end
       end
 
@@ -158,7 +158,7 @@ module Swissfork
         end
 
         it "downfloats one moved down player and one resident player" do
-          round.pair_numbers.should == [[1, 4], [2, 5], [3, 7], [6, 10], [8, 9]]
+          round.pair_numbers.should eq [[1, 4], [2, 5], [3, 7], [6, 10], [8, 9]]
         end
 
         context "no resident players can downfloat" do
@@ -168,7 +168,7 @@ module Swissfork
           end
 
           it "downfloats two moved down players" do
-            round.pair_numbers.should == [[1, 4], [2, 9], [3, 10], [5, 6], [7, 8]]
+            round.pair_numbers.should eq [[1, 4], [2, 9], [3, 10], [5, 6], [7, 8]]
           end
         end
       end
@@ -185,7 +185,7 @@ module Swissfork
         end
 
         it "downfloats players from both brackets" do
-          round.pair_numbers.should == [[1, 5], [2, 6], [3, 7], [4, 8], [9, 10]]
+          round.pair_numbers.should eq [[1, 5], [2, 6], [3, 7], [4, 8], [9, 10]]
         end
       end
     end

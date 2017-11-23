@@ -15,21 +15,21 @@ module Swissfork
 
       context "pairs with different players" do
         it "returns false" do
-          pair.should_not == Pair.new(double, double)
-          pair.should_not == Pair.new(s1_player, double)
-          pair.should_not == Pair.new(double, s2_player)
+          pair.should_not eq Pair.new(double, double)
+          pair.should_not eq Pair.new(s1_player, double)
+          pair.should_not eq Pair.new(double, s2_player)
         end
       end
 
       context "a pair with the same players" do
         it "returns true" do
-          pair.should == Pair.new(s1_player, s2_player)
+          pair.should eq Pair.new(s1_player, s2_player)
         end
       end
 
       context "a pair with the same players in different order" do
         it "returns true" do
-          pair.should == Pair.new(s2_player, s1_player)
+          pair.should eq Pair.new(s2_player, s1_player)
         end
       end
     end
@@ -85,7 +85,7 @@ module Swissfork
           end
 
           it "respects both players preference" do
-            pair.players.should == [lower_player, higher_player]
+            pair.players.should eq [lower_player, higher_player]
           end
         end
       end
@@ -103,7 +103,7 @@ module Swissfork
           end
 
           it "gives the preference to the higher player" do
-            pair.players.should == [lower_player, higher_player]
+            pair.players.should eq [lower_player, higher_player]
           end
         end
 
@@ -120,7 +120,7 @@ module Swissfork
             end
 
             it "gives the preference to the higher player" do
-              pair.players.should == [lower_player, higher_player]
+              pair.players.should eq [lower_player, higher_player]
             end
           end
 
@@ -131,7 +131,7 @@ module Swissfork
             end
 
             it "gives the preference to the wider difference" do
-              pair.players.should == [higher_player, lower_player]
+              pair.players.should eq [higher_player, lower_player]
             end
           end
         end
@@ -143,7 +143,7 @@ module Swissfork
           end
 
           it "gives the preference to the lower player" do
-            pair.players.should == [higher_player, lower_player]
+            pair.players.should eq [higher_player, lower_player]
           end
         end
       end
@@ -161,7 +161,7 @@ module Swissfork
           end
 
           it "gives the preference to the higher player" do
-            pair.players.should == [higher_player, lower_player]
+            pair.players.should eq [higher_player, lower_player]
           end
         end
 
@@ -172,7 +172,7 @@ module Swissfork
           end
 
           it "gives the preference to the lower player" do
-            pair.players.should == [lower_player, higher_player]
+            pair.players.should eq [lower_player, higher_player]
           end
         end
 
@@ -189,7 +189,7 @@ module Swissfork
             end
 
             it "gives the preference to the higher player" do
-              pair.players.should == [higher_player, lower_player]
+              pair.players.should eq [higher_player, lower_player]
             end
           end
 
@@ -200,7 +200,7 @@ module Swissfork
             end
 
             it "gives the preference to the wider difference" do
-              pair.players.should == [lower_player, higher_player]
+              pair.players.should eq [lower_player, higher_player]
             end
           end
         end
@@ -212,7 +212,7 @@ module Swissfork
           end
 
           it "gives the preference to the lower player" do
-            pair.players.should == [lower_player, higher_player]
+            pair.players.should eq [lower_player, higher_player]
           end
         end
       end
@@ -224,7 +224,7 @@ module Swissfork
         end
 
         it "respects the lower player preference" do
-          pair.players.should == [lower_player, higher_player]
+          pair.players.should eq [lower_player, higher_player]
         end
 
         context "the lower player doesn't have a preference either" do
@@ -234,7 +234,7 @@ module Swissfork
 
           context "the higher player has an odd number" do
             it "gives the higher player the initial colour" do
-              pair.players.should == [higher_player, lower_player]
+              pair.players.should eq [higher_player, lower_player]
             end
           end
 
@@ -245,7 +245,7 @@ module Swissfork
             end
 
             it "gives the higher player the opposite of the initial colour" do
-              pair.players.should == [lower_player, higher_player]
+              pair.players.should eq [lower_player, higher_player]
             end
           end
 
@@ -256,7 +256,7 @@ module Swissfork
             end
 
             it "gives the higher player the initial colour" do
-              pair.players.should == [higher_player, lower_player]
+              pair.players.should eq [higher_player, lower_player]
             end
           end
 
@@ -267,7 +267,7 @@ module Swissfork
             end
 
             it "gives the higher player the opposite of the initial colour" do
-              pair.players.should == [lower_player, higher_player]
+              pair.players.should eq [lower_player, higher_player]
             end
           end
         end
@@ -283,7 +283,7 @@ module Swissfork
         end
 
         it "alternates colour to the most recent time they were different" do
-          pair.players.should == [lower_player, higher_player]
+          pair.players.should eq [lower_player, higher_player]
         end
 
         context "the last different time happened before one got a bye" do
@@ -293,7 +293,7 @@ module Swissfork
           end
 
           it "alternates colour to the most recent time they were different" do
-            pair.players.should == [lower_player, higher_player]
+            pair.players.should eq [lower_player, higher_player]
           end
         end
 
@@ -304,7 +304,7 @@ module Swissfork
           end
 
           it "gives priority to the higher player" do
-            pair.players.should == [higher_player, lower_player]
+            pair.players.should eq [higher_player, lower_player]
           end
         end
 
@@ -314,7 +314,7 @@ module Swissfork
           end
 
           it "gives priority to the higher player" do
-            pair.players.should == [higher_player, lower_player]
+            pair.players.should eq [higher_player, lower_player]
           end
         end
       end
@@ -330,14 +330,14 @@ module Swissfork
       end
 
       it "assigns the result" do
-        pair.result.should == :white_won
+        pair.result.should eq :white_won
       end
 
       it "adds a game to every player" do
-        s1_player.games[0].opponent.should == s2_player
-        s1_player.games[0].winner.should == s1_player
-        s2_player.games[0].opponent.should == s1_player
-        s2_player.games[0].winner.should == s1_player
+        s1_player.games[0].opponent.should eq s2_player
+        s1_player.games[0].winner.should eq s1_player
+        s2_player.games[0].opponent.should eq s1_player
+        s2_player.games[0].winner.should eq s1_player
       end
     end
   end

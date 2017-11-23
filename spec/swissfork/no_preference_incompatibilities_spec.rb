@@ -17,8 +17,8 @@ module Swissfork
         before(:each) { players.each_stub_preference(:white) }
 
         it "returns zero" do
-          incompatibilities.violations_for(:white).should == 0
-          incompatibilities.violations_for(:black).should == 0
+          incompatibilities.violations_for(:white).should eq 0
+          incompatibilities.violations_for(:black).should eq 0
         end
       end
 
@@ -30,8 +30,8 @@ module Swissfork
         end
 
         it "returns half the players with no preference" do
-          incompatibilities.violations_for(:white).should == 1
-          incompatibilities.violations_for(:black).should == 1
+          incompatibilities.violations_for(:white).should eq 1
+          incompatibilities.violations_for(:black).should eq 1
         end
 
         context "odd number of players" do
@@ -39,8 +39,8 @@ module Swissfork
           before(:each) { players[8..10].each_stub_preference(nil) }
 
           it "returns half the players with no preference, rounding up" do
-            incompatibilities.violations_for(:white).should == 2
-            incompatibilities.violations_for(:black).should == 2
+            incompatibilities.violations_for(:white).should eq 2
+            incompatibilities.violations_for(:black).should eq 2
           end
         end
 
@@ -52,8 +52,8 @@ module Swissfork
           end
 
           it "returns the number of players with the colour preference" do
-            incompatibilities.violations_for(:white).should == 2
-            incompatibilities.violations_for(:black).should == 2
+            incompatibilities.violations_for(:white).should eq 2
+            incompatibilities.violations_for(:black).should eq 2
           end
         end
       end
@@ -67,11 +67,11 @@ module Swissfork
           end
 
           it "returns one for the main preference" do
-            incompatibilities.violations_for(:white).should == 1
+            incompatibilities.violations_for(:white).should eq 1
           end
 
           it "returns zero for the minoritary preference" do
-            incompatibilities.violations_for(:black).should == 0
+            incompatibilities.violations_for(:black).should eq 0
           end
         end
 
@@ -84,8 +84,8 @@ module Swissfork
             end
 
             it "can pair one player with the minoritary difference" do
-              incompatibilities.violations_for(:white).should == 2
-              incompatibilities.violations_for(:black).should == 1
+              incompatibilities.violations_for(:white).should eq 2
+              incompatibilities.violations_for(:black).should eq 1
             end
           end
 
@@ -99,11 +99,11 @@ module Swissfork
             end
 
             it "can pair player all players the main preference" do
-              incompatibilities.violations_for(:white).should == 3
+              incompatibilities.violations_for(:white).should eq 3
             end
 
             it "or it can pair one player with the minoritary preference" do
-              incompatibilities.violations_for(:black).should == 1
+              incompatibilities.violations_for(:black).should eq 1
             end
           end
         end
@@ -117,8 +117,8 @@ module Swissfork
             end
 
             it "can pair one player with the minoritary preference" do
-              incompatibilities.violations_for(:white).should == 3
-              incompatibilities.violations_for(:black).should == 1
+              incompatibilities.violations_for(:white).should eq 3
+              incompatibilities.violations_for(:black).should eq 1
             end
           end
 
@@ -132,11 +132,11 @@ module Swissfork
             end
 
             it "can pair all players with the main preference" do
-              incompatibilities.violations_for(:white).should == 4
+              incompatibilities.violations_for(:white).should eq 4
             end
 
             it "or it can pair one player with the minoritary preference" do
-              incompatibilities.violations_for(:black).should == 1
+              incompatibilities.violations_for(:black).should eq 1
             end
           end
         end

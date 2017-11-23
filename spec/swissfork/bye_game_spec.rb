@@ -7,7 +7,7 @@ module Swissfork
 
     it "counts as a bye" do
       game.bye?.should be true
-      game.float.should == :bye
+      game.float.should eq :bye
     end
 
     it "doesn't count as played" do
@@ -33,7 +33,7 @@ module Swissfork
         let(:game) { ByeGame.new(double, points: 0.5) }
 
         it "gives it the ponts assigned manually" do
-          game.points_received.should == 0.5
+          game.points_received.should eq 0.5
         end
       end
     end

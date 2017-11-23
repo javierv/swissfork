@@ -23,7 +23,7 @@ module Swissfork
           end
 
           it "pairs players normally" do
-            bracket.pair_numbers.should == [[1, 6], [2, 7], [3, 8], [4, 9], [5, 10]]
+            bracket.pair_numbers.should eq [[1, 6], [2, 7], [3, 8], [4, 9], [5, 10]]
           end
         end
 
@@ -37,7 +37,7 @@ module Swissfork
           end
 
           it "pairs maximizing colour preferences" do
-            bracket.pair_numbers.should == [[1, 6], [2, 7], [3, 8], [4, 10], [9, 5]]
+            bracket.pair_numbers.should eq [[1, 6], [2, 7], [3, 8], [4, 10], [9, 5]]
           end
         end
 
@@ -57,7 +57,7 @@ module Swissfork
           end
 
           it "transposes players to guarantee colour preference" do
-            bracket.pair_numbers.should == [[1, 7], [6, 2], [3, 9], [8, 4], [5, 10]]
+            bracket.pair_numbers.should eq [[1, 7], [6, 2], [3, 9], [8, 4], [5, 10]]
           end
         end
 
@@ -68,7 +68,7 @@ module Swissfork
           end
 
           it "makes one player repeat colour" do
-            bracket.pair_numbers.should == [[1, 6], [2, 7], [3, 8], [4, 9], [10, 5]]
+            bracket.pair_numbers.should eq [[1, 6], [2, 7], [3, 8], [4, 9], [10, 5]]
           end
         end
 
@@ -80,7 +80,7 @@ module Swissfork
           end
 
           it "pairs that player with someone with minoritary preference" do
-            bracket.pair_numbers.should == [[1, 7], [2, 8], [3, 9], [4, 10], [6, 5]]
+            bracket.pair_numbers.should eq [[1, 7], [2, 8], [3, 9], [4, 10], [6, 5]]
           end
         end
 
@@ -94,7 +94,7 @@ module Swissfork
           end
 
           it "pairs players with any colour preference with the ones with no preference" do
-            bracket.pair_numbers.should == [[1, 6], [2, 7], [3, 8], [9, 4], [10, 5]]
+            bracket.pair_numbers.should eq [[1, 6], [2, 7], [3, 8], [9, 4], [10, 5]]
           end
         end
 
@@ -108,7 +108,7 @@ module Swissfork
           end
 
           it "repeats colours" do
-            bracket.pair_numbers.should == [[1, 3], [2, 4], [5, 8], [9, 6], [10, 7]]
+            bracket.pair_numbers.should eq [[1, 3], [2, 4], [5, 8], [9, 6], [10, 7]]
           end
 
           context "same colour incompatibilities for each colour" do
@@ -118,7 +118,7 @@ module Swissfork
             end
 
             it "repeats colours" do
-              bracket.pair_numbers.should == [[1, 4], [2, 5], [3, 6], [9, 7], [10, 8]]
+              bracket.pair_numbers.should eq [[1, 4], [2, 5], [3, 6], [9, 7], [10, 8]]
             end
           end
         end
@@ -142,7 +142,7 @@ module Swissfork
           end
 
           it "pairs them with lower players" do
-            bracket.pair_numbers.should == [[1, 6], [2, 7], [3, 8], [4, 9], [5, 10]]
+            bracket.pair_numbers.should eq [[1, 6], [2, 7], [3, 8], [4, 9], [5, 10]]
           end
 
           context "they're incompatible with lower players" do
@@ -152,7 +152,7 @@ module Swissfork
             end
 
             it "pairs them with the higher players" do
-              bracket.pair_numbers.should == [[1, 3], [2, 4], [5, 8], [9, 6], [10, 7]]
+              bracket.pair_numbers.should eq [[1, 3], [2, 4], [5, 8], [9, 6], [10, 7]]
             end
           end
         end
@@ -166,7 +166,7 @@ module Swissfork
           end
 
           it "has a lower preference than other players" do
-            bracket.pair_numbers.should == [[6, 1], [7, 2], [8, 3], [9, 4], [10, 5]]
+            bracket.pair_numbers.should eq [[6, 1], [7, 2], [8, 3], [9, 4], [10, 5]]
           end
         end
       end
@@ -185,7 +185,7 @@ module Swissfork
           end
 
           it "pairs giving priority to the higher players" do
-            bracket.pair_numbers.should == [[1, 3], [2, 4]]
+            bracket.pair_numbers.should eq [[1, 3], [2, 4]]
           end
         end
 
@@ -196,7 +196,7 @@ module Swissfork
           end
 
           it "pairs giving priority to the higher players" do
-            bracket.pair_numbers.should == [[3, 1], [4, 2]]
+            bracket.pair_numbers.should eq [[3, 1], [4, 2]]
           end
         end
 
@@ -209,7 +209,7 @@ module Swissfork
           end
 
           it "pairs the first player in S1 with the second player in S2" do
-            bracket.pair_numbers.should == [[1, 4], [3, 2]]
+            bracket.pair_numbers.should eq [[1, 4], [3, 2]]
           end
         end
 
@@ -223,7 +223,7 @@ module Swissfork
 
           context "none of them are topscorers" do
             it "avoids pairing players with same absolute preferences together" do
-              bracket.pair_numbers.should == [[1, 4], [3, 2]]
+              bracket.pair_numbers.should eq [[1, 4], [3, 2]]
             end
           end
 
@@ -233,7 +233,7 @@ module Swissfork
             end
 
             it "avoids pairing players with same absolute preferences together" do
-              bracket.pair_numbers.should == [[1, 4], [3, 2]]
+              bracket.pair_numbers.should eq [[1, 4], [3, 2]]
             end
           end
         end
@@ -245,8 +245,8 @@ module Swissfork
 
           context "none of them are topscorers" do
             it "downfloats all players" do
-              bracket.pair_numbers.should == []
-              bracket.leftover_numbers.should == [1, 2, 3, 4]
+              bracket.pair_numbers.should eq []
+              bracket.leftover_numbers.should eq [1, 2, 3, 4]
             end
           end
 
@@ -256,7 +256,7 @@ module Swissfork
             end
 
             it "pairs those players" do
-              bracket.pair_numbers.should == [[1, 3], [2, 4]]
+              bracket.pair_numbers.should eq [[1, 3], [2, 4]]
             end
 
             context "the first players in S1 and S2 would get -3 colour difference" do
@@ -268,7 +268,7 @@ module Swissfork
               end
 
               it "avoids pairing them against each other" do
-                bracket.pair_numbers.should == [[1, 4], [3, 2]]
+                bracket.pair_numbers.should eq [[1, 4], [3, 2]]
               end
             end
           end
@@ -280,7 +280,7 @@ module Swissfork
             end
 
             it "avoids pairing non-topscorers" do
-              bracket.pair_numbers.should == [[1, 4], [2, 3]]
+              bracket.pair_numbers.should eq [[1, 4], [2, 3]]
             end
           end
         end

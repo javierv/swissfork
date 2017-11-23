@@ -51,7 +51,7 @@ module Swissfork
 
           it "is very fast" do
             Benchmark.realtime { round.pair_numbers }.should be < 0.1
-            round.pair_numbers.should == [[1, 2], [12, 3], [13, 4], [14, 5], [6, 15], [7, 16], [8, 17], [9, 18], [10, 19], [11, 20]]
+            round.pair_numbers.should eq [[1, 2], [12, 3], [13, 4], [14, 5], [6, 15], [7, 16], [8, 17], [9, 18], [10, 19], [11, 20]]
           end
         end
       end
@@ -72,7 +72,7 @@ module Swissfork
 
         it "pairs fast" do
           Benchmark.realtime { round.pair_numbers }.should be < 0.2
-          round.pair_numbers.should == [[1, 17], [2, 18], [3, 19], [4, 20], [5, 21], [6, 22], [7, 23], [8, 24], [27, 9], [28, 10], [11, 25], [12, 26], [13, 29], [14, 30], [15, 31], [16, 32]]
+          round.pair_numbers.should eq [[1, 17], [2, 18], [3, 19], [4, 20], [5, 21], [6, 22], [7, 23], [8, 24], [27, 9], [28, 10], [11, 25], [12, 26], [13, 29], [14, 30], [15, 31], [16, 32]]
         end
       end
 
@@ -104,7 +104,7 @@ module Swissfork
 
         it "pairs fast" do
           Benchmark.realtime { round.pair_numbers }.should be < 0.1
-          round.pair_numbers.should == [[14, 1], [2, 15], [16, 3], [17, 4], [5, 19], [18, 6], [20, 7], [21, 8], [22, 9], [23, 10], [24, 11], [12, 25], [26, 13]]
+          round.pair_numbers.should eq [[14, 1], [2, 15], [16, 3], [17, 4], [5, 19], [18, 6], [20, 7], [21, 8], [22, 9], [23, 10], [24, 11], [12, 25], [26, 13]]
         end
       end
     end
@@ -122,7 +122,7 @@ module Swissfork
 
         it "pairs fast" do
           Benchmark.realtime { round.pair_numbers }.should be < 0.1
-          round.pair_numbers.should == [
+          round.pair_numbers.should eq [
             [1, 7], [2, 9], [3, 10], [4, 11], [5, 12], [6, 13], [14, 8]
           ]
         end
@@ -142,7 +142,7 @@ module Swissfork
 
           it "pairs fast" do
             Benchmark.realtime { round.pair_numbers }.should be < 0.1
-            round.pair_numbers.should == [
+            round.pair_numbers.should eq [
               [1, 4], [2, 5], [8, 3], [6, 11], [7, 12], [13, 9], [14, 10]
             ]
           end
@@ -163,7 +163,7 @@ module Swissfork
 
         it "quickly discards pairs against players with the minoritary preference" do
           Benchmark.realtime { round.pair_numbers }.should be < 0.1
-          round.pair_numbers.should == [[19, 1], [2, 11], [3, 12], [4, 13], [5, 14], [6, 15], [7, 16], [8, 17], [9, 18], [10, 20]]
+          round.pair_numbers.should eq [[19, 1], [2, 11], [3, 12], [4, 13], [5, 14], [6, 15], [7, 16], [8, 17], [9, 18], [10, 20]]
         end
       end
 
@@ -178,7 +178,7 @@ module Swissfork
 
         it "quickly discards the first players in S1 against that player" do
           Benchmark.realtime { round.pair_numbers }.should be < 0.1
-          round.pair_numbers.should == [[1, 12], [2, 13], [3, 14], [4, 15], [5, 16], [6, 17], [7, 18], [8, 19], [11, 9], [20, 10]]
+          round.pair_numbers.should eq [[1, 12], [2, 13], [3, 14], [4, 15], [5, 16], [6, 17], [7, 18], [8, 19], [11, 9], [20, 10]]
         end
       end
 
@@ -193,7 +193,7 @@ module Swissfork
 
         it "quickly discards pairs against a player with minoritary preference" do
           Benchmark.realtime { round.pair_numbers }.should be < 0.1
-          round.pair_numbers.should == [[1, 13], [2, 14], [3, 15], [4, 16], [5, 17], [6, 18], [7, 19], [8, 20], [11, 9], [12, 10]]
+          round.pair_numbers.should eq [[1, 13], [2, 14], [3, 15], [4, 16], [5, 17], [6, 18], [7, 19], [8, 20], [11, 9], [12, 10]]
         end
       end
 
@@ -208,7 +208,7 @@ module Swissfork
 
         it "quickly discards the second pair against a player with minoritary preference" do
           Benchmark.realtime { round.pair_numbers }.should be < 0.1
-          round.pair_numbers.should == [[1, 11], [2, 15], [3, 16], [4, 17], [5, 18], [6, 19], [7, 20], [12, 8], [13, 9], [14, 10]]
+          round.pair_numbers.should eq [[1, 11], [2, 15], [3, 16], [4, 17], [5, 18], [6, 19], [7, 20], [12, 8], [13, 9], [14, 10]]
         end
       end
     end

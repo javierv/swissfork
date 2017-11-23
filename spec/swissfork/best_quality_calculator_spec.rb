@@ -10,7 +10,7 @@ module Swissfork
         let(:players) { create_players(1..6) }
 
         it "returns half of the number of players" do
-          quality_calculator.pairs_after_downfloats.should == 3
+          quality_calculator.pairs_after_downfloats.should eq 3
         end
       end
 
@@ -18,7 +18,7 @@ module Swissfork
         let(:players) { create_players(1..7) }
 
         it "returns half of the number of players rounded downwards" do
-          quality_calculator.pairs_after_downfloats.should == 3
+          quality_calculator.pairs_after_downfloats.should eq 3
         end
       end
     end
@@ -33,7 +33,7 @@ module Swissfork
         end
 
         it "calculates colour violations normally" do
-          quality_calculator.colour_violations.should == 1
+          quality_calculator.colour_violations.should eq 1
         end
 
         context "downfloats required" do
@@ -42,7 +42,7 @@ module Swissfork
           end
 
           it "doesn't count the downfloats as violations" do
-            quality_calculator.colour_violations.should == 0
+            quality_calculator.colour_violations.should eq 0
           end
         end
       end
@@ -57,7 +57,7 @@ module Swissfork
           end
 
           it "makes two pairs incompatible" do
-            quality_calculator.colour_violations.should == 2
+            quality_calculator.colour_violations.should eq 2
           end
         end
       end

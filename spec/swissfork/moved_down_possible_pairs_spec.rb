@@ -11,7 +11,7 @@ module Swissfork
 
       context "no incompatibilities" do
         it "returns the number of moved down players" do
-          pairs.count.should == 3
+          pairs.count.should eq 3
         end
       end
 
@@ -22,7 +22,7 @@ module Swissfork
         end
 
         it "returns the number of moved down players minus one" do
-          pairs.count.should == 2
+          pairs.count.should eq 2
         end
       end
     end

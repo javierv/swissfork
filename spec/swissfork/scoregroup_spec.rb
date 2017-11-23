@@ -12,7 +12,7 @@ module Swissfork
 
         it "adds the player to the scoregroup" do
           scoregroup.add_player(player)
-          scoregroup.players.should == players + [player]
+          scoregroup.players.should eq players + [player]
         end
       end
 
@@ -22,12 +22,12 @@ module Swissfork
         before(:each) { scoregroup.add_player(player) }
 
         it "sorts the players after adding the player" do
-          scoregroup.players.should == [player] + players
+          scoregroup.players.should eq [player] + players
         end
 
         it "redefines S1 and S2" do
-          scoregroup.bracket.s1.should == [player] + players[0..1]
-          scoregroup.bracket.s2.should == players[2..5]
+          scoregroup.bracket.s1.should eq [player] + players[0..1]
+          scoregroup.bracket.s2.should eq players[2..5]
         end
       end
     end
@@ -50,7 +50,7 @@ module Swissfork
 
           context "last bracket can be paired" do
             it "returns zero" do
-              scoregroup.number_of_required_downfloats.should == 0
+              scoregroup.number_of_required_downfloats.should eq 0
             end
           end
 
@@ -61,7 +61,7 @@ module Swissfork
             end
 
             it "returns two" do
-              scoregroup.number_of_required_downfloats.should == 2
+              scoregroup.number_of_required_downfloats.should eq 2
             end
           end
         end
@@ -78,7 +78,7 @@ module Swissfork
 
           context "last bracket can be paired" do
             it "returns one" do
-              scoregroup.number_of_required_downfloats.should == 1
+              scoregroup.number_of_required_downfloats.should eq 1
             end
           end
 
@@ -89,7 +89,7 @@ module Swissfork
             end
 
             it "returns one" do
-              scoregroup.number_of_required_downfloats.should == 1
+              scoregroup.number_of_required_downfloats.should eq 1
             end
           end
 
@@ -100,7 +100,7 @@ module Swissfork
             end
 
             it "returns three" do
-              scoregroup.number_of_required_downfloats.should == 3
+              scoregroup.number_of_required_downfloats.should eq 3
             end
           end
         end
@@ -121,7 +121,7 @@ module Swissfork
 
           context "last bracket can be paired" do
             it "returns one" do
-              scoregroup.number_of_required_downfloats.should == 1
+              scoregroup.number_of_required_downfloats.should eq 1
             end
           end
 
@@ -133,7 +133,7 @@ module Swissfork
 
             # 5 downfloats to play against 6.
             it "returns one" do
-              scoregroup.number_of_required_downfloats.should == 1
+              scoregroup.number_of_required_downfloats.should eq 1
             end
           end
 
@@ -145,7 +145,7 @@ module Swissfork
 
             # 5 downfloats to play against 6, and 7 gets the bye
             it "returns one" do
-              scoregroup.number_of_required_downfloats.should == 1
+              scoregroup.number_of_required_downfloats.should eq 1
             end
           end
 
@@ -156,7 +156,7 @@ module Swissfork
 
             # 3, 4, and 5 downfloat to play against 6, 7 and 8. 9 gets the bye.
             it "returns three" do
-              scoregroup.number_of_required_downfloats.should == 3
+              scoregroup.number_of_required_downfloats.should eq 3
             end
           end
 
@@ -167,7 +167,7 @@ module Swissfork
 
             context "no leftovers in the last bracket" do
               it "returns one" do
-                scoregroup.number_of_required_downfloats.should == 1
+                scoregroup.number_of_required_downfloats.should eq 1
               end
             end
 
@@ -180,7 +180,7 @@ module Swissfork
               # 1-2, 5 downfloats to receive the bye, 3 and 4 downfloat to complete
               # the pairing against 6.
               it "returns three" do
-                scoregroup.number_of_required_downfloats.should == 3
+                scoregroup.number_of_required_downfloats.should eq 3
               end
             end
           end
@@ -198,7 +198,7 @@ module Swissfork
 
           context "last bracket can be paired" do
             it "returns zero" do
-              scoregroup.number_of_required_downfloats.should == 0
+              scoregroup.number_of_required_downfloats.should eq 0
             end
           end
 
@@ -209,7 +209,7 @@ module Swissfork
             end
 
             it "returns zero" do
-              scoregroup.number_of_required_downfloats.should == 0
+              scoregroup.number_of_required_downfloats.should eq 0
             end
           end
 
@@ -220,7 +220,7 @@ module Swissfork
             end
 
             it "returns two" do
-              scoregroup.number_of_required_downfloats.should == 2
+              scoregroup.number_of_required_downfloats.should eq 2
             end
           end
 
@@ -231,7 +231,7 @@ module Swissfork
 
             context "no leftovers in the last bracket" do
               it "returns two" do
-                scoregroup.number_of_required_downfloats.should == 2
+                scoregroup.number_of_required_downfloats.should eq 2
               end
             end
 
@@ -242,7 +242,7 @@ module Swissfork
               end
 
               it "returns two" do
-                scoregroup.number_of_required_downfloats.should == 2
+                scoregroup.number_of_required_downfloats.should eq 2
               end
             end
 
@@ -253,7 +253,7 @@ module Swissfork
               end
 
               it "returns four" do
-                scoregroup.number_of_required_downfloats.should == 4
+                scoregroup.number_of_required_downfloats.should eq 4
               end
             end
           end
@@ -270,7 +270,7 @@ module Swissfork
               end
 
               it "returns two" do
-                scoregroup.number_of_required_downfloats.should == 2
+                scoregroup.number_of_required_downfloats.should eq 2
               end
             end
 
@@ -281,7 +281,7 @@ module Swissfork
               end
 
               it "returns four" do
-                scoregroup.number_of_required_downfloats.should == 4
+                scoregroup.number_of_required_downfloats.should eq 4
               end
             end
 
@@ -292,7 +292,7 @@ module Swissfork
               end
 
               it "returns two" do
-                scoregroup.number_of_required_downfloats.should == 2
+                scoregroup.number_of_required_downfloats.should eq 2
               end
             end
           end
@@ -320,8 +320,8 @@ module Swissfork
         end
 
         it "downfloats some resident players, and some moved down players" do
-          scoregroup.pair_numbers.should == [[1, 6], [7, 8]]
-          scoregroup.leftover_numbers.should == [2, 3, 4, 5]
+          scoregroup.pair_numbers.should eq [[1, 6], [7, 8]]
+          scoregroup.leftover_numbers.should eq [2, 3, 4, 5]
         end
       end
 
@@ -345,8 +345,8 @@ module Swissfork
           end
 
           it "downfloats players allowing the pair" do
-            scoregroup.pair_numbers.should == [[1, 3], [2, 5]]
-            scoregroup.leftover_numbers.should == [4]
+            scoregroup.pair_numbers.should eq [[1, 3], [2, 5]]
+            scoregroup.leftover_numbers.should eq [4]
           end
         end
 
@@ -356,8 +356,8 @@ module Swissfork
           end
 
           it "downfloats players minimizing downfloats in the next scoregroup" do
-            scoregroup.pair_numbers.should == [[1, 3], [2, 5]]
-            scoregroup.leftover_numbers.should == [4]
+            scoregroup.pair_numbers.should eq [[1, 3], [2, 5]]
+            scoregroup.leftover_numbers.should eq [4]
           end
 
           context "minimizing those downfloats results in an impossible CLB" do
@@ -366,8 +366,8 @@ module Swissfork
             end
 
             it "ignores the next scoregroup and downfloats the last player" do
-              scoregroup.pair_numbers.should == [[1, 3], [2, 4]]
-              scoregroup.leftover_numbers.should == [5]
+              scoregroup.pair_numbers.should eq [[1, 3], [2, 4]]
+              scoregroup.leftover_numbers.should eq [5]
             end
           end
         end
@@ -379,8 +379,8 @@ module Swissfork
           end
 
           it "ignores next scoregroup and downfloats the last player" do
-            scoregroup.pair_numbers.should == [[1, 3], [2, 4]]
-            scoregroup.leftover_numbers.should == [5]
+            scoregroup.pair_numbers.should eq [[1, 3], [2, 4]]
+            scoregroup.leftover_numbers.should eq [5]
           end
         end
 
@@ -392,8 +392,8 @@ module Swissfork
           end
 
           it "ignores next scoregroup and downfloats the last player" do
-            scoregroup.pair_numbers.should == [[1, 2], [3, 4]]
-            scoregroup.leftover_numbers.should == [5]
+            scoregroup.pair_numbers.should eq [[1, 2], [3, 4]]
+            scoregroup.leftover_numbers.should eq [5]
           end
         end
       end

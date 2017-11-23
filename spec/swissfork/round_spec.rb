@@ -29,14 +29,14 @@ module Swissfork
         end
 
         it "sorts the scoregroups by number of points" do
-          scoregroups.map(&:points).should == [2, 1, 0.5, 0]
+          scoregroups.map(&:points).should eq [2, 1, 0.5, 0]
         end
 
         it "groups each player to the right scoregroup" do
-          scoregroups[0].players.should == [players[2]]
-          scoregroups[1].players.should == [players[0], players[1]]
-          scoregroups[2].players.should == [players[3]]
-          scoregroups[3].players.should == [players[4], players[5]]
+          scoregroups[0].players.should eq [players[2]]
+          scoregroups[1].players.should eq [players[0], players[1]]
+          scoregroups[2].players.should eq [players[3]]
+          scoregroups[3].players.should eq [players[4], players[5]]
         end
       end
     end
@@ -48,7 +48,7 @@ module Swissfork
         let(:players) { create_players(1..7) }
 
         it "returns the same pairs as the bracket" do
-          round.pair_numbers.should == Bracket.for(players).pair_numbers
+          round.pair_numbers.should eq Bracket.for(players).pair_numbers
         end
       end
 
@@ -60,7 +60,7 @@ module Swissfork
         end
 
         it "returns the combination of each brackets pairs" do
-          round.pair_numbers.should == Bracket.for(players[0..9]).pair_numbers + Bracket.for(players[10..19]).pair_numbers
+          round.pair_numbers.should eq Bracket.for(players[0..9]).pair_numbers + Bracket.for(players[10..19]).pair_numbers
         end
       end
     end
@@ -71,7 +71,7 @@ module Swissfork
 
       context "no results yet" do
         it "returns an array full of nil" do
-          round.results.should == [nil, nil, nil, nil, nil]
+          round.results.should eq [nil, nil, nil, nil, nil]
         end
       end
 
@@ -81,8 +81,8 @@ module Swissfork
         end
 
         it "sets the results of each pair" do
-          round.pairs[0].result.should == :white_won
-          round.pairs[2].result.should == :draw
+          round.pairs[0].result.should eq :white_won
+          round.pairs[2].result.should eq :draw
         end
 
         it "assigns the bye" do

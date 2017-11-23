@@ -14,7 +14,7 @@ module Swissfork
       end
 
       it "returns the number of descended players" do
-        bracket.number_of_moved_down_players.should == 1
+        bracket.number_of_moved_down_players.should eq 1
       end
     end
 
@@ -28,7 +28,7 @@ module Swissfork
 
         context "the resulting homogeneous group is possible to pair" do
           it "pairs the descended players with the highest non-descended players" do
-            bracket.pair_numbers.should == [[1, 3], [2, 4], [5, 8], [6, 9], [7, 10]]
+            bracket.pair_numbers.should eq [[1, 3], [2, 4], [5, 8], [6, 9], [7, 10]]
           end
         end
 
@@ -39,7 +39,7 @@ module Swissfork
           end
 
           it "redoes the pairing of the descended players" do
-            bracket.pair_numbers.should == [[1, 3], [2, 5], [4, 8], [6, 9], [7, 10]]
+            bracket.pair_numbers.should eq [[1, 3], [2, 5], [4, 8], [6, 9], [7, 10]]
           end
         end
 
@@ -50,8 +50,8 @@ module Swissfork
           end
 
           it "moves those players down and pairs the rest" do
-            bracket.pair_numbers.should == [[3, 7], [4, 8], [5, 9], [6, 10]]
-            bracket.leftover_numbers.should == [1, 2]
+            bracket.pair_numbers.should eq [[3, 7], [4, 8], [5, 9], [6, 10]]
+            bracket.leftover_numbers.should eq [1, 2]
           end
         end
       end
@@ -71,11 +71,11 @@ module Swissfork
           end
 
           it "pairs the rest of the players" do
-            bracket.pair_numbers.should == [[2, 3], [4, 8], [5, 9], [6, 10], [7, 11]]
+            bracket.pair_numbers.should eq [[2, 3], [4, 8], [5, 9], [6, 10], [7, 11]]
           end
 
           it "downfloats the descended player" do
-            bracket.leftover_numbers.should == [1]
+            bracket.leftover_numbers.should eq [1]
           end
         end
 
@@ -86,8 +86,8 @@ module Swissfork
           end
 
           it "downfloats the lower player and pairs the rest" do
-            bracket.pair_numbers.should == [[1, 11], [3, 7], [4, 8], [5, 9], [6, 10]]
-            bracket.leftover_numbers.should == [2]
+            bracket.pair_numbers.should eq [[1, 11], [3, 7], [4, 8], [5, 9], [6, 10]]
+            bracket.leftover_numbers.should eq [2]
           end
 
           context "the lower player has already downfloated" do
@@ -96,16 +96,16 @@ module Swissfork
             end
 
             it "downfloats the higher player" do
-              bracket.pair_numbers.should == [[2, 11], [3, 7], [4, 8], [5, 9], [6, 10]]
-              bracket.leftover_numbers.should == [1]
+              bracket.pair_numbers.should eq [[2, 11], [3, 7], [4, 8], [5, 9], [6, 10]]
+              bracket.leftover_numbers.should eq [1]
             end
 
             context "the higher player has more points" do
               before(:each) { players[0].stub(points: 3) }
 
               it "gives priority to the player with more points (C.6)" do
-                bracket.pair_numbers.should == [[1, 11], [3, 7], [4, 8], [5, 9], [6, 10]]
-                bracket.leftover_numbers.should == [2]
+                bracket.pair_numbers.should eq [[1, 11], [3, 7], [4, 8], [5, 9], [6, 10]]
+                bracket.leftover_numbers.should eq [2]
               end
             end
           end
@@ -115,8 +115,8 @@ module Swissfork
           before(:each) { players[10].stub(floats: [:down]) }
 
           it "downfloats a different player" do
-            bracket.leftover_numbers.should == [10]
-            bracket.pair_numbers.should == [[1, 3], [2, 4], [5, 8], [6, 9], [7, 11]]
+            bracket.leftover_numbers.should eq [10]
+            bracket.pair_numbers.should eq [[1, 3], [2, 4], [5, 8], [6, 9], [7, 11]]
           end
         end
 
@@ -126,8 +126,8 @@ module Swissfork
           end
 
           it "downfloats that player" do
-            bracket.leftover_numbers.should == [3]
-            bracket.pair_numbers.should == [[1, 4], [2, 5], [6, 9], [7, 10], [8, 11]]
+            bracket.leftover_numbers.should eq [3]
+            bracket.pair_numbers.should eq [[1, 4], [2, 5], [6, 9], [7, 10], [8, 11]]
           end
         end
 
@@ -137,8 +137,8 @@ module Swissfork
           end
 
           it "downfloats the lowest player" do
-            bracket.leftover_numbers.should == [11]
-            bracket.pair_numbers.should == [[1, 3], [2, 4], [5, 8], [6, 9], [7, 10]]
+            bracket.leftover_numbers.should eq [11]
+            bracket.pair_numbers.should eq [[1, 3], [2, 4], [5, 8], [6, 9], [7, 10]]
           end
         end
 
@@ -160,7 +160,7 @@ module Swissfork
               end
 
               it "pairs the first player" do
-                bracket.pair_numbers.should == [[1, 5], [6, 9], [7, 10], [8, 11]]
+                bracket.pair_numbers.should eq [[1, 5], [6, 9], [7, 10], [8, 11]]
               end
             end
 
@@ -170,7 +170,7 @@ module Swissfork
               end
 
               it "pairs the second player" do
-                bracket.pair_numbers.should == [[2, 5], [6, 9], [7, 10], [8, 11]]
+                bracket.pair_numbers.should eq [[2, 5], [6, 9], [7, 10], [8, 11]]
               end
             end
           end
@@ -186,7 +186,7 @@ module Swissfork
         end
 
         it "pairs the bracket like a homogeneous bracket" do
-          bracket.pair_numbers.should == [[1, 6], [2, 7], [3, 8], [4, 9], [5, 10]]
+          bracket.pair_numbers.should eq [[1, 6], [2, 7], [3, 8], [4, 9], [5, 10]]
         end
 
         context "one of the players can't be paired" do
@@ -196,11 +196,11 @@ module Swissfork
           end
 
           it "doesn't pair that player" do
-            bracket.pair_numbers.should == [[2, 6], [3, 7], [4, 8], [5, 9]]
+            bracket.pair_numbers.should eq [[2, 6], [3, 7], [4, 8], [5, 9]]
           end
 
           it "moves that player and the last player down" do
-            bracket.leftover_numbers.should == [1, 10]
+            bracket.leftover_numbers.should eq [1, 10]
           end
         end
       end
@@ -220,8 +220,8 @@ module Swissfork
           end
 
           it "moves those players down and pairs the rest" do
-            bracket.pair_numbers.should == [[5, 9], [6, 10], [7, 11], [8, 12]]
-            bracket.leftover_numbers.should == [1, 2, 3, 4]
+            bracket.pair_numbers.should eq [[5, 9], [6, 10], [7, 11], [8, 12]]
+            bracket.leftover_numbers.should eq [1, 2, 3, 4]
           end
         end
       end

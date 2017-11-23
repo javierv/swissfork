@@ -10,7 +10,7 @@ module Swissfork
     end
 
     it "counts as a downfloat" do
-      game.float.should == :down
+      game.float.should eq :down
     end
 
     it "doesn't count as played" do
@@ -29,7 +29,7 @@ module Swissfork
 
     describe "#points_received" do
       it "gives the points assigned by the tournament" do
-        game.points_received.should == 0.5
+        game.points_received.should eq 0.5
       end
 
       context "points specified in the initialize method" do

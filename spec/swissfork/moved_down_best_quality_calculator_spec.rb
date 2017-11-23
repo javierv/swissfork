@@ -20,7 +20,7 @@ module Swissfork
         end
 
         it "returns the number of moved down players" do
-          quality_calculator.moved_down_compatible_pairs.should == 3
+          quality_calculator.moved_down_compatible_pairs.should eq 3
         end
       end
 
@@ -36,7 +36,7 @@ module Swissfork
         end
 
         it "returns the number of resident players" do
-          quality_calculator.moved_down_compatible_pairs.should == 2
+          quality_calculator.moved_down_compatible_pairs.should eq 2
         end
       end
 
@@ -49,7 +49,7 @@ module Swissfork
         end
 
         it "doesn't count that player as pairable" do
-          quality_calculator.moved_down_compatible_pairs.should == 2
+          quality_calculator.moved_down_compatible_pairs.should eq 2
         end
       end
 
@@ -61,7 +61,7 @@ module Swissfork
         end
 
         it "doesn't count those players as pairable" do
-          quality_calculator.moved_down_compatible_pairs.should == 1
+          quality_calculator.moved_down_compatible_pairs.should eq 1
         end
       end
 
@@ -73,7 +73,7 @@ module Swissfork
         end
 
         it "counts only one of those players as pairable" do
-          quality_calculator.moved_down_compatible_pairs.should == 2
+          quality_calculator.moved_down_compatible_pairs.should eq 2
         end
       end
 
@@ -86,7 +86,7 @@ module Swissfork
         end
 
         it "counts only two of those players as pairable" do
-          quality_calculator.possible_pairs.should == 2
+          quality_calculator.possible_pairs.should eq 2
         end
       end
     end
@@ -117,7 +117,7 @@ module Swissfork
           end
 
           it "returns the downfloats including that player" do
-            quality_calculator.allowed_downfloats.should == players_sets([0, 5, 8], [7, 0, 9])
+            quality_calculator.allowed_downfloats.should eq players_sets([0, 5, 8], [7, 0, 9])
           end
 
           context "all players can downfloat" do
@@ -127,7 +127,7 @@ module Swissfork
             end
 
             it "returns downfloats including players with less points" do
-              quality_calculator.allowed_downfloats.should == players_sets([2, 7, 9], [3, 6, 8])
+              quality_calculator.allowed_downfloats.should eq players_sets([2, 7, 9], [3, 6, 8])
             end
           end
         end
@@ -144,7 +144,7 @@ module Swissfork
           end
 
           it "returns downfloats having three moved down players" do
-            quality_calculator.allowed_downfloats.should == players_sets([0, 1, 2, 4], [0, 1, 3, 9])
+            quality_calculator.allowed_downfloats.should eq players_sets([0, 1, 2, 4], [0, 1, 3, 9])
           end
         end
 
@@ -156,7 +156,7 @@ module Swissfork
           end
 
           it "returns downfloats having both players with less points" do
-            quality_calculator.allowed_downfloats.should == players_sets([0, 2, 3, 9], [1, 2, 3, 8])
+            quality_calculator.allowed_downfloats.should eq players_sets([0, 2, 3, 9], [1, 2, 3, 8])
           end
         end
 
@@ -168,7 +168,7 @@ module Swissfork
           end
 
           it "returns downfloats having both players with less points" do
-            quality_calculator.allowed_downfloats.should == players_sets([0, 2, 3, 9], [1, 2, 3, 8])
+            quality_calculator.allowed_downfloats.should eq players_sets([0, 2, 3, 9], [1, 2, 3, 8])
           end
         end
       end

@@ -20,7 +20,7 @@ module Swissfork
         end
 
         it "returns zero" do
-          incompatibilities.violations.should == 0
+          incompatibilities.violations.should eq 0
         end
       end
 
@@ -31,14 +31,14 @@ module Swissfork
         end
 
         it "returns one" do
-          incompatibilities.violations.should == 1
+          incompatibilities.violations.should eq 1
         end
 
         context "not all pairings are possible" do
           let(:number_of_required_pairs) { 4 }
 
           it "returns zero" do
-            incompatibilities.violations.should == 0
+            incompatibilities.violations.should eq 0
           end
         end
 
@@ -46,7 +46,7 @@ module Swissfork
           before(:each) { players[5].stub_preference(nil) }
 
           it "returns zero" do
-            incompatibilities.violations.should == 0
+            incompatibilities.violations.should eq 0
           end
         end
       end
@@ -60,7 +60,7 @@ module Swissfork
         end
 
         it "returns zero" do
-          incompatibilities.strong_violations.should == 0
+          incompatibilities.strong_violations.should eq 0
         end
       end
 
@@ -71,14 +71,14 @@ module Swissfork
         end
 
         it "returns the number of violations" do
-          incompatibilities.strong_violations.should == 1
+          incompatibilities.strong_violations.should eq 1
         end
 
         context "one player has a mild preference" do
           before(:each) { players[5].stub_degree(:mild) }
 
           it "returns zero" do
-            incompatibilities.strong_violations.should == 0
+            incompatibilities.strong_violations.should eq 0
           end
 
           context "that player can't be paired with players with the same colour" do
@@ -88,7 +88,7 @@ module Swissfork
             end
 
             it "needs to violate one strong preference" do
-              incompatibilities.strong_violations.should == 1
+              incompatibilities.strong_violations.should eq 1
             end
           end
         end
@@ -103,7 +103,7 @@ module Swissfork
           end
 
           it "returns the colour everybody prefers" do
-            incompatibilities.main_preference.should == :white
+            incompatibilities.main_preference.should eq :white
           end
         end
 
@@ -113,7 +113,7 @@ module Swissfork
           end
 
           it "returns the colour everybody prefers" do
-            incompatibilities.main_preference.should == :black
+            incompatibilities.main_preference.should eq :black
           end
         end
       end

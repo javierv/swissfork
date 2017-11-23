@@ -28,8 +28,8 @@ module Swissfork
         before(:each) { tournament.start_round }
 
         it "orders the players and gives them numbers" do
-          tournament.players.map(&:number).should == [1, 2, 3, 4]
-          tournament.players.map(&:rating).should == [2400, 2300, 2200, 2130]
+          tournament.players.map(&:number).should eq [1, 2, 3, 4]
+          tournament.players.map(&:rating).should eq [2400, 2300, 2200, 2130]
         end
       end
 
@@ -37,8 +37,8 @@ module Swissfork
         before(:each) { tournament.start }
 
         it "orders the players and gives them numbers" do
-          tournament.players.map(&:number).should == [1, 2, 3, 4]
-          tournament.players.map(&:rating).should == [2400, 2300, 2200, 2130]
+          tournament.players.map(&:number).should eq [1, 2, 3, 4]
+          tournament.players.map(&:rating).should eq [2400, 2300, 2200, 2130]
         end
       end
     end
@@ -55,7 +55,7 @@ module Swissfork
         end
 
         it "excludes those players from pairing" do
-          tournament.pair_numbers.should == [[5, 9], [10, 6], [7, 11], [12, 8]]
+          tournament.pair_numbers.should eq [[5, 9], [10, 6], [7, 11], [12, 8]]
         end
 
         context "players were excluded in a previous round" do
@@ -71,7 +71,7 @@ module Swissfork
             before(:each) { tournament.start_round }
 
             it "pairs all players" do
-              tournament.pair_numbers.should == [[8, 5], [6, 7], [1, 3], [4, 2], [9, 12], [11, 10]]
+              tournament.pair_numbers.should eq [[8, 5], [6, 7], [1, 3], [4, 2], [9, 12], [11, 10]]
             end
           end
 
@@ -82,7 +82,7 @@ module Swissfork
             end
 
             it "doesn't pair those players, but pairs the ones previously excluded" do
-              tournament.pair_numbers.should == [[6, 8], [1, 3], [4, 2], [9, 11]]
+              tournament.pair_numbers.should eq [[6, 8], [1, 3], [4, 2], [9, 11]]
             end
           end
         end
@@ -97,13 +97,13 @@ module Swissfork
           end
 
           it "gives the unspecified players the default points" do
-            tournament.players[0].points.should == 0.5
-            tournament.players[3].points.should == 0.5
+            tournament.players[0].points.should eq 0.5
+            tournament.players[3].points.should eq 0.5
           end
 
           it "gives the specificied players the specified points" do
-            tournament.players[1].points.should == 0
-            tournament.players[2].points.should == 1
+            tournament.players[1].points.should eq 0
+            tournament.players[2].points.should eq 1
           end
         end
 
@@ -116,13 +116,13 @@ module Swissfork
           end
 
           it "gives the unspecified players no points" do
-            tournament.players[0].points.should == 0
-            tournament.players[3].points.should == 0
+            tournament.players[0].points.should eq 0
+            tournament.players[3].points.should eq 0
           end
 
           it "gives the specificied players the specified points" do
-            tournament.players[1].points.should == 0.5
-            tournament.players[2].points.should == 1
+            tournament.players[1].points.should eq 0.5
+            tournament.players[2].points.should eq 1
           end
         end
 
@@ -135,13 +135,13 @@ module Swissfork
           end
 
           it "gives the unspecified players the default points" do
-            tournament.players[0].points.should == 0
-            tournament.players[3].points.should == 0
+            tournament.players[0].points.should eq 0
+            tournament.players[3].points.should eq 0
           end
 
           it "gives the specificied players the specified points" do
-            tournament.players[1].points.should == 0.5
-            tournament.players[2].points.should == 1
+            tournament.players[1].points.should eq 0.5
+            tournament.players[2].points.should eq 1
           end
         end
       end
@@ -166,7 +166,7 @@ module Swissfork
           end
 
           it "returns an empty array" do
-            tournament.topscorers.should == []
+            tournament.topscorers.should eq []
           end
         end
 
@@ -176,7 +176,7 @@ module Swissfork
           end
 
           it "returns the topscorers" do
-            tournament.topscorers.should == players[0..3]
+            tournament.topscorers.should eq players[0..3]
           end
         end
       end
@@ -200,7 +200,7 @@ module Swissfork
           end
 
           it "doesn't pair players with same absolute preference together" do
-            tournament.pair_numbers.should == [[1, 3], [2, 4], [5, 7], [6, 8], [9, 10]]
+            tournament.pair_numbers.should eq [[1, 3], [2, 4], [5, 7], [6, 8], [9, 10]]
           end
         end
 
@@ -211,7 +211,7 @@ module Swissfork
           end
 
           it "pairs topscorers with same absolute preference together" do
-            tournament.pair_numbers.should == [[1, 2], [4, 3], [5, 7], [6, 8], [9, 10]]
+            tournament.pair_numbers.should eq [[1, 2], [4, 3], [5, 7], [6, 8], [9, 10]]
           end
         end
       end
@@ -245,26 +245,27 @@ module Swissfork
       end
 
       it "reorders the players" do
-        tournament.players.map(&:rating).should == [2990, 2985, 2980, 2970, 2960, 2950]
+        tournament.players.map(&:rating).should eq [2990, 2985, 2980, 2970, 2960, 2950]
       end
 
       it "reassigns the numbers" do
-        tournament.players.map(&:number).should == [1, 2, 3, 4, 5, 6]
+        tournament.players.map(&:number).should eq [1, 2, 3, 4, 5, 6]
       end
 
       it "assigns new ids to new players" do
-        tournament.players.map(&:id).should == [1, 5, 2, 3, 4, 6]
+        tournament.players.map(&:id).should eq [1, 5, 2, 3, 4, 6]
       end
 
       it "pairs the new entries" do
-        tournament.pairs.map { |pair| pair.players.map(&:name) }.should ==
+        tournament.pairs.map { |pair| pair.players.map(&:name) }.should eq(
           [["José Capablanca", "Paul Morphy"],
            ["Emanuel Lasker", "Mikhail Tal"],
            ["Alexander Alekhine", "Tigran Petrosian"]]
+        )
       end
 
       it "reassigns the numbers in the previous rounds" do
-        tournament.rounds.first.pair_numbers.should == [[1, 4], [5, 3]]
+        tournament.rounds.first.pair_numbers.should eq [[1, 4], [5, 3]]
       end
     end
   end

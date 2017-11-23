@@ -10,14 +10,14 @@ module Swissfork
 
       context "no incompatibilities" do
         it "returns half of the players" do
-          pairs.count.should == 5
+          pairs.count.should eq 5
         end
 
         context "odd number of players" do
           let(:players) { create_players(1..9) }
 
           it "returns half of the players, rounding down" do
-            pairs.count.should == 4
+            pairs.count.should eq 4
           end
         end
       end
@@ -29,7 +29,7 @@ module Swissfork
         end
 
         it "leaves two players unpaired" do
-          pairs.count.should == 4
+          pairs.count.should eq 4
         end
       end
 
@@ -40,7 +40,7 @@ module Swissfork
         end
 
         it "shows no incompatibilities" do
-          pairs.count.should == 5
+          pairs.count.should eq 5
         end
 
         context "and another players' possible opponents is one of those ones" do
@@ -57,7 +57,7 @@ module Swissfork
           end
 
           it "can't pair all players" do
-            pairs.count.should == 4
+            pairs.count.should eq 4
           end
 
           context "the order of the players is different" do
@@ -74,7 +74,7 @@ module Swissfork
             end
 
             it "returns the same result" do
-              pairs.count.should == 4
+              pairs.count.should eq 4
             end
           end
         end
@@ -94,7 +94,7 @@ module Swissfork
           end
 
           it "can't pair all players" do
-            pairs.count.should == 4
+            pairs.count.should eq 4
           end
         end
       end
@@ -106,7 +106,7 @@ module Swissfork
         end
 
         it "can't pair two players" do
-          pairs.count.should == 4
+          pairs.count.should eq 4
         end
       end
 
@@ -132,7 +132,7 @@ module Swissfork
         end
 
         it "can't pair two players" do
-          pairs.count.should == 4
+          pairs.count.should eq 4
         end
       end
 
@@ -143,7 +143,7 @@ module Swissfork
         end
 
         it "can't pair two players" do
-          pairs.count.should == 4
+          pairs.count.should eq 4
         end
       end
     end

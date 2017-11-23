@@ -20,7 +20,7 @@ module Swissfork
         end
 
         it "descends players from the previous bracket" do
-          round.pair_numbers.should == [[1, 4], [2, 5], [3, 6], [7, 9], [8, 10]]
+          round.pair_numbers.should eq [[1, 4], [2, 5], [3, 6], [7, 9], [8, 10]]
         end
       end
 
@@ -32,7 +32,7 @@ module Swissfork
         end
 
         it "descends players who may downfloat" do
-          round.pair_numbers.should == [[1, 4], [2, 5], [3, 8], [6, 9], [7, 10]]
+          round.pair_numbers.should eq [[1, 4], [2, 5], [3, 8], [6, 9], [7, 10]]
         end
       end
 
@@ -46,7 +46,7 @@ module Swissfork
         end
 
         it "descends a different set of players" do
-          round.pair_numbers.should == [[1, 4], [2, 6], [3, 7], [5, 9], [8, 10]]
+          round.pair_numbers.should eq [[1, 4], [2, 6], [3, 7], [5, 9], [8, 10]]
         end
       end
 
@@ -58,7 +58,7 @@ module Swissfork
         end
 
         it "redoes the pairing of the last paired bracket" do
-          round.pair_numbers.should == [[1, 9], [2, 10], [3, 6], [4, 7], [5, 8]]
+          round.pair_numbers.should eq [[1, 9], [2, 10], [3, 6], [4, 7], [5, 8]]
         end
 
         context "the last bracket has some pairable players" do
@@ -67,7 +67,7 @@ module Swissfork
           end
 
           it "pairs those players against each other" do
-            round.pair_numbers.should == [[1, 9], [2, 10], [3, 5], [4, 6], [7, 8]]
+            round.pair_numbers.should eq [[1, 9], [2, 10], [3, 5], [4, 6], [7, 8]]
           end
         end
 
@@ -79,7 +79,7 @@ module Swissfork
           end
 
           it "downfloats only the needed players" do
-            round.pair_numbers.should == [[1, 2], [3, 9], [4, 10], [5, 7], [6, 8]]
+            round.pair_numbers.should eq [[1, 2], [3, 9], [4, 10], [5, 7], [6, 8]]
           end
         end
       end
@@ -95,7 +95,7 @@ module Swissfork
         end
 
         it "pairs normally, using the leftovers " do
-          round.pair_numbers.should == [[1, 5], [2, 6], [3, 7], [4, 8], [9, 10]]
+          round.pair_numbers.should eq [[1, 5], [2, 6], [3, 7], [4, 8], [9, 10]]
         end
       end
 
@@ -112,7 +112,7 @@ module Swissfork
         end
 
         it "downfloats players from previous brackets" do
-          round.pair_numbers.should == [[1, 2], [3, 4], [5, 10], [6, 11], [8, 9], [7, 12]]
+          round.pair_numbers.should eq [[1, 2], [3, 4], [5, 10], [6, 11], [8, 9], [7, 12]]
         end
       end
 
@@ -129,7 +129,7 @@ module Swissfork
         end
 
         it "pairs the MDP and downfloats players from the remainder" do
-          round.pair_numbers.should == [[1, 2], [3, 7], [4, 8], [5, 6]]
+          round.pair_numbers.should eq [[1, 2], [3, 7], [4, 8], [5, 6]]
         end
       end
 
@@ -149,7 +149,7 @@ module Swissfork
         end
 
         it "maximizes number of pairs, then number of MDP pairs" do
-          round.pair_numbers.should == [[1, 6], [2, 7], [3, 8], [4, 9], [5, 10]]
+          round.pair_numbers.should eq [[1, 6], [2, 7], [3, 8], [4, 9], [5, 10]]
         end
       end
     end

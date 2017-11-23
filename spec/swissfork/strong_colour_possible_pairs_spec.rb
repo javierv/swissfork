@@ -20,7 +20,7 @@ module Swissfork
           before(:each) { players.each_stub_degree(:strong) }
 
           it "returns zero" do
-            pairs.count.should == 0
+            pairs.count.should eq 0
           end
         end
 
@@ -28,7 +28,7 @@ module Swissfork
           before(:each) { players.each_stub_degree(:mild) }
 
           it "returns the number of pairs" do
-            pairs.count.should == 5
+            pairs.count.should eq 5
           end
         end
 
@@ -36,7 +36,7 @@ module Swissfork
           before(:each) { players[0..1].each_stub_degree(:mild) }
 
           it "returns the number of pairs with players with mild preference" do
-            pairs.count.should == 2
+            pairs.count.should eq 2
           end
 
           context "players with mild preference must play each other" do
@@ -46,7 +46,7 @@ module Swissfork
             end
 
             it "returns the number of pairs with players with mild preference" do
-              pairs.count.should == 1
+              pairs.count.should eq 1
             end
           end
         end

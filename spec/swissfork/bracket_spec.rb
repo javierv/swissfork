@@ -14,7 +14,7 @@ module Swissfork
 
       context "players with the same points" do
         it "is homogeneous" do
-          bracket.class.name.should == "Swissfork::HomogeneousBracket"
+          bracket.class.name.should eq "Swissfork::HomogeneousBracket"
         end
       end
 
@@ -24,7 +24,7 @@ module Swissfork
         end
 
         it "is heterogeneous" do
-          bracket.class.name.should == "Swissfork::HeterogeneousBracket"
+          bracket.class.name.should eq "Swissfork::HeterogeneousBracket"
         end
       end
 
@@ -34,7 +34,7 @@ module Swissfork
         end
 
         it "is heterogeneous" do
-          bracket.class.name.should == "Swissfork::HeterogeneousBracket"
+          bracket.class.name.should eq "Swissfork::HeterogeneousBracket"
         end
       end
     end
@@ -48,7 +48,7 @@ module Swissfork
 
       context "homogeneous bracket" do
         it "returns the number of points from all players" do
-          bracket.points.should == 1
+          bracket.points.should eq 1
         end
       end
 
@@ -56,7 +56,7 @@ module Swissfork
         before(:each) { players.last.stub(points: 0.5) }
 
         it "returns the points from the player with the lowest amount of points" do
-          bracket.points.should == 0.5
+          bracket.points.should eq 0.5
         end
       end
     end
@@ -69,7 +69,7 @@ module Swissfork
       end
 
       it "returns the numbers for the players in s1" do
-        bracket.s1_numbers.should == [1, 2, 3, 4]
+        bracket.s1_numbers.should eq [1, 2, 3, 4]
       end
     end
 
@@ -81,7 +81,7 @@ module Swissfork
       end
 
       it "returns the numbers for the players in s1" do
-        bracket.s2_numbers.should == [5, 6, 7, 8]
+        bracket.s2_numbers.should eq [5, 6, 7, 8]
       end
     end
 
@@ -94,7 +94,7 @@ module Swissfork
 
         context "homogeneous bracket" do
           it "returns the first half of the players" do
-            bracket.s1_numbers.should == [1, 2, 3]
+            bracket.s1_numbers.should eq [1, 2, 3]
           end
         end
 
@@ -104,7 +104,7 @@ module Swissfork
           end
 
           it "returns the descended players" do
-            bracket.s1_numbers.should == [1, 2]
+            bracket.s1_numbers.should eq [1, 2]
           end
         end
 
@@ -112,7 +112,7 @@ module Swissfork
           let(:players) { create_players(1..6).shuffle }
 
           it "orders the players" do
-            bracket.s1_numbers.should == [1, 2, 3]
+            bracket.s1_numbers.should eq [1, 2, 3]
           end
         end
       end
@@ -121,7 +121,7 @@ module Swissfork
         let(:players) { create_players(1..7) }
 
         it "returns the first half of the players, rounded downwards" do
-          bracket.s1_numbers.should == [1, 2, 3]
+          bracket.s1_numbers.should eq [1, 2, 3]
         end
       end
     end
@@ -136,7 +136,7 @@ module Swissfork
 
         context "homogeneous bracket" do
           it "returns the second half of the players" do
-            bracket.s2_numbers.should == [4, 5, 6]
+            bracket.s2_numbers.should eq [4, 5, 6]
           end
         end
 
@@ -146,7 +146,7 @@ module Swissfork
           end
 
           it "returns all players but the descended ones" do
-            bracket.s2_numbers.should == [3, 4, 5, 6]
+            bracket.s2_numbers.should eq [3, 4, 5, 6]
           end
         end
       end
@@ -155,7 +155,7 @@ module Swissfork
         let(:players) { create_players(1..7) }
 
         it "returns the second half of the players, rounded upwards" do
-          bracket.s2_numbers.should == [4, 5, 6, 7]
+          bracket.s2_numbers.should eq [4, 5, 6, 7]
         end
       end
     end
@@ -169,7 +169,7 @@ module Swissfork
         before(:each) { 2.times { bracket.exchange }}
 
         it "exchanges the players and reorders S1" do
-          bracket.s1_numbers.should == [1, 2, 3, 4, 7]
+          bracket.s1_numbers.should eq [1, 2, 3, 4, 7]
         end
       end
 
@@ -183,9 +183,9 @@ module Swissfork
           before(:each) { 2.times { bracket.exchange }}
 
           it "exchanges players and reorders S1 and Limbo" do
-            bracket.s1_numbers.should == [2, 3]
-            bracket.limbo_numbers.should == [1]
-            bracket.s2_numbers.should == [4, 5, 6, 7, 8, 9, 10, 11]
+            bracket.s1_numbers.should eq [2, 3]
+            bracket.limbo_numbers.should eq [1]
+            bracket.s2_numbers.should eq [4, 5, 6, 7, 8, 9, 10, 11]
           end
         end
       end
@@ -200,7 +200,7 @@ module Swissfork
 
         context "no previous opponents" do
           it "pairs the players from s1 with the players from s2" do
-            bracket.pair_numbers.should == [[1, 6], [2, 7], [3, 8], [4, 9], [5, 10]]
+            bracket.pair_numbers.should eq [[1, 6], [2, 7], [3, 8], [4, 9], [5, 10]]
           end
         end
 
@@ -211,7 +211,7 @@ module Swissfork
           end
 
           it "pairs the players after transposing" do
-            bracket.pair_numbers.should == [[1, 6], [2, 7], [3, 8], [4, 10], [5, 9]]
+            bracket.pair_numbers.should eq [[1, 6], [2, 7], [3, 8], [4, 10], [5, 9]]
           end
         end
 
@@ -223,7 +223,7 @@ module Swissfork
           end
 
           it "pairs using the next transposition" do
-            bracket.pair_numbers.should == [[1, 6], [2, 7], [3, 9], [4, 8], [5, 10]]
+            bracket.pair_numbers.should eq [[1, 6], [2, 7], [3, 9], [4, 8], [5, 10]]
           end
         end
 
@@ -236,7 +236,7 @@ module Swissfork
           end
 
           it "pairs using the next transposition" do
-            bracket.pair_numbers.should == [[1, 6], [2, 7], [3, 9], [4, 10], [5, 8]]
+            bracket.pair_numbers.should eq [[1, 6], [2, 7], [3, 9], [4, 10], [5, 8]]
           end
         end
 
@@ -254,7 +254,7 @@ module Swissfork
           end
 
           it "pairs after transposing every player" do
-            bracket.pair_numbers.should == [[1, 10], [2, 9], [3, 8], [4, 7], [5, 6]]
+            bracket.pair_numbers.should eq [[1, 10], [2, 9], [3, 8], [4, 7], [5, 6]]
           end
         end
 
@@ -267,7 +267,7 @@ module Swissfork
           end
 
           it "pairs the players avoiding previous opponents" do
-            bracket.pair_numbers.should == [[1, 7], [2, 6], [3, 8], [4, 10], [5, 9]]
+            bracket.pair_numbers.should eq [[1, 7], [2, 6], [3, 8], [4, 10], [5, 9]]
           end
         end
 
@@ -283,7 +283,7 @@ module Swissfork
           end
 
           it "pairs the players avoiding previous opponents" do
-            bracket.pair_numbers.should == [[1, 6], [2, 10], [3, 9], [4, 8], [5, 7]]
+            bracket.pair_numbers.should eq [[1, 6], [2, 10], [3, 9], [4, 8], [5, 7]]
           end
         end
 
@@ -294,7 +294,7 @@ module Swissfork
           end
 
           it "pairs the players with another player from S1" do
-            bracket.pair_numbers.should == [[1, 5], [2, 7], [3, 8], [4, 9], [6, 10]]
+            bracket.pair_numbers.should eq [[1, 5], [2, 7], [3, 8], [4, 9], [6, 10]]
           end
         end
 
@@ -308,7 +308,7 @@ module Swissfork
           end
 
           it "pairs those two players with players from S1" do
-            bracket.pair_numbers.should == [[1, 3], [2, 4], [5, 8], [6, 9], [7, 10]]
+            bracket.pair_numbers.should eq [[1, 3], [2, 4], [5, 8], [6, 9], [7, 10]]
           end
         end
 
@@ -319,11 +319,11 @@ module Swissfork
           end
 
           it "doesn't pair that player" do
-            bracket.pair_numbers.should == [[2, 6], [3, 7], [4, 8], [5, 9]]
+            bracket.pair_numbers.should eq [[2, 6], [3, 7], [4, 8], [5, 9]]
           end
 
           it "moves that player and the last player down" do
-            bracket.leftover_numbers.should == [1, 10]
+            bracket.leftover_numbers.should eq [1, 10]
           end
         end
 
@@ -334,11 +334,11 @@ module Swissfork
           end
 
           it "pairs the higher of those two players" do
-            bracket.pair_numbers.should == [[1, 10], [3, 6], [4, 7], [5, 8]]
+            bracket.pair_numbers.should eq [[1, 10], [3, 6], [4, 7], [5, 8]]
           end
 
           it "moves the lower player and the last player down" do
-            bracket.leftover_numbers.should == [2, 9]
+            bracket.leftover_numbers.should eq [2, 9]
           end
 
           context "the lower player has already downfloated" do
@@ -347,8 +347,8 @@ module Swissfork
             end
 
             it "pairs the lower player, and moves the higher one down" do
-              bracket.pair_numbers.should == [[2, 10], [3, 6], [4, 7], [5, 8]]
-              bracket.leftover_numbers.should == [1, 9]
+              bracket.pair_numbers.should eq [[2, 10], [3, 6], [4, 7], [5, 8]]
+              bracket.leftover_numbers.should eq [1, 9]
             end
           end
         end
@@ -361,8 +361,8 @@ module Swissfork
           end
 
           it "downfloats four players" do
-            bracket.pair_numbers.should == [[1, 7], [5, 8], [6, 9]]
-            bracket.leftover_numbers.should == [2, 3, 4, 10]
+            bracket.pair_numbers.should eq [[1, 7], [5, 8], [6, 9]]
+            bracket.leftover_numbers.should eq [2, 3, 4, 10]
           end
 
           context "two of those players and the last one have already downfloated" do
@@ -372,8 +372,8 @@ module Swissfork
             end
 
             it "minimizes same downfloats as the previous round (minimum: 2)" do
-              bracket.pair_numbers.should == [[1, 7], [5, 8], [6, 10]]
-              bracket.leftover_numbers.should == [2, 3, 4, 9]
+              bracket.pair_numbers.should eq [[1, 7], [5, 8], [6, 10]]
+              bracket.leftover_numbers.should eq [2, 3, 4, 9]
             end
 
             context "the penultimate downfloated two rounds ago" do
@@ -382,8 +382,8 @@ module Swissfork
               end
 
               it "minimizes same downfloats as two rounds before (minimum: 0)" do
-                bracket.pair_numbers.should == [[1, 7], [5, 9], [6, 10]]
-                bracket.leftover_numbers.should == [2, 3, 4, 8]
+                bracket.pair_numbers.should eq [[1, 7], [5, 9], [6, 10]]
+                bracket.leftover_numbers.should eq [2, 3, 4, 8]
               end
 
               context "one of the required downfloats also descended 2 rounds ago" do
@@ -392,8 +392,8 @@ module Swissfork
                 end
 
                 it "minimizes same downfloats as two rounds before (minimum: 1)" do
-                  bracket.pair_numbers.should == [[1, 7], [5, 9], [6, 10]]
-                  bracket.leftover_numbers.should == [2, 3, 4, 8]
+                  bracket.pair_numbers.should eq [[1, 7], [5, 9], [6, 10]]
+                  bracket.leftover_numbers.should eq [2, 3, 4, 8]
                 end
               end
             end
@@ -409,7 +409,7 @@ module Swissfork
 
         context "no previous opponents" do
           it "pairs all players except the last one" do
-            bracket.pair_numbers.should == [[1, 6], [2, 7], [3, 8], [4, 9], [5, 10]]
+            bracket.pair_numbers.should eq [[1, 6], [2, 7], [3, 8], [4, 9], [5, 10]]
           end
         end
 
@@ -420,7 +420,7 @@ module Swissfork
           end
 
           it "pairs all players except the second to last one" do
-            bracket.pair_numbers.should == [[1, 6], [2, 7], [3, 8], [4, 9], [5, 11]]
+            bracket.pair_numbers.should eq [[1, 6], [2, 7], [3, 8], [4, 9], [5, 11]]
           end
         end
 
@@ -431,7 +431,7 @@ module Swissfork
           end
 
           it "downfloats that player and pairs the rest in order" do
-            bracket.pair_numbers.should == [[2, 7], [3, 8], [4, 9], [5, 10], [6, 11]]
+            bracket.pair_numbers.should eq [[2, 7], [3, 8], [4, 9], [5, 10], [6, 11]]
           end
         end
       end
@@ -442,7 +442,7 @@ module Swissfork
         let(:players) { create_players(1..10) }
 
         it "returns an empty array" do
-          bracket.leftovers.should == []
+          bracket.leftovers.should eq []
         end
       end
 
@@ -451,7 +451,7 @@ module Swissfork
 
         context "no previous opponents" do
           it "returns the last player" do
-            bracket.leftover_numbers.should == [11]
+            bracket.leftover_numbers.should eq [11]
           end
         end
 
@@ -462,7 +462,7 @@ module Swissfork
           end
 
           it "returns the second to last player" do
-            bracket.leftover_numbers.should == [10]
+            bracket.leftover_numbers.should eq [10]
           end
         end
       end
@@ -491,8 +491,8 @@ module Swissfork
       let(:lower_bracket) { bracket_with_points(1) }
 
       it "sorts brackets based on points in descending order" do
-        [medium_bracket, lower_bracket, higher_bracket].sort.should ==
-          [higher_bracket, medium_bracket, lower_bracket]
+        [medium_bracket, lower_bracket, higher_bracket].sort.should eq(
+          [higher_bracket, medium_bracket, lower_bracket])
       end
     end
   end

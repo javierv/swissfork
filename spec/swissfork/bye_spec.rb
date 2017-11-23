@@ -18,7 +18,7 @@ module Swissfork
         let(:players) { create_players(1..11) }
 
         it "returns the unpaired player" do
-          round.bye.number.should == 11
+          round.bye.number.should eq 11
         end
       end
     end
@@ -30,8 +30,8 @@ module Swissfork
         before(:each) { players[10].stub(had_bye?: true) }
 
         it "another player gets the bye" do
-          round.bye.number.should == 10
-          round.pair_numbers.should == [[1, 6], [2, 7], [3, 8], [4, 9], [5, 11]]
+          round.bye.number.should eq 10
+          round.pair_numbers.should eq [[1, 6], [2, 7], [3, 8], [4, 9], [5, 11]]
         end
       end
 
@@ -41,8 +41,8 @@ module Swissfork
         end
 
         it "another player gets the bye" do
-          round.bye.number.should == 10
-          round.pair_numbers.should == [[1, 6], [2, 7], [3, 8], [4, 9], [5, 11]]
+          round.bye.number.should eq 10
+          round.pair_numbers.should eq [[1, 6], [2, 7], [3, 8], [4, 9], [5, 11]]
         end
       end
 
@@ -58,8 +58,8 @@ module Swissfork
           end
 
           it "gives the bye to a player from the previous bracket" do
-            round.bye.number.should == 6
-            round.pair_numbers.should == [[1, 3], [2, 4], [5, 7], [8, 10], [9, 11]]
+            round.bye.number.should eq 6
+            round.pair_numbers.should eq [[1, 3], [2, 4], [5, 7], [8, 10], [9, 11]]
           end
 
           context "last player in the PPB played against last bracket players" do
@@ -69,8 +69,8 @@ module Swissfork
             end
 
             it "gives the bye to that player anyway" do
-              round.bye.number.should == 6
-              round.pair_numbers.should == [[1, 3], [2, 4], [5, 7], [8, 10], [9, 11]]
+              round.bye.number.should eq 6
+              round.pair_numbers.should eq [[1, 3], [2, 4], [5, 7], [8, 10], [9, 11]]
             end
           end
 
@@ -80,8 +80,8 @@ module Swissfork
             end
 
             it "gives the bye to a different player" do
-              round.bye.number.should == 2
-              round.pair_numbers.should == [[1, 4], [3, 5], [6, 7], [8, 10], [9, 11]]
+              round.bye.number.should eq 2
+              round.pair_numbers.should eq [[1, 4], [3, 5], [6, 7], [8, 10], [9, 11]]
             end
           end
         end
@@ -96,8 +96,8 @@ module Swissfork
           end
 
           it "a player from a previous bracket gets the bye" do
-            round.bye.number.should == 4
-            round.pair_numbers.should == [[1, 2], [3, 5], [6, 7], [8, 9], [10, 11]]
+            round.bye.number.should eq 4
+            round.pair_numbers.should eq [[1, 2], [3, 5], [6, 7], [8, 9], [10, 11]]
           end
         end
 
@@ -107,8 +107,8 @@ module Swissfork
           end
 
           it "gives the bye to the last player in the last bracket" do
-            round.bye.number.should == 11
-            round.pair_numbers.should == [[1, 4], [2, 5], [3, 6], [7, 9], [8, 10]]
+            round.bye.number.should eq 11
+            round.pair_numbers.should eq [[1, 4], [2, 5], [3, 6], [7, 9], [8, 10]]
           end
 
           context "the first player in the bracket didn't downfloat" do
@@ -117,8 +117,8 @@ module Swissfork
             end
 
             it "gives the bye to that player" do
-              round.bye.number.should == 7
-              round.pair_numbers.should == [[1, 4], [2, 5], [3, 6], [8, 10], [9, 11]]
+              round.bye.number.should eq 7
+              round.pair_numbers.should eq [[1, 4], [2, 5], [3, 6], [8, 10], [9, 11]]
             end
           end
         end
@@ -136,8 +136,8 @@ module Swissfork
           end
 
           it "gives the bye to a player from the previous bracket" do
-            round.bye.number.should == 7
-            round.pair_numbers.should == [[1, 4], [2, 5], [3, 6], [8, 10], [9, 11]]
+            round.bye.number.should eq 7
+            round.pair_numbers.should eq [[1, 4], [2, 5], [3, 6], [8, 10], [9, 11]]
           end
 
           context "the last players in the PPB had also a bye" do
@@ -146,8 +146,8 @@ module Swissfork
             end
 
             it "gives the bye to a different player" do
-              round.bye.number.should == 2
-              round.pair_numbers.should == [[1, 5], [3, 6], [4, 7], [8, 10], [9, 11]]
+              round.bye.number.should eq 2
+              round.pair_numbers.should eq [[1, 5], [3, 6], [4, 7], [8, 10], [9, 11]]
             end
           end
         end
@@ -158,8 +158,8 @@ module Swissfork
           end
 
           it "gives the bye to the last player in the last bracket" do
-            round.bye.number.should == 11
-            round.pair_numbers.should == [[1, 4], [2, 5], [3, 6], [7, 8], [9, 10]]
+            round.bye.number.should eq 11
+            round.pair_numbers.should eq [[1, 4], [2, 5], [3, 6], [7, 8], [9, 10]]
           end
 
           context "the first player in the bracket didn't downfloat" do
@@ -168,8 +168,8 @@ module Swissfork
             end
 
             it "gives the bye to that player" do
-              round.bye.number.should == 8
-              round.pair_numbers.should == [[1, 4], [2, 5], [3, 6], [7, 9], [10, 11]]
+              round.bye.number.should eq 8
+              round.pair_numbers.should eq [[1, 4], [2, 5], [3, 6], [7, 9], [10, 11]]
             end
           end
         end

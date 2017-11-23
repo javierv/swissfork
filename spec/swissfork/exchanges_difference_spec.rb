@@ -15,7 +15,7 @@ module Swissfork
           let(:difference) { ExchangesDifference.new(s1_player, s2_player) }
 
           it "returns the difference between the numbers" do
-            difference.difference.should == 2
+            difference.difference.should eq 2
           end
         end
 
@@ -25,7 +25,7 @@ module Swissfork
           let(:difference) { ExchangesDifference.new(s1_player, s2_player) }
 
           it "returns the difference between the numbers" do
-            difference.difference.should == 4
+            difference.difference.should eq 4
           end
         end
       end
@@ -36,7 +36,7 @@ module Swissfork
         let(:difference) { ExchangesDifference.new(s1_players, s2_players) }
 
         it "returns the difference between the sum of each group" do
-          difference.difference.should == 5
+          difference.difference.should eq 5
         end
       end
     end

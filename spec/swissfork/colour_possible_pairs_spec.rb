@@ -19,7 +19,7 @@ module Swissfork
         end
 
         it "returns the number of all possible pairs" do
-          pairs.count.should == 5
+          pairs.count.should eq 5
         end
       end
 
@@ -30,7 +30,7 @@ module Swissfork
         end
 
         it "returns one less than the possible number of pairs" do
-          pairs.count.should == 4
+          pairs.count.should eq 4
         end
       end
 
@@ -42,7 +42,7 @@ module Swissfork
 
         context "no incompatibilities" do
           it "returns the number of possible pairs" do
-            pairs.count.should == 4
+            pairs.count.should eq 4
           end
         end
 
@@ -53,7 +53,7 @@ module Swissfork
           end
 
           it "marks one more pair as incompatible" do
-            pairs.count.should == 3
+            pairs.count.should eq 3
           end
         end
 
@@ -66,7 +66,7 @@ module Swissfork
           end
 
           it "makes two pairs incompatible" do
-            pairs.count.should == 3
+            pairs.count.should eq 3
           end
         end
 
@@ -81,7 +81,7 @@ module Swissfork
           end
 
           it "returns the colour violations maximizing the number of pairs" do
-            pairs.count.should == 1
+            pairs.count.should eq 1
           end
         end
       end
@@ -97,7 +97,7 @@ module Swissfork
         end
 
         it "ignores the player who will downfloat" do
-          pairs.count.should == 2
+          pairs.count.should eq 2
         end
       end
     end

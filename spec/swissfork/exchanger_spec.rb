@@ -12,7 +12,7 @@ module Swissfork
         before(:each) { exchanger.next_exchange }
 
         it "exchanges the closest players" do
-          exchanger.numbers.should == [1, 2, 3, 4, 6, 5, 7, 8, 9, 10, 11]
+          exchanger.numbers.should eq [1, 2, 3, 4, 6, 5, 7, 8, 9, 10, 11]
         end
       end
 
@@ -20,7 +20,7 @@ module Swissfork
         before(:each) { 2.times { exchanger.next_exchange }}
 
         it "exchanges the next closest players, choosing the bottom player from S1, and reorders them" do
-          exchanger.numbers.should == [1, 2, 3, 4, 7, 5, 6, 8, 9, 10, 11]
+          exchanger.numbers.should eq [1, 2, 3, 4, 7, 5, 6, 8, 9, 10, 11]
         end
 
         context "players with non-consecutive numbers" do
@@ -28,7 +28,7 @@ module Swissfork
           let(:s2_players) { create_players([4, 28, 29, 30]) }
 
           it "exchanges according to the in-bracket sequence numbers" do
-            exchanger.numbers.should == [1, 2, 28, 3, 4, 29, 30]
+            exchanger.numbers.should eq [1, 2, 28, 3, 4, 29, 30]
           end
         end
       end
@@ -37,7 +37,7 @@ module Swissfork
         before(:each) { 3.times { exchanger.next_exchange }}
 
         it "exchanges the next closest players" do
-          exchanger.numbers.should == [1, 2, 3, 5, 6, 4, 7, 8, 9, 10, 11]
+          exchanger.numbers.should eq [1, 2, 3, 5, 6, 4, 7, 8, 9, 10, 11]
         end
       end
 
@@ -49,7 +49,7 @@ module Swissfork
           before(:each) { exchanger.next_exchange }
 
           it "exchanges two players" do
-            exchanger.numbers.should == [1, 2, 3, 6, 7, 4, 5, 8, 9, 10, 11]
+            exchanger.numbers.should eq [1, 2, 3, 6, 7, 4, 5, 8, 9, 10, 11]
           end
         end
 
@@ -57,7 +57,7 @@ module Swissfork
           before(:each) { 2.times { exchanger.next_exchange }}
 
           it "exchanges the next closest players, choosing the bottom players from S1" do
-            exchanger.numbers.should == [1, 2, 3, 6, 8, 4, 5, 7, 9, 10, 11]
+            exchanger.numbers.should eq [1, 2, 3, 6, 8, 4, 5, 7, 9, 10, 11]
           end
         end
       end
