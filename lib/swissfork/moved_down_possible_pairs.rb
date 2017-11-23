@@ -18,9 +18,7 @@ module Swissfork
 
     def opponents_ordered_by_opponents_count
       opponents.sort_by do |opponent|
-        compatibility_list.values.select do |players|
-          players.include?(opponent)
-        end.count
+        compatibility_list.values.count { |players| players.include?(opponent) }
       end
     end
 

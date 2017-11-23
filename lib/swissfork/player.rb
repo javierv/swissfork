@@ -108,8 +108,8 @@ module Swissfork
     end
 
     def colour_difference
-      colours.select { |colour| colour == :white }.count -
-        colours.select { |colour| colour == :black }.count
+      colours.count { |colour| colour == :white } -
+        colours.count { |colour| colour == :black }
     end
 
     def inspect
