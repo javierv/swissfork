@@ -21,6 +21,9 @@ module Swissfork
       compatibility_list.values.map(&:count).min.to_i
     end
 
+    # HACK: we return a value *and* modify the list *and* don't use
+    # the player parameter but calculate incompatible colours in
+    # certain cases. The code is difficult to follow.
     def incompatibilities_for(player)
       if players_with_incompatible_colour.count > players.count % 2
         current_colour_incompatibilities
