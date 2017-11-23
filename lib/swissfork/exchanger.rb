@@ -19,11 +19,8 @@ module Swissfork
     end
 
     def limit_reached?
-      if number_of_players_in_a_exchange >= maximum_number_of_players_in_a_exchange
+      number_of_players_in_a_exchange >= maximum_number_of_players_in_a_exchange &&
         exchanges_count >= differences.count
-      else
-        exchanges_count >= differences.count + 1
-      end
     end
 
     # Helper methods to make tests easier
