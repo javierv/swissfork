@@ -22,9 +22,9 @@ module Swissfork
     end
 
     it "implements the same interface a regular game does" do
-      lambda { game.opponent }.should_not raise_error
-      lambda { game.winner }.should_not raise_error
-      lambda { game.pair }.should_not raise_error
+      -> { game.opponent }.should_not raise_error
+      -> { game.winner }.should_not raise_error
+      -> { game.pair }.should_not raise_error
     end
 
     describe "#points_received" do

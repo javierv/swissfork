@@ -92,7 +92,7 @@ module Swissfork
 
       context "results aren't the same size as the round pairs" do
         it "raises an exception" do
-          lambda { round.results = [:white_won] }.should raise_error(IndexError)
+          -> { round.results = [:white_won] }.should raise_error(IndexError)
         end
       end
     end

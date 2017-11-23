@@ -473,9 +473,9 @@ module Swissfork
       let(:players) { create_players(1..10) }
 
       it "raises an exception when called directly from Bracket" do
-        lambda { bracket.s2 }.should raise_error("Implement in subclass")
-        lambda { bracket.number_of_required_pairs }.should raise_error("Implement in subclass")
-        lambda { bracket.exchange }.should raise_error("Implement in subclass")
+        -> { bracket.s2 }.should raise_error("Implement in subclass")
+        -> { bracket.number_of_required_pairs }.should raise_error("Implement in subclass")
+        -> { bracket.exchange }.should raise_error("Implement in subclass")
       end
     end
 
