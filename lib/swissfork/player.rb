@@ -168,7 +168,7 @@ module Swissfork
           Hash.new do |compatibilities, player|
             compatibilities[player] =
               compatible?(player) &&
-              PlayerCompatibility.new(self, player).send("#{criterion}?")
+              PlayerCompatibility.new(self, player).public_send("#{criterion}?")
           end
         ]
       end.to_h
