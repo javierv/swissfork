@@ -62,7 +62,7 @@ module Swissfork
       set_topscorers
       incorporate_late_entries
 
-      rounds << Round.new(players - non_paired_players).tap { |round| round.number = rounds.count + 1 }
+      rounds << Round.new(players - non_paired_players).tap { |round| round.number = rounds.size + 1 }
     end
 
     def finish_round(results)
@@ -111,7 +111,7 @@ module Swissfork
 
     def topscorers
       if last_round?
-        players.select { |player| player.points > (rounds.count / 2.0) }
+        players.select { |player| player.points > (rounds.size / 2.0) }
       else
         []
       end
@@ -135,7 +135,7 @@ module Swissfork
     end
 
     def last_round?
-      (rounds.count >= number_of_rounds - 1) &&
+      (rounds.size >= number_of_rounds - 1) &&
         rounds[number_of_rounds - 2].finished?
     end
 
@@ -157,9 +157,9 @@ module Swissfork
 
     def new_players
       late_entries.map.with_index do |inscription, index|
-        Player.new(index + players.count + 1).tap do |player|
+        Player.new(index + players.size + 1).tap do |player|
           player.inscription = inscription
-          rounds.count.times { player.add_game(UnpairedGame.new(player)) }
+          rounds.size.times { player.add_game(UnpairedGame.new(player)) }
         end
       end
     end

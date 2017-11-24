@@ -30,7 +30,7 @@ module Swissfork
     end
 
     def number_of_pairs
-      (players.count - number_of_downfloats) / 2
+      (players.size - number_of_downfloats) / 2
     end
 
     def combinations

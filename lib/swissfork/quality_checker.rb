@@ -62,7 +62,7 @@ module Swissfork
 
     criteria.each do |criterion|
       define_method criterion do
-        send(criterion.to_s.delete("?")).count > allowed_failures[criterion]
+        send(criterion.to_s.delete("?")).size > allowed_failures[criterion]
       end
     end
 

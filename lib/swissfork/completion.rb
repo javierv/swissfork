@@ -17,11 +17,11 @@ module Swissfork
     end
 
     def all_players_can_be_paired?
-      (players.count - PossiblePairs.new(players).count * 2) < 2
+      (players.size - PossiblePairs.new(players).count * 2) < 2
     end
 
     def bye_can_be_selected?
-      return true if players.count.even?
+      return true if players.size.even?
 
       players.reject(&:had_bye?).any? do |player|
         Completion.new(players - [player]).all_players_can_be_paired?
@@ -29,7 +29,7 @@ module Swissfork
     end
 
     def number_of_required_mdps
-      (0..players.count + 1).each do |number|
+      (0..players.size + 1).each do |number|
         additional_players = Array.new(number) do |index|
           Player.new(index + players.map(&:number).max + 1)
         end

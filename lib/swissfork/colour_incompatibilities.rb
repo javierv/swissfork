@@ -55,7 +55,7 @@ module Swissfork
 
     def colour_difference
       if compatible_players_difference.zero?
-        players_with_preference(:white).count - players_with_preference(:black).count
+        players_with_preference(:white).size - players_with_preference(:black).size
       else
         compatible_players_difference
       end
@@ -78,7 +78,7 @@ module Swissfork
     end
 
     def number_of_compatible_players_with_preference(colour)
-      players_with_preference(colour).count -
+      players_with_preference(colour).size -
         ColourPossiblePairs.new(players).colour_incompatibilities_for(colour)
     end
   end

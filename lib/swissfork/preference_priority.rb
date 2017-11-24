@@ -49,7 +49,7 @@ module Swissfork
 
     def last_different_colour_preference(preference)
       last_order = colours.zip(preference.colours).select do |colours|
-        colours.compact.uniq.count > 1
+        colours.compact.uniq.size > 1
       end.last
 
       if last_order

@@ -20,7 +20,7 @@ module Swissfork
 
     def limit_reached?
       number_of_players_in_a_exchange >= maximum_number_of_players_in_a_exchange &&
-        exchanges_count >= differences.count
+        exchanges_count >= differences.size
     end
 
     # Helper methods to make tests easier
@@ -50,11 +50,11 @@ module Swissfork
         end
       end
 
-      exchanged_players[0..s1.count - 1].sort + exchanged_players[s1.count..-1].sort
+      exchanged_players[0..s1.size - 1].sort + exchanged_players[s1.size..-1].sort
     end
 
     def differences
-      if exchanges_count > current_differences.count
+      if exchanges_count > current_differences.size
         increase_number_of_players_in_a_exchange
       end
 
@@ -100,9 +100,9 @@ module Swissfork
 
     def maximum_number_of_players_in_a_exchange
       [
-        s1.count,
-        s2.count,
-        [s2.count - s1.count, s1.count / 2].max
+        s1.size,
+        s2.size,
+        [s2.size - s1.size, s1.size / 2].max
       ].min
     end
   end

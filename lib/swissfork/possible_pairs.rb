@@ -15,12 +15,12 @@ module Swissfork
     initialize_with :players
 
     def count
-      @count ||= (players.count - incompatibilities) / 2
+      @count ||= (players.size - incompatibilities) / 2
     end
 
     def enough_players_to_guarantee_pairing?
-      number_of_players_with_absolute_preference <= players.count / 2 &&
-        players.count / 2.0 > players.map(&:opponents).map(&:count).max
+      number_of_players_with_absolute_preference <= players.size / 2 &&
+        players.size / 2.0 > players.map(&:opponents).map(&:size).max
     end
 
   protected
@@ -63,7 +63,7 @@ module Swissfork
     end
 
     def players_ordered_by_opponents_count
-      compatibility_list.keys.sort_by { |player| compatibility_list[player].count }
+      compatibility_list.keys.sort_by { |player| compatibility_list[player].size }
     end
 
     def opponents_ordered_by_opponents_count
@@ -94,7 +94,7 @@ module Swissfork
     end
 
     def number_of_players_with_absolute_preference
-      players.select(&:absolute_preference?).group_by(&:colour_preference).values.map(&:count).max.to_i
+      players.select(&:absolute_preference?).group_by(&:colour_preference).values.map(&:size).max.to_i
     end
   end
 end

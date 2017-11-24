@@ -9,11 +9,11 @@ module Swissfork
     initialize_with :players, :opponents
 
     def count
-      players.count - incompatibilities
+      players.size - incompatibilities
     end
 
     def enough_players_to_guarantee_pairing?
-      minimum_number_of_compatible_players >= players.count
+      minimum_number_of_compatible_players >= players.size
     end
 
     def opponents_ordered_by_opponents_count
@@ -24,7 +24,7 @@ module Swissfork
 
   private
     def minimum_number_of_compatible_players
-      compatibility_list.values.map(&:count).min.to_i
+      compatibility_list.values.map(&:size).min.to_i
     end
 
     def opponents_for(player)

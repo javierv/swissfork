@@ -223,7 +223,7 @@ module Swissfork
 
       !not_ideal_pairs.include?(hypothetical_pairs) &&
         !impossible_downfloats.include?(hypothetical_leftovers.to_set) &&
-        number_of_required_pairs <= hypothetical_pairs.count + PossiblePairs.new(hypothetical_leftovers).count &&
+        number_of_required_pairs <= hypothetical_pairs.size + PossiblePairs.new(hypothetical_leftovers).count &&
         QualityChecker.new(hypothetical_pairs, hypothetical_leftovers & non_s1_players, quality_calculator).colours_and_downfloats_are_ok?
     end
 
@@ -232,7 +232,7 @@ module Swissfork
     end
 
     def pairings_completed?
-      established_pairs.count == number_of_required_pairs
+      established_pairs.size == number_of_required_pairs
     end
 
     def established_pairs

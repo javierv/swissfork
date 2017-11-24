@@ -16,16 +16,16 @@ module Swissfork
     end
 
     def required_downfloats
-      @required_downfloats ||= players.count - compatible_pairs * 2
+      @required_downfloats ||= players.size - compatible_pairs * 2
     end
 
     # Sets the required number of downfloats in order to fulfil criterion C.4
     def required_downfloats=(number)
-      @required_downfloats = [number, players.count - possible_pairs * 2].max
+      @required_downfloats = [number, players.size - possible_pairs * 2].max
     end
 
     def pairs_after_downfloats
-      (players.count - required_downfloats) / 2
+      (players.size - required_downfloats) / 2
     end
 
     def downfloat_permit
@@ -98,7 +98,7 @@ module Swissfork
 
     # TODO: add tests.
     def same_downfloats_as_previous_round_violations
-      [required_downfloats - resident_players.reject(&:descended_in_the_previous_round?).count, 0].max
+      [required_downfloats - resident_players.reject(&:descended_in_the_previous_round?).size, 0].max
     end
 
     def minoritary_preference

@@ -8,7 +8,7 @@ module Swissfork
   # or StrongColourPossiblePairs instead.
   class GenericColourPossiblePairs < PossiblePairs
     def enough_players_to_guarantee_pairing?
-      minimum_number_of_compatible_players >= players.count / 2
+      minimum_number_of_compatible_players >= players.size / 2
     end
 
     def colour_incompatibilities_for(colour)
@@ -18,14 +18,14 @@ module Swissfork
 
   private
     def minimum_number_of_compatible_players
-      compatibility_list.values.map(&:count).min.to_i
+      compatibility_list.values.map(&:size).min.to_i
     end
 
     # HACK: we return a value *and* modify the list *and* don't use
     # the player parameter but calculate incompatible colours in
     # certain cases. The code is difficult to follow.
     def incompatibilities_for(player)
-      if players_with_incompatible_colour.count > players.count % 2
+      if players_with_incompatible_colour.size > players.size % 2
         current_colour_incompatibilities
       else
         super(player)

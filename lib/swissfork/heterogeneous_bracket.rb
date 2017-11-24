@@ -10,7 +10,7 @@ module Swissfork
   # either a homogeneous or a heterogeneous bracket.
   class HeterogeneousBracket < Bracket
     def number_of_moved_down_players
-      moved_down_players.count
+      moved_down_players.size
     end
     alias_method :m0, :number_of_moved_down_players # FIDE nomenclature
 
@@ -67,7 +67,7 @@ module Swissfork
     end
 
     def best_pairs_obtained?
-      super && remainder_pairs.to_a.count == number_of_required_remainder_pairs
+      super && remainder_pairs.to_a.size == number_of_required_remainder_pairs
     end
 
     def clear_established_pairs
@@ -76,7 +76,7 @@ module Swissfork
     end
 
     def remainder_pairs
-      remainder_bracket.number_of_required_downfloats = remainder_players.count - (number_of_required_remainder_pairs * 2)
+      remainder_bracket.number_of_required_downfloats = remainder_players.size - (number_of_required_remainder_pairs * 2)
 
       while impossible_downfloats.include?(unpaired_players_after_remainder.to_set)
         remainder_bracket.mark_established_downfloats_as_impossible

@@ -62,7 +62,7 @@ module Swissfork
     def number_of_required_downfloats
       required_mdps = Completion.new(remaining_players).number_of_required_mdps
 
-      required_mdps + ((players.count - required_mdps) % 2)
+      required_mdps + ((players.size - required_mdps) % 2)
     end
 
     def bracket
@@ -135,7 +135,7 @@ module Swissfork
     end
 
     def number_of_next_scoregroup_required_pairs
-      @number_of_next_scoregroup_required_pairs ||= (bracket.number_of_required_downfloats + next_scoregroup.players.count) / 2
+      @number_of_next_scoregroup_required_pairs ||= (bracket.number_of_required_downfloats + next_scoregroup.players.size) / 2
     end
 
     def reduce_number_of_next_scoregroup_required_pairs

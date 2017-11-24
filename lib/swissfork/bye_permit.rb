@@ -7,7 +7,7 @@ module Swissfork
     initialize_with :players
 
     def number_of_downfloats
-      players.count % 2
+      players.size % 2
     end
 
   private

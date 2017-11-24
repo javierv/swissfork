@@ -9,7 +9,7 @@ module Swissfork
 
   private
     def maximum_number_of_players_in_a_exchange
-      [s1.count, limbo.count].min
+      [s1.size, limbo.size].min
     end
   end
 end

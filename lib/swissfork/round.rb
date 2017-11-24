@@ -35,8 +35,8 @@ module Swissfork
     end
 
     def results=(results)
-      if pairs.count != results.count
-        raise IndexError, "expected #{pairs.count} results, got #{results.count}"
+      if pairs.size != results.size
+        raise IndexError, "expected #{pairs.size} results, got #{results.size}"
       end
 
       pairs.zip(results).each do |pair, result|
