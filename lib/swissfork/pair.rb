@@ -6,9 +6,6 @@ require "forwardable"
 module Swissfork
   # Contains all data related to a game.
   class Pair
-    initialize_with :s1_player, :s2_player
-
-    attr_reader :result
     include Comparable
 
     extend Forwardable
@@ -20,6 +17,10 @@ module Swissfork
       :black_preferences?,
       :same_strong_preference?,
       :no_preference_against_colour?
+
+    attr_reader :result
+
+    initialize_with :s1_player, :s2_player
 
     def players
       @players ||=

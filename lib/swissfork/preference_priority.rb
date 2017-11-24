@@ -4,8 +4,8 @@ module Swissfork
   # Compares players to find out whose preference is stronger,
   # following criterias E.1 to E.4.
   class PreferencePriority
-    initialize_with :player
     include Comparable
+    initialize_with :player
 
     def <=>(preference)
       if strength == preference.strength

@@ -12,8 +12,8 @@ module Swissfork
   # for example, in criteria C.4 (penultimate bracket) and
   # C.7 (maximize pairs in the next bracket).
   class Scoregroup
-    initialize_with :players, :round
     include Comparable
+    initialize_with :players, :round
 
     def add_player(player)
       reset

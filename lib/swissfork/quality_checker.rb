@@ -6,6 +6,25 @@ module Swissfork
   #
   # Criteria C.5 to C.7 are implemented in the main algorithm.
   class QualityChecker
+    def self.criteria
+      # TODO: some of these criteria are redundant if we're
+      # checking the quality after finishing the pairing.
+      %i[
+        high_difference_violation?
+        same_colour_three_times?
+        colour_preference_violation?
+        white_colour_preference_violation?
+        black_colour_preference_violation?
+        white_preference_playing_players_with_no_preference?
+        black_preference_playing_players_with_no_preference?
+        strong_colour_preference_violation?
+        same_downfloats_as_previous_round?
+        same_upfloats_as_previous_round?
+        same_downfloats_as_two_rounds_ago?
+        same_upfloats_as_two_rounds_ago?
+      ]
+    end
+
     initialize_with :pairs, :unpaired_players, :quality_calculator
 
     def ok?
@@ -34,25 +53,6 @@ module Swissfork
         allowed_downfloats.include?(players.to_set) &&
           fulfil_downfloat_criteria?(players)
       end
-    end
-
-    def self.criteria
-      # TODO: some of these criteria are redundant if we're
-      # checking the quality after finishing the pairing.
-      %i[
-        high_difference_violation?
-        same_colour_three_times?
-        colour_preference_violation?
-        white_colour_preference_violation?
-        black_colour_preference_violation?
-        white_preference_playing_players_with_no_preference?
-        black_preference_playing_players_with_no_preference?
-        strong_colour_preference_violation?
-        same_downfloats_as_previous_round?
-        same_upfloats_as_previous_round?
-        same_downfloats_as_two_rounds_ago?
-        same_upfloats_as_two_rounds_ago?
-      ]
     end
 
   private

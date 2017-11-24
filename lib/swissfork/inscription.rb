@@ -5,10 +5,11 @@ module Swissfork
   #
   # For now, it only contains the name and the rating.
   class Inscription
+    include Comparable
+
     # TODO: we currently ignore spliting name between first
     # name and last name
     initialize_with :rating, :name
-    include Comparable
 
     def <=>(inscription)
       # TODO: implement properly, adding GM titles if necessary.

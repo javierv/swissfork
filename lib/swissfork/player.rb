@@ -13,10 +13,14 @@ module Swissfork
   # Inscription class.
   class Player
     include Comparable
-    initialize_with :id
     attr_accessor :inscription, :topscorer, :bsn
     alias_method :topscorer?, :topscorer
 
+    def self.compatibility_criteria
+      %i[opponent colour strong_colour]
+    end
+
+    initialize_with :id
 
     def number
       @number ||= id
@@ -118,10 +122,6 @@ module Swissfork
 
     def <=>(other_player)
       [other_player.points, number] <=> [points, other_player.number]
-    end
-
-    def self.compatibility_criteria
-      %i[opponent colour strong_colour]
     end
 
     # These methods use a ruby Hash cache to reduce the amount of
