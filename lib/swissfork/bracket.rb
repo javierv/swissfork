@@ -159,7 +159,7 @@ module Swissfork
       return remainder_pairs if number_of_required_pairs.zero?
       return nil if all_downfloats_are_impossible?
 
-      until(pairs = current_exchange_pairs)
+      until (pairs = current_exchange_pairs)
         if exchanger.limit_reached?
           reset_exchanger
           quality.be_more_permissive
