@@ -206,7 +206,7 @@ module Swissfork
     end
 
     def pair_for(player)
-      pairs_for(player).find { |pair| is_possible?(pair) }
+      pairs_for(player).find { |pair| possible?(pair) }
     end
 
     def pairs_for(player)
@@ -217,7 +217,7 @@ module Swissfork
       player.compatible_opponents_in(s2) & still_unpaired_players
     end
 
-    def is_possible?(pair)
+    def possible?(pair)
       hypothetical_pairs = established_pairs + [pair]
       hypothetical_leftovers = still_unpaired_players - pair.players
 
