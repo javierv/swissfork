@@ -17,6 +17,8 @@ module Swissfork
     end
 
     def opponents_ordered_by_opponents_count
+      # TODO: write test. Right now everything passes if we change it to
+      # opponents
       opponents.sort_by do |opponent|
         compatibility_list.values.count { |players| players.include?(opponent) }
       end
