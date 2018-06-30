@@ -33,7 +33,7 @@ module Swissfork
           let(:players) { create_players(1..20) }
 
           it "is very fast" do
-            Benchmark.realtime { round.pair_numbers }.should be < 0.1
+            Benchmark.realtime { round.pair_numbers }.should be < 0.12
           end
         end
       end
@@ -50,7 +50,7 @@ module Swissfork
           end
 
           it "is very fast" do
-            Benchmark.realtime { round.pair_numbers }.should be < 0.1
+            Benchmark.realtime { round.pair_numbers }.should be < 0.15
             round.pair_numbers.should eq [[1, 2], [12, 3], [13, 4], [14, 5], [6, 15], [7, 16], [8, 17], [9, 18], [10, 19], [11, 20]]
           end
         end
@@ -103,7 +103,7 @@ module Swissfork
         end
 
         it "pairs fast" do
-          Benchmark.realtime { round.pair_numbers }.should be < 0.1
+          Benchmark.realtime { round.pair_numbers }.should be < 0.12
           round.pair_numbers.should eq [[14, 1], [2, 15], [16, 3], [17, 4], [5, 19], [18, 6], [20, 7], [21, 8], [22, 9], [23, 10], [24, 11], [12, 25], [26, 13]]
         end
       end
