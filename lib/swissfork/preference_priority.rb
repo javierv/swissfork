@@ -21,46 +21,46 @@ module Swissfork
       end
     end
 
-  protected
+    protected
 
-    def strength
-      [colour_index, degree, -1 * difference.abs]
-    end
-
-    def colours
-      player.colours.compact
-    end
-
-  private
-
-    def difference
-      player.colour_difference
-    end
-
-    def colour_index
-      [:white, :black, nil].index(colour)
-    end
-
-    def colour
-      player.colour_preference
-    end
-
-    def degree
-      [:absolute, :strong, :mild, nil].index(player.preference_degree)
-    end
-
-    def last_different_colour_preference(preference)
-      last_order = colours.zip(preference.colours).reverse.find do |colours|
-        colours.compact.uniq.size > 1
+      def strength
+        [colour_index, degree, -1 * difference.abs]
       end
 
-      if last_order
-        if last_order[0] == colour
-          1
-        else
-          -1
+      def colours
+        player.colours.compact
+      end
+
+    private
+
+      def difference
+        player.colour_difference
+      end
+
+      def colour_index
+        [:white, :black, nil].index(colour)
+      end
+
+      def colour
+        player.colour_preference
+      end
+
+      def degree
+        [:absolute, :strong, :mild, nil].index(player.preference_degree)
+      end
+
+      def last_different_colour_preference(preference)
+        last_order = colours.zip(preference.colours).reverse.find do |colours|
+          colours.compact.uniq.size > 1
+        end
+
+        if last_order
+          if last_order[0] == colour
+            1
+          else
+            -1
+          end
         end
       end
-    end
   end
 end

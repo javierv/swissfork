@@ -10,10 +10,10 @@ module Swissfork
       players.size % 2
     end
 
-  private
+    private
 
-    def can_downfloat?(downfloats)
-      !downfloats.first.had_bye?
-    end
+      def can_downfloat?(downfloats)
+        !downfloats.first.had_bye?
+      end
   end
 end

@@ -144,50 +144,50 @@ module Swissfork
       number.odd? # TODO: it depends on the initial colour
     end
 
-  private
+    private
 
-    def last_two_colours_were_the_same?
-      colours.compact[-1] == colours.compact[-2]
-    end
-
-    def opposite_of_last_colour
-      if colours.compact.last == :white
-        :black
-      else
-        :white
+      def last_two_colours_were_the_same?
+        colours.compact[-1] == colours.compact[-2]
       end
-    end
 
-    def compatibility_criteria
-      self.class.compatibility_criteria
-    end
+      def opposite_of_last_colour
+        if colours.compact.last == :white
+          :black
+        else
+          :white
+        end
+      end
 
-    def compatibilities
-      @compatibilities ||= compatibility_criteria.map do |criterion|
-        [
-          criterion,
-          Hash.new do |compatibilities, player|
-            compatibilities[player] =
-              compatible?(player) &&
-              PlayerCompatibility.new(self, player).public_send("#{criterion}?")
-          end
-        ]
-      end.to_h
-    end
+      def compatibility_criteria
+        self.class.compatibility_criteria
+      end
 
-    def compatible?(player)
-      !opponents.include?(player) && player.id != id
-    end
+      def compatibilities
+        @compatibilities ||= compatibility_criteria.map do |criterion|
+          [
+            criterion,
+            Hash.new do |compatibilities, player|
+              compatibilities[player] =
+                compatible?(player) &&
+                PlayerCompatibility.new(self, player).public_send("#{criterion}?")
+            end
+          ]
+        end.to_h
+      end
 
-    def empty_colours_cache
-      @colours = nil
-      @colour_preference = nil
-      @preference_degree = nil
-    end
+      def compatible?(player)
+        !opponents.include?(player) && player.id != id
+      end
 
-    def empty_opponents_cache
-      @compatibilities = nil
-      @opponents = nil
-    end
+      def empty_colours_cache
+        @colours = nil
+        @colour_preference = nil
+        @preference_degree = nil
+      end
+
+      def empty_opponents_cache
+        @compatibilities = nil
+        @opponents = nil
+      end
   end
 end

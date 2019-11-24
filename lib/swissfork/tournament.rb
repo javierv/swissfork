@@ -117,68 +117,68 @@ module Swissfork
       end
     end
 
-  private
+    private
 
-    def non_paired_players
-      @non_paired_players = unpaired_points.keys.map { |number| players[number - 1] }
-    end
-
-    def default_points_given_to_unpaired_players
-      if last_round?
-        0
-      else
-        0.5
+      def non_paired_players
+        @non_paired_players = unpaired_points.keys.map { |number| players[number - 1] }
       end
-    end
 
-    def set_topscorers
-      topscorers.each { |player| player.topscorer = true }
-    end
-
-    def last_round?
-      (rounds.size >= number_of_rounds - 1) &&
-        rounds[number_of_rounds - 2].finished?
-    end
-
-    def unpaired_points
-      @unpaired_points ||= {}
-    end
-
-    def late_entries
-      @late_entries ||= []
-    end
-
-    def incorporate_late_entries
-      if late_entries.any?
-        players.push(*new_players)
-        reassign_numbers
-        @late_entries = nil
-      end
-    end
-
-    def new_players
-      late_entries.map.with_index do |inscription, index|
-        Player.new(index + players.size + 1).tap do |player|
-          player.inscription = inscription
-          rounds.size.times { player.add_game(UnpairedGame.new(player)) }
+      def default_points_given_to_unpaired_players
+        if last_round?
+          0
+        else
+          0.5
         end
       end
-    end
 
-    def assign_player_numbers
-      @players = inscriptions.sort.map.with_index do |inscription, index|
-        Player.new(index + 1).tap do |player|
-          player.inscription = inscription
+      def set_topscorers
+        topscorers.each { |player| player.topscorer = true }
+      end
+
+      def last_round?
+        (rounds.size >= number_of_rounds - 1) &&
+          rounds[number_of_rounds - 2].finished?
+      end
+
+      def unpaired_points
+        @unpaired_points ||= {}
+      end
+
+      def late_entries
+        @late_entries ||= []
+      end
+
+      def incorporate_late_entries
+        if late_entries.any?
+          players.push(*new_players)
+          reassign_numbers
+          @late_entries = nil
         end
       end
-    end
 
-    def reassign_numbers
-      players.sort_by(&:inscription).each.with_index do |player, index|
-        player.number = index + 1
+      def new_players
+        late_entries.map.with_index do |inscription, index|
+          Player.new(index + players.size + 1).tap do |player|
+            player.inscription = inscription
+            rounds.size.times { player.add_game(UnpairedGame.new(player)) }
+          end
+        end
       end
 
-      players.sort_by!(&:number)
-    end
+      def assign_player_numbers
+        @players = inscriptions.sort.map.with_index do |inscription, index|
+          Player.new(index + 1).tap do |player|
+            player.inscription = inscription
+          end
+        end
+      end
+
+      def reassign_numbers
+        players.sort_by(&:inscription).each.with_index do |player, index|
+          player.number = index + 1
+        end
+
+        players.sort_by!(&:number)
+      end
   end
 end

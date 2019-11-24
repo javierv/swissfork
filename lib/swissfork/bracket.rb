@@ -148,159 +148,159 @@ module Swissfork
       @quality_calculator ||= BestQualityCalculator.new(players)
     end
 
-  private
+    private
 
-    attr_reader :definitive_pairs
+      attr_reader :definitive_pairs
 
-    def exchanger
-      raise "Implement in subclass"
-    end
-
-    def calculate_pairs
-      return [] if players.empty?
-      return remainder_pairs if number_of_required_pairs.zero?
-      return nil if all_downfloats_are_impossible?
-
-      until (pairs = current_exchange_pairs)
-        if exchanger.limit_reached?
-          reset_exchanger
-          quality.be_more_permissive
-        else
-          exchange_until_non_s1_players_can_downfloat
-        end
+      def exchanger
+        raise "Implement in subclass"
       end
 
-      pairs
-    end
+      def calculate_pairs
+        return [] if players.empty?
+        return remainder_pairs if number_of_required_pairs.zero?
+        return nil if all_downfloats_are_impossible?
 
-    def current_exchange_pairs
-      clear_not_ideal_pairs
-      clear_established_pairs
+        until (pairs = current_exchange_pairs)
+          if exchanger.limit_reached?
+            reset_exchanger
+            quality.be_more_permissive
+          else
+            exchange_until_non_s1_players_can_downfloat
+          end
+        end
 
-      loop do
-        establish_pairs
+        pairs
+      end
 
-        return nil if established_pairs.empty?
-        return provisional_pairs if best_pairs_obtained?
-
-        not_ideal_pairs << established_pairs
+      def current_exchange_pairs
+        clear_not_ideal_pairs
         clear_established_pairs
-      end
-    end
 
-    def establish_pairs
-      index = 0
-      until pairings_completed? || index < 0
-        pair = pair_for(players[index])
-        if pair
-          established_pairs << pair
-          index += 1
-        else
-          not_ideal_pairs << established_pairs.dup
-          established_pairs.pop
-          index -= 1
+        loop do
+          establish_pairs
+
+          return nil if established_pairs.empty?
+          return provisional_pairs if best_pairs_obtained?
+
+          not_ideal_pairs << established_pairs
+          clear_established_pairs
         end
       end
-    end
 
-    def best_pairs_obtained?
-      quality.ok?
-    end
-
-    def pair_for(player)
-      pairs_for(player).find { |pair| possible?(pair) }
-    end
-
-    def pairs_for(player)
-      opponents_for(player).map { |opponent| Pair.new(player, opponent) }
-    end
-
-    def opponents_for(player)
-      player.compatible_opponents_in(s2) & still_unpaired_players
-    end
-
-    def possible?(pair)
-      hypothetical_pairs = established_pairs + [pair]
-      hypothetical_leftovers = still_unpaired_players - pair.players
-
-      !not_ideal_pairs.include?(hypothetical_pairs) &&
-        !impossible_downfloats.include?(hypothetical_leftovers.to_set) &&
-        number_of_required_pairs <= hypothetical_pairs.size + PossiblePairs.new(hypothetical_leftovers).count &&
-        QualityChecker.new(hypothetical_pairs, hypothetical_leftovers & non_s1_players, quality_calculator).colours_and_downfloats_are_ok?
-    end
-
-    def non_s1_players
-      players[number_of_players_in_s1..-1]
-    end
-
-    def pairings_completed?
-      established_pairs.size == number_of_required_pairs
-    end
-
-    def established_pairs
-      @established_pairs ||= []
-    end
-
-    def clear_established_pairs
-      @established_pairs = nil
-    end
-
-    def not_ideal_pairs
-      @not_ideal_pairs ||= Set.new
-    end
-
-    def clear_not_ideal_pairs
-      @not_ideal_pairs = nil
-    end
-
-    def impossible_downfloats
-      @impossible_downfloats ||= Set.new
-    end
-
-    def clear_definitive_pairs
-      if instance_variable_defined?("@definitive_pairs")
-        remove_instance_variable("@definitive_pairs")
+      def establish_pairs
+        index = 0
+        until pairings_completed? || index < 0
+          pair = pair_for(players[index])
+          if pair
+            established_pairs << pair
+            index += 1
+          else
+            not_ideal_pairs << established_pairs.dup
+            established_pairs.pop
+            index -= 1
+          end
+        end
       end
-    end
 
-    def next_exchange
-      exchanger.next_exchange
-    end
-
-    def reset_exchanger
-      @exchanger = nil
-      players.sort!
-    end
-
-    def exchange_until_non_s1_players_can_downfloat
-      loop do
-        exchange
-        break if exchanger.limit_reached? || non_s1_players_can_downfloat?
+      def best_pairs_obtained?
+        quality.ok?
       end
-    end
 
-    def non_s1_players_can_downfloat?
-      QualityChecker.new([], non_s1_players, quality_calculator).can_downfloat?
-    end
+      def pair_for(player)
+        pairs_for(player).find { |pair| possible?(pair) }
+      end
 
-    def still_unpaired_players
-      players - established_pairs.flat_map(&:players)
-    end
+      def pairs_for(player)
+        opponents_for(player).map { |opponent| Pair.new(player, opponent) }
+      end
 
-    def definitive_unpaired_players
-      players - paired_players
-    end
+      def opponents_for(player)
+        player.compatible_opponents_in(s2) & still_unpaired_players
+      end
 
-    def moved_down_players
-      players.select { |player| player.points > points }
-    end
+      def possible?(pair)
+        hypothetical_pairs = established_pairs + [pair]
+        hypothetical_leftovers = still_unpaired_players - pair.players
 
-    def quality
-      @quality ||= QualityCriteria.new(self)
-    end
+        !not_ideal_pairs.include?(hypothetical_pairs) &&
+          !impossible_downfloats.include?(hypothetical_leftovers.to_set) &&
+          number_of_required_pairs <= hypothetical_pairs.size + PossiblePairs.new(hypothetical_leftovers).count &&
+          QualityChecker.new(hypothetical_pairs, hypothetical_leftovers & non_s1_players, quality_calculator).colours_and_downfloats_are_ok?
+      end
 
-    def remainder_pairs
-      []
-    end
+      def non_s1_players
+        players[number_of_players_in_s1..-1]
+      end
+
+      def pairings_completed?
+        established_pairs.size == number_of_required_pairs
+      end
+
+      def established_pairs
+        @established_pairs ||= []
+      end
+
+      def clear_established_pairs
+        @established_pairs = nil
+      end
+
+      def not_ideal_pairs
+        @not_ideal_pairs ||= Set.new
+      end
+
+      def clear_not_ideal_pairs
+        @not_ideal_pairs = nil
+      end
+
+      def impossible_downfloats
+        @impossible_downfloats ||= Set.new
+      end
+
+      def clear_definitive_pairs
+        if instance_variable_defined?("@definitive_pairs")
+          remove_instance_variable("@definitive_pairs")
+        end
+      end
+
+      def next_exchange
+        exchanger.next_exchange
+      end
+
+      def reset_exchanger
+        @exchanger = nil
+        players.sort!
+      end
+
+      def exchange_until_non_s1_players_can_downfloat
+        loop do
+          exchange
+          break if exchanger.limit_reached? || non_s1_players_can_downfloat?
+        end
+      end
+
+      def non_s1_players_can_downfloat?
+        QualityChecker.new([], non_s1_players, quality_calculator).can_downfloat?
+      end
+
+      def still_unpaired_players
+        players - established_pairs.flat_map(&:players)
+      end
+
+      def definitive_unpaired_players
+        players - paired_players
+      end
+
+      def moved_down_players
+        players.select { |player| player.points > points }
+      end
+
+      def quality
+        @quality ||= QualityCriteria.new(self)
+      end
+
+      def remainder_pairs
+        []
+      end
   end
 end

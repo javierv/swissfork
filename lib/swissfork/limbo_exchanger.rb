@@ -7,10 +7,10 @@ module Swissfork
   class LimboExchanger < Exchanger
     alias_method :limbo, :s2
 
-  private
+    private
 
-    def maximum_number_of_players_in_a_exchange
-      [s1.size, limbo.size].min
-    end
+      def maximum_number_of_players_in_a_exchange
+        [s1.size, limbo.size].min
+      end
   end
 end

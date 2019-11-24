@@ -57,49 +57,49 @@ module Swissfork
       @quality_calculator ||= MovedDownBestQualityCalculator.new(moved_down_players, resident_players)
     end
 
-  private
+    private
 
-    def exchanger
-      @exchanger ||= LimboExchanger.new(s1, limbo)
-    end
-
-    def next_exchange
-      super + s2
-    end
-
-    def best_pairs_obtained?
-      super && remainder_pairs.to_a.size == number_of_required_remainder_pairs
-    end
-
-    def clear_established_pairs
-      @remainder_bracket = nil
-      super
-    end
-
-    def remainder_pairs
-      remainder_bracket.number_of_required_downfloats = remainder_players.size - (number_of_required_remainder_pairs * 2)
-
-      while impossible_downfloats.include?(unpaired_players_after_remainder.to_set)
-        remainder_bracket.mark_established_downfloats_as_impossible
+      def exchanger
+        @exchanger ||= LimboExchanger.new(s1, limbo)
       end
 
-      remainder_bracket.pairs
-    end
+      def next_exchange
+        super + s2
+      end
 
-    def unpaired_players_after_remainder
-      still_unpaired_players - remainder_bracket.pairs.to_a.flat_map(&:players)
-    end
+      def best_pairs_obtained?
+        super && remainder_pairs.to_a.size == number_of_required_remainder_pairs
+      end
 
-    def remainder_bracket
-      @remainder_bracket ||= HomogeneousBracket.new(remainder_players)
-    end
+      def clear_established_pairs
+        @remainder_bracket = nil
+        super
+      end
 
-    def remainder_players
-      still_unpaired_players - moved_down_players
-    end
+      def remainder_pairs
+        remainder_bracket.number_of_required_downfloats = remainder_players.size - (number_of_required_remainder_pairs * 2)
 
-    def number_of_players_in_limbo
-      number_of_moved_down_players - number_of_moved_down_possible_pairs
-    end
+        while impossible_downfloats.include?(unpaired_players_after_remainder.to_set)
+          remainder_bracket.mark_established_downfloats_as_impossible
+        end
+
+        remainder_bracket.pairs
+      end
+
+      def unpaired_players_after_remainder
+        still_unpaired_players - remainder_bracket.pairs.to_a.flat_map(&:players)
+      end
+
+      def remainder_bracket
+        @remainder_bracket ||= HomogeneousBracket.new(remainder_players)
+      end
+
+      def remainder_players
+        still_unpaired_players - moved_down_players
+      end
+
+      def number_of_players_in_limbo
+        number_of_moved_down_players - number_of_moved_down_possible_pairs
+      end
   end
 end

@@ -41,46 +41,46 @@ module Swissfork
       end
     end
 
-  private
+    private
 
-    def minoritary_violations
-      ColourPossiblePairs.new(players).colour_incompatibilities_for(minoritary_preference) / 2
-    end
-
-    def minoritary_preference
-      case main_preference
-      when :black then :white
-      when :white then :black
+      def minoritary_violations
+        ColourPossiblePairs.new(players).colour_incompatibilities_for(minoritary_preference) / 2
       end
-    end
 
-    def colour_difference
-      if compatible_players_difference.zero?
-        players_with_preference(:white).size - players_with_preference(:black).size
-      else
-        compatible_players_difference
+      def minoritary_preference
+        case main_preference
+        when :black then :white
+        when :white then :black
+        end
       end
-    end
 
-    def compatible_players_difference
-      @compatible_players_difference ||=
-        number_of_compatible_players_with_preference(:white) -
-        number_of_compatible_players_with_preference(:black)
-    end
-
-    def players_with_main_mild_preference
-      players_with_preference(main_preference).select do |player|
-        player.preference_degree == :mild
+      def colour_difference
+        if compatible_players_difference.zero?
+          players_with_preference(:white).size - players_with_preference(:black).size
+        else
+          compatible_players_difference
+        end
       end
-    end
 
-    def players_with_preference(colour)
-      players.select { |player| player.colour_preference == colour }
-    end
+      def compatible_players_difference
+        @compatible_players_difference ||=
+          number_of_compatible_players_with_preference(:white) -
+          number_of_compatible_players_with_preference(:black)
+      end
 
-    def number_of_compatible_players_with_preference(colour)
-      players_with_preference(colour).size -
-        ColourPossiblePairs.new(players).colour_incompatibilities_for(colour)
-    end
+      def players_with_main_mild_preference
+        players_with_preference(main_preference).select do |player|
+          player.preference_degree == :mild
+        end
+      end
+
+      def players_with_preference(colour)
+        players.select { |player| player.colour_preference == colour }
+      end
+
+      def number_of_compatible_players_with_preference(colour)
+        players_with_preference(colour).size -
+          ColourPossiblePairs.new(players).colour_incompatibilities_for(colour)
+      end
   end
 end

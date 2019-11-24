@@ -7,10 +7,10 @@ module Swissfork
   class CompletionPermit < DownfloatPermit
     initialize_with :players, :remaining_players, :number_of_downfloats
 
-  private
+    private
 
-    def can_downfloat?(downfloats)
-      Completion.new(downfloats + remaining_players).ok?
-    end
+      def can_downfloat?(downfloats)
+        Completion.new(downfloats + remaining_players).ok?
+      end
   end
 end

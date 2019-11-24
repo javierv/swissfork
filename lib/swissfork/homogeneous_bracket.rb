@@ -19,10 +19,10 @@ module Swissfork
       still_unpaired_players
     end
 
-  private
+    private
 
-    def exchanger
-      @exchanger ||= Exchanger.new(s1, s2)
-    end
+      def exchanger
+        @exchanger ||= Exchanger.new(s1, s2)
+      end
   end
 end

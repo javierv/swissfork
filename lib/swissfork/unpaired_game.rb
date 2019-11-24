@@ -37,10 +37,10 @@ module Swissfork
       false
     end
 
-  private
+    private
 
-    def default_points_received
-      0.5
-    end
+      def default_points_received
+        0.5
+      end
   end
 end

@@ -60,39 +60,39 @@ module Swissfork
       @played ||= played_results.include?(result)
     end
 
-  private
+    private
 
-    def played_results
-      [
-        :white_won, :draw, :black_won,
-        "1", "½", "0",
-        "W", "D", "B",
-        "w", "d", "b"
-      ]
-    end
+      def played_results
+        [
+          :white_won, :draw, :black_won,
+          "1", "½", "0",
+          "W", "D", "B",
+          "w", "d", "b"
+        ]
+      end
 
-    def white
-      players[0]
-    end
+      def white
+        players[0]
+      end
 
-    def black
-      players[1]
-    end
+      def black
+        players[1]
+      end
 
-    def result
-      pair.result
-    end
+      def result
+        pair.result
+      end
 
-    def players
-      pair.players
-    end
+      def players
+        pair.players
+      end
 
-    def won?
-      winner == player
-    end
+      def won?
+        winner == player
+      end
 
-    def draw?
-      ([:draw] + %w[½ d D]).include?(result)
-    end
+      def draw?
+        ([:draw] + %w[½ d D]).include?(result)
+      end
   end
 end

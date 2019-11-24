@@ -34,24 +34,24 @@ module Swissfork
       required_total_pairs - moved_down_possible_pairs
     end
 
-  private
+    private
 
-    def minimum_number_of_moved_down_downfloats
-      allowed_homogeneous_downfloats.map do |downfloats|
-        (downfloats - resident_players).size
-      end.min.to_i
-    end
+      def minimum_number_of_moved_down_downfloats
+        allowed_homogeneous_downfloats.map do |downfloats|
+          (downfloats - resident_players).size
+        end.min.to_i
+      end
 
-    def required_total_pairs
-      possible_pairs
-    end
+      def required_total_pairs
+        possible_pairs
+      end
 
-    def required_moved_down_downfloats
-      moved_down_players.size - moved_down_possible_pairs
-    end
+      def required_moved_down_downfloats
+        moved_down_players.size - moved_down_possible_pairs
+      end
 
-    def moved_down_pairs_after_downfloats
-      moved_down_players.size - minimum_number_of_moved_down_downfloats
-    end
+      def moved_down_pairs_after_downfloats
+        moved_down_players.size - minimum_number_of_moved_down_downfloats
+      end
   end
 end

@@ -35,45 +35,45 @@ module Swissfork
       allowed_failures[relevant_criterion] += 1
     end
 
-  private
+    private
 
-    def failing_criteria
-      quality_calculator.failing_criteria
-    end
-
-    def current_failing_criterion
-      if ok?
-        failing_criteria.sort_by { |criterion| criteria.index(criterion) }.last
-      else
-        failing_criterion
+      def failing_criteria
+        quality_calculator.failing_criteria
       end
-    end
 
-    def old_failing_criterion_is_less_important?
-      if old_failing_criterion
-        criteria.index(old_failing_criterion) > criteria.index(current_failing_criterion)
-      else
-        true
+      def current_failing_criterion
+        if ok?
+          failing_criteria.sort_by { |criterion| criteria.index(criterion) }.last
+        else
+          failing_criterion
+        end
       end
-    end
 
-    attr_accessor :old_failing_criterion
+      def old_failing_criterion_is_less_important?
+        if old_failing_criterion
+          criteria.index(old_failing_criterion) > criteria.index(current_failing_criterion)
+        else
+          true
+        end
+      end
 
-    def allowed_failures
-      quality_calculator.allowed_failures
-    end
+      attr_accessor :old_failing_criterion
 
-    def quality_checker
-      QualityChecker.new(bracket.provisional_pairs, bracket.provisional_leftovers,
-                         quality_calculator)
-    end
+      def allowed_failures
+        quality_calculator.allowed_failures
+      end
 
-    def criteria
-      QualityChecker.criteria
-    end
+      def quality_checker
+        QualityChecker.new(bracket.provisional_pairs, bracket.provisional_leftovers,
+                           quality_calculator)
+      end
 
-    def quality_calculator
-      bracket.quality_calculator
-    end
+      def criteria
+        QualityChecker.criteria
+      end
+
+      def quality_calculator
+        bracket.quality_calculator
+      end
   end
 end

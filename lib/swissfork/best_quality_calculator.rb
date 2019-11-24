@@ -78,32 +78,32 @@ module Swissfork
       @failing_criteria = nil
     end
 
-  private
+    private
 
-    # Criterion C.5
-    def compatible_pairs
-      @compatible_pairs ||= PossiblePairs.new(players).count
-    end
+      # Criterion C.5
+      def compatible_pairs
+        @compatible_pairs ||= PossiblePairs.new(players).count
+      end
 
-    def colour_incompatibilities
-      @colour_incompatibilities ||= ColourIncompatibilities.new(players, possible_pairs)
-    end
+      def colour_incompatibilities
+        @colour_incompatibilities ||= ColourIncompatibilities.new(players, possible_pairs)
+      end
 
-    def no_preference_incompatibilities
-      @no_preference_incompatibilities ||= NoPreferenceIncompatibilities.new(players)
-    end
+      def no_preference_incompatibilities
+        @no_preference_incompatibilities ||= NoPreferenceIncompatibilities.new(players)
+      end
 
-    def resident_players
-      players
-    end
+      def resident_players
+        players
+      end
 
-    # TODO: add tests.
-    def same_downfloats_as_previous_round_violations
-      [required_downfloats - resident_players.reject(&:descended_in_the_previous_round?).size, 0].max
-    end
+      # TODO: add tests.
+      def same_downfloats_as_previous_round_violations
+        [required_downfloats - resident_players.reject(&:descended_in_the_previous_round?).size, 0].max
+      end
 
-    def minoritary_preference
-      colour_incompatibilities.minoritary_preference
-    end
+      def minoritary_preference
+        colour_incompatibilities.minoritary_preference
+      end
   end
 end

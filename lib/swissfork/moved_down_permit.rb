@@ -21,24 +21,24 @@ module Swissfork
       candidates.to_set
     end
 
-  private
+    private
 
-    def number_of_downfloats_in(player_group)
-      candidates.map { |downfloats| (downfloats & player_group).size }.max
-    end
-
-    def groups
-      players.reverse.group_by(&:points).values
-    end
-
-    def found_downfloats
-      @found_downfloats ||= 0
-    end
-
-    def candidates
-      @candidates ||= initial_candidates.select do |downfloats|
-        (downfloats & players).size == number_of_downfloats
+      def number_of_downfloats_in(player_group)
+        candidates.map { |downfloats| (downfloats & player_group).size }.max
       end
-    end
+
+      def groups
+        players.reverse.group_by(&:points).values
+      end
+
+      def found_downfloats
+        @found_downfloats ||= 0
+      end
+
+      def candidates
+        @candidates ||= initial_candidates.select do |downfloats|
+          (downfloats & players).size == number_of_downfloats
+        end
+      end
   end
 end

@@ -24,14 +24,14 @@ module Swissfork
       end
     end
 
-  private
+    private
 
-    def minimum_number_of_compatible_players
-      compatibility_list.values.map(&:size).min.to_i
-    end
+      def minimum_number_of_compatible_players
+        compatibility_list.values.map(&:size).min.to_i
+      end
 
-    def opponents_for(player)
-      player.compatible_opponents_in(opponents)
-    end
+      def opponents_for(player)
+        player.compatible_opponents_in(opponents)
+      end
   end
 end

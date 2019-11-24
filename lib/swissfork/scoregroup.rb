@@ -99,72 +99,72 @@ module Swissfork
       leftovers.map(&:number)
     end
 
-  private
+    private
 
-    def next_scoregroup
-      scoregroups[next_scoregroup_index]
-    end
+      def next_scoregroup
+        scoregroups[next_scoregroup_index]
+      end
 
-    def index
-      scoregroups.index(self)
-    end
+      def index
+        scoregroups.index(self)
+      end
 
-    def next_scoregroup_index
-      index + 1
-    end
+      def next_scoregroup_index
+        index + 1
+      end
 
-    def number_of_hypothetical_next_pairs
-      next_scoregroup.number_of_pairs_with(leftovers)
-    end
+      def number_of_hypothetical_next_pairs
+        next_scoregroup.number_of_pairs_with(leftovers)
+      end
 
-    def hypothetical_remaining_players
-      remaining_players + leftovers
-    end
+      def hypothetical_remaining_players
+        remaining_players + leftovers
+      end
 
-    def next_scoregroup_pairing_is_ok?
-      remaining_players_complete_the_pairing? &&
-        downfloats_meet_next_scoregroup_required_pairs?
-    end
+      def next_scoregroup_pairing_is_ok?
+        remaining_players_complete_the_pairing? &&
+          downfloats_meet_next_scoregroup_required_pairs?
+      end
 
-    def remaining_players_complete_the_pairing?
-      Completion.new(hypothetical_remaining_players).ok?
-    end
+      def remaining_players_complete_the_pairing?
+        Completion.new(hypothetical_remaining_players).ok?
+      end
 
-    def downfloats_meet_next_scoregroup_required_pairs?
-      bracket.number_of_required_downfloats.zero? ||
-        number_of_hypothetical_next_pairs == number_of_next_scoregroup_required_pairs
-    end
+      def downfloats_meet_next_scoregroup_required_pairs?
+        bracket.number_of_required_downfloats.zero? ||
+          number_of_hypothetical_next_pairs == number_of_next_scoregroup_required_pairs
+      end
 
-    def number_of_next_scoregroup_required_pairs
-      @number_of_next_scoregroup_required_pairs ||= (bracket.number_of_required_downfloats + next_scoregroup.players.size) / 2
-    end
+      def number_of_next_scoregroup_required_pairs
+        @number_of_next_scoregroup_required_pairs ||= (bracket.number_of_required_downfloats + next_scoregroup.players.size) / 2
+      end
 
-    def reduce_number_of_next_scoregroup_required_pairs
-      @number_of_next_scoregroup_required_pairs = number_of_next_scoregroup_required_pairs - 1
-    end
+      def reduce_number_of_next_scoregroup_required_pairs
+        @number_of_next_scoregroup_required_pairs = number_of_next_scoregroup_required_pairs - 1
+      end
 
-    def remaining_players
-      remaining_scoregroups.flat_map(&:players)
-    end
+      def remaining_players
+        remaining_scoregroups.flat_map(&:players)
+      end
 
-    def remaining_scoregroups
-      scoregroups[index + 1..-1]
-    end
+      def remaining_scoregroups
+        scoregroups[index + 1..-1]
+      end
 
-    def scoregroups
-      round.scoregroups
-    end
+      def scoregroups
+        round.scoregroups
+      end
 
-    def adding(players, &block)
-      add_players(players)
-      result = block.call
-      remove_players(players)
-      result
-    end
+      def adding(players, &block)
+        add_players(players)
+        result = block.call
+        remove_players(players)
+        result
+      end
 
-    def reset
-      @number_of_next_scoregroup_required_pairs = nil
-      @bracket = nil
-    end
+      def reset
+        @number_of_next_scoregroup_required_pairs = nil
+        @bracket = nil
+      end
   end
 end

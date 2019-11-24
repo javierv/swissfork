@@ -51,42 +51,42 @@ module Swissfork
       preferences.none?
     end
 
-  private
+    private
 
-    def degrees
-      players.map(&:preference_degree)
-    end
+      def degrees
+        players.map(&:preference_degree)
+      end
 
-    def different_preference?
-      !same_preference?
-    end
+      def different_preference?
+        !same_preference?
+      end
 
-    def topscorers?
-      players.map(&:topscorer?).any?
-    end
+      def topscorers?
+        players.map(&:topscorer?).any?
+      end
 
-    def strong_preferences?
-      (degrees - %i[absolute strong]).empty?
-    end
+      def strong_preferences?
+        (degrees - %i[absolute strong]).empty?
+      end
 
-    def absolute_preferences?
-      degrees == %i[absolute absolute]
-    end
+      def absolute_preferences?
+        degrees == %i[absolute absolute]
+      end
 
-    def preferences
-      players.map(&:colour_preference)
-    end
+      def preferences
+        players.map(&:colour_preference)
+      end
 
-    def same_absolute_preference?
-      absolute_preferences? && same_preference?
-    end
+      def same_absolute_preference?
+        absolute_preferences? && same_preference?
+      end
 
-    def colour_differences
-      players.map(&:colour_difference)
-    end
+      def colour_differences
+        players.map(&:colour_difference)
+      end
 
-    def high_differences?
-      colour_differences.all? { |difference| difference.abs > 1 }
-    end
+      def high_differences?
+        colour_differences.all? { |difference| difference.abs > 1 }
+      end
   end
 end

@@ -74,35 +74,35 @@ module Swissfork
       [pair.points.max, pair.points.sum, unordered_players.min] <=> [points.max, points.sum, pair.unordered_players.min]
     end
 
-  protected
+    protected
 
-    def points
-      unordered_players.map(&:points)
-    end
-
-    def unordered_players
-      [s1_player, s2_player]
-    end
-
-  private
-
-    def players_ordered_by_preference
-      @players_ordered_by_preference ||=
-        unordered_players.sort_by(&:preference_priority)
-    end
-
-    def players_ordered_by_initial_colours
-      higher_player, lower_player = unordered_players.sort
-
-      if higher_player.prefers_white_by_default?
-        [higher_player, lower_player]
-      else
-        [lower_player, higher_player]
+      def points
+        unordered_players.map(&:points)
       end
-    end
 
-    def player_compatibility
-      PlayerCompatibility.new(*unordered_players)
-    end
+      def unordered_players
+        [s1_player, s2_player]
+      end
+
+    private
+
+      def players_ordered_by_preference
+        @players_ordered_by_preference ||=
+          unordered_players.sort_by(&:preference_priority)
+      end
+
+      def players_ordered_by_initial_colours
+        higher_player, lower_player = unordered_players.sort
+
+        if higher_player.prefers_white_by_default?
+          [higher_player, lower_player]
+        else
+          [lower_player, higher_player]
+        end
+      end
+
+      def player_compatibility
+        PlayerCompatibility.new(*unordered_players)
+      end
   end
 end

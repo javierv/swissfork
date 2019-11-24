@@ -47,23 +47,23 @@ module Swissfork
       @finished = true
     end
 
-  private
+    private
 
-    def establish_pairs
-      scoregroups.each do |scoregroup|
-        established_pairs.push(*scoregroup.pairs)
-        scoregroup.move_leftovers_to_next_scoregroup unless scoregroup.last?
+      def establish_pairs
+        scoregroups.each do |scoregroup|
+          established_pairs.push(*scoregroup.pairs)
+          scoregroup.move_leftovers_to_next_scoregroup unless scoregroup.last?
+        end
+
+        established_pairs.sort
       end
 
-      established_pairs.sort
-    end
+      def established_pairs
+        @established_pairs ||= []
+      end
 
-    def established_pairs
-      @established_pairs ||= []
-    end
-
-    def player_groups
-      players.group_by(&:points).values
-    end
+      def player_groups
+        players.group_by(&:points).values
+      end
   end
 end

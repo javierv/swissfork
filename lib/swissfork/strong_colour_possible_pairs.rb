@@ -4,10 +4,10 @@ module Swissfork
   # Calculates how many pairs can be obtained granting
   # the strong colour preferences of both players.
   class StrongColourPossiblePairs < GenericColourPossiblePairs
+    private
 
-  private
-    def opponents_for(player)
-      player.compatible_strong_colours_in(players)
-    end
+      def opponents_for(player)
+        player.compatible_strong_colours_in(players)
+      end
   end
 end
