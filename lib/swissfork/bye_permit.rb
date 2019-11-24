@@ -11,6 +11,7 @@ module Swissfork
     end
 
   private
+
     def can_downfloat?(downfloats)
       !downfloats.first.had_bye?
     end

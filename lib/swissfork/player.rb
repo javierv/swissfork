@@ -145,6 +145,7 @@ module Swissfork
     end
 
   private
+
     def last_two_colours_were_the_same?
       colours.compact[-1] == colours.compact[-2]
     end

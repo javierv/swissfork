@@ -29,6 +29,7 @@ module Swissfork
     end
 
   private
+
     def exchanged_players
       exchange(current_difference.s1_players, current_difference.s2_players)
     end

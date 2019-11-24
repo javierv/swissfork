@@ -52,6 +52,7 @@ module Swissfork
     end
 
   private
+
     def degrees
       players.map(&:preference_degree)
     end

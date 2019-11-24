@@ -79,6 +79,7 @@ module Swissfork
     end
 
   private
+
     # Criterion C.5
     def compatible_pairs
       @compatible_pairs ||= PossiblePairs.new(players).count

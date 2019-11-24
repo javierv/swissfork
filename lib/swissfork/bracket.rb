@@ -89,6 +89,7 @@ module Swissfork
 
     def pairs
       return @definitive_pairs if instance_variable_defined?("@definitive_pairs")
+
       @definitive_pairs = calculate_pairs
     end
 
@@ -148,6 +149,7 @@ module Swissfork
     end
 
   private
+
     attr_reader :definitive_pairs
 
     def exchanger

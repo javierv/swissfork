@@ -42,6 +42,7 @@ module Swissfork
     end
 
   private
+
     def minoritary_violations
       ColourPossiblePairs.new(players).colour_incompatibilities_for(minoritary_preference) / 2
     end

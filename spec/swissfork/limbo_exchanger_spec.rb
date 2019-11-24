@@ -11,7 +11,7 @@ module Swissfork
         let(:s2_players) { create_players(3..4) }
 
         context "all individual exchanges done" do
-          before { 4.times { exchanger.next_exchange }}
+          before { 4.times { exchanger.next_exchange } }
 
           it "returns false" do
             exchanger.limit_reached?.should be false
@@ -19,7 +19,7 @@ module Swissfork
         end
 
         context "exchanges of two players also done" do
-          before { 5.times { exchanger.next_exchange }}
+          before { 5.times { exchanger.next_exchange } }
 
           it "returns false" do
             exchanger.limit_reached?.should be true

@@ -166,7 +166,7 @@ module Swissfork
       let(:bracket) { Bracket.for(s1_players + s2_players) }
 
       context "two exchanges" do
-        before { 2.times { bracket.exchange }}
+        before { 2.times { bracket.exchange } }
 
         it "exchanges the players and reorders S1" do
           bracket.s1_numbers.should eq [1, 2, 3, 4, 7]
@@ -180,7 +180,7 @@ module Swissfork
         end
 
         context "two exchanges" do
-          before { 2.times { bracket.exchange }}
+          before { 2.times { bracket.exchange } }
 
           it "exchanges players and reorders S1 and Limbo" do
             bracket.s1_numbers.should eq [2, 3]

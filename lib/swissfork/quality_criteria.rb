@@ -36,6 +36,7 @@ module Swissfork
     end
 
   private
+
     def failing_criteria
       quality_calculator.failing_criteria
     end

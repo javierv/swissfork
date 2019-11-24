@@ -61,6 +61,7 @@ module Swissfork
     end
 
   private
+
     def played_results
       [
         :white_won, :draw, :black_won,

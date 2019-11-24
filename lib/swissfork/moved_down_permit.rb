@@ -22,6 +22,7 @@ module Swissfork
     end
 
   private
+
     def number_of_downfloats_in(player_group)
       candidates.map { |downfloats| (downfloats & player_group).size }.max
     end

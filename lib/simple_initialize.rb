@@ -25,6 +25,7 @@ module SimpleInitialize
 
     define_method :initialize do |*values|
       raise ArgumentError, "wrong number of arguments (#{values.size} for #{fields.size})" if values.size != fields.size
+
       fields.zip(values).each do |field_name, value|
         instance_variable_set "@#{field_name}", value
       end

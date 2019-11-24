@@ -48,6 +48,7 @@ module Swissfork
     end
 
   private
+
     def establish_pairs
       scoregroups.each do |scoregroup|
         established_pairs.push(*scoregroup.pairs)

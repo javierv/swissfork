@@ -17,6 +17,7 @@ module Swissfork
     end
 
   private
+
     def minimum_number_of_compatible_players
       compatibility_list.values.map(&:size).min.to_i
     end

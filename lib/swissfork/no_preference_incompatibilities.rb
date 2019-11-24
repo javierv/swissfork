@@ -20,6 +20,7 @@ module Swissfork
     end
 
   private
+
     def number_of_no_preference_players
       players.reject(&:colour_preference).size
     end

@@ -118,6 +118,7 @@ module Swissfork
     end
 
   private
+
     def non_paired_players
       @non_paired_players = unpaired_points.keys.map { |number| players[number - 1] }
     end

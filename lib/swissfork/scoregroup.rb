@@ -100,6 +100,7 @@ module Swissfork
     end
 
   private
+
     def next_scoregroup
       scoregroups[next_scoregroup_index]
     end

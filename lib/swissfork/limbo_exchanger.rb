@@ -8,6 +8,7 @@ module Swissfork
     alias_method :limbo, :s2
 
   private
+
     def maximum_number_of_players_in_a_exchange
       [s1.size, limbo.size].min
     end

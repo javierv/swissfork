@@ -22,6 +22,7 @@ module Swissfork
     end
 
   protected
+
     def strength
       [colour_index, degree, -1 * difference.abs]
     end
@@ -31,6 +32,7 @@ module Swissfork
     end
 
   private
+
     def difference
       player.colour_difference
     end

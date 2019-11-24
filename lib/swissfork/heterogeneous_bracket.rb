@@ -58,6 +58,7 @@ module Swissfork
     end
 
   private
+
     def exchanger
       @exchanger ||= LimboExchanger.new(s1, limbo)
     end

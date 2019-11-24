@@ -38,6 +38,7 @@ module Swissfork
     end
 
   private
+
     def default_points_received
       0.5
     end

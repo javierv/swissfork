@@ -19,6 +19,7 @@ module Swissfork
     end
 
   private
+
     def downfloat_combinations
       combinations.select { |downfloats| can_downfloat?(downfloats) }
     end

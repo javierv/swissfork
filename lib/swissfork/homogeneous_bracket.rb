@@ -20,6 +20,7 @@ module Swissfork
     end
 
   private
+
     def exchanger
       @exchanger ||= Exchanger.new(s1, s2)
     end

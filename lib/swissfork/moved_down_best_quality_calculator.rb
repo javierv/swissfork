@@ -35,6 +35,7 @@ module Swissfork
     end
 
   private
+
     def minimum_number_of_moved_down_downfloats
       allowed_homogeneous_downfloats.map do |downfloats|
         (downfloats - resident_players).size

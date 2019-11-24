@@ -24,6 +24,7 @@ module Swissfork
     end
 
   protected
+
     def compatibility_list
       @compatibility_list ||= players.each_with_object({}) do |player, list|
         list[player] = opponents_for(player)
@@ -48,6 +49,7 @@ module Swissfork
     end
 
   private
+
     def incompatibilities
       reset
 

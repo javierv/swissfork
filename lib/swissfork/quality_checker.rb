@@ -56,6 +56,7 @@ module Swissfork
     end
 
   private
+
     def criteria
       self.class.criteria
     end

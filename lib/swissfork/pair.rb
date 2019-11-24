@@ -75,6 +75,7 @@ module Swissfork
     end
 
   protected
+
     def points
       unordered_players.map(&:points)
     end
@@ -84,6 +85,7 @@ module Swissfork
     end
 
   private
+
     def players_ordered_by_preference
       @players_ordered_by_preference ||=
         unordered_players.sort_by(&:preference_priority)
