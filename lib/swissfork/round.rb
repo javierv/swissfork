@@ -43,7 +43,7 @@ module Swissfork
         pair.result = result
       end
 
-      bye.add_game(ByeGame.new(bye)) if bye
+      bye&.add_game(ByeGame.new(bye))
       @finished = true
     end
 
