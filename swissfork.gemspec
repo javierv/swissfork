@@ -7,8 +7,8 @@ Gem::Specification.new do |s|
   s.authors     = ["Javier Martín"]
   s.email       = ["javier@elretirao.net"]
   s.homepage    = ""
-  s.summary     = %q{Chess Swiss System pairing program}
-  s.description = %q{Manages chess tournaments using the Swiss System pairing}
+  s.summary     = %q(Chess Swiss System pairing program)
+  s.description = %q(Manages chess tournaments using the Swiss System pairing)
 
   s.rubyforge_project = "swissfork"
 

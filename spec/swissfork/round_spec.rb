@@ -14,6 +14,7 @@ module Swissfork
 
       context "players with different points" do
         let(:players) { create_players(1..6) }
+        let(:scoregroups) { Round.new(players).scoregroups }
 
         before do
           players[0].stub(points: 1)
@@ -21,8 +22,6 @@ module Swissfork
           players[2].stub(points: 2)
           players[3].stub(points: 0.5)
         end
-
-        let(:scoregroups) { Round.new(players).scoregroups }
 
         it "returns as many scoregroups as different points" do
           scoregroups.count.should be 4
