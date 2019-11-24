@@ -27,7 +27,7 @@ module Swissfork
       let(:players) { create_players(1..10) }
 
       context "more players prefer one colour" do
-        before(:each) do
+        before do
           players[0..5].each_stub_preference(:white)
           players[6..9].each_stub_preference(:black)
         end
@@ -37,7 +37,7 @@ module Swissfork
         end
 
         context "downfloats required" do
-          before(:each) do
+          before do
             quality_calculator.required_downfloats = 2
           end
 
@@ -49,7 +49,7 @@ module Swissfork
 
       context "a player can only be paired with players with the same colour" do
         context "with 10 players" do
-          before(:each) do
+          before do
             players[0..4].each_stub_preference(:white)
             players[5..9].each_stub_preference(:black)
             players[0].stub_opponents(players[5..9])

@@ -8,13 +8,13 @@ module Swissfork
     describe "#pairs when the last bracket can't be paired" do
       let(:players) { create_players(1..10) }
 
-      before(:each) do
+      before do
         players[0..7].each_stub(points: 1)
         players[8..9].each_stub(points: 0)
       end
 
       context "last players from the PPB complete the pairing" do
-        before(:each) do
+        before do
           players[8].stub_opponents([players[9]])
           players[9].stub_opponents([players[8]])
         end
@@ -25,7 +25,7 @@ module Swissfork
       end
 
       context "last players from the PPB complete the pairing, but shouldn't downfloat" do
-        before(:each) do
+        before do
           players[8].stub_opponents([players[9]])
           players[9].stub_opponents([players[8]])
           players[7].stub(floats: [:down])
@@ -37,7 +37,7 @@ module Swissfork
       end
 
       context "last players from the PPB don't complete the pairing" do
-        before(:each) do
+        before do
           players[5].stub_opponents([players[8], players[9]])
           players[6].stub_opponents([players[8]])
           players[7].stub_opponents([players[8]])
@@ -51,7 +51,7 @@ module Swissfork
       end
 
       context "no players from the PPB complete the pairing" do
-        before(:each) do
+        before do
           players[0..1].each_stub(points: 2)
           players[2..7].each_stub_opponents([players[8], players[9]])
           players[8..9].each_stub_opponents(players[2..9])
@@ -62,7 +62,7 @@ module Swissfork
         end
 
         context "the last bracket has some pairable players" do
-          before(:each) do
+          before do
             players[6..7].each_stub(points: 0)
           end
 
@@ -72,7 +72,7 @@ module Swissfork
         end
 
         context "the last paired bracket has more players than downfloaters" do
-          before(:each) do
+          before do
             players[2..3].each_stub(points: 2)
             players[2..3].each_stub_opponents([])
             players[8..9].each_stub_opponents(players[4..9])
@@ -87,7 +87,7 @@ module Swissfork
       context "PPB has leftovers and last bracket has incompatible players" do
         let(:players) { create_players(1..11) }
 
-        before(:each) do
+        before do
           players[0..8].each_stub(points: 1)
           players[9..10].each_stub(points: 0)
           players[9].stub_opponents([players[10]])
@@ -102,7 +102,7 @@ module Swissfork
       context "many brackets, PPB + last bracket can't be paired" do
         let(:players) { create_players(1..12) }
 
-        before(:each) do
+        before do
           players[0..1].each_stub(points: 3)
           players[2..5].each_stub(points: 2)
           players[6..9].each_stub(points: 1)
@@ -119,7 +119,7 @@ module Swissfork
       context "Only remainder players can complete the PPB + last bracket" do
         let(:players) { create_players(1..8) }
 
-        before(:each) do
+        before do
           players[0].stub(points: 3)
           players[1..3].each_stub(points: 2)
           players[4..5].each_stub(points: 1)
@@ -136,7 +136,7 @@ module Swissfork
       context "a combinations of MDPs and remainders complete the pairing" do
         let(:players) { create_players(1..10) }
 
-        before(:each) do
+        before do
           # The first two brackets will be merged as one; its pairing is the
           # one we're testing.
           players[0..1].each_stub(points: 3)

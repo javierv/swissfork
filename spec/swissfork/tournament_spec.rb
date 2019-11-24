@@ -11,7 +11,7 @@ module Swissfork
     let(:tournament) { Tournament.new(9) }
 
     describe "#players" do
-      before(:each) do
+      before do
         tournament.add_inscription(Inscription.new(2300, "Louis Armstrong"))
         tournament.add_inscription(Inscription.new(2200, "Aretha Franklin"))
         tournament.add_inscription(Inscription.new(2400, "Django Reinhardt"))
@@ -25,7 +25,7 @@ module Swissfork
       end
 
       context "the first round has started" do
-        before(:each) { tournament.start_round }
+        before { tournament.start_round }
 
         it "orders the players and gives them numbers" do
           tournament.players.map(&:number).should eq [1, 2, 3, 4]
@@ -34,7 +34,7 @@ module Swissfork
       end
 
       context "the tournament has started" do
-        before(:each) { tournament.start }
+        before { tournament.start }
 
         it "orders the players and gives them numbers" do
           tournament.players.map(&:number).should eq [1, 2, 3, 4]
@@ -44,12 +44,12 @@ module Swissfork
     end
 
     describe "#non_paired_numbers=" do
-      before(:each) do
+      before do
         tournament.stub(players: create_players(1..12))
       end
 
       context "no previous rounds" do
-        before(:each) do
+        before do
           tournament.non_paired_numbers = [1, 2, 3, 4]
           tournament.start_round
         end
@@ -59,7 +59,7 @@ module Swissfork
         end
 
         context "players were excluded in a previous round" do
-          before(:each) do
+          before do
             tournament.finish_round(%i[white_won black_won white_won black_won])
           end
 
@@ -68,7 +68,7 @@ module Swissfork
           end
 
           context "not excluding anyone" do
-            before(:each) { tournament.start_round }
+            before { tournament.start_round }
 
             it "pairs all players" do
               tournament.pair_numbers.should eq [[8, 5], [6, 7], [1, 3], [4, 2], [9, 12], [11, 10]]
@@ -76,7 +76,7 @@ module Swissfork
           end
 
           context "excluding some other players" do
-            before(:each) do
+            before do
               tournament.non_paired_numbers = [5, 7, 10, 12]
               tournament.start_round
             end
@@ -90,7 +90,7 @@ module Swissfork
 
       context "using non-default points given to unpaired players" do
         context "the tournament uses 0.5 as default points" do
-          before(:each) do
+          before do
             tournament.non_paired_numbers = [1, { 2 => 0, 3 => 1 }, 4]
             tournament.start_round
             tournament.finish_round(%i[white_won black_won white_won black_won])
@@ -108,7 +108,7 @@ module Swissfork
         end
 
         context "it's the last round" do
-          before(:each) do
+          before do
             tournament.stub(last_round?: true)
             tournament.non_paired_numbers = [1, { 2 => 0.5, 3 => 1 }, 4]
             tournament.start_round
@@ -127,7 +127,7 @@ module Swissfork
         end
 
         context "the tournament uses 0 as default points" do
-          before(:each) do
+          before do
             tournament.points_given_to_unpaired_players = 0
             tournament.non_paired_numbers = [1, { 2 => 0.5, 3 => 1 }, 4]
             tournament.start_round
@@ -150,7 +150,7 @@ module Swissfork
     describe "topscorers management" do
       let(:players) { create_players(1..10) }
 
-      before(:each) do
+      before do
         tournament.stub(players: players)
         players[0..1].each_stub(points: 6)
         players[2..3].each_stub(points: 5)
@@ -161,7 +161,7 @@ module Swissfork
 
       describe "#topscorers" do
         context "not the last round" do
-          before(:each) do
+          before do
             7.times { tournament.rounds << double(finished?: true) }
           end
 
@@ -171,7 +171,7 @@ module Swissfork
         end
 
         context "last round" do
-          before(:each) do
+          before do
             8.times { tournament.rounds << double(finished?: true) }
           end
 
@@ -182,7 +182,7 @@ module Swissfork
       end
 
       describe "absolute preference pairing" do
-        before(:each) do
+        before do
           players[0..1].each_stub_preference(:white)
           players[2..3].each_stub_preference(:black)
           players[4..5].each_stub_preference(:white)
@@ -194,7 +194,7 @@ module Swissfork
         end
 
         context "not the last round" do
-          before(:each) do
+          before do
             7.times { tournament.rounds << double(finished?: true) }
             tournament.start_round
           end
@@ -205,7 +205,7 @@ module Swissfork
         end
 
         context "last round" do
-          before(:each) do
+          before do
             8.times { tournament.rounds << double(finished?: true) }
             tournament.start_round
           end
@@ -234,7 +234,7 @@ module Swissfork
         ]
       end
 
-      before(:each) do
+      before do
         tournament.add_inscriptions(inscriptions)
 
         tournament.start_round

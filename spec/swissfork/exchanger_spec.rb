@@ -9,7 +9,7 @@ module Swissfork
       let(:exchanger) { Exchanger.new(s1_players, s2_players) }
 
       context "first exchange" do
-        before(:each) { exchanger.next_exchange }
+        before { exchanger.next_exchange }
 
         it "exchanges the closest players" do
           exchanger.numbers.should eq [1, 2, 3, 4, 6, 5, 7, 8, 9, 10, 11]
@@ -17,7 +17,7 @@ module Swissfork
       end
 
       context "second exchange" do
-        before(:each) { 2.times { exchanger.next_exchange }}
+        before { 2.times { exchanger.next_exchange }}
 
         it "exchanges the next closest players, choosing the bottom player from S1, and reorders them" do
           exchanger.numbers.should eq [1, 2, 3, 4, 7, 5, 6, 8, 9, 10, 11]
@@ -34,7 +34,7 @@ module Swissfork
       end
 
       context "third exchange" do
-        before(:each) { 3.times { exchanger.next_exchange }}
+        before { 3.times { exchanger.next_exchange }}
 
         it "exchanges the next closest players" do
           exchanger.numbers.should eq [1, 2, 3, 5, 6, 4, 7, 8, 9, 10, 11]
@@ -43,10 +43,10 @@ module Swissfork
 
       context "exchanges limit reached" do
         let(:one_player_exchanges) { exchanger.s1.count * exchanger.s2.count }
-        before(:each) { one_player_exchanges.times { exchanger.next_exchange } }
+        before { one_player_exchanges.times { exchanger.next_exchange } }
 
         context "first exchange" do
-          before(:each) { exchanger.next_exchange }
+          before { exchanger.next_exchange }
 
           it "exchanges two players" do
             exchanger.numbers.should eq [1, 2, 3, 6, 7, 4, 5, 8, 9, 10, 11]
@@ -54,7 +54,7 @@ module Swissfork
         end
 
         context "second exchange" do
-          before(:each) { 2.times { exchanger.next_exchange }}
+          before { 2.times { exchanger.next_exchange }}
 
           it "exchanges the next closest players, choosing the bottom players from S1" do
             exchanger.numbers.should eq [1, 2, 3, 6, 8, 4, 5, 7, 9, 10, 11]
@@ -95,7 +95,7 @@ module Swissfork
         end
 
         context "one exchange" do
-          before(:each) { exchanger.next_exchange }
+          before { exchanger.next_exchange }
 
           it "returns true" do
             exchanger.limit_reached?.should be true
@@ -108,7 +108,7 @@ module Swissfork
         let(:s2_players) { create_players(2..3) }
 
         context "two exchanges" do
-          before(:each) { 2.times { exchanger.next_exchange }}
+          before { 2.times { exchanger.next_exchange }}
 
           it "returns true" do
             exchanger.limit_reached?.should be true
@@ -121,7 +121,7 @@ module Swissfork
         let(:s2_players) { create_players(3..3) }
 
         context "one exchange" do
-          before(:each) { 1.times { exchanger.next_exchange }}
+          before { 1.times { exchanger.next_exchange }}
 
           it "returns false" do
             exchanger.limit_reached?.should be false
@@ -129,7 +129,7 @@ module Swissfork
         end
 
         context "two exchanges" do
-          before(:each) { 2.times { exchanger.next_exchange }}
+          before { 2.times { exchanger.next_exchange }}
 
           it "returns true" do
             exchanger.limit_reached?.should be true
@@ -142,7 +142,7 @@ module Swissfork
         let(:s2_players) { create_players(3..4) }
 
         context "all individual exchanges done" do
-          before(:each) { 4.times { exchanger.next_exchange }}
+          before { 4.times { exchanger.next_exchange }}
 
           # Exchanging 2 players doesn't make sense here because
           # the pairings available would be the same pairings as we

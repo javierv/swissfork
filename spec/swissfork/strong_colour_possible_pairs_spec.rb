@@ -14,10 +14,10 @@ module Swissfork
       let(:players) { create_players(1..10) }
 
       context "all players have the same colour preference" do
-        before(:each) { players.each_stub_preference(:white) }
+        before { players.each_stub_preference(:white) }
 
         context "all preferences are strong" do
-          before(:each) { players.each_stub_degree(:strong) }
+          before { players.each_stub_degree(:strong) }
 
           it "returns zero" do
             pairs.count.should eq 0
@@ -25,7 +25,7 @@ module Swissfork
         end
 
         context "all preferences are mild" do
-          before(:each) { players.each_stub_degree(:mild) }
+          before { players.each_stub_degree(:mild) }
 
           it "returns the number of pairs" do
             pairs.count.should eq 5
@@ -33,14 +33,14 @@ module Swissfork
         end
 
         context "some preferences are mild" do
-          before(:each) { players[0..1].each_stub_degree(:mild) }
+          before { players[0..1].each_stub_degree(:mild) }
 
           it "returns the number of pairs with players with mild preference" do
             pairs.count.should eq 2
           end
 
           context "players with mild preference must play each other" do
-            before(:each) do
+            before do
               players[0..1].each_stub_opponents(players[2..9])
               players[2..9].each_stub_opponents(players[0..1])
             end

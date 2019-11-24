@@ -23,7 +23,7 @@ module Swissfork
       end
 
       context "two players have only the same possible opponent" do
-        before(:each) do
+        before do
           players[0..1].each_stub_opponents(players[0..8])
           players[2..8].each_stub_opponents(players[0..1])
         end
@@ -34,7 +34,7 @@ module Swissfork
       end
 
       context "two players have the same two possible opponents" do
-        before(:each) do
+        before do
           players[0..1].each_stub_opponents(players[0..7])
           players[2..7].each_stub_opponents(players[0..1])
         end
@@ -44,7 +44,7 @@ module Swissfork
         end
 
         context "and another players' possible opponents is one of those ones" do
-          before(:each) do
+          before do
             # 1 => 9, 10
             # 2 => 9, 10
             # 3 => 10
@@ -61,7 +61,7 @@ module Swissfork
           end
 
           context "the order of the players is different" do
-            before(:each) do
+            before do
               # 1 => 10
               # 2 => 9, 10
               # 3 => 9, 10
@@ -80,7 +80,7 @@ module Swissfork
         end
 
         context "and two other players have three possible opponents" do
-          before(:each) do
+          before do
             # 1 => 9, 10
             # 2 => 9, 10
             # 3 => 8, 9, 10
@@ -100,7 +100,7 @@ module Swissfork
       end
 
       context "four players have the same two possible opponents" do
-        before(:each) do
+        before do
           players[0..3].each_stub_opponents(players[0..7])
           players[4..7].each_stub_opponents(players[0..3])
         end
@@ -111,7 +111,7 @@ module Swissfork
       end
 
       context "six players can play against four opponents" do
-        before(:each) do
+        before do
           # 1 => 9, 10
           # 2 => 8, 9
           # 3 => 8, 10
@@ -137,7 +137,7 @@ module Swissfork
       end
 
       context "three players can only play against each other" do
-        before(:each) do
+        before do
           players[0..2].each_stub_opponents(players[3..9])
           players[3..9].each_stub_opponents(players[0..2])
         end
@@ -158,7 +158,7 @@ module Swissfork
       end
 
       context "one player can play against half of the players, rounding down" do
-        before(:each) do
+        before do
           players[0].stub_opponents(players[0..5])
           players[1..5].each_stub_opponents([players[0]])
         end
@@ -169,7 +169,7 @@ module Swissfork
       end
 
       context "one player can play against less than half of the players" do
-        before(:each) do
+        before do
           players[0].stub_opponents(players[0..6])
           players[1..6].each_stub_opponents([players[0]])
         end
@@ -183,12 +183,12 @@ module Swissfork
         let(:players) { create_players(1..4) }
 
         context "all players have an absolute preference" do
-          before(:each) do
+          before do
             players.each_stub_degree(:absolute)
           end
 
           context "with the same colour" do
-            before(:each) do
+            before do
               players.each_stub_preference(:white)
             end
 
@@ -198,7 +198,7 @@ module Swissfork
           end
 
           context "with different colour" do
-            before(:each) do
+            before do
               players[0..1].each_stub_preference(:white)
               players[2..3].each_stub_preference(:black)
             end
@@ -214,7 +214,7 @@ module Swissfork
         let(:players) { create_players(1..2) }
 
         context "they've played against each other" do
-          before(:each) do
+          before do
             players[0].stub_opponents([players[1]])
             players[1].stub_opponents([players[0]])
           end
@@ -225,7 +225,7 @@ module Swissfork
         end
 
         context "they're topscorers" do
-          before(:each) { players[0].stub(topscorer?: true) }
+          before { players[0].stub(topscorer?: true) }
 
           it "returns true" do
             pairs.enough_players_to_guarantee_pairing?.should be true

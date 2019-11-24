@@ -11,7 +11,7 @@ module Swissfork
       context "18 players" do
         let(:players) { create_players(1..18) }
 
-        before(:each) do
+        before do
           players[0..8].each_stub(points: 1)
           players[4..8].each_stub(floats: [:down])
         end
@@ -25,7 +25,7 @@ module Swissfork
       context "50 players" do
         let(:players) { create_players(1..50) }
 
-        before(:each) do
+        before do
           players[0..24].each_stub(points: 1)
           players[12..24].each_stub(floats: [:down])
         end
@@ -44,7 +44,7 @@ module Swissfork
       context "150 players" do
         let(:players) { create_players(1..150) }
 
-        before(:each) do
+        before do
           players[0..74].each_stub(points: 1)
           players[37..74].each_stub(floats: [:down])
         end
@@ -59,7 +59,7 @@ module Swissfork
       context "with 15 players" do
         let(:players) { create_players(1..15) }
 
-        before(:each) do
+        before do
           players[0..13].each_stub(floats: [:down])
           players[14].stub(floats: [:down, nil])
         end
@@ -77,13 +77,13 @@ module Swissfork
       context "16 players, 4 of them in the last group" do
         let(:players) { create_players(1..16) }
 
-        before(:each) do
+        before do
           players[0..11].each_stub(points: 1)
           players[12..15].each_stub(points: 0)
         end
 
         context "the last 4 players in the first group can't downfloat" do
-          before(:each) do
+          before do
             players[8..11].each_stub_opponents(players[12..15])
             players[12..15].each_stub_opponents(players[8..15])
           end
@@ -96,7 +96,7 @@ module Swissfork
         end
 
         context "the last 6 players in the first group can't downfloat" do
-          before(:each) do
+          before do
             players[6..11].each_stub_opponents(players[12..15])
             players[12..15].each_stub_opponents(players[6..15])
           end
@@ -111,7 +111,7 @@ module Swissfork
       context "with 20 players; the last 7 in the first group can't downfloat" do
         let(:players) { create_players(1..20) }
 
-        before(:each) do
+        before do
           players[0..15].each_stub(points: 1)
           players[16..19].each_stub(points: 0)
           players[9..15].each_stub_opponents(players[16..19])
@@ -129,7 +129,7 @@ module Swissfork
       context "20 players, heterogeneous PPB, 4 players in the last bracket" do
         let(:players) { create_players(1..20) }
 
-        before(:each) do
+        before do
           players[0..5].each_stub(points: 3)
           players[6..11].each_stub(points: 2)
           players[12..15].each_stub(points: 1)
@@ -149,7 +149,7 @@ module Swissfork
       let(:players) { create_players(1..27) }
 
       context "one of the players can't be paired" do
-        before(:each) do
+        before do
           players[0].stub(opponents: players[1..26])
           players[1..26].each_stub(opponents: [players[0]])
         end
@@ -164,7 +164,7 @@ module Swissfork
     context "all players in the last bracket had byes" do
       let(:players) { create_players(1..11) }
 
-      before(:each) do
+      before do
         players[0..7].each_stub(points: 1)
         players[8..10].each_stub(points: 0)
         players[8..10].each_stub(had_bye?: true)
@@ -177,7 +177,7 @@ module Swissfork
       end
 
       context "the players in the last bracket can't be paired" do
-        before(:each) do
+        before do
           players[8..10].each_stub_opponents(players[8..10])
         end
 
@@ -192,7 +192,7 @@ module Swissfork
     context "the last player in S1 can only play against the first player in S2" do
       let(:players) { create_players(1..20) }
 
-      before(:each) do
+      before do
         (players[0..19] - players[9..10]).each_stub_opponents([players[9]])
         players[9].stub_opponents(players[0..19] - players[9..10])
       end
@@ -206,7 +206,7 @@ module Swissfork
     context "the last player in S1 can only play against the first player in S1" do
       let(:players) { create_players(1..20) }
 
-      before(:each) do
+      before do
         players[1..19].each_stub_opponents([players[9]])
         players[9].stub_opponents(players[1..19])
       end

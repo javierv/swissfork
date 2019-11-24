@@ -8,7 +8,7 @@ module Swissfork
     describe ".for" do
       let(:players) { create_players(1..6) }
 
-      before(:each) do
+      before do
         players.each_stub(points: 1)
       end
 
@@ -19,7 +19,7 @@ module Swissfork
       end
 
       context "players with different number of points" do
-        before(:each) do
+        before do
           players.first.stub(points: 1.5)
         end
 
@@ -29,7 +29,7 @@ module Swissfork
       end
 
       context "at least half of the players have different number of points" do
-        before(:each) do
+        before do
           players[0..2].each_stub(points: 1.5)
         end
 
@@ -42,7 +42,7 @@ module Swissfork
     describe "#points" do
       let(:players) { create_players(1..6) }
 
-      before(:each) do
+      before do
         players.each_stub(points: 1)
       end
 
@@ -53,7 +53,7 @@ module Swissfork
       end
 
       context "heterogeneous bracket" do
-        before(:each) { players.last.stub(points: 0.5) }
+        before { players.last.stub(points: 0.5) }
 
         it "returns the points from the player with the lowest amount of points" do
           bracket.points.should eq 0.5
@@ -88,7 +88,7 @@ module Swissfork
     describe "#s1" do
       context "even number of players" do
         let(:players) { create_players(1..6) }
-        before(:each) do
+        before do
           players.each_stub(points: 1)
         end
 
@@ -99,7 +99,7 @@ module Swissfork
         end
 
         context "heterogeneous bracket" do
-          before(:each) do
+          before do
             players[0..1].each_stub(points: 1.5)
           end
 
@@ -130,7 +130,7 @@ module Swissfork
       context "even number of players" do
         let(:players) { create_players(1..6) }
 
-        before(:each) do
+        before do
           players.each_stub(points: 1)
         end
 
@@ -141,7 +141,7 @@ module Swissfork
         end
 
         context "heterogeneous bracket" do
-          before(:each) do
+          before do
             players[0..1].each_stub(points: 1.5)
           end
 
@@ -166,7 +166,7 @@ module Swissfork
       let(:bracket) { Bracket.for(s1_players + s2_players) }
 
       context "two exchanges" do
-        before(:each) { 2.times { bracket.exchange }}
+        before { 2.times { bracket.exchange }}
 
         it "exchanges the players and reorders S1" do
           bracket.s1_numbers.should eq [1, 2, 3, 4, 7]
@@ -174,13 +174,13 @@ module Swissfork
       end
 
       context "heterogeneous bracket" do
-        before(:each) do
+        before do
           s1_players[0..2].each_stub(points: 2)
           bracket.stub(number_of_moved_down_possible_pairs: 2)
         end
 
         context "two exchanges" do
-          before(:each) { 2.times { bracket.exchange }}
+          before { 2.times { bracket.exchange }}
 
           it "exchanges players and reorders S1 and Limbo" do
             bracket.s1_numbers.should eq [2, 3]
@@ -194,7 +194,7 @@ module Swissfork
     describe "#pair_numbers" do
       context "even number of players" do
         let(:players) { create_players(1..10) }
-        before(:each) do
+        before do
           players.each_stub_opponents([])
         end
 
@@ -205,7 +205,7 @@ module Swissfork
         end
 
         context "need to transpose once" do
-          before(:each) do
+          before do
             players[4].stub_opponents([players[9]])
             players[9].stub_opponents([players[4]])
           end
@@ -216,7 +216,7 @@ module Swissfork
         end
 
         context "need to transpose twice" do
-          before(:each) do
+          before do
             players[3].stub_opponents([players[9], players[8]])
             players[9].stub_opponents([players[3]])
             players[8].stub_opponents([players[3]])
@@ -228,7 +228,7 @@ module Swissfork
         end
 
         context "need to transpose three times" do
-          before(:each) do
+          before do
             players[3].stub_opponents([players[8]])
             players[4].stub_opponents(players[8..9])
             players[9].stub_opponents([players[4]])
@@ -241,7 +241,7 @@ module Swissfork
         end
 
         context "only the last transposition makes pairing possible" do
-          before(:each) do
+          before do
             players[4].stub_opponents(players[6..9])
             players[3].stub_opponents(players[7..9])
             players[2].stub_opponents(players[8..9])
@@ -259,7 +259,7 @@ module Swissfork
         end
 
         context "one previous opponent" do
-          before(:each) do
+          before do
             players[0].stub_opponents([players[5]])
             players[5].stub_opponents([players[0]])
             players[3].stub_opponents([players[8]])
@@ -272,7 +272,7 @@ module Swissfork
         end
 
         context "several previous opponents" do
-          before(:each) do
+          before do
             players[2].stub_opponents([players[9]])
             players[3].stub_opponents(players[8..9])
             players[4].stub_opponents(players[7..9])
@@ -288,7 +288,7 @@ module Swissfork
         end
 
         context "one player from S1 has played against everyone in S2" do
-          before(:each) do
+          before do
             players[0].stub_opponents(players[5..9])
             players[5..9].each_stub_opponents([players[0]])
           end
@@ -299,7 +299,7 @@ module Swissfork
         end
 
         context "two players from S1 have played against everyone in S2" do
-          before(:each) do
+          before do
             players[0].stub_opponents([players[1]] + players[3..9])
             players[1].stub_opponents(players[0..2] + players[4..9])
             players[2].stub_opponents([players[1]])
@@ -313,7 +313,7 @@ module Swissfork
         end
 
         context "one of the players can't be paired" do
-          before(:each) do
+          before do
             players[0].stub_opponents(players[1..9])
             players[1..9].each_stub_opponents([players[0]])
           end
@@ -328,7 +328,7 @@ module Swissfork
         end
 
         context "two players can only play against one opponent" do
-          before(:each) do
+          before do
             players[0..1].each_stub_opponents(players[0..8])
             players[2..8].each_stub_opponents([players[0], players[1]])
           end
@@ -342,7 +342,7 @@ module Swissfork
           end
 
           context "the lower player has already downfloated" do
-            before(:each) do
+            before do
               players[1].stub(floats: [:down])
             end
 
@@ -354,7 +354,7 @@ module Swissfork
         end
 
         context "four players can only play against one opponent" do
-          before(:each) do
+          before do
             players[0..3].each_stub_opponents(players[0..5] + players[7..9])
             players[4..5].each_stub_opponents(players[0..3])
             players[7..9].each_stub_opponents(players[0..3])
@@ -366,7 +366,7 @@ module Swissfork
           end
 
           context "two of those players and the last one have already downfloated" do
-            before(:each) do
+            before do
               players[0..1].each_stub(floats: [:down])
               players[9].stub(floats: [:down])
             end
@@ -377,7 +377,7 @@ module Swissfork
             end
 
             context "the penultimate downfloated two rounds ago" do
-              before(:each) do
+              before do
                 players[8].stub(floats: [:down, nil])
               end
 
@@ -387,7 +387,7 @@ module Swissfork
               end
 
               context "one of the required downfloats also descended 2 rounds ago" do
-                before(:each) do
+                before do
                   players[3].stub(floats: [:down, nil])
                 end
 
@@ -403,7 +403,7 @@ module Swissfork
 
       context "odd number of players" do
         let(:players) { create_players(1..11) }
-        before(:each) do
+        before do
           players.each_stub_opponents([])
         end
 
@@ -414,7 +414,7 @@ module Swissfork
         end
 
         context "previous opponents affecting the second to last player" do
-          before(:each) do
+          before do
             players[4].stub_opponents([players[9]])
             players[9].stub_opponents([players[4]])
           end
@@ -425,7 +425,7 @@ module Swissfork
         end
 
         context "all players downfloated; the first one did so 2 rounds ago" do
-          before(:each) do
+          before do
             players[0].stub(floats: [:down, nil])
             players[1..10].each_stub(floats: [nil, :down])
           end
@@ -456,7 +456,7 @@ module Swissfork
         end
 
         context "previous opponents affecting the second to last player" do
-          before(:each) do
+          before do
             players[4].stub_opponents([players[9]])
             players[9].stub_opponents([players[4]])
           end

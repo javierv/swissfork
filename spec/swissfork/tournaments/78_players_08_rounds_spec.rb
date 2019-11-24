@@ -14,7 +14,7 @@ module Swissfork
       end
     end
 
-    before(:each) do
+    before do
       tournament.add_inscriptions(inscriptions)
       tournament.start
     end

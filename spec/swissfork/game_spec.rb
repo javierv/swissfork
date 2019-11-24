@@ -29,7 +29,7 @@ module Swissfork
 
     describe "#colour" do
       context "played game" do
-        before(:each) { game.stub(played?: true) }
+        before { game.stub(played?: true) }
 
         context "played with white" do
           let(:pair) { white_pair }
@@ -47,7 +47,7 @@ module Swissfork
       end
 
       context "non-played game" do
-        before(:each) { game.stub(played?: false) }
+        before { game.stub(played?: false) }
 
         it "returns nil" do
           game.colour.should be nil
@@ -57,10 +57,10 @@ module Swissfork
 
     describe "#float" do
       context "played game" do
-        before(:each) { game.stub(played?: true) }
+        before { game.stub(played?: true) }
 
         context "both players had the same points" do
-          before(:each) do
+          before do
             pair.stub(points_before_playing: { 1 => 1, 2 => 1 })
           end
 
@@ -70,7 +70,7 @@ module Swissfork
         end
 
         context "the opponent had more points" do
-          before(:each) do
+          before do
             pair.stub(points_before_playing: { 1 => 1, 2 => 2 })
           end
 
@@ -80,7 +80,7 @@ module Swissfork
         end
 
         context "the opponent had less points" do
-          before(:each) do
+          before do
             pair.stub(points_before_playing: { 1 => 2, 2 => 1 })
           end
 
@@ -91,10 +91,10 @@ module Swissfork
       end
 
       context "non-played game" do
-        before(:each) { game.stub(played?: false) }
+        before { game.stub(played?: false) }
 
         context "the player didn't get a bye" do
-          before(:each) { game.stub(bye?: false) }
+          before { game.stub(bye?: false) }
 
           it "returns nil" do
             game.float.should be nil
@@ -102,7 +102,7 @@ module Swissfork
         end
 
         context "the player got a bye" do
-          before(:each) { game.stub(bye?: true) }
+          before { game.stub(bye?: true) }
 
           it "counts as a bye" do
             game.float.should eq :bye
@@ -114,7 +114,7 @@ module Swissfork
     describe "#bye?" do
       # Tests for specific results are in the results section
       context "played game" do
-        before(:each) do
+        before do
           game.stub(played?: true)
         end
 
@@ -127,7 +127,7 @@ module Swissfork
     describe "#points_received" do
       # Tests for specific results are in the results section
       context "the player won" do
-        before(:each) { game.stub(won?: true) }
+        before { game.stub(won?: true) }
 
         it "returns a floating number" do
           game.points_received.should eql 1.0
@@ -135,8 +135,8 @@ module Swissfork
       end
 
       context "the player lost" do
-        before(:each) { game.stub(won?: false) }
-        before(:each) { game.stub(draw?: false) }
+        before { game.stub(won?: false) }
+        before { game.stub(draw?: false) }
 
         it "returns a floating number" do
           game.points_received.should eql 0.0
@@ -146,7 +146,7 @@ module Swissfork
 
     describe "results" do
       context "black won" do
-        before(:each) { game.stub(result: :black_won) }
+        before { game.stub(result: :black_won) }
 
         it "counts as played" do
           game.played?.should be true
@@ -162,7 +162,7 @@ module Swissfork
       end
 
       context "white won" do
-        before(:each) { game.stub(result: :white_won) }
+        before { game.stub(result: :white_won) }
 
         it "counts as played" do
           game.played?.should be true
@@ -178,7 +178,7 @@ module Swissfork
       end
 
       context "draw" do
-        before(:each) { game.stub(result: :draw) }
+        before { game.stub(result: :draw) }
 
         it "counts as played" do
           game.played?.should be true
@@ -194,7 +194,7 @@ module Swissfork
       end
 
       context "black gets a forfeit win" do
-        before(:each) { game.stub(result: :black_won_by_forfeit) }
+        before { game.stub(result: :black_won_by_forfeit) }
 
         it "doesn't count as played" do
           game.played?.should be false
@@ -214,7 +214,7 @@ module Swissfork
       end
 
       context "white gets a forfeit win" do
-        before(:each) { game.stub(result: :white_won_by_forfeit) }
+        before { game.stub(result: :white_won_by_forfeit) }
 
         it "doesn't count as played" do
           game.played?.should be false

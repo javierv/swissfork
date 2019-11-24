@@ -9,7 +9,7 @@ module Swissfork
       context "many brackets, the first one having descendent players" do
         let(:players) { create_players(1..10) }
 
-        before(:each) do
+        before do
           players[0..4].each_stub(points: 1)
         end
 
@@ -18,7 +18,7 @@ module Swissfork
         end
 
         context "the last player can't descend" do
-          before(:each) do
+          before do
             players[4].stub_opponents(players[5..9])
             players[5..9].each_stub_opponents([players[4]])
           end
@@ -29,7 +29,7 @@ module Swissfork
         end
 
         context "the last player descended in the previous round" do
-          before(:each) do
+          before do
             players[4].stub(floats: [nil, nil, :down])
           end
 
@@ -39,7 +39,7 @@ module Swissfork
         end
 
         context "the first player ascended in the previous round" do
-          before(:each) do
+          before do
             players[5].stub(floats: [nil, nil, :up])
           end
 
@@ -49,7 +49,7 @@ module Swissfork
         end
 
         context "the last player descended two rounds ago" do
-          before(:each) do
+          before do
             players[4].stub(floats: [nil, nil, :down, nil])
           end
 
@@ -59,7 +59,7 @@ module Swissfork
         end
 
         context "the first player ascended two rounds ago" do
-          before(:each) do
+          before do
             players[5].stub(floats: [nil, nil, :up, nil])
           end
 
@@ -69,7 +69,7 @@ module Swissfork
         end
 
         context "all players in S2 descended in the previous round" do
-          before(:each) do
+          before do
             players[2..4].each_stub(floats: [:down])
           end
 
@@ -80,7 +80,7 @@ module Swissfork
           end
 
           context "heterogeneous group" do
-            before(:each) do
+            before do
               players[0..1].each_stub(points: 2)
               players[0].stub_opponents([players[1]])
               players[1].stub_opponents([players[0]])
@@ -96,7 +96,7 @@ module Swissfork
       context "many brackets, the first one being impossible to pair at all" do
         let(:players) { create_players(1..10) }
 
-        before(:each) do
+        before do
           players[0..1].each_stub(points: 1)
           players[2..9].each_stub(points: 0)
           players[0].stub_opponents([players[1]])
@@ -111,7 +111,7 @@ module Swissfork
       context "many brackets, the first one having unpairable players" do
         let(:players) { create_players(1..10) }
 
-        before(:each) do
+        before do
           players[0..3].each_stub(points: 1)
           players[4..9].each_stub(points: 0)
           players[0..1].each_stub_opponents([players[2], players[3]])
@@ -127,7 +127,7 @@ module Swissfork
       context "a player is required to downfloat twice" do
         let(:players) { create_players(1..10) }
 
-        before(:each) do
+        before do
           players[0..2].each_stub(points: 2)
           players[3..6].each_stub(points: 1)
           players[7..9].each_stub(points: 0)
@@ -143,7 +143,7 @@ module Swissfork
       context "PPB with 3 moved down players, requiring 2 players to downfloat" do
         let(:players) { create_players(1..10) }
 
-        before(:each) do
+        before do
           players[0..2].each_stub(points: 2)
           players[3..5].each_stub(points: 1)
           players[6..9].each_stub(points: 0)
@@ -162,7 +162,7 @@ module Swissfork
         end
 
         context "no resident players can downfloat" do
-          before(:each) do
+          before do
             players[8..9].each_stub_opponents(players[3..9])
             players[3..7].each_stub_opponents(players[8..9])
           end
@@ -176,7 +176,7 @@ module Swissfork
       context "the first two brackets can't be paired" do
         let(:players) { create_players(1..10) }
 
-        before(:each) do
+        before do
           players[0..1].each_stub(points: 3)
           players[2..3].each_stub(points: 2)
           players[4..9].each_stub(points: 1)

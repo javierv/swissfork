@@ -13,7 +13,7 @@ module Swissfork
       let(:players) { create_players(1..10) }
 
       context "no incompatibilities" do
-        before(:each) do
+        before do
           players[0..4].each_stub_preference(:white)
           players[5..9].each_stub_preference(:black)
         end
@@ -24,7 +24,7 @@ module Swissfork
       end
 
       context "two more players have one colour priority" do
-        before(:each) do
+        before do
           players[0..5].each_stub_preference(:white)
           players[6..9].each_stub_preference(:black)
         end
@@ -35,7 +35,7 @@ module Swissfork
       end
 
       context "not all pairings are possible" do
-        before(:each) do
+        before do
           players[0..1].each_stub_opponents(players[0..9])
           players[2..9].each_stub_opponents(players[0..1])
         end
@@ -47,7 +47,7 @@ module Swissfork
         end
 
         context "remaining players have different colour preference" do
-          before(:each) do
+          before do
             players[0..4].each_stub_preference(:white)
             players[5..9].each_stub_preference(:black)
           end
@@ -58,7 +58,7 @@ module Swissfork
         end
 
         context "a player can only be paired with players with the same colour" do
-          before(:each) do
+          before do
             players[0..4].each_stub_preference(:white)
             players[5..9].each_stub_preference(:black)
             players[0].stub_opponents(players[5..9])
@@ -71,7 +71,7 @@ module Swissfork
         end
 
         context "minimizing colour violations results in less total pairs" do
-          before(:each) do
+          before do
             # In theory, 1 can play against 10, and 6 can play against 5.
             # However, that would make the rest of the players impossible to pair.
             players[0..4].each_stub_preference(:white)
@@ -88,7 +88,7 @@ module Swissfork
 
       context "odd number of players" do
         let(:players) { create_players(1..5) }
-        before(:each) do
+        before do
           # Correct pairs: 3-5, 1-4, 2 downfloats
           players[0..1].each_stub_opponents([players[4]])
           players[4].stub_opponents(players[0..1])

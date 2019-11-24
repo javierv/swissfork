@@ -15,7 +15,7 @@ module Swissfork
       context "players with different points" do
         let(:players) { create_players(1..6) }
 
-        before(:each) do
+        before do
           players[0].stub(points: 1)
           players[1].stub(points: 1)
           players[2].stub(points: 2)
@@ -55,7 +55,7 @@ module Swissfork
       context "many brackets, all easily paired" do
         let(:players) { create_players(1..20) }
 
-        before(:each) do
+        before do
           players[0..9].each_stub(points: 1)
         end
 
@@ -76,7 +76,7 @@ module Swissfork
       end
 
       context "results have been set" do
-        before(:each) do
+        before do
           round.results = %i[white_won black_won draw black_won white_won]
         end
 

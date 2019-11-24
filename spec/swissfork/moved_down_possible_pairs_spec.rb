@@ -16,7 +16,7 @@ module Swissfork
       end
 
       context "two players can only play against one opponent" do
-        before(:each) do
+        before do
           players[0..1].each_stub_opponents(opponents[0..5])
           opponents[0..5].each_stub_opponents(players[0..1])
         end
@@ -38,7 +38,7 @@ module Swissfork
       end
 
       context "one player can play against as many players as moved down players" do
-        before(:each) do
+        before do
           players[0].stub_opponents(opponents[0..3])
           opponents[0..3].each_stub_opponents([players[0]])
         end
@@ -49,7 +49,7 @@ module Swissfork
       end
 
       context "one player can play against less than the number of moved down players " do
-        before(:each) do
+        before do
           players[0].stub_opponents(opponents[0..4])
           opponents[0..4].each_stub_opponents([players[0]])
         end

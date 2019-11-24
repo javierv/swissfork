@@ -10,7 +10,7 @@ module Swissfork
       let(:compatibility) { PlayerCompatibility.new(s1_player, s2_player) }
 
       context "different colour preference" do
-        before(:each) do
+        before do
           compatibility.stub(same_preference?: false)
           s1_player.stub_degree(:strong)
           s2_player.stub_degree(:strong)
@@ -22,12 +22,12 @@ module Swissfork
       end
 
       context "same colour preference" do
-        before(:each) do
+        before do
           compatibility.stub(same_preference?: true)
         end
 
         context "both players have strong preference" do
-          before(:each) do
+          before do
             s1_player.stub_degree(:strong)
             s2_player.stub_degree(:strong)
           end
@@ -38,7 +38,7 @@ module Swissfork
         end
 
         context "one player has mild preference" do
-          before(:each) do
+          before do
             s1_player.stub_degree(:mild)
             s2_player.stub_degree(:strong)
           end
@@ -49,7 +49,7 @@ module Swissfork
         end
 
         context "one player has absolute preference" do
-          before(:each) do
+          before do
             s1_player.stub_degree(:absolute)
             s2_player.stub_degree(:strong)
           end

@@ -10,7 +10,7 @@ module Swissfork
         let(:players) { create_players(1..6) }
 
         context "all players had byes" do
-          before(:each) do
+          before do
             players[0..5].each_stub(had_bye?: true)
           end
 
@@ -24,7 +24,7 @@ module Swissfork
         let(:players) { create_players(1..7) }
 
         context "not all players had byes" do
-          before(:each) do
+          before do
             players[0..5].each_stub(had_bye?: true)
           end
 
@@ -35,7 +35,7 @@ module Swissfork
           end
 
           context "pairing incompatibilities" do
-            before(:each) do
+            before do
               players[0].stub_opponents(players[1..5])
               players[1..5].each_stub_opponents([players[0]])
             end
@@ -47,7 +47,7 @@ module Swissfork
         end
 
         context "all players had byes" do
-          before(:each) do
+          before do
             players[0..6].each_stub(had_bye?: true)
           end
 
@@ -68,7 +68,7 @@ module Swissfork
       end
 
       context "existing opponents still make the players pairable" do
-        before(:each) do
+        before do
           players[11].stub_opponents(players[6..10])
           players[6..10].each_stub_opponents([players[11]])
         end
@@ -79,7 +79,7 @@ module Swissfork
       end
 
       context "completely unpairable players" do
-        before(:each) do
+        before do
           players[0..11].each_stub_opponents(players[0..11])
         end
 
@@ -89,7 +89,7 @@ module Swissfork
       end
 
       context "one player can't be paired at all" do
-        before(:each) do
+        before do
           players[11].stub_opponents(players[0..10])
           players[0..10].each_stub_opponents([players[11]])
         end
@@ -100,7 +100,7 @@ module Swissfork
       end
 
       context "two players have the same possible opponent" do
-        before(:each) do
+        before do
           players[10..11].each_stub_opponents(players[1..11])
           players[1..9].each_stub_opponents(players[10..11])
         end

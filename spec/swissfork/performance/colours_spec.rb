@@ -12,7 +12,7 @@ module Swissfork
     let(:round) { Round.new(players) }
 
     context "same colour preference for all players" do
-      before(:each) do
+      before do
         players.each_stub_preference(:white)
       end
 
@@ -25,7 +25,7 @@ module Swissfork
       end
 
       context "the preference is strong" do
-        before(:each) do
+        before do
           players.each_stub_degree(:strong)
         end
 
@@ -42,7 +42,7 @@ module Swissfork
         context "with 20 players" do
           let(:players) { create_players(1..20) }
 
-          before(:each) do
+          before do
             players[0..4].each_stub_degree(:mild)
             players[5..19].each_stub_degree(:strong)
             players[0..1].each_stub_opponents(players[2..19])
@@ -61,7 +61,7 @@ module Swissfork
       context "with 32 players" do
         let(:players) { create_players(1..32) }
 
-        before(:each) do
+        before do
           players[0..15].each_stub_preference(:white)
           players[8..9].each_stub_preference(:black)
           players[16..23].each_stub_preference(:white)
@@ -79,7 +79,7 @@ module Swissfork
       context "complex case with 26 players" do
         let(:players) { create_players(1..26) }
 
-        before(:each) do
+        before do
           players[0].stub_preference(:black)
           players[1].stub_preference(:white)
           players[2..3].each_stub_preference(:black)
@@ -113,7 +113,7 @@ module Swissfork
       context "with 14 players" do
         let(:players) { create_players(1..14) }
 
-        before(:each) do
+        before do
           players[0..6].each_stub_preference(:white)
           players[7..13].each_stub_preference(:black)
           players[0].stub_opponents(players[7..13])
@@ -128,7 +128,7 @@ module Swissfork
         end
 
         context "heterogeneous bracket" do
-          before(:each) do
+          before do
             players[0..2].each_stub(points: 2)
             players[3..13].each_stub(points: 1)
 
@@ -154,7 +154,7 @@ module Swissfork
       context "one player in S1" do
         let(:players) { create_players(1..20) }
 
-        before(:each) do
+        before do
           players[0].stub_preference(nil)
           players[1..9].each_stub_preference(:white)
           players[10..17].each_stub_preference(:black)
@@ -170,7 +170,7 @@ module Swissfork
       context "one player in S2" do
         let(:players) { create_players(1..20) }
 
-        before(:each) do
+        before do
           players[0..7].each_stub_preference(:white)
           players[8..19].each_stub_preference(:black)
           players[10].stub_preference(nil)
@@ -185,7 +185,7 @@ module Swissfork
       context "it's possible to have no colour violations" do
         let(:players) { create_players(1..20) }
 
-        before(:each) do
+        before do
           players[0..7].each_stub_preference(:white)
           (players[8..9] + players[12..19]).each_stub_preference(:black)
           players[10..11].each_stub_preference(nil)
@@ -200,7 +200,7 @@ module Swissfork
       context "four players in S2; one can be paired against minoritary preference" do
         let(:players) { create_players(1..20) }
 
-        before(:each) do
+        before do
           players[0..6].each_stub_preference(:white)
           (players[7..9] + players[14..19]).each_stub_preference(:black)
           players[10..13].each_stub_preference(nil)

@@ -7,7 +7,7 @@ module Swissfork
 
     describe "#opponents" do
       context "no played games" do
-        before(:each) { player.stub(games: []) }
+        before { player.stub(games: []) }
 
         it "doesn't have opponents" do
           player.opponents.should be_empty
@@ -15,7 +15,7 @@ module Swissfork
       end
 
       context "played games" do
-        before(:each) do
+        before do
           3.times do |n|
             player.games << double(player: player, played?: true, opponent: Player.new(n + 2))
           end
@@ -26,7 +26,7 @@ module Swissfork
         end
 
         context "forfeit wins" do
-          before(:each) do
+          before do
             player.games << double(player: player, played?: false, opponent: Player.new(7))
           end
 
@@ -39,7 +39,7 @@ module Swissfork
 
     describe "#points" do
       context "no played games" do
-        before(:each) { player.stub(games: []) }
+        before { player.stub(games: []) }
 
         it "returns zero" do
           player.points.should eq 0
@@ -47,7 +47,7 @@ module Swissfork
       end
 
       context "several played games" do
-        before(:each) do
+        before do
           player.games << double(points_received: 1)
           player.games << double(points_received: 1)
           player.games << double(points_received: 0)
@@ -84,7 +84,7 @@ module Swissfork
       let(:compatible) { Player.new(2) }
       let(:rival) { Player.new(3) }
 
-      before(:each) do
+      before do
         player.stub_opponents([rival])
       end
 
@@ -96,7 +96,7 @@ module Swissfork
         let(:same_preference) { Player.new(4) }
         let(:same_absolute_preference) { Player.new(5) }
 
-        before(:each) do
+        before do
           player.stub_preference(:white)
           same_preference.stub_preference(:white)
           same_absolute_preference.stub_preference(:white)
@@ -111,7 +111,7 @@ module Swissfork
         end
 
         context "the player is a topscorer" do
-          before(:each) do
+          before do
             player.stub(topscorer?: true)
           end
 
@@ -121,7 +121,7 @@ module Swissfork
         end
 
         context "the potential opponents are top-scorers" do
-          before(:each) do
+          before do
             rival.stub(topscorer?: true)
             same_absolute_preference.stub(topscorer?: true)
           end
@@ -135,7 +135,7 @@ module Swissfork
 
     describe "#descended_in_the_previous_round?" do
       context "first round" do
-        before(:each) { player.stub(floats: []) }
+        before { player.stub(floats: []) }
 
         it "returns false" do
           player.descended_in_the_previous_round?.should be false
@@ -143,7 +143,7 @@ module Swissfork
       end
 
       context "downfloated in the previous round" do
-        before(:each) { player.stub(floats: [nil, :up, :down]) }
+        before { player.stub(floats: [nil, :up, :down]) }
 
         it "returns true" do
           player.descended_in_the_previous_round?.should be true
@@ -151,7 +151,7 @@ module Swissfork
       end
 
       context "had a bye in the previous round" do
-        before(:each) { player.stub(floats: [:up, nil, :bye]) }
+        before { player.stub(floats: [:up, nil, :bye]) }
 
         it "returns true" do
           player.descended_in_the_previous_round?.should be true
@@ -159,7 +159,7 @@ module Swissfork
       end
 
       context "downfloated two rounds ago" do
-        before(:each) { player.stub(floats: [:up, :down, nil]) }
+        before { player.stub(floats: [:up, :down, nil]) }
 
         it "returns false" do
           player.descended_in_the_previous_round?.should be false
@@ -167,7 +167,7 @@ module Swissfork
       end
 
       context "had a bye two rounds ago" do
-        before(:each) { player.stub(floats: [:bye, :down, :up]) }
+        before { player.stub(floats: [:bye, :down, :up]) }
 
         it "returns false" do
           player.descended_in_the_previous_round?.should be false
@@ -177,7 +177,7 @@ module Swissfork
 
     describe "#colour_difference" do
       context "no played games" do
-        before(:each) do
+        before do
           player.stub(colours: [nil, nil, nil])
         end
 
@@ -187,7 +187,7 @@ module Swissfork
       end
 
       context "two played games with white and one with black" do
-        before(:each) do
+        before do
           player.stub(colours: [:white, :black, :white])
         end
 
@@ -197,7 +197,7 @@ module Swissfork
       end
 
       context "three played games with black and one with white" do
-        before(:each) do
+        before do
           player.stub(colours: [nil, :black, :black, :white, :black])
         end
 
@@ -209,7 +209,7 @@ module Swissfork
 
     describe "#colour_preference" do
       context "no played games" do
-        before(:each) do
+        before do
           player.stub(colours: [nil, nil])
         end
 
@@ -219,14 +219,14 @@ module Swissfork
       end
 
       context "same games played with each colour" do
-        before(:each) { player.stub(colours: [nil, :white, :black]) }
+        before { player.stub(colours: [nil, :white, :black]) }
 
         it "is the opposite of the last played colour" do
           player.colour_preference.should eq :white
         end
 
         context "didn't play in the last round" do
-          before(:each) { player.stub(colours: [:black, :white, nil]) }
+          before { player.stub(colours: [:black, :white, nil]) }
 
           it "is the opposite of the last played colour" do
             player.colour_preference.should eq :black
@@ -235,14 +235,14 @@ module Swissfork
       end
 
       context "one more game played with one colour" do
-        before(:each) { player.stub(colours: [:black]) }
+        before { player.stub(colours: [:black]) }
 
         it "is the colour played less times with" do
           player.colour_preference.should eq :white
         end
 
         context "didn't play in the last two games" do
-          before(:each) { player.stub(colours: [:white, :white, :black, nil, nil]) }
+          before { player.stub(colours: [:white, :white, :black, nil, nil]) }
 
           it "is the colour played less times with" do
             player.colour_preference.should eq :black
@@ -251,7 +251,7 @@ module Swissfork
       end
 
       context "two more games played with one colour" do
-        before(:each) do
+        before do
           player.stub(colours: [:white, :white, :black, :white])
         end
 
@@ -261,7 +261,7 @@ module Swissfork
       end
 
       context "two games played in a row with the same colour" do
-        before(:each) do
+        before do
           # The example is theoretically impossible, but it could happen if the
           # referee makes a mistake.
           player.stub(colours: [:black, :black, :white, :black, :black, :white, :white])
@@ -275,7 +275,7 @@ module Swissfork
 
     describe "#preference_degree" do
       context "no played games" do
-        before(:each) do
+        before do
           player.stub(colours: [nil, nil])
         end
 
@@ -285,7 +285,7 @@ module Swissfork
       end
 
       context "same games played with each colour" do
-        before(:each) do
+        before do
           player.stub(colours: [:white, :black])
         end
 
@@ -295,7 +295,7 @@ module Swissfork
       end
 
       context "one more game played with one colour" do
-        before(:each) do
+        before do
           player.stub(colours: [:black])
         end
 
@@ -305,7 +305,7 @@ module Swissfork
       end
 
       context "two more games played with one colour" do
-        before(:each) do
+        before do
           player.stub(colours: [:white, :white, :black, :white])
         end
 
@@ -315,7 +315,7 @@ module Swissfork
       end
 
       context "two games played in a row with the same colour" do
-        before(:each) do
+        before do
           player.stub(colours: [:white, :white, :black, :black])
         end
 

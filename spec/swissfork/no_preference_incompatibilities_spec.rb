@@ -14,7 +14,7 @@ module Swissfork
 
     describe "#violations_for" do
       context "no players with no preference" do
-        before(:each) { players.each_stub_preference(:white) }
+        before { players.each_stub_preference(:white) }
 
         it "returns zero" do
           incompatibilities.violations_for(:white).should eq 0
@@ -23,7 +23,7 @@ module Swissfork
       end
 
       context "same number of players with each preference" do
-        before(:each) do
+        before do
           players[0..3].each_stub_preference(:white)
           players[4..7].each_stub_preference(:black)
           players[8..9].each_stub_preference(nil)
@@ -36,7 +36,7 @@ module Swissfork
 
         context "odd number of players" do
           let(:players) { create_players(1..11) }
-          before(:each) { players[8..10].each_stub_preference(nil) }
+          before { players[8..10].each_stub_preference(nil) }
 
           it "returns half the players with no preference, rounding up" do
             incompatibilities.violations_for(:white).should eq 2
@@ -45,7 +45,7 @@ module Swissfork
         end
 
         context "most players have no preference" do
-          before(:each) do
+          before do
             players[0..1].each_stub_preference(:white)
             players[2..3].each_stub_preference(:black)
             players[4..9].each_stub_preference(nil)
@@ -60,7 +60,7 @@ module Swissfork
 
       context "more players with one preference" do
         context "one player with no preference" do
-          before(:each) do
+          before do
             players[0..4].each_stub_preference(:white)
             players[5..8].each_stub_preference(:black)
             players[9].stub_preference(nil)
@@ -77,7 +77,7 @@ module Swissfork
 
         context "three players with no preference" do
           context "colour difference is one" do
-            before(:each) do
+            before do
               players[0..3].each_stub_preference(:white)
               players[4..6].each_stub_preference(:black)
               players[7..9].each_stub_preference(nil)
@@ -92,7 +92,7 @@ module Swissfork
           context "colour difference is two" do
             let(:players) { create_players(1..11) }
 
-            before(:each) do
+            before do
               players[0..4].each_stub_preference(:white)
               players[5..7].each_stub_preference(:black)
               players[8..10].each_stub_preference(nil)
@@ -110,7 +110,7 @@ module Swissfork
 
         context "four players with no preference" do
           context "colour difference is two" do
-            before(:each) do
+            before do
               players[0..3].each_stub_preference(:white)
               players[4..5].each_stub_preference(:black)
               players[6..9].each_stub_preference(nil)
@@ -125,7 +125,7 @@ module Swissfork
           context "colour difference is three" do
             let(:players) { create_players(1..11) }
 
-            before(:each) do
+            before do
               players[0..4].each_stub_preference(:white)
               players[5..6].each_stub_preference(:black)
               players[7..10].each_stub_preference(nil)

@@ -39,7 +39,7 @@ module Swissfork
       let(:pair_with_first_player) { Pair.new(players[0], players[4]) }
       let(:pair_with_second_player) { Pair.new(players[1], players[2]) }
 
-      before(:each) { players.each_stub(points: 3) }
+      before { players.each_stub(points: 3) }
 
       context "all players have the same points" do
         it "the pair with the smallest player is smaller" do
@@ -48,7 +48,7 @@ module Swissfork
       end
 
       context "one player has more points, but the sum is smaller" do
-        before(:each) do
+        before do
           players[0].stub(points: 1)
           players[4].stub(points: 4)
         end
@@ -59,7 +59,7 @@ module Swissfork
       end
 
       context "one player has less points" do
-        before(:each) { players[0].stub(points: 2) }
+        before { players[0].stub(points: 2) }
 
         it "the pair with more points is smaller" do
           pair_with_second_player.should be < pair_with_first_player
@@ -73,13 +73,13 @@ module Swissfork
       let(:pair) { Pair.new(lower_player, higher_player) }
 
       context "different colour preference" do
-        before(:each) do
+        before do
           higher_player.stub_preference(:black)
           lower_player.stub_preference(:white)
         end
 
         context "the lower player has a stronger preference" do
-          before(:each) do
+          before do
             higher_player.stub_degree(:strong)
             lower_player.stub_degree(:absolute)
           end
@@ -91,13 +91,13 @@ module Swissfork
       end
 
       context "both preferences are black" do
-        before(:each) do
+        before do
           higher_player.stub_preference(:black)
           lower_player.stub_preference(:black)
         end
 
         context "same preference degree" do
-          before(:each) do
+          before do
             higher_player.stub_degree(:strong)
             lower_player.stub_degree(:strong)
           end
@@ -108,13 +108,13 @@ module Swissfork
         end
 
         context "both players have an absolute preference" do
-          before(:each) do
+          before do
             higher_player.stub_degree(:absolute)
             lower_player.stub_degree(:absolute)
           end
 
           context "both have the same colour difference" do
-            before(:each) do
+            before do
               higher_player.stub(colour_difference: -2)
               lower_player.stub(colour_difference: -2)
             end
@@ -125,7 +125,7 @@ module Swissfork
           end
 
           context "the lower player has a wider difference" do
-            before(:each) do
+            before do
               higher_player.stub(colour_difference: 0)
               lower_player.stub(colour_difference: -1)
             end
@@ -137,7 +137,7 @@ module Swissfork
         end
 
         context "the lower player has a stronger preference" do
-          before(:each) do
+          before do
             higher_player.stub_degree(:strong)
             lower_player.stub_degree(:absolute)
           end
@@ -149,13 +149,13 @@ module Swissfork
       end
 
       context "both preferences are white" do
-        before(:each) do
+        before do
           higher_player.stub_preference(:white)
           lower_player.stub_preference(:white)
         end
 
         context "same preference degree" do
-          before(:each) do
+          before do
             higher_player.stub_degree(:strong)
             lower_player.stub_degree(:strong)
           end
@@ -166,7 +166,7 @@ module Swissfork
         end
 
         context "the lower player has a stronger preference" do
-          before(:each) do
+          before do
             higher_player.stub_degree(:strong)
             lower_player.stub_degree(:absolute)
           end
@@ -177,13 +177,13 @@ module Swissfork
         end
 
         context "both players have an absolute preference" do
-          before(:each) do
+          before do
             higher_player.stub_degree(:absolute)
             lower_player.stub_degree(:absolute)
           end
 
           context "both have the same colour difference" do
-            before(:each) do
+            before do
               higher_player.stub(colour_difference: 2)
               lower_player.stub(colour_difference: 2)
             end
@@ -194,7 +194,7 @@ module Swissfork
           end
 
           context "the lower player has a wider difference" do
-            before(:each) do
+            before do
               higher_player.stub(colour_difference: 0)
               lower_player.stub(colour_difference: 1)
             end
@@ -206,7 +206,7 @@ module Swissfork
         end
 
         context "the lower player has a stronger preference" do
-          before(:each) do
+          before do
             higher_player.stub_degree(:strong)
             lower_player.stub_degree(:absolute)
           end
@@ -218,7 +218,7 @@ module Swissfork
       end
 
       context "the higher player doesn't have a colour preference" do
-        before(:each) do
+        before do
           higher_player.stub_preference(nil)
           lower_player.stub_preference(:white)
         end
@@ -228,7 +228,7 @@ module Swissfork
         end
 
         context "the lower player doesn't have a preference either" do
-          before(:each) do
+          before do
             lower_player.stub_preference(nil)
           end
 
@@ -239,7 +239,7 @@ module Swissfork
           end
 
           context "the higher player has an even number" do
-            before(:each) do
+            before do
               higher_player.stub(number: 2)
               lower_player.stub(number: 3)
             end
@@ -250,7 +250,7 @@ module Swissfork
           end
 
           context "both players have an odd number" do
-            before(:each) do
+            before do
               higher_player.stub(number: 1)
               lower_player.stub(number: 3)
             end
@@ -261,7 +261,7 @@ module Swissfork
           end
 
           context "both players have an even number" do
-            before(:each) do
+            before do
               higher_player.stub(number: 2)
               lower_player.stub(number: 4)
             end
@@ -274,7 +274,7 @@ module Swissfork
       end
 
       context "same preference and different colour history" do
-        before(:each) do
+        before do
           higher_player.stub_preference(:white)
           lower_player.stub_preference(:white)
 
@@ -287,7 +287,7 @@ module Swissfork
         end
 
         context "the last different time happened before one got a bye" do
-          before(:each) do
+          before do
             higher_player.stub(colours: [nil, :black, :white, :black, :white])
             lower_player.stub(colours: [:white, :black, :black, nil, :white])
           end
@@ -298,7 +298,7 @@ module Swissfork
         end
 
         context "the colour history is the same if we reorder the byes" do
-          before(:each) do
+          before do
             higher_player.stub(colours: [:white, :black, :white, :black, :white, :black])
             lower_player.stub(colours: [nil, :white, :black, :white, :black, nil])
           end
@@ -309,7 +309,7 @@ module Swissfork
         end
 
         context "the higher player has stronger preference" do
-          before(:each) do
+          before do
             higher_player.stub_degree(:strong)
           end
 
@@ -325,7 +325,7 @@ module Swissfork
       let(:s2_player) { Player.new(2) }
       let(:pair) { Pair.new(s1_player, s2_player) }
 
-      before(:each) do
+      before do
         pair.result = :white_won
       end
 

@@ -14,10 +14,10 @@ module Swissfork
       let(:players) { create_players(1..10) }
 
       context "homogeneous bracket" do
-        before(:each) { players.each_stub(points: 1) }
+        before { players.each_stub(points: 1) }
 
         context "default exchange is OK" do
-          before(:each) do
+          before do
             players[0..4].each_stub_preference(:white)
             players[5..9].each_stub_preference(:black)
           end
@@ -28,7 +28,7 @@ module Swissfork
         end
 
         context "transpositions guarantee colour preferences" do
-          before(:each) do
+          before do
             players[0..3].each_stub_preference(:white)
             players[4].stub_preference(:black)
             players[5..7].each_stub_preference(:black)
@@ -42,7 +42,7 @@ module Swissfork
         end
 
         context "several transpositions guarentee colour preference" do
-          before(:each) do
+          before do
             players[0].stub_preference(:white)
             players[2].stub_preference(:white)
             players[4].stub_preference(:white)
@@ -62,7 +62,7 @@ module Swissfork
         end
 
         context "can't guarantee all colour_preferences" do
-          before(:each) do
+          before do
             players[0..3].each_stub_preference(:white)
             players[4..9].each_stub_preference(:black)
           end
@@ -73,7 +73,7 @@ module Swissfork
         end
 
         context "one player has no colour preference" do
-          before(:each) do
+          before do
             players[0..3].each_stub_preference(:white)
             players[4..9].each_stub_preference(:black)
             players[5].stub_preference(nil)
@@ -87,7 +87,7 @@ module Swissfork
         context "several players don't have colour preference" do
           let(:players) { create_players(1..10) }
 
-          before(:each) do
+          before do
             players[0..2].each_stub_preference(:white)
             players[3..6].each_stub_preference(:black)
             players[7..9].each_stub_preference(nil)
@@ -99,7 +99,7 @@ module Swissfork
         end
 
         context "opponent incompatibilities force colour violations" do
-          before(:each) do
+          before do
             players[0..4].each_stub_preference(:white)
             players[5..9].each_stub_preference(:black)
 
@@ -112,7 +112,7 @@ module Swissfork
           end
 
           context "same colour incompatibilities for each colour" do
-            before(:each) do
+            before do
               players[0..3].each_stub_opponents(players[6..9])
               players[6..9].each_stub_opponents(players[0..3])
             end
@@ -127,7 +127,7 @@ module Swissfork
       context "heterogeneous bracket" do
         let(:players) { create_players(1..11) }
 
-        before(:each) do
+        before do
           players[0..1].each_stub(points: 2)
           players[2..10].each_stub(points: 1)
           players[0..1].each_stub_opponents(players[0..1])
@@ -136,7 +136,7 @@ module Swissfork
         end
 
         context "descended players have same preference as ascending players" do
-          before(:each) do
+          before do
             players[0..4].each_stub_preference(:white)
             players[5..10].each_stub_preference(:black)
           end
@@ -146,7 +146,7 @@ module Swissfork
           end
 
           context "they're incompatible with lower players" do
-            before(:each) do
+            before do
               players[0..1].each_stub_opponents(players[0..1] + players[5..10])
               players[5..10].each_stub_opponents(players[0..1])
             end
@@ -158,7 +158,7 @@ module Swissfork
         end
 
         context "one descended player has a mild colour preference" do
-          before(:each) do
+          before do
             players[0].stub_preference(:white)
             players[0].stub_degree(:mild)
             players[1..4].each_stub_preference(:black)
@@ -174,13 +174,13 @@ module Swissfork
       context "all players have the same colour preference" do
         let(:players) { create_players(1..4) }
 
-        before(:each) do
+        before do
           players.each_stub(points: 1)
           players.each_stub_preference(:white)
         end
 
         context "all players have the same preference degree" do
-          before(:each) do
+          before do
             players.each_stub_degree(:strong)
           end
 
@@ -190,7 +190,7 @@ module Swissfork
         end
 
         context "the lower players have a stronger preference" do
-          before(:each) do
+          before do
             players[0..1].each_stub_degree(:strong)
             players[2..3].each_stub_degree(:absolute)
           end
@@ -201,7 +201,7 @@ module Swissfork
         end
 
         context "the first players in S1 and S2 have a stronger preference" do
-          before(:each) do
+          before do
             players[0].stub_degree(:strong)
             players[1].stub_degree(:mild)
             players[2].stub_degree(:strong)
@@ -214,7 +214,7 @@ module Swissfork
         end
 
         context "some of them have an absolute colour preference" do
-          before(:each) do
+          before do
             players[0].stub_degree(:absolute)
             players[2].stub_degree(:absolute)
             players[1].stub_degree(:mild)
@@ -228,7 +228,7 @@ module Swissfork
           end
 
           context "all of them are topscorers" do
-            before(:each) do
+            before do
               players.each_stub(topscorer?: true)
             end
 
@@ -239,7 +239,7 @@ module Swissfork
         end
 
         context "all players have an absolute colour preference" do
-          before(:each) do
+          before do
             players.each_stub_degree(:absolute)
           end
 
@@ -251,7 +251,7 @@ module Swissfork
           end
 
           context "all of them are topscorers" do
-            before(:each) do
+            before do
               players.each_stub(topscorer?: true)
             end
 
@@ -260,7 +260,7 @@ module Swissfork
             end
 
             context "the first players in S1 and S2 would get -3 colour difference" do
-              before(:each) do
+              before do
                 players[0].stub(colour_difference: -2)
                 players[1].stub(colour_difference: -1)
                 players[2].stub(colour_difference: -2)
@@ -274,7 +274,7 @@ module Swissfork
           end
 
           context "two of them are topscorers" do
-            before(:each) do
+            before do
               players[0].stub(topscorer?: true)
               players[2].stub(topscorer?: true)
             end
