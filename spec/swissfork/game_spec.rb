@@ -135,8 +135,7 @@ module Swissfork
       end
 
       context "the player lost" do
-        before { game.stub(won?: false) }
-        before { game.stub(draw?: false) }
+        before { game.stub(won?: false, draw?: false) }
 
         it "returns a floating number" do
           game.points_received.should eql 0.0
