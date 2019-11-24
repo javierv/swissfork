@@ -32,7 +32,7 @@ module Swissfork
     end
 
     def failing_criterion(criteria)
-      criteria.select { |condition| send(condition) }.last
+      criteria.reverse.find { |condition| send(condition) }
     end
 
     # Preliminary check for downfloat and colour violations.
