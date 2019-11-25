@@ -1,6 +1,7 @@
 Gemfile.lock
 .rspec
 *.pdf
+.yardoc/
 test_tournaments/
 coverage/
 tags
